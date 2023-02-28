@@ -11,7 +11,8 @@ import { OrmConfig } from './global/config/orm.config';
     UserModule,
     TypeOrmModule.forRootAsync({
       useClass: OrmConfig,
-    }),],
+    }),
+  ],
 
   controllers: [AppController, UserController, AuthController],
   providers: [AppService],

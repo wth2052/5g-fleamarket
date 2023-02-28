@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from './users.entity';
 
-@Entity()
+@Entity({ name: 'products' })
 export class ProductsEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,6 +15,9 @@ export class ProductsEntity {
   @Column()
   price: number;
 
+  @ManyToMany(() => UserEntity, (user) => user.id)
+
+  @ManyToMany(() => UserEntity, {})
   @Column()
   sellerId: number;
 

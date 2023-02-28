@@ -1,9 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { LikesEntity } from './likes.entity';
+import { ProductsEntity } from './products.entity';
 
-@Entity({ name: 'user' })
+@Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  @ManyToMany(() => LikesEntity, {})
+  @ManyToMany(() => ProductsEntity, {})
+  id: LikesEntity[];
 
   @Column()
   nickname: string;
