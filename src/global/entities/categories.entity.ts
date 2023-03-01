@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'categories' })
 export class CategoriesEntity {
@@ -6,10 +6,7 @@ export class CategoriesEntity {
   id: string;
 
   @Column()
-  productsId: number;
-
-  @Column()
-  imagePath: string;
+  name: string;
 
   @Column()
   createdAt: Date;

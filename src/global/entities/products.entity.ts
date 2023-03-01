@@ -1,4 +1,13 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+} from 'typeorm';
+import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
 
 @Entity({ name: 'products' })
@@ -15,13 +24,10 @@ export class ProductsEntity {
   @Column()
   price: number;
 
-  @ManyToMany(() => UserEntity, (user) => user.id)
-
-  @ManyToMany(() => UserEntity, {})
-  @Column()
+  @OneToOne(() => UserEntity)
   sellerId: number;
 
-  @Column()
+  @OneToOne(() => CategoriesEntity)
   categoryId: number;
 
   @Column()

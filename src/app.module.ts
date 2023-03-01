@@ -5,12 +5,18 @@ import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OrmConfig } from './global/config/orm.config';
+import { OrmConfig } from './config/orm.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     UserModule,
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
       useClass: OrmConfig,
+      inject: [ConfigService],
     }),
   ],
 

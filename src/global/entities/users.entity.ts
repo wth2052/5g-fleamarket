@@ -11,9 +11,7 @@ import { ProductsEntity } from './products.entity';
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  @ManyToMany(() => LikesEntity, {})
-  @ManyToMany(() => ProductsEntity, {})
-  id: LikesEntity[];
+  id: number;
 
   @Column()
   nickname: string;

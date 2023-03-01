@@ -4,7 +4,6 @@ import { NoticesEntity } from './notices.entity';
 @Entity({ name: 'admins' })
 export class AdminsEntity {
   @PrimaryGeneratedColumn()
-  @OneToMany((type) => NoticesEntity, (notice) => notice.adminId)
   id: string;
 
   @Column({ unique: true })

@@ -1,25 +1,16 @@
-import { Column, Entity, ManyToMany, JoinTable, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
 
 @Entity({ name: 'likes' })
 export class LikesEntity {
   @PrimaryColumn()
-  @ManyToMany(() => UserEntity)
-  @JoinTable({
-    name: 'users_likes', // table name for the junction table of this relation
-    joinColumn: {
-      name: 'users',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'likes',
-      referencedColumnName: 'id',
-    },
-  })
-  userId: UserEntity[];
+  @OneToOne(() => UserEntity)
+  userId: number;
 
+  @OneToOne(() => ProductsEntity)
   @PrimaryColumn()
-  productId: string;
+  productId: number;
 
   @Column()
   createdAt: Date;
