@@ -35,6 +35,6 @@ export class UserEntity {
   @OneToMany(() => OrdersEntity, (orders) => orders.buyer)
   orders: OrdersEntity[];
 
-  @OneToMany(() => ProductsEntity, (product) => product.seller)
+  @OneToMany((type) => ProductsEntity, (products) => products.seller)
   products: ProductsEntity[];
 }

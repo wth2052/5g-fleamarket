@@ -15,6 +15,6 @@ export class CategoriesEntity {
   @Column({ default: null })
   deletedAt: Date;
 
-  @OneToMany(() => ProductsEntity, (products) => products.categoryId)
+  @OneToMany((type) => ProductsEntity, (products) => products.category)
   products: ProductsEntity[];
 }
