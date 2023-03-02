@@ -28,7 +28,6 @@ export class OrdersService {
   async findMyPick(id: number) {
     return await this.orderRepository.find({
       where: { buyerId: id },
-      relations: ['buyer'],
     });
   }
 
@@ -43,41 +42,72 @@ export class OrdersService {
     });
   }
 
-  async buyerDone(buyerId: number, orderId: number) {
+  async buyerDone(userId: number, orderId: number) {
     const a = await this.orderRepository.findOne({
-      where: { buyerId, id: orderId },
+      where: { id: orderId },
     });
     if (!a) {
       throw new NotFoundException('해당되는 주문이 없습니다.');
     }
     if (a.status === 'sale') {
-      throw new UnauthorizedException('아직 진행되지 않았습니다.');
+      throw new UnauthorizedException('아직 선택되지 않았습니다.');
     }
-    if (a.status === 'fail') {
-      throw new UnauthorizedException('판매자가 다른 제안을 수락했습니다.');
+    if (a.buyerId === userId) {
+      if (a.status === 'sold') {
+        throw new UnauthorizedException('판매자가 다른 제안을 수락했습니다.');
+      }
+      const sellerInfo = await this.productRepository.findOne({
+        where: { id: a.productId },
+      });
+      const sellerUser = await this.userRepository.findOne({
+        where: { id: sellerInfo.id },
+      });
+      return sellerUser;
+    } else {
+      if (a.status !== 'success') {
+        throw new UnauthorizedException('아직 구매 확정을 안했습니다.');
+      }
+      const buyerUser = await this.userRepository.findOne({
+        where: { id: userId },
+      });
+      return buyerUser;
     }
-    const sellerInfo = await this.productRepository.findOne({
-      where: { id: a.productId },
-    });
-    const sellerUser = await this.userRepository.findOne({
-      where: { id: sellerInfo.id },
-    });
-    return sellerUser;
   }
 
-  async sellerDone(orderId: number) {
-    const b = await this.orderRepository.findOne({
-      where: { id: orderId },
+  async getBuyList(userId: number) {
+    return this.orderRepository.find({
+      where: { buyerId: userId, status: 'success' },
     });
-    if (!b) {
-      throw new NotFoundException('해당되는 주문이 없습니다.');
-    }
-    if (b.status !== 'done') {
-      throw new UnauthorizedException('아직 구매 확저이 안됬습니다.');
-    }
-    const buyerUser = await this.userRepository.findOne({
-      where: { id: b.buyerId },
-    });
-    return buyerUser;
   }
+  async getSellList(userId: number) {
+    const myProduct = await this.productRepository.find({
+      where: { sellerId: userId },
+      select: ['id'],
+    });
+    for (let i = 0; i < myProduct.length; i++) {
+      console.log(myProduct.length);
+      const real = await this.orderRepository.find({
+        where: { productId: myProduct[i].id, status: 'success' },
+      });
+      console.log(myProduct[i].id);
+      console.log(real);
+      return real;
+    }
+  }
+
+  // async sellerDone(orderId: number) {
+  //   const b = await this.orderRepository.findOne({
+  //     where: { id: orderId },
+  //   });
+  //   if (!b) {
+  //     throw new NotFoundException('해당되는 주문이 없습니다.');
+  //   }
+  //   if (b.status !== 'done') {
+  //     throw new UnauthorizedException('아직 구매 확저이 안됬습니다.');
+  //   }
+  //   const buyerUser = await this.userRepository.findOne({
+  //     where: { id: b.buyerId },
+  //   });
+  //   return buyerUser;
+  // }
 }
