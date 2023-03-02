@@ -6,9 +6,11 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
+import { OrdersEntity } from './orders.entity';
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
@@ -24,12 +26,14 @@ export class ProductsEntity {
   @Column()
   price: number;
 
-  @JoinColumn()
-  @OneToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (seller) => seller.products)
+  seller: UserEntity;
+  @Column()
   sellerId: number;
 
-  @JoinColumn()
-  @OneToOne(() => CategoriesEntity)
+  @ManyToOne(() => CategoriesEntity, (category) => category.products)
+  category: CategoriesEntity;
+  @Column()
   categoryId: number;
 
   @Column()
@@ -43,4 +47,7 @@ export class ProductsEntity {
 
   @Column({ default: null })
   deletedAt: Date;
+
+  @OneToMany((type) => OrdersEntity, (orders) => orders.product)
+  orders: OrdersEntity[];
 }
