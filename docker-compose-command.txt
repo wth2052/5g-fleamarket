@@ -1,5 +1,5 @@
 이 텍스트 문서는 docker-compose에 대한 명령어를 설명하는 문서입니다.
-작성자 : 우태현 (2023.03.01 21:30PM 마지막 수정)
+작성자 : 우태현 (2023.03.01 21:30PM 마지막 수정함)
 
 먼저, docker-compose와 버전별 특징이 궁금하시다면?
 https://meetup.nhncloud.com/posts/277
