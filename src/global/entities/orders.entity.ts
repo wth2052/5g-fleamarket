@@ -16,10 +16,13 @@ export class OrdersEntity {
 
   @ManyToOne(() => ProductsEntity)
   product: ProductsEntity;
+  @Column()
+  productId: number;
 
   @ManyToOne(() => UserEntity, (buyer) => buyer.orders)
-  @JoinColumn({ referencedColumnName: 'id' })
   buyer: UserEntity;
+  @Column()
+  buyerId: number;
 
   @Column()
   deal: number;
