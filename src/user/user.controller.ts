@@ -8,10 +8,10 @@ export class UserController {
   constructor(private readonly UserService: UserService) {}
   @Post('/signup')
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
-    const { email, nickname, password, phone, address } = dto;
+    const { nickname, email, password, phone, address } = dto;
     await this.UserService.createUser(
-      email,
       nickname,
+      email,
       password,
       phone,
       address,
