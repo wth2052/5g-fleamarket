@@ -17,9 +17,9 @@ export class NoticesEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: null})
   createdAt: string;
 
-  @Column()
+  @Column({ default: null})
   deletedAt: string;
 }

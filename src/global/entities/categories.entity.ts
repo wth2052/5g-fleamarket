@@ -8,9 +8,9 @@ export class CategoriesEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: null})
   createdAt: Date;
 
-  @Column()
+  @Column({ default: null })
   deletedAt: Date;
 }
