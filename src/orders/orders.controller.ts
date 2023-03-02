@@ -16,7 +16,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   // 판매상품 목록보기
-  @Get(':sellerId')
+  @Get('seller/:sellerId')
   findMySell(@Param('sellerId') id: number) {
     return this.ordersService.findMySell(id);
   }
@@ -26,15 +26,12 @@ export class OrdersController {
     return this.ordersService.findMyDeal(id);
   }
   // 판매자 결과
-  @Get('orders/:orderId')
-  sellerDone(
-    @Body('productId') productId: number,
-    @Body('buyerId') buyerId: number,
-  ) {
-    return this.ordersService.sellerDone(productId, buyerId);
+  @Get('seller/:orderId')
+  sellerDone(@Param('orderId') orderId: number) {
+    return this.ordersService.sellerDone(orderId);
   }
   // 찜한 상품 목록보기
-  @Get(':buyerId')
+  @Get('buyerId/:buyerId')
   findMyPick(@Param('id') id: number) {
     return this.ordersService.findMyPick(id);
   }

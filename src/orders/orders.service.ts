@@ -65,15 +65,18 @@ export class OrdersService {
     return sellerUser;
   }
 
-  async sellerDone(productId: number, buyerId: number) {
+  async sellerDone(orderId: number) {
     const b = await this.orderRepository.findOne({
-      where: { productId, buyerId },
+      where: { id: orderId },
     });
     if (!b) {
-      throw new NotFoundException('해당되는 상품이 없습니다.');
+      throw new NotFoundException('해당되는 주문이 없습니다.');
+    }
+    if (b.status !== 'done') {
+      throw new UnauthorizedException('아직 구매 확저이 안됬습니다.');
     }
     const buyerUser = await this.userRepository.findOne({
-      where: { id: buyerId },
+      where: { id: b.buyerId },
     });
     return buyerUser;
   }
