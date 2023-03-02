@@ -24,9 +24,11 @@ export class ProductsEntity {
   @Column()
   price: number;
 
+  @JoinColumn()
   @OneToOne(() => UserEntity)
   sellerId: number;
 
+  @JoinColumn()
   @OneToOne(() => CategoriesEntity)
   categoryId: number;
 
@@ -39,6 +41,6 @@ export class ProductsEntity {
   @Column()
   createdAt: Date;
 
-  @Column()
+  @Column({ default: null })
   deletedAt: Date;
 }

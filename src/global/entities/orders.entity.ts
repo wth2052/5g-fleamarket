@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
@@ -14,10 +15,11 @@ export class OrdersEntity {
   id: number;
 
   @ManyToOne(() => ProductsEntity)
-  productId: number;
+  product: ProductsEntity;
 
-  @ManyToOne(() => UserEntity)
-  buyerId: number;
+  @ManyToOne(() => UserEntity, (buyer) => buyer.orders)
+  @JoinColumn({ referencedColumnName: 'id' })
+  buyer: UserEntity;
 
   @Column()
   deal: number;
@@ -31,6 +33,6 @@ export class OrdersEntity {
   @Column()
   updateAt: Date;
 
-  @Column()
+  @Column({ default: null })
   deleteAt: Date;
 }

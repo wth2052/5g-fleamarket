@@ -11,6 +11,6 @@ export class CategoriesEntity {
   @Column()
   createdAt: Date;
 
-  @Column()
+  @Column({ default: null })
   deletedAt: Date;
 }
