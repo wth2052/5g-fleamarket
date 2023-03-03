@@ -15,4 +15,6 @@ describe('OrdersService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  console.log('풀리퀘 테스트입니당.');
 });
