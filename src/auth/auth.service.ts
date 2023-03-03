@@ -1,16 +1,9 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { LoginUserDto } from '../user/dto';
 import { UserEntity } from '../global/entities/users.entity';
-import { Payload } from './passport/payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -19,32 +12,103 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
-
-  async validateUser(userDto: LoginUserDto): Promise<{ accessToken: string }> {
-    const userFind: UserEntity = await this.userService.findUserByEmail(
-      userDto.email,
-    );
-    console.log('유저 찾았쪙', userFind);
-    //패스워드가 DTO와 userfind를 통해 얻은 값이 같은지 검증
-    const validatePassword = await bcrypt.compare(
-      userDto.password,
-      userFind.password,
-    );
-    if (!userFind || !validatePassword) {
-      throw new UnauthorizedException(
-        '아이디 혹은 패스워드가 올바르지 않습니다.',
-      );
+  async vaildateUser(email: string, plainTextPassword: string): Promise<any> {
+    try {
+      const user = await this.userService.getByEmail(email);
+      await this.verifyPassword(plainTextPassword, user.password);
+      const { password, ...result } = user;
+      return result;
+    } catch (error) {
+      throw new HttpException('잘못된 요청입니다.', HttpStatus.BAD_REQUEST);
     }
+  }
 
-    const payload: Payload = {
-      id: userFind.id,
-      nickname: userFind.nickname,
-      email: userFind.email,
-    };
+  private async verifyPassword(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ) {
+    const isPasswordMatch = await bcrypt.compare(
+      plainTextPassword,
+      hashedPassword,
+    );
+    if (!isPasswordMatch) {
+      throw new HttpException('잘못된 요청입니다.', HttpStatus.BAD_REQUEST);
+    }
+  }
 
-    //페이로드에 아이디와 이메일을 넣은 토큰 정보를 리턴
+  async register(user: UserEntity) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    try {
+      const { password, ...returnUser } = await this.userService.create({
+        ...user,
+        password: hashedPassword,
+      });
+
+      return returnUser;
+    } catch (error) {
+      if (error?.code === 'ER_DUP_ENTRY') {
+        throw new HttpException(
+          '유저가 이미 존재합니다.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+  }
+
+  getCookieWithJwtAccessToken(id: number) {
+    const payload = { id };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
+      expiresIn: `${this.configService.get(
+        'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+      )}s`,
+    });
+
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: token,
+      domain: 'localhost',
+      path: '/',
+      httpOnly: true,
+      maxAge:
+        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
+        1000,
+    };
+  }
+
+  getCookieWithJwtRefreshToken(id: number) {
+    const payload = { id };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
+      expiresIn: `${this.configService.get(
+        'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+      )}d`,
+    });
+
+    return {
+      refreshToken: token,
+      domain: 'localhost',
+      path: '/',
+      httpOnly: true,
+      maxAge:
+        Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) *
+        1000,
+    };
+  }
+
+  getCookiesForLogOut() {
+    return {
+      accessOption: {
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        maxAge: 0,
+      },
+      refreshOption: {
+        domain: 'localhost',
+        path: '/',
+        httpOnly: true,
+        maxAge: 0,
+      },
     };
   }
 }

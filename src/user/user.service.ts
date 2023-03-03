@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
@@ -9,33 +14,58 @@ import { ConfigService } from '@nestjs/config';
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private usersRepository: Repository<UserEntity>,
-    private readonly smsService: SmsService,
-    private readonly config: ConfigService,
+    private userRepository: Repository<UserEntity>,
   ) {}
-  async createUser(
-    nickname: string,
-    email: string,
-    password: string,
-    phone: string,
-    address: string,
-  ) {
-    const newUser = await this.usersRepository.findOne({ where: { email } });
-    if (newUser) {
-      throw new UnauthorizedException('이미 존재하는 유저입니다.');
-    } else {
-      // await this.smsService.sendSMS(phone); //TODO : SMS 인증 로직 마저 처리하기
-      const hashedPwd = await bcrypt.hash(password, 12);
-      await this.usersRepository.save({
-        nickname,
-        email,
-        password: hashedPwd,
-        phone,
-        address,
-      });
+
+  async create(user: UserEntity): Promise<UserEntity> {
+    await this.userRepository.save(user);
+    return user;
+  }
+
+  async getByEmail(email: string) {
+    const user = this.userRepository.findOne({ where: { email } });
+    if (user) {
+      return user;
+    }
+    throw new HttpException(
+      '이메일이 존재하지 않습니다.',
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  async getById(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (user) {
+      return user;
+    }
+
+    throw new HttpException(
+      '아이디가 존재하지 않습니다.',
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  async setCurrentRefreshToken(refreshToken: string, id: number) {
+    const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    await this.userRepository.update(id, { currentHashedRefreshToken });
+  }
+
+  async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
+    const user = await this.getById(id);
+
+    const isRefreshTokenMatching = await bcrypt.compare(
+      refreshToken,
+      user.currentHashedRefreshToken,
+    );
+
+    if (isRefreshTokenMatching) {
+      return user;
     }
   }
-  async findUserByEmail(email: string): Promise<UserEntity> {
-    return await this.usersRepository.findOne({ where: { email } });
+
+  async removeRefreshToken(id: number) {
+    return this.userRepository.update(id, {
+      currentHashedRefreshToken: null,
+    });
   }
 }

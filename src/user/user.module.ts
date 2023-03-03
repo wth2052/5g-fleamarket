@@ -8,19 +8,20 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({ isGlobal: true }),
     PassportModule.register({
-      defaultStrategy: 'jwt',
+      defaultStrategy: 'jwt-access-token',
       session: false,
     }),
     //registerAsync? ConfigService를 주입해두면, .env를 읽어올 때까지 secret을 등록하는 작업을 유예시킴.
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_ACCESS_SECRETKEY'),
-        signOptions: { expiresIn: configService.get('JWTACCESS_EXPIRESIN') },
+        signOptions: { expiresIn: configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME') },
       }),
       inject: [ConfigService],
     }),

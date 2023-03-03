@@ -1,19 +1,43 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
+import { PassportModule } from '@nestjs/passport';
+import { AuthController } from './auth.controller';
+import { UserModule } from '../user/user.module';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
+import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    ConfigModule.forRoot({ isGlobal: true }),
-    //registerAsync? ConfigService를 주입해두면, .env를 읽어올 때까지 secret을 등록하는 작업을 유예시킴.
+    PassportModule,
+    ConfigModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_ACCESS_SECRETKEY'),
+        signOptions: {
+          expiresIn: `${configService.get(
+            'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+          )}s`,
+        },
+      }),
+    }),
   ],
-  providers: [AuthService, UserService],
+  providers: [
+    AuthService,
+    UserService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtRefreshStrategy,
+  ],
+  exports: [JwtModule],
   controllers: [AuthController],
 })
 export class AuthModule {}
