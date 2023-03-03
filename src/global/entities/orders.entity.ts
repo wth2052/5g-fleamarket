@@ -5,6 +5,7 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
@@ -30,10 +31,10 @@ export class OrdersEntity {
   @Column({ default: 'sale' })
   status: string;
 
-  @Column()
+  @CreateDateColumn()
   createAt: Date;
 
-  @Column({ default: null })
+  @CreateDateColumn()
   updateAt: Date;
 
   @Column({ default: null })

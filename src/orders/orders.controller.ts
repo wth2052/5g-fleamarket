@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -13,40 +14,64 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
-  // 판매상품 목록보기
-  @Get('seller/:sellerId')
+  // 내가 파는 상품 목록보기
+  @Get('mySellProduct/:sellerId')
   findMySell(@Param('sellerId') id: number) {
     return this.ordersService.findMySell(id);
   }
   // 제시된 가격목록 보기
-  @Get(':productId')
-  findMyDeal(@Param('productId') id: number) {
-    return this.ordersService.findMyDeal(id);
+  @Get('products/:productId')
+  findMyProductsDealCheck(@Param('productId') id: number) {
+    return this.ordersService.findMyProductsDealCheck(id);
   }
   // 내가 가격제시한 상품 목록보기
-  @Get('buyerId/:buyerId')
+  @Get('myPick/:buyerId')
   findMyPick(@Param('buyerId') id: number) {
     return this.ordersService.findMyPick(id);
   }
-  //성사된 거래 판매자 정보보기
+  //(구매자 입장에서)성사된 거래 판매자 정보보기
   @Get('buyResult/:userId/:orderId')
-  buyerDone(
+  buyResult(
     @Param('userId') userId: number,
     @Param('orderId') orderId: number,
   ) {
-    return this.ordersService.buyerDone(userId, orderId);
+    return this.ordersService.buyResult(userId, orderId);
   }
   //성사된 거래 구매자 정보보기
   @Get('sellResult/:userId/:orderId')
-  sellDone(@Param('userId') userId: number, @Param('orderId') orderId: number) {
-    return this.ordersService.sellDone(userId, orderId);
+  sellResult(
+    @Param('userId') userId: number,
+    @Param('orderId') orderId: number,
+  ) {
+    return this.ordersService.sellResult(userId, orderId);
   }
-  @Get('buyList/:userId')
+  // 내가 구매한 목록
+  @Get('myBuyList/:userId')
   getBuyList(@Param('userId') userId: number) {
     return this.ordersService.getBuyList(userId);
   }
-  @Get('sellList/:userId')
+  // 내가 판매가 완료된 목록
+  @Get('mySellList/:userId')
   getSellList(@Param('userId') userId: number) {
     return this.ordersService.getSellList(userId);
+  }
+  //판매자가 거래를 수락해서 거래종료
+  // 선택한 상품 status -> success
+  // 나머지 상품은 status -> sold
+  @Put('dealAccept/:userId/:orderId')
+  dealAccept(
+    @Param('userId') userId: number,
+    @Param('orderId') orderId: number,
+  ) {
+    return this.ordersService.purtdealAccept(userId, orderId);
+  }
+
+  @Post('priceDeal/:userId/:productId')
+  postPriceDeal(
+    @Param('userId') userId: number,
+    @Param('productId') productId: number,
+    @Body() data: CreateOrderDto,
+  ) {
+    return this.ordersService.postPriceDeal(userId, productId, data.price);
   }
 }
