@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  Delete, Put
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -36,6 +36,8 @@ export class OrdersController {
   ) {
     return this.ordersService.buyerDone(userId, orderId);
   }
+
+  @Get('re')
   @Get('buyList/:userId')
   getBuyList(@Param('userId') userId: number) {
     return this.ordersService.getBuyList(userId);
@@ -44,6 +46,11 @@ export class OrdersController {
   getSellList(@Param('userId') userId: number) {
     return this.ordersService.getSellList(userId);
   }
+
+  //판매자가 거래를 수락해서 거래종료
+  // 선택한 상품 status -> success
+  // 나머지 상품은 status -> sold
+
   // // 판매자 결과
   // @Get('seller/:orderId')
   // sellerDone(@Param('orderId') orderId: number) {

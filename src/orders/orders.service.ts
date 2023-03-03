@@ -10,6 +10,7 @@ import { UserEntity } from 'src/global/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { isNumber } from '@nestjs/common/utils/shared.utils';
 @Injectable()
 export class OrdersService {
   constructor(
@@ -26,6 +27,7 @@ export class OrdersService {
   async findMyPick(id: number) {
     return await this.orderRepository.find({
       where: { buyerId: id },
+      relations: ['buyer'],
     });
   }
   async findMySell(id: number) {
@@ -42,13 +44,22 @@ export class OrdersService {
     const a = await this.orderRepository.findOne({
       where: { id: orderId },
     });
+    console.log(
+      'buyerId: ',
+      a.buyerId,
+      typeof a.buyerId,
+      'userId',
+      userId,
+      typeof userId,
+    );
     if (!a) {
       throw new NotFoundException('해당되는 주문이 없습니다.');
     }
     if (a.status === 'sale') {
       throw new UnauthorizedException('아직 선택되지 않았습니다.');
     }
-    if (a.buyerId === userId) {
+    if (a.buyerId === Number(userId)) {
+      console.log('여기 들어오니??');
       if (a.status === 'sold') {
         throw new UnauthorizedException('판매자가 다른 제안을 수락했습니다.');
       }
@@ -60,6 +71,7 @@ export class OrdersService {
       });
       return sellerUser;
     } else {
+      console.log('같지않으면 여기로 빠지는거 맞니?');
       if (a.status !== 'success') {
         throw new UnauthorizedException('아직 구매 확정을 안했습니다.');
       }
