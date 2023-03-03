@@ -5,7 +5,11 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+<<<<<<< HEAD
   CreateDateColumn, UpdateDateColumn, DeleteDateColumn
+=======
+  CreateDateColumn,
+>>>>>>> 248279616a3318d77d63291dea3acda55ddb6c85
 } from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
