@@ -33,7 +33,7 @@ export class OrdersEntity {
   @Column()
   createAt: Date;
 
-  @Column()
+  @Column({ default: null })
   updateAt: Date;
 
   @Column({ default: null })

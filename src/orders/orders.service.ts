@@ -10,7 +10,6 @@ import { UserEntity } from 'src/global/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-
 @Injectable()
 export class OrdersService {
   constructor(
@@ -24,13 +23,11 @@ export class OrdersService {
   create(createOrderDto: CreateOrderDto) {
     return 'This action adds a new order';
   }
-
   async findMyPick(id: number) {
     return await this.orderRepository.find({
       where: { buyerId: id },
     });
   }
-
   async findMySell(id: number) {
     return await this.productRepository.find({
       where: { sellerId: id },
@@ -41,7 +38,6 @@ export class OrdersService {
       where: { productId: id },
     });
   }
-
   async buyerDone(userId: number, orderId: number) {
     const a = await this.orderRepository.findOne({
       where: { id: orderId },
@@ -73,7 +69,6 @@ export class OrdersService {
       return buyerUser;
     }
   }
-
   async getBuyList(userId: number) {
     return this.orderRepository.find({
       where: { buyerId: userId, status: 'success' },
@@ -94,7 +89,6 @@ export class OrdersService {
       return real;
     }
   }
-
   // async sellerDone(orderId: number) {
   //   const b = await this.orderRepository.findOne({
   //     where: { id: orderId },

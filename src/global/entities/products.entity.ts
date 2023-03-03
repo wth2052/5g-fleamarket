@@ -9,8 +9,8 @@ import {
   OneToMany,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
-import { OrdersEntity } from './orders.entity';
 import { UserEntity } from './users.entity';
+import { OrdersEntity } from './orders.entity';
 
 @Entity({ name: 'products' })
 export class ProductsEntity {

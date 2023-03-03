@@ -32,8 +32,9 @@ export class UserEntity {
   @Column({ default: 0 })
   ban: number;
 
-  @OneToMany((type) => OrdersEntity, (orders) => orders.buyer)
+  @OneToMany(() => OrdersEntity, (orders) => orders.buyer)
   orders: OrdersEntity[];
+
   @OneToMany((type) => ProductsEntity, (products) => products.seller)
   products: ProductsEntity[];
 }
