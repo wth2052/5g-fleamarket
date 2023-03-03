@@ -1,10 +1,10 @@
 import {
   Column,
   Entity,
-  OneToMany,
-  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { IsString } from 'class-validator';
+import { Exclude } from 'class-transformer';
 import { LikesEntity } from './likes.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductsEntity } from './products.entity';
@@ -32,6 +32,13 @@ export class UserEntity {
   @Column({ default: 0 })
   ban: number;
 
+  // refresh token 저장
+  @Column({
+    nullable: true,
+  })
+  @Column({ nullable: true })
+  @Exclude()
+  currentHashedRefreshToken?: string;
   @OneToMany(() => OrdersEntity, (orders) => orders.buyer)
   orders: OrdersEntity[];
 

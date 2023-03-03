@@ -23,6 +23,8 @@ export class OrmConfig implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('DATABASE_USERNAME'),
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       database: this.configService.get<string>('DATABASE_NAME'),
+      //entities: [__dirname + '/../**/*.entity.*'],
+      synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'), // 연결될때 데이터베이스 초기화됨
       entities: [
         AdminsEntity,
         CategoriesEntity,
@@ -33,7 +35,6 @@ export class OrmConfig implements TypeOrmOptionsFactory {
         ProductImagesEntity,
         UserEntity,
       ],
-      synchronize: true, // 연결될때 데이터베이스 초기화됨
       migrations: [__dirname + '/../**/migrations/*.js'],
       migrationsTableName: 'migrations',
     };
