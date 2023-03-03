@@ -15,6 +15,9 @@ import * as Joi from 'joi';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
+import { OrdersModule } from './orders/orders.module';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -39,6 +42,8 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
     }),
     SmsModule,
+    AdminModule,
+    OrdersModule,
   ],
   providers: [
     AppService,

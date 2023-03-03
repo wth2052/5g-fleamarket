@@ -1,6 +1,14 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
+import { AdminsEntity } from '../global/entities/admins.entity';
+import { CategoriesEntity } from '../global/entities/categories.entity';
+import { LikesEntity } from '../global/entities/likes.entity';
+import { NoticesEntity } from '../global/entities/notices.entity';
+import { OrdersEntity } from '../global/entities/orders.entity';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { UserEntity } from '../global/entities/users.entity';
 
 @Injectable()
 export class OrmConfig implements TypeOrmOptionsFactory {
@@ -15,8 +23,18 @@ export class OrmConfig implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('DATABASE_USERNAME'),
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       database: this.configService.get<string>('DATABASE_NAME'),
-      entities: [__dirname + '/../**/*.entity.*'],
+      //entities: [__dirname + '/../**/*.entity.*'],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'), // 연결될때 데이터베이스 초기화됨
+      entities: [
+        AdminsEntity,
+        CategoriesEntity,
+        LikesEntity,
+        NoticesEntity,
+        OrdersEntity,
+        ProductsEntity,
+        ProductImagesEntity,
+        UserEntity,
+      ],
       migrations: [__dirname + '/../**/migrations/*.js'],
       migrationsTableName: 'migrations',
     };
