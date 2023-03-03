@@ -7,7 +7,9 @@ import { AuthController } from './auth/auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrmConfig } from './config/orm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AdminModule } from './admin/admin.module';
 import { OrdersModule } from './orders/orders.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +21,7 @@ import { OrdersModule } from './orders/orders.module';
       useClass: OrmConfig,
       inject: [ConfigService],
     }),
+    AdminModule,
     OrdersModule,
   ],
 

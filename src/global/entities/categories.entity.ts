@@ -9,7 +9,7 @@ export class CategoriesEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ default: null})
   createdAt: Date;
 
   @Column({ default: null })
