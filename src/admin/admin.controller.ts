@@ -3,7 +3,7 @@ import { AdminService } from './admin.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CreateNoticeDto } from './dto/create-notice.dto';
-import { LoginAdminDto } from './dto/login-admin.dto';
+// import { LoginAdminDto } from './dto/login-admin.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 
@@ -13,8 +13,8 @@ export class AdminController {
 
 // 상품정보 가져오기 API
 @Get('/products')
-async getProducts(@Body() data: LoginAdminDto){
-    return await this.adminService.getProducts(data.loginId, data.loginPw);
+async getProducts(){
+    return await this.adminService.getProducts();
 }
 
 //상품정보 상세보기 API
@@ -38,7 +38,7 @@ async getUsers(){
 //회원정보 상세보기 API
 @Get('/users/:userId')
 async getUserById(@Param('userId') userId: number){
-    return await this.adminService.getUserById(userId);
+     return await this.adminService.getUserById(userId);
 }
 
 //회원정보 수정(블랙리스트) API
@@ -54,6 +54,12 @@ async banUser(
 @Delete('/users/:userId')
 deleteUser(@Param('userId') userId: number){
     return this.adminService.deleteUser(userId);
+}
+
+//카테고리 조회 API
+@Get('/category')
+async getCategory(){
+    return await this.adminService.getCategory();
 }
 
 //카테고리 생성 API
@@ -94,11 +100,11 @@ async getNoticeById(@Param('noticeId') noticeId: string){
 //공지사항 작성
 
 @Post('/notice/:adminId')
-createNotice(
+async createNotice(
     @Param('adminId') adminId: number,
     @Body() data:CreateNoticeDto
 ){
-    return this.adminService.createNotice(adminId, data.title, data.description);
+    return await this.adminService.createNotice(adminId, data.title, data.description);
 }
 
 //공지사항 수정 
