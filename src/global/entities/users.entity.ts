@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { LikesEntity } from './likes.entity';
+import { OrdersEntity } from './orders.entity';
 import { ProductsEntity } from './products.entity';
 
 @Entity({ name: 'users' })
@@ -30,4 +31,10 @@ export class UserEntity {
 
   @Column({ default: 0 })
   ban: number;
+
+  @OneToMany(() => OrdersEntity, (orders) => orders.buyer)
+  orders: OrdersEntity[];
+
+  @OneToMany((type) => ProductsEntity, (products) => products.seller)
+  products: ProductsEntity[];
 }
