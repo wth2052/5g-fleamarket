@@ -28,13 +28,18 @@ export class OrdersController {
   findMyPick(@Param('buyerId') id: number) {
     return this.ordersService.findMyPick(id);
   }
-  //결과
-  @Get('result/:userId/:orderId')
+  //성사된 거래 판매자 정보보기
+  @Get('buyResult/:userId/:orderId')
   buyerDone(
     @Param('userId') userId: number,
     @Param('orderId') orderId: number,
   ) {
     return this.ordersService.buyerDone(userId, orderId);
+  }
+  //성사된 거래 구매자 정보보기
+  @Get('sellResult/:userId/:orderId')
+  sellDone(@Param('userId') userId: number, @Param('orderId') orderId: number) {
+    return this.ordersService.sellDone(userId, orderId);
   }
   @Get('buyList/:userId')
   getBuyList(@Param('userId') userId: number) {
@@ -44,9 +49,4 @@ export class OrdersController {
   getSellList(@Param('userId') userId: number) {
     return this.ordersService.getSellList(userId);
   }
-  // // 판매자 결과
-  // @Get('seller/:orderId')
-  // sellerDone(@Param('orderId') orderId: number) {
-  //   return this.ordersService.sellerDone(orderId);
-  // }
 }
