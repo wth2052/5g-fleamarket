@@ -1,14 +1,14 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { AdminsEntity } from 'src/global/entities/admins.entity';
-import { CategoriesEntity } from 'src/global/entities/categories.entity';
-import { LikesEntity } from 'src/global/entities/likes.entity';
-import { NoticesEntity } from 'src/global/entities/notices.entity';
-import { OrdersEntity } from 'src/global/entities/orders.entity';
-import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
-import { ProductsEntity } from 'src/global/entities/products.entity';
-import { UserEntity } from 'src/global/entities/users.entity';
+import { AdminsEntity } from '../global/entities/admins.entity';
+import { CategoriesEntity } from '../global/entities/categories.entity';
+import { LikesEntity } from '../global/entities/likes.entity';
+import { NoticesEntity } from '../global/entities/notices.entity';
+import { OrdersEntity } from '../global/entities/orders.entity';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { UserEntity } from '../global/entities/users.entity';
 
 @Injectable()
 export class OrmConfig implements TypeOrmOptionsFactory {
@@ -29,11 +29,10 @@ export class OrmConfig implements TypeOrmOptionsFactory {
         LikesEntity,
         NoticesEntity,
         OrdersEntity,
-        ProductImagesEntity,
         ProductsEntity,
-        UserEntity
+        ProductImagesEntity,
+        UserEntity,
       ],
-      // entities: [__dirname + '/../**/*.entity.*'],
       synchronize: true, // 연결될때 데이터베이스 초기화됨
       migrations: [__dirname + '/../**/migrations/*.js'],
       migrationsTableName: 'migrations',

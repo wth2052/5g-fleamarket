@@ -20,6 +20,6 @@ export class NoticesEntity {
   @Column({ default: null})
   createdAt: string;
 
-  @Column({ default: null})
+  @Column({ default: null })
   deletedAt: string;
 }

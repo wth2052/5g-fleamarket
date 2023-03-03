@@ -15,6 +15,6 @@ export class LikesEntity {
   @Column()
   createdAt: Date;
 
-  @Column()
+  @Column({ default: null })
   deletedAt: Date;
 }
