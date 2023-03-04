@@ -15,6 +15,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
   // 내가 파는 상품 목록보기
+
   @Get('mySellProduct/:sellerId')
   findMySell(@Param('sellerId') id: number) {
     return this.ordersService.findMySell(id);
