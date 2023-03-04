@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { AdminStrategy } from 'src/admin-auth/passport/passport-strategy.access';
 import { AdminsEntity } from 'src/global/entities/admins.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { NoticesEntity } from 'src/global/entities/notices.entity';
