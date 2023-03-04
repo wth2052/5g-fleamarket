@@ -39,19 +39,8 @@ export class AuthController {
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
-    res.setHeader('Authentication', 'Bearer ' + accessToken);
-
-    res.cookie('accessToken', accessToken, accessOption);
+    res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
-    // res.cookie('accessToken', accessToken, {
-    //   httpOnly: true,
-    //   domain: this.configService.get('COOKIE_DOMAIN'),
-    //   path: '/',
-    //   maxAge:
-    //     Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
-    //     1000 *
-    //     10,
-    // });
     return user;
   }
 

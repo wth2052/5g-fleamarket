@@ -50,6 +50,7 @@ import { LoggingModule } from './global/util/logger/logger.module';
     LoggingModule,
     TerminusModule,
   ],
+  controllers: [AppController, HealthCheckController],
   providers: [
     AppService,
     SmsService,
@@ -60,6 +61,5 @@ import { LoggingModule } from './global/util/logger/logger.module';
     HealthCheckController,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
-  controllers: [AppController, HealthCheckController],
 })
 export class AppModule {}
