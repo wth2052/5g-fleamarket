@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -17,7 +17,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { OrdersModule } from './orders/orders.module';
-
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthCheckController } from 'src/helath-check/health-check.controller';
+import { HttpModule } from '@nestjs/axios';
+import { LoggingModule } from './global/util/logger/logger.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -44,6 +47,8 @@ import { OrdersModule } from './orders/orders.module';
     SmsModule,
     AdminModule,
     OrdersModule,
+    LoggingModule,
+    TerminusModule,
   ],
   providers: [
     AppService,
@@ -51,8 +56,10 @@ import { OrdersModule } from './orders/orders.module';
     AuthService,
     UserService,
     JwtService,
+    HttpModule,
+    HealthCheckController,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthCheckController],
 })
 export class AppModule {}

@@ -1,8 +1,4 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsString } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { LikesEntity } from './likes.entity';

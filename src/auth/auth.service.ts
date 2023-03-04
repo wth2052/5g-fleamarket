@@ -32,7 +32,10 @@ export class AuthService {
       hashedPassword,
     );
     if (!isPasswordMatch) {
-      throw new HttpException('잘못된 요청입니다.', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        '비밀번호가 일치하지 않습니다.',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -55,23 +58,23 @@ export class AuthService {
     }
   }
 
-  getCookieWithJwtAccessToken(id: number) {
-    const payload = { id };
+  getCookieWithJwtAccessToken(id: number, email: string, nickname: string) {
+    const payload = { id, email, nickname };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
       expiresIn: `${this.configService.get(
         'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
-      )}s`,
+      )}h`,
     });
-
     return {
       accessToken: token,
-      domain: 'localhost',
-      path: '/',
       httpOnly: true,
+      domain: this.configService.get('COOKIE_DOMAIN'),
+      path: '/',
       maxAge:
         Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
-        1000,
+        60 *
+        60,
     };
   }
 
@@ -86,25 +89,28 @@ export class AuthService {
 
     return {
       refreshToken: token,
-      domain: 'localhost',
+      domain: this.configService.get('COOKIE_DOMAIN'),
       path: '/',
       httpOnly: true,
+      //env값 * 1일
       maxAge:
         Number(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')) *
-        1000,
+        60 *
+        60 *
+        24,
     };
   }
 
   getCookiesForLogOut() {
     return {
       accessOption: {
-        domain: 'localhost',
+        domain: this.configService.get('COOKIE_DOMAIN'),
         path: '/',
         httpOnly: true,
         maxAge: 0,
       },
       refreshOption: {
-        domain: 'localhost',
+        domain: this.configService.get('COOKIE_DOMAIN'),
         path: '/',
         httpOnly: true,
         maxAge: 0,
