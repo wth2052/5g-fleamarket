@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AdminsEntity } from 'src/global/entities/admins.entity';
-import { CategoriesEntity } from 'src/global/entities/categories.entity';
-import { NoticesEntity } from 'src/global/entities/notices.entity';
-import { ProductsEntity } from 'src/global/entities/products.entity';
-import { UserEntity } from 'src/global/entities/users.entity';
+import { AdminsEntity } from '../global/entities/admins.entity';
+import { CategoriesEntity } from '../global/entities/categories.entity';
+import { NoticesEntity } from '../global/entities/notices.entity';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 
 

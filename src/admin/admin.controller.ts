@@ -1,22 +1,14 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { AdminAuthGuard } from 'src/admin-auth/admin-auth.guards';
-import { AdminStrategy } from 'src/admin-auth/passport/passport-strategy.access';
-// import { SkipAuthGuard } from 'src/admin-auth/skip-authForAdmin.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
-import { Public } from 'src/global/common/decorator/skip-auth.decorator';
-
+import { AdminAuthGuard } from '../admin-auth/guard/admin-auth.guards';
+import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CreateNoticeDto } from './dto/create-notice.dto';
-// import { LoginAdminDto } from './dto/login-admin.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 
 @Controller()
-
 @Public()
 @UseGuards(AdminAuthGuard)
 

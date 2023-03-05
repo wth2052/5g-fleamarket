@@ -33,7 +33,6 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
         false
       );
     }else{
-      console.log(111, admin)
       return done(null, admin);}
    
   }

@@ -43,13 +43,28 @@ async login(adminDto: LoginAdminDto) {
 
     const token = this.jwtService.sign(payload)
 
-    //페이로드에 아이디와 이메일을 넣은 토큰 정보를 리턴
+    //페이로드에 아이디를 넣은 토큰 정보를 리턴
     return {
       accessToken: token,
       httpOnly: true,
-      domain:'127.0.0.1',
-      path: '/'
+      domain:this.configService.get('COOKIE_DOMAIN'),
+      path: '/',
+      maxAge:
+        Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
+        60 *
+        60
     };
   }
+
+  //로그아웃
+  async logOut (){return {
+    accessOption: {
+      domain: this.configService.get('COOKIE_DOMAIN'),
+      path: '/',
+      httpOnly: true,
+      maxAge: 0
+    },
+    message: '로그아웃 되셨습니다.'
+}}
 
 }
