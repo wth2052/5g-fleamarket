@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AdminsEntity } from '../global/entities/admins.entity';
 import { CategoriesEntity } from '../global/entities/categories.entity';
@@ -11,6 +12,6 @@ import { AdminService } from './admin.service';
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, ProductsEntity, CategoriesEntity, AdminsEntity, NoticesEntity])],
   controllers: [AdminController],
-  providers: [AdminService]
+  providers: [AdminService, JwtService]
 })
 export class AdminModule {}

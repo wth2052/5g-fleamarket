@@ -17,10 +17,10 @@ async login(
     @Res({ passthrough: true }) res: Response
   ) {
     const jwt = await this.adminAuthService.login(adminDto);
-    const {accessToken, ...accessOption} = jwt
+    const {accessToken, message, ...accessOption} = jwt
     res.setHeader('Authorization', 'Bearer ' + accessToken);
     res.cookie('accessToken', accessToken, accessOption);
-    return accessToken;
+    return message;
   }
 
   //admin 로그아웃 

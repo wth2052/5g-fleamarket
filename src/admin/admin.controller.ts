@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards} from '@nestjs/common';
-import { AdminAuthGuard } from '../admin-auth/guard/admin-auth.guards';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req} from '@nestjs/common';
+
+import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -7,13 +8,15 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { CreateNoticeDto } from './dto/create-notice.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 @Public()
 @UseGuards(AdminAuthGuard)
 
 export class AdminController {
-    constructor(private readonly adminService: AdminService) {}
+    constructor(private readonly adminService: AdminService,
+        private jwtService: JwtService) {}
 
 // 상품정보 가져오기 API
 @Get('/products')
@@ -106,7 +109,7 @@ async getNoticeById(@Param('noticeId') noticeId: string){
 @Post('/notice/:adminId')
 async createNotice(
     @Param('adminId') adminId: number,
-    @Body() data:CreateNoticeDto
+    @Body() data:CreateNoticeDto,
 ){
     return await this.adminService.createNotice(adminId, data.title, data.description);
 }

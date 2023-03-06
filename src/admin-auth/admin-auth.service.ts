@@ -46,6 +46,7 @@ async login(adminDto: LoginAdminDto) {
     //페이로드에 아이디를 넣은 토큰 정보를 리턴
     return {
       accessToken: token,
+      message:  `${adminFind.loginId} 관리자님 로그인 하셨습니다`,
       httpOnly: true,
       domain:this.configService.get('COOKIE_DOMAIN'),
       path: '/',
