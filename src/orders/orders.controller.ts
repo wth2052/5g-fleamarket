@@ -7,17 +7,27 @@ import {
   Param,
   Delete,
   Put,
+  Req,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Cookies } from '../global/common/decorator/find-cookie.decorator';
+import { JwtService } from '@nestjs/jwt';
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly jwtService: JwtService,
+  ) {}
   // 내가 파는 상품 목록보기
 
   @Get('mySellProduct/:sellerId')
-  findMySell(@Param('sellerId') id: number) {
+  findMySell(
+    @Param('sellerId') id: number,
+    @Cookies('Authentication') jwt: string,
+  ) {
+    console.log('헤더', this.jwtService.decode(jwt));
     return this.ordersService.findMySell(id);
   }
   // 제시된 가격목록 보기

@@ -2,11 +2,11 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Post, Query,
   Req,
   Res,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { UserEntity } from '../global/entities/users.entity';
 import { AuthService } from './auth.service';
@@ -75,4 +75,10 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }
+  // @Get('/kakao/callback')
+  // kakaoLogin(@Query('code') code: string) {
+  //   return this.authService.kakaoLogin(code);
+  // }
+
+
 }
