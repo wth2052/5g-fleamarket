@@ -53,6 +53,7 @@ import { AdminAuthModule } from './admin-auth/admin-auth.module';
     TerminusModule,
     AdminAuthModule,
   ],
+  controllers: [AppController, HealthCheckController],
   providers: [
     AppService,
     SmsService,
@@ -63,6 +64,5 @@ import { AdminAuthModule } from './admin-auth/admin-auth.module';
     HealthCheckController,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
-  controllers: [AppController, HealthCheckController],
 })
 export class AppModule {}

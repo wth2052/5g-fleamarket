@@ -5,7 +5,7 @@ import { UserEntity } from './users.entity';
 @Entity({ name: 'notices' })
 export class NoticesEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   @ManyToOne((type) => AdminsEntity)

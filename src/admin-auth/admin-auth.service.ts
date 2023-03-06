@@ -19,8 +19,8 @@ export class AdminAuthService {
       ) {};
 
     // 관리자 찾기 
-async getAdminById  (loginId: string){
-    return await this.adminRepository.findOne({where:{loginId: loginId}})
+async getAdminById  (adminId: string){
+    return await this.adminRepository.findOne({where:{loginId: adminId}})
 }
 
 //admin 로그인 
@@ -38,6 +38,7 @@ async login(adminDto: LoginAdminDto) {
     }
 
     const payload: Payload = {
+      id: adminFind.id,
       loginId: adminDto.loginId
     };
 

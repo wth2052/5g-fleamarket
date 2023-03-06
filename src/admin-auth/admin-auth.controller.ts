@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 
 @Controller('admin-auth')
+
 @Public()
 export class AdminAuthController {
 
