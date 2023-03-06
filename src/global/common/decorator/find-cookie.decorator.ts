@@ -1,8 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { JwtDecodeDto } from '../../../user/dto/login-user.dto';
 
 export const Cookies = createParamDecorator(
-  (data: string, ctx: ExecutionContext) => {
+  (data: string, ctx: ExecutionContext): JwtDecodeDto => {
     const request = ctx.switchToHttp().getRequest();
-    return data ? request.cookies?.[data] : request.cookies;
+    return request.user;
+    // return data ? request.cookies?.[data] : request.cookies;
   },
 );

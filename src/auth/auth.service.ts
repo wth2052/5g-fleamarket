@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../global/entities/users.entity';
 import * as jwt from 'jsonwebtoken';
+import { HttpService } from '@nestjs/axios';
 @Injectable()
 export class AuthService {
   constructor(
@@ -63,8 +64,8 @@ export class AuthService {
     }
   }
 
-  getCookieWithJwtAccessToken(id: number, email: string, nickname: string) {
-    const payload = { id, email, nickname };
+  getCookieWithJwtAccessToken(user: UserEntity) {
+    const payload = { id: user.id, email: user.email, nickname: user.nickname };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
       expiresIn: `${this.configService.get(
@@ -83,8 +84,8 @@ export class AuthService {
     };
   }
 
-  getCookieWithJwtRefreshToken(id: number) {
-    const payload = { id };
+  getCookieWithJwtRefreshToken(user: UserEntity) {
+    const payload = { id: user.id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
       expiresIn: `${this.configService.get(
@@ -123,4 +124,15 @@ export class AuthService {
     };
   }
 
+  //─────────OAuth─────────
+  googleLogin(req) {
+    if (!req.user) {
+      return 'No user from google';
+    }
+
+    return {
+      message: 'User information from google',
+      user: req.user,
+    };
+  }
 }

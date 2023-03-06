@@ -21,6 +21,9 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from 'src/helath-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
+import { ViewController } from '../views/view.controller';
+import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
+import { AuthController } from './auth/auth.controller';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -36,6 +39,9 @@ import { LoggingModule } from './global/util/logger/logger.module';
         JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         JWT_REFRESH_SECRETKEY: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        KAKAO_REST_API_KEY: Joi.string().required(),
+        KAKAO_CLIENT_SECRET: Joi.string().required(),
+        KAKAO_REDIRECT_URI: Joi.string().required(),
       }),
     }),
     UserModule,
@@ -50,7 +56,12 @@ import { LoggingModule } from './global/util/logger/logger.module';
     LoggingModule,
     TerminusModule,
   ],
-  controllers: [AppController, HealthCheckController],
+  controllers: [
+    AppController,
+    HealthCheckController,
+    ViewController,
+    AuthController,
+  ],
   providers: [
     AppService,
     SmsService,
@@ -58,8 +69,9 @@ import { LoggingModule } from './global/util/logger/logger.module';
     UserService,
     JwtService,
     HttpModule,
+    JwtGoogleStrategy,
     HealthCheckController,
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    // { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

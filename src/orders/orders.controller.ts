@@ -27,7 +27,7 @@ export class OrdersController {
     @Param('sellerId') id: number,
     @Cookies('Authentication') jwt: string,
   ) {
-    console.log('헤더', this.jwtService.decode(jwt));
+
     return this.ordersService.findMySell(id);
   }
   // 제시된 가격목록 보기

@@ -37,6 +37,7 @@ export class OrmConfig implements TypeOrmOptionsFactory {
       ],
       migrations: [__dirname + '/../**/migrations/*.js'],
       migrationsTableName: 'migrations',
+      logging: true,
     };
   }
 }

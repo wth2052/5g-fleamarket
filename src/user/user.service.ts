@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
+import { LoginUserDto } from './dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -21,7 +22,7 @@ export class UserService {
     await this.userRepository.save(user);
     return user;
   }
-
+  //TODO: getByEmail, getById 둘중 하나 없애기
   async getByEmail(email: string) {
     const user = this.userRepository.findOne({ where: { email } });
     if (user) {

@@ -11,6 +11,7 @@ import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
+import { JwtGoogleStrategy } from './strategy/jwt-google.strategy';
 
 @Module({
   imports: [
@@ -36,6 +37,9 @@ import { LocalStrategy } from './strategy/local.strategy';
     LocalStrategy,
     JwtStrategy,
     JwtRefreshStrategy,
+    JwtGoogleStrategy, //구글 소셜 로그인
+    // JwtNaverStrategy, //네이버 소셜 로그인
+    // JwtKakaoStrategy, //카카오 소셜 로그인
   ],
   exports: [AuthService, JwtModule],
   controllers: [AuthController],
