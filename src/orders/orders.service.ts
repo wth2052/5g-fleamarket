@@ -105,6 +105,7 @@ export class OrdersService {
     }
     const buyerInfo = await this.userRepository.findOne({
       where: { id: userId },
+      select: ['id', 'email', 'nickname'],
     });
     return buyerInfo;
   }
@@ -145,7 +146,7 @@ export class OrdersService {
       throw new NotFoundException(`${orderId}는 구매할 수 없는 주문입니다.`);
     }
     const product = await this.productRepository.findOne({
-      where: { id: selectOrder.productId, sellerId: userId, deletedAt: null },
+      where: { id: selectOrder.productId, sellerId: userId },
     });
     if (!product) {
       throw new UnauthorizedException('내가 판매하는 상품이 아닙니다.');
@@ -158,7 +159,7 @@ export class OrdersService {
     try {
       await this.orderRepository.update({ id: orderId }, { status: 'success' });
       await this.orderRepository.update(
-        { productId: selectOrder.productId, status: 'sale', deleteAt: null },
+        { productId: selectOrder.productId, status: 'sale' },
         { status: 'sold' },
       );
       await this.productRepository.softDelete({ id: selectOrder.productId });

@@ -7,7 +7,7 @@ import {
   ManyToOne,
   OneToOne,
   OneToMany,
-  DeleteDateColumn,
+  DeleteDateColumn, CreateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
@@ -43,7 +43,7 @@ export class ProductsEntity {
   @Column()
   likes: number;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
   @DeleteDateColumn()

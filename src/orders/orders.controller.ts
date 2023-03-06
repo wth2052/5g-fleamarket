@@ -62,7 +62,6 @@ export class OrdersController {
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
-    console.log('1112222211', jwt);
     const userId = jwt.id;
     return this.ordersService.sellResult(userId, orderId);
   }
