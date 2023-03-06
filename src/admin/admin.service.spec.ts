@@ -59,7 +59,6 @@ describe('AdminService', () => {
       jest.spyOn(productRepository, 'find').mockResolvedValueOnce(mockProducts);
 
       const result = await adminService.getProducts();
-
       expect(productRepository.find).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockProducts);
     });
@@ -78,7 +77,6 @@ describe('AdminService', () => {
       jest.spyOn(productRepository, 'findOne').mockResolvedValueOnce(mockProduct);
 
       const result = await adminService.getProductById(1);
-
       expect(productRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(result).toEqual(mockProduct);
     });
@@ -96,6 +94,7 @@ describe('AdminService', () => {
     it('should delete a product when given a valid id', async () => {
       const mockMessage = { message: '상품이 삭제되었습니다' }
       jest.spyOn(productRepository, 'delete').mockResolvedValueOnce(undefined)
+
       const result = await adminService.deleteProduct(1);
       expect(productRepository.delete).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockMessage);
@@ -110,7 +109,6 @@ describe('AdminService', () => {
       jest.spyOn(userRepository, 'find').mockResolvedValueOnce(mockUsers);
 
       const result = await adminService.getUsers();
-
       expect(userRepository.find).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockUsers);
     });
@@ -129,7 +127,6 @@ describe('AdminService', () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(mockUser);
 
       const result = await adminService.getUserById(1);
-
       expect(userRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(result).toEqual(mockUser);
     });
@@ -159,7 +156,6 @@ describe('AdminService', () => {
       const ban = 1
 
       const result = await adminService.banUser(userId, ban);
-
       expect(userRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(userRepository.update).toHaveBeenCalledWith(1, { ban: 1 });
       expect(result).toEqual(mockmessage);
@@ -178,7 +174,6 @@ describe('AdminService', () => {
       const ban = 0
 
       const result = await adminService.banUser(userId, ban);
-
       expect(userRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(userRepository.update).toHaveBeenCalledWith(1, { ban: 0 });
       expect(result).toEqual(mockmessage);
@@ -229,7 +224,6 @@ describe('AdminService', () => {
       jest.spyOn(categoryRepository, 'find').mockResolvedValueOnce(mockcategory);
 
       const result = await adminService.getCategory();
-
       expect(categoryRepository.find).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockcategory);
     });
@@ -259,7 +253,6 @@ describe('AdminService', () => {
       const name = ""
       jest.spyOn(categoryRepository, 'insert').mockResolvedValue(undefined);
       await expect(adminService.createCategory(name)).rejects.toThrowError(NotFoundException);
-
     });
 
   });
@@ -280,7 +273,6 @@ describe('AdminService', () => {
       const name = ""
       jest.spyOn(categoryRepository, 'update').mockResolvedValue(undefined);
       await expect(adminService.updateCategory(1, name)).rejects.toThrowError(NotFoundException);
-
     });
 
   });
@@ -303,7 +295,6 @@ describe('AdminService', () => {
       jest.spyOn(noticeRepository, 'find').mockResolvedValueOnce(mockNotices);
 
       const result = await adminService.getNotices();
-
       expect(noticeRepository.find).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockNotices);
     });
@@ -322,7 +313,6 @@ describe('AdminService', () => {
       jest.spyOn(noticeRepository, 'findOne').mockResolvedValueOnce(mocknotice);
 
       const result = await adminService.getNoticeById(1);
-
       expect(noticeRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
       expect(result).toEqual(mocknotice);
     });
@@ -361,7 +351,6 @@ describe('AdminService', () => {
       jest.spyOn(noticeRepository, 'insert').mockResolvedValue(undefined);
 
       await expect(adminService.createNotice(adminId, title, description)).rejects.toThrowError(NotFoundException);
-
     });
 
     it('should throw an error if the description does not exist', async () => {

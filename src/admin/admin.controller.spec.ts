@@ -79,9 +79,7 @@ describe('AdminController', () => {
     it('should return an array of products', async () => {
       const mockProducts = [new ProductsEntity(), new ProductsEntity()]
       jest.spyOn(service, 'getProducts').mockResolvedValueOnce(mockProducts);
-
       const result = await controller.getProducts();
-
       expect(result).toEqual(mockProducts);
     });
   });
@@ -92,7 +90,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getProductById').mockResolvedValueOnce(mockProduct);
 
       const result = await controller.getProductById(1);
-
       expect(result).toEqual(mockProduct);
     });
   });
@@ -115,7 +112,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getUsers').mockResolvedValueOnce(mockUsers);
 
       const result = await controller.getUsers();
-
       expect(result).toEqual(mockUsers);
     });
   });
@@ -127,7 +123,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getUserById').mockResolvedValueOnce(mockUser);
 
       const result = await controller.getUserById(1);
-
       expect(result).toEqual(mockUser);
     });
   });
@@ -199,7 +194,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getCategory').mockResolvedValueOnce(mockcategory);
 
       const result = await controller.getCategory();
-
       expect(result).toEqual(mockcategory);
     });
   });
@@ -269,7 +263,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getNotices').mockResolvedValueOnce(mockNotices);
 
       const result = await controller.getNotices();
-
       expect(result).toEqual(mockNotices);
     });
   });
@@ -280,7 +273,6 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getNoticeById').mockResolvedValueOnce(mockNotice);
 
       const result = await controller.getNoticeById(1);
-
       expect(result).toEqual(mockNotice);
     });
   });
@@ -294,59 +286,6 @@ describe('AdminController', () => {
       const adminId = mockDecodedJwt.id
 
       jest.spyOn(service, 'createNotice').mockResolvedValue(mockmessage);
-      //jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
-      const result = await controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
-
-      expect(service.createNotice).toHaveBeenCalledWith(adminId, data.title, data.description);
-      //expect(jwtService.decode).toBeCalledWith(mockJwt, { json: true });
-      expect(result).toEqual(mockmessage);
-    });
-
-    it('should throw an error if the title does not exist', async () => {
-      const data: CreateNoticeDto = { title: "" , description:"this is test"}
-      const mockJwt = 'mockJwtToken';
-      const mockDecodedJwt = { id: 1 };
-      const adminId = mockDecodedJwt.id
-
-      const spy = jest.spyOn(service, 'createNotice').mockImplementation(() => {throw new NotFoundException('제목이 없습니다.');});
-      jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
-
-      const result = controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
-
-      // expect(jwtService.decode).toBeCalledWith(mockJwt, { json: true });
-      expect(result).rejects.toThrow(NotFoundException);
-      expect(spy).toHaveBeenCalledWith(adminId, data.title, data.description);
-
-    });
-
-    it('should throw an error if the description does not exist', async () => {
-      const data: CreateNoticeDto = { title: "test" , description:""}
-      const mockJwt = 'mockJwtToken';
-      const mockDecodedJwt = { id: 1 };
-      const adminId = mockDecodedJwt.id
-
-      const spy = jest.spyOn(service, 'createNotice').mockImplementation(() => {throw new NotFoundException('내용이 없습니다.');});
-      jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
-
-      const result = controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
-
-      // expect(jwtService.decode).toBeCalledWith(mockJwt, { json: true });
-      expect(result).rejects.toThrow(NotFoundException);
-      expect(spy).toHaveBeenCalledWith(adminId, data.title, data.description);
-    })
-
-  });
-
-
-   describe('createNotice', () => {
-    it('should create a notice successfully', async () => {
-      const mockmessage = { message: '새로운 공지가 작성되었습니다' }
-      const data: CreateNoticeDto = { title: "test" , description:"this is test"}
-      const mockJwt = 'mockJwtToken';
-      const mockDecodedJwt = { id: 1 };
-      const adminId = mockDecodedJwt.id
-
-      jest.spyOn(service, 'createNotice').mockResolvedValue(mockmessage);
       jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
       const result = await controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
 
@@ -362,7 +301,6 @@ describe('AdminController', () => {
 
       const spy = jest.spyOn(service, 'createNotice').mockImplementation(() => {throw new NotFoundException('제목이 없습니다.');});
       jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
-
       const result = controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
 
       expect(result).rejects.toThrow(NotFoundException);
@@ -378,7 +316,6 @@ describe('AdminController', () => {
 
       const spy = jest.spyOn(service, 'createNotice').mockImplementation(() => {throw new NotFoundException('내용이 없습니다.');});
       jest.spyOn(jwtService, 'decode').mockReturnValue(mockDecodedJwt);
-
       const result = controller.createNotice(data, { headers: { authorization: `Bearer ${mockJwt}` } });
 
       expect(result).rejects.toThrow(NotFoundException);
@@ -386,6 +323,7 @@ describe('AdminController', () => {
     })
 
   });
+
 
   describe('updateNotice', () => {
     it('should update a notice successfully', async () => {
