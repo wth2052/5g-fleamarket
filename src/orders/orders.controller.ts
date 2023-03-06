@@ -7,17 +7,29 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Request } from 'express';
+import { JwtService } from '@nestjs/jwt';
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly jwtService: JwtService,
+  ) {}
   // 내가 파는 상품 목록보기
-
+  @UseGuards(JwtAuthGuard)
   @Get('mySellProduct/:sellerId')
-  findMySell(@Param('sellerId') id: number) {
+  findMySell(@Param('sellerId') id: number, @Req() request: Request) {
+    const jwt = request.headers.authorization.replace('Bearer', '');
+    console.log(jwt);
+    const json = this.jwtService.decode(jwt);
+    console.log('11111', json);
     return this.ordersService.findMySell(id);
   }
   // 제시된 가격목록 보기

@@ -16,6 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
           return request?.cookies?.Authentication;
         },
       ]),
+      // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       //jwt 토큰이 만료되었을경우 request를 거부한다.
       ignoreExpiration: false,
       secretOrKey: configService.get('JWT_ACCESS_SECRETKEY'),
