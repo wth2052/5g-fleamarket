@@ -52,6 +52,7 @@ import { ProductsModule } from './products/products.module';
     TerminusModule,
     ProductsModule,
   ],
+  controllers: [AppController, HealthCheckController],
   providers: [
     AppService,
     SmsService,
@@ -62,6 +63,5 @@ import { ProductsModule } from './products/products.module';
     HealthCheckController,
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
-  controllers: [AppController, HealthCheckController],
 })
 export class AppModule {}

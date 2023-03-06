@@ -2,11 +2,11 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Post, Query,
   Req,
   Res,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { UserEntity } from '../global/entities/users.entity';
 import { AuthService } from './auth.service';
@@ -39,19 +39,8 @@ export class AuthController {
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
-    res.setHeader('Authentication', 'Bearer ' + accessToken);
-
-    res.cookie('accessToken', accessToken, accessOption);
+    res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
-    // res.cookie('accessToken', accessToken, {
-    //   httpOnly: true,
-    //   domain: this.configService.get('COOKIE_DOMAIN'),
-    //   path: '/',
-    //   maxAge:
-    //     Number(this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')) *
-    //     1000 *
-    //     10,
-    // });
     return user;
   }
 
@@ -86,4 +75,10 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }
+  // @Get('/kakao/callback')
+  // kakaoLogin(@Query('code') code: string) {
+  //   return this.authService.kakaoLogin(code);
+  // }
+
+
 }
