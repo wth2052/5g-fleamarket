@@ -25,6 +25,7 @@ export class OrdersController {
     private readonly jwtService: JwtService,
   ) {}
   // 내가 파는 상품 목록보기
+  @UseGuards(JwtAuthGuard)
   @Get('mySellProduct')
   findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;

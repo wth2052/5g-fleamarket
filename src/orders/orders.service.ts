@@ -105,6 +105,7 @@ export class OrdersService {
     }
     const buyerInfo = await this.userRepository.findOne({
       where: { id: userId },
+      select: ['id', 'email', 'nickname'],
     });
     return buyerInfo;
   }
@@ -158,7 +159,7 @@ export class OrdersService {
     try {
       await this.orderRepository.update({ id: orderId }, { status: 'success' });
       await this.orderRepository.update(
-        { productId: selectOrder.productId, status: 'sale', deleteAt: null },
+        { productId: selectOrder.productId, status: 'sale' },
         { status: 'sold' },
       );
       await this.productRepository.softDelete({ id: selectOrder.productId });

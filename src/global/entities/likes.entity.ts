@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
 
@@ -12,9 +20,9 @@ export class LikesEntity {
   @PrimaryColumn()
   productId: number;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ default: null })
-  deletedAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
 }
