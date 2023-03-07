@@ -1,4 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ProductsEntity } from './products.entity';
 
 @Entity({ name: 'categories' })
@@ -9,11 +16,11 @@ export class CategoriesEntity {
   @Column()
   name: string;
 
-  @Column({ default: null})
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ default: null })
-  deletedAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
 
   @OneToMany((type) => ProductsEntity, (products) => products.category)
   products: ProductsEntity[];

@@ -7,7 +7,8 @@ import {
   ManyToOne,
   OneToOne,
   OneToMany,
-  DeleteDateColumn, CreateDateColumn,
+  DeleteDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
@@ -46,7 +47,7 @@ export class ProductsEntity {
   @CreateDateColumn()
   createdAt: Date;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ default: null })
   deletedAt?: Date;
 
   @OneToMany((type) => OrdersEntity, (orders) => orders.product)
