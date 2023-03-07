@@ -321,6 +321,7 @@ export class OrdersService {
       for (let i = 0; i < myProduct.length; i++) {
         const real = await this.orderRepository.find({
           where: { productId: myProduct[i].id, status: 'success' },
+          relations: ['product'],
         });
         console.log('판매 성공', real);
         if (!real.length) {
