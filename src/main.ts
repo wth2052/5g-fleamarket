@@ -2,14 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './global/util/swagger/swagger-mainpage';
 import * as cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as winston from 'winston';
 import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
 } from 'nest-winston';
-import { NestExpressApplication } from '@nestjs/platform-express';
-
 import { join } from 'path';
 
 async function bootstrap() {

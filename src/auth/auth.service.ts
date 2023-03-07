@@ -10,6 +10,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../global/entities/users.entity';
 import * as jwt from 'jsonwebtoken';
+import { HttpService } from '@nestjs/axios';
+import { CreateUserDto } from 'src/user/dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -51,7 +53,6 @@ export class AuthService {
         ...user,
         password: hashedPassword,
       });
-
       return returnUser;
     } catch (error) {
       if (error?.code === 'ER_DUP_ENTRY') {
@@ -63,8 +64,8 @@ export class AuthService {
     }
   }
 
-  getCookieWithJwtAccessToken(id: number, email: string, nickname: string) {
-    const payload = { id, email, nickname };
+  getCookieWithJwtAccessToken(user: UserEntity) {
+    const payload = { id: user.id, email: user.email, nickname: user.nickname };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
       expiresIn: `${this.configService.get(
@@ -83,8 +84,8 @@ export class AuthService {
     };
   }
 
-  getCookieWithJwtRefreshToken(id: number) {
-    const payload = { id };
+  getCookieWithJwtRefreshToken(user: UserEntity) {
+    const payload = { id: user.id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
       expiresIn: `${this.configService.get(
@@ -122,5 +123,4 @@ export class AuthService {
       },
     };
   }
-
 }

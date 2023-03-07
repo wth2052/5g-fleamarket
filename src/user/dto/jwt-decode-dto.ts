@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class LoginUserDto {
   @ApiProperty()
@@ -11,9 +17,6 @@ export class LoginUserDto {
   @IsString()
   @IsNotEmpty()
   readonly password: string;
-}
-
-export class PostLoginResponse {
   @ApiProperty()
   readonly accessToken: string;
 
@@ -21,7 +24,11 @@ export class PostLoginResponse {
   readonly refreshToken: string;
 }
 
-export class GetRefreshResponse {
-  @ApiProperty()
-  readonly accessToken: string;
+export interface JwtDecodeDto {
+  [key: string]: string | number;
+  id: number;
+  email: string;
+  nickname: string;
+  iat: number;
+  exp: number;
 }
