@@ -18,7 +18,7 @@
             nickname: <%= users[i].nickname %> <br>
             email: <%= users[i].email %> <br>
             phone: <%= users[i].phone %> <br>
-            ban status: <%= users[i].status %> <br>
+            <% if (users[i].ban === 1) {%> ban status: 블랙리스트 <%} %>
             </button>
             <% } %>
 

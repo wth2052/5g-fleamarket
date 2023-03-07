@@ -41,10 +41,17 @@ export class AdminService {
     const product = await this.productRepository.findOne({
       where: { id: productId }
     });
+    //새로추가 
+    const sellerId = product.sellerId
+    const seller = await this.userRepository.findOne({where: {id : sellerId}})
+    const categoryId = product.categoryId
+    const category = await this.categoryRepository.findOne({where: {id : categoryId}})
+    //
     if (!product) {
       throw new NotFoundException('존재하지 않는 상품입니다.');
     } else {
-      return product;
+      //return product ==> return {product, seller}
+      return {product, seller, category};
     }
   }
 

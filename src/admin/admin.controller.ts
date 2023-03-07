@@ -8,7 +8,7 @@ import { CreateNoticeDto } from './dto/create-notice.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { JwtService } from '@nestjs/jwt';
-import { Cookies } from '../global/common/decorator/find-cookie.decorator';
+import { AdminCookies } from './decorator/find-cookie.decorator';
 
 
 @Controller()
@@ -32,8 +32,12 @@ export class AdminController {
   @Get('/products/:productId')
   @Render('admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
-
-    return {product: await this.adminService.getProductById(productId)}
+    // 원래: return await this.adminService.getProductById(productId)
+  const result = await this.adminService.getProductById(productId)
+  const product = result.product
+  const seller = result.seller
+  const category = result.category
+    return {product, seller, category}
   }
 
   //상품 삭제 API
@@ -127,7 +131,7 @@ export class AdminController {
   @Post('/notice')
   async createNotice(
     @Body() data:CreateNoticeDto,
-    @Cookies('accessToken') jwt: string,
+    @AdminCookies('accessToken') jwt: string,
 ){
   const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
   const adminId = decodeToken.id

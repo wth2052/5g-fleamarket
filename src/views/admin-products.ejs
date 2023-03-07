@@ -18,6 +18,7 @@
             title: <%= products[i].title %> <br>
             description: <%= products[i].description %> <br>
             price: <%= products[i].price %> <br>
+            
             </button>
             <% } %>
 
@@ -29,21 +30,6 @@
     function getProduct (productId) {
         window.location.replace(`http://localhost:3000/products/${productId}`)
     }
-
-    function getProductById(productId){
-        axios
-        .get(`/products/${productId}`
-        )
-        .then((res) => {
-            alert(JSON.stringify(res.data.title))
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-    }
-        
-
 
 </script>
 </html>
