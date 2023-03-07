@@ -25,6 +25,8 @@ import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
 import { AuthController } from './auth/auth.controller';
 import { SocialModule } from './social/social.module';
 import { validationSchema } from './config/validationSchema';
+import { EmailController } from './email/email.controller';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -45,8 +47,9 @@ import { validationSchema } from './config/validationSchema';
     LoggingModule,
     TerminusModule,
     SocialModule,
+    EmailModule,
   ],
-  controllers: [AppController, HealthCheckController, AuthController],
+  controllers: [AppController, HealthCheckController, AuthController, EmailController],
   providers: [
     AppService,
     SmsService,
