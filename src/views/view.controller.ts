@@ -1,7 +1,7 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import {Public} from "../global/common/decorator/skip-auth.decorator";
 
-@Controller('view')
+@Controller()
 export class ViewController {
   @Public()
   @Get()
