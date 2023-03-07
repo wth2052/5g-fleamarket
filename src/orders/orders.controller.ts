@@ -55,17 +55,19 @@ export class OrdersController {
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMyPick(userId);
-    console.log(data[1].product.title)
-    return { data: data}
+    console.log(data[1].product.title);
+    return { data: data };
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
   @Get('buyResult/:orderId')
-  buyResult(
+  @Render('order-buyResult.ejs')
+  async buyResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.buyResult(userId, orderId);
+    const data = await this.ordersService.buyResult(userId, orderId);
+    return { data: data };
   }
   //성사된 거래 구매자 정보보기
   @Get('sellResult/:orderId')
