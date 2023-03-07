@@ -51,7 +51,7 @@ import { ViewController } from './views/view.controller';
     LoggingModule,
     TerminusModule,
   ],
-  controllers: [AppController, HealthCheckController],
+  controllers: [AppController, HealthCheckController, ViewController],
   providers: [
     AppService,
     SmsService,
