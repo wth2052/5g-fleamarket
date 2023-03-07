@@ -127,12 +127,8 @@ export class AdminController {
   @Post('/notice')
   async createNotice(
     @Body() data:CreateNoticeDto,
-    @Req() req,
     @Cookies('accessToken') jwt: string,
 ){
-  // const jwt = req.headers.authorization.replace('Bearer ', "")
-  // const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
-
   const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
   const adminId = decodeToken.id
 

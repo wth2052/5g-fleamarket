@@ -11,9 +11,15 @@ title :
 description :
 <input type="text" id="description">
 <button class="submit-btn" onclick="createNotice()">작성완료</button>
+<button class="submit-btn" onclick="cancle()">취소</button>
+
+
 </body>
 
 <script>
+  function cancle() {
+    window.location.replace("http://localhost:3000/notice")
+  }
 
   function createNotice() {
     const title = document.getElementById('title').value;

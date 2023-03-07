@@ -10,14 +10,18 @@ name:
 <input type="text" id="name">
 
 <button class="submit-btn" onclick="createCategory()">작성완료</button>
+<button class="submit-btn" onclick="cancle()">취소</button>
+
 </body>
 
 <script>
 
+function cancle() {
+    window.location.replace("http://localhost:3000/category")
+  }
+
   function createCategory() {
     const name = document.getElementById('name').value;
-
-
     axios
         .post('http://localhost:3000/category',
             { name: name}
