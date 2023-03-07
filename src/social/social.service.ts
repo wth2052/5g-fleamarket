@@ -44,7 +44,8 @@ export class SocialService {
     console.log('이메일이 될 친구', req.user.email);
     console.log('닉네임이 될 친구', req.user.nickName);
     console.log('비밀번호가 될 친구', req.user.passWord);
-    console.log('토큰이 될 친구', req.user.accessToken);
+    console.log('엑세스토큰이 될 친구', req.user.accessToken);
+    console.log('토큰이 될 친구', req.user.refreshToken);
     const newUser = new UserEntity();
     newUser.email = req.user.email;
     newUser.nickname = req.user.nickName;
@@ -59,8 +60,7 @@ export class SocialService {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-    console.log('개발세발');
-    //오늘의 TIL감 Promise <pending> 으로 나온다? -> async await을 안붙였다
+    //오늘의 TIL감 Promise <pending> 으로 나온다? -> async await을 안붙였다 .. 댕청쓰
     const userFound = await this.userRepository.findOne({
       where: { email: req.user.email },
     });

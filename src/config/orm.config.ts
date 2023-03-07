@@ -26,6 +26,7 @@ export class OrmConfig implements TypeOrmOptionsFactory {
       //entities: [__dirname + '/../**/*.entity.*'],
       synchronize: this.configService.get<boolean>('DATABASE_SYNCHRONIZE'), // 연결될때 데이터베이스 초기화됨
       entities: [
+        //TODO: 이후 코드 리팩토링시 entities를 모아서 관리할 수 있도록 수정해야함
         AdminsEntity,
         CategoriesEntity,
         LikesEntity,
