@@ -21,7 +21,7 @@
 |  |  |  └── users.entity.ts
 |  |  └── util/
 |  |     ├── logger/
-|  |     |  └── logger.service.ts
+|  |     |  └── logger.middleware.ts
 |  |     └── swagger/
 |  |        └── swagger-mainpage.ts
 |  ├── main.ts
@@ -32,7 +32,7 @@
 |     ├── dto/
 |     |  ├── create-user.dto.ts
 |     |  ├── index.ts
-|     |  ├── login-user.dto.ts
+|     |  ├── jwt-decode-dto.ts
 |     |  └── update-user.dto.ts
 |     ├── user.controller.spec.ts
 |     ├── user.controller.ts

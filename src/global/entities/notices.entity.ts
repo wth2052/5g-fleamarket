@@ -1,11 +1,18 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { AdminsEntity } from './admins.entity';
 import { UserEntity } from './users.entity';
 
 @Entity({ name: 'notices' })
 export class NoticesEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   @ManyToOne((type) => AdminsEntity)
@@ -17,9 +24,9 @@ export class NoticesEntity {
   @Column()
   description: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: string;
 
-  @Column()
-  deletedAt: string;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: string;
 }

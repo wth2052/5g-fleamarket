@@ -4,7 +4,7 @@ import { NoticesEntity } from './notices.entity';
 @Entity({ name: 'admins' })
 export class AdminsEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ unique: true })
   loginId: string;
