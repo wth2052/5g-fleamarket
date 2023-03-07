@@ -9,6 +9,7 @@ import {
   OneToMany,
   DeleteDateColumn,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
@@ -44,11 +45,14 @@ export class ProductsEntity {
   @Column()
   likes: number;
 
+  @Column({ default: 'sale' })
+  status: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
-  @DeleteDateColumn({ default: null })
-  deletedAt?: Date;
+  @UpdateDateColumn({ default: null })
+  updatedAt?: Date;
 
   @OneToMany((type) => OrdersEntity, (orders) => orders.product)
   orders: OrdersEntity[];
