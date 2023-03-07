@@ -51,9 +51,12 @@ export class OrdersController {
   }
   // 내가 가격제시한 상품 목록보기
   @Get('myPick')
-  findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  @Render('order-findMyPick.ejs')
+  async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    return this.ordersService.findMyPick(userId);
+    const data = await this.ordersService.findMyPick(userId);
+    console.log(data[1].product.title)
+    return { data: data}
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
   @Get('buyResult/:orderId')
