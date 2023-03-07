@@ -35,6 +35,9 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
   });
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  app.setViewEngine('ejs');
   await app.listen(3000);
 }
 void bootstrap();

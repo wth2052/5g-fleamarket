@@ -149,20 +149,26 @@ export class OrdersService {
     const order = await this.orderRepository.findOne({
       where: { id: orderId, status: 'success', deleteAt: null },
     });
-    if (!order) {
-      throw new NotFoundException('선택하신 주문이 없습니다.');
+    try {
+      if (!order) {
+        throw new NotFoundException('선택하신 주문이 없습니다.');
+      }
+      const sellUser = await this.productRepository.find({
+        where: { id: order.productId, sellerId: userId, deletedAt: null },
+      });
+      console.log(order.productId);
+      console.log(userId);
+      if (!sellUser) {
+        throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
+      }
+      const buyerInfo = await this.userRepository.findOne({
+        where: { id: order.buyerId },
+        select: ['id', 'email', 'nickname'],
+      });
+      return buyerInfo;
+    } catch (e) {
+      console.log(e);
     }
-    const sellUser = await this.productRepository.find({
-      where: { id: order.productId, sellerId: userId, deletedAt: null },
-    });
-    if (!sellUser) {
-      throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
-    }
-    const buyerInfo = await this.userRepository.findOne({
-      where: { id: order.buyerId },
-      select: ['id', 'email', 'nickname'],
-    });
-    return buyerInfo;
   }
 
   async getBuyList(userId: number) {
@@ -201,7 +207,7 @@ export class OrdersService {
       throw new NotFoundException(`${orderId}는 구매할 수 없는 주문입니다.`);
     }
     const product = await this.productRepository.findOne({
-      where: { id: selectOrder.productId, sellerId: userId },
+      where: { id: selectOrder.productId, sellerId: userId, deletedAt: null },
     });
     if (!product) {
       throw new UnauthorizedException('내가 판매하는 상품이 아닙니다.');

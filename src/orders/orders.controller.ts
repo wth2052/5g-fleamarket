@@ -27,6 +27,7 @@ export class OrdersController {
     private readonly jwtService: JwtService,
   ) {}
   // 내가 파는 상품 목록보기
+  @UseGuards(JwtAuthGuard)
   @Get('mySellProduct')
   @Render('order-mySellProduct.ejs')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
@@ -62,12 +63,15 @@ export class OrdersController {
   }
   //성사된 거래 구매자 정보보기
   @Get('sellResult/:orderId')
-  sellResult(
+  @Render('order-sellResult.ejs')
+  async sellResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.sellResult(userId, orderId);
+    const buyer = await this.ordersService.sellResult(userId, orderId);
+    console.log(buyer);
+    return { data: buyer };
   }
   // 내가 구매한 목록
   @Get('myBuyList')

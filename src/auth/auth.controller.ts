@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Query,
+  Render,
   Req,
   Res,
   UseGuards,
