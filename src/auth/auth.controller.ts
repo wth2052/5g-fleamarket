@@ -19,10 +19,6 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from '@nestjs/passport';
-import { Cookies } from '../global/common/decorator/find-cookie.decorator';
-import { SocialLoginBodyDTO } from 'src/user/dto/login-user.dto';
-import { ProviderDTO } from 'src/user/dto/login-user.dto';
 interface IOAuthUser {
   //interface 설정
   user: {

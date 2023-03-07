@@ -28,13 +28,11 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
     //photo가져올경우 photos 추가
     const user = {
       email: emails[0].value,
-      firstName: name.familyName,
-      lastName: name.givenName,
+      nickName: name.familyName + name.givenName,
       //패스워드는 36진수의 랜덤숫자로 생성되어 저장할 예정
       passWord: Math.random().toString(36).substring(2, 12),
       // picture: photos[0].value,
       accessToken,
-      refreshToken,
     };
     done(null, user);
   }

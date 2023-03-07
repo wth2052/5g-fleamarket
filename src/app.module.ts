@@ -70,7 +70,7 @@ import { SocialModule } from './social/social.module';
     HttpModule,
     JwtGoogleStrategy,
     HealthCheckController,
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    // { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

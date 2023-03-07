@@ -64,7 +64,6 @@ export class AuthService {
     }
   }
 
-
   getCookieWithJwtAccessToken(user: UserEntity) {
     const payload = { id: user.id, email: user.email, nickname: user.nickname };
     const token = this.jwtService.sign(payload, {
@@ -122,21 +121,6 @@ export class AuthService {
         httpOnly: true,
         maxAge: 0,
       },
-    };
-  }
-
-  //─────────OAuth Google TODO: 유저 데이터 집어넣어 가입시키기─────────
-  //TODO: 리팩토링 기간에 메소드 전면 수정해야함
-  googleLogin(req) {
-    if (!req.user) {
-      return 'No user from google';
-    }
-    console.log('유저의 엑세스 토큰', req.user.accessToken);
-    console.log('유저의 리프레시 토큰', req.user.refreshToken);
-
-    return {
-      message: 'User information from google',
-      user: req.user,
     };
   }
 }
