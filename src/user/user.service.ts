@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
-import { LoginUserDto } from './dto';
+import { JwtDecodeDto } from './dto';
 @Injectable()
 export class UserService {
   constructor(

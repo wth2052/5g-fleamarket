@@ -8,7 +8,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { CreateUserDto, LoginUserDto } from './dto';
+import { CreateUserDto, JwtDecodeDto } from './dto';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
 import { Public } from 'src/global/common/decorator/skip-auth.decorator';

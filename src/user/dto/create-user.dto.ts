@@ -1,9 +1,11 @@
+import { PickType } from '@nestjs/mapped-types';
 import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
   IsString,
   IsStrongPassword,
+  Matches,
 } from 'class-validator';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 
@@ -23,18 +25,9 @@ export class CreateUserDto {
   readonly nickname: string;
 
   @IsString()
-  @IsStrongPassword(
-    {
-      minLength: 6,
-      minLowercase: 0,
-      minNumbers: 0,
-      minSymbols: 0,
-      minUppercase: 0,
-    },
-    {
-      message: '비밀번호는 최소 6자리의 문자열로 구성되어야 합니다.',
-    },
-  )
+  @Matches(/^[a-zA-Z0-9]*$/, {
+    message: '비밀번호는 영문과 숫자만 사용할 수 있습니다.',
+  })
   readonly password: string;
 
   @IsNumber()
@@ -43,3 +36,12 @@ export class CreateUserDto {
   @IsString()
   readonly address: string;
 }
+
+export class LoginUserDto extends PickType(CreateUserDto, [
+  'email',
+  'password',
+]) {}
+export class GoogleLoginUserDto extends PickType(CreateUserDto, [
+  'email',
+  'nickname',
+]) {}
