@@ -27,6 +27,10 @@ import { SocialModule } from './social/social.module';
 import { validationSchema } from './config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
+import { AdminAuthModule } from './admin-auth/admin-auth.module';
+import { ViewController } from './views/view.controller';
+import { AdminLoginController } from './views/admin-login.controller';
+
 
 @Module({
   imports: [
@@ -48,8 +52,10 @@ import { EmailModule } from './email/email.module';
     TerminusModule,
     SocialModule,
     EmailModule,
+    AdminAuthModule,
   ],
-  controllers: [AppController, HealthCheckController, AuthController, EmailController],
+  controllers: [AppController, HealthCheckController, AuthController, EmailController, ViewController,AdminLoginController ],
+
   providers: [
     AppService,
     SmsService,

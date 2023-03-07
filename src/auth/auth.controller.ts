@@ -17,7 +17,7 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { Response } from 'express';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { ConfigService } from '@nestjs/config';
 interface IOAuthUser {
   //interface 설정
@@ -79,5 +79,4 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }
-
 }

@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:admin": "jest src/admin/admin.service.spec.ts",
+    "test:adminC": "jest src/admin/admin.controller.spec.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
@@ -39,6 +41,7 @@
     "cli": "^1.0.1",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.8",
+    "express": "^4.18.2",
     "joi": "^17.8.3",
     "mysql2": "^3.1.2",
     "nest-winston": "^1.9.0",

@@ -3,6 +3,13 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './global/util/swagger/swagger-mainpage';
 import * as cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
+import * as winston from 'winston';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -21,11 +28,21 @@ async function bootstrap() {
     //   ],
     // }),
   });
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  app.setViewEngine('ejs');
   setupSwagger(app);
+  
   app.use(cookieParser());
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+app.setViewEngine('ejs');
   app.enableCors({
     credentials: true,
   });
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  app.setViewEngine('ejs');
   await app.listen(3000);
 }
 void bootstrap();
