@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { AdminsEntity } from './admins.entity';
 import { UserEntity } from './users.entity';
 
@@ -17,9 +24,9 @@ export class NoticesEntity {
   @Column()
   description: string;
 
-  @Column({ default: null})
+  @CreateDateColumn()
   createdAt: string;
 
-  @Column({ default: null })
-  deletedAt: string;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: string;
 }
