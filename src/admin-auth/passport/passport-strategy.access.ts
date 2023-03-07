@@ -13,12 +13,12 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
     private configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      // jwtFromRequest: ExtractJwt.fromExtractors([
-      //   (request) => {
-      //     return request?.cookies?.Authorization;
-      //   },
-      // ]),
+      //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (request) => {
+          return request?.cookies?.accessToken;
+        },
+      ]),
       ignoreExpiration: true,
       secretOrKey: configService.get('JWT_ACCESS_SECRETKEY'),
     });

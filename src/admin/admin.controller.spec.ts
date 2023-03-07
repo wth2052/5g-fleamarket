@@ -80,7 +80,7 @@ describe('AdminController', () => {
       const mockProducts = [new ProductsEntity(), new ProductsEntity()]
       jest.spyOn(service, 'getProducts').mockResolvedValueOnce(mockProducts);
       const result = await controller.getProducts();
-      expect(result).toEqual(mockProducts);
+      expect(result).toEqual({products: mockProducts});
     });
   });
 
@@ -90,7 +90,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getProductById').mockResolvedValueOnce(mockProduct);
 
       const result = await controller.getProductById(1);
-      expect(result).toEqual(mockProduct);
+      expect(result).toEqual({product: mockProduct});
     });
   });
 
@@ -112,7 +112,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getUsers').mockResolvedValueOnce(mockUsers);
 
       const result = await controller.getUsers();
-      expect(result).toEqual(mockUsers);
+      expect(result).toEqual({users: mockUsers});
     });
   });
 
@@ -123,7 +123,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getUserById').mockResolvedValueOnce(mockUser);
 
       const result = await controller.getUserById(1);
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual({user: mockUser});
     });
   });
 
@@ -194,7 +194,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getCategory').mockResolvedValueOnce(mockcategory);
 
       const result = await controller.getCategory();
-      expect(result).toEqual(mockcategory);
+      expect(result).toEqual({category: mockcategory});
     });
   });
 
@@ -263,7 +263,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getNotices').mockResolvedValueOnce(mockNotices);
 
       const result = await controller.getNotices();
-      expect(result).toEqual(mockNotices);
+      expect(result).toEqual({notices: mockNotices});
     });
   });
 
@@ -273,7 +273,7 @@ describe('AdminController', () => {
       jest.spyOn(service, 'getNoticeById').mockResolvedValueOnce(mockNotice);
 
       const result = await controller.getNoticeById(1);
-      expect(result).toEqual(mockNotice);
+      expect(result).toEqual({notice: mockNotice});
     });
   });
 
