@@ -9,6 +9,7 @@ import {
   Put,
   Req,
   UseGuards,
+  Render,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -26,6 +27,7 @@ export class OrdersController {
   ) {}
   // 내가 파는 상품 목록보기
   @UseGuards(JwtAuthGuard)
+  @Render('order-mySellProduct.ejs')
   @Get('mySellProduct')
   findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
