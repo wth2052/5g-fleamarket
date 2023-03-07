@@ -9,7 +9,6 @@ import { ProductsEntity } from 'src/global/entities/products.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { DataSource, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 @Injectable()
 export class OrdersService {
   constructor(
@@ -27,29 +26,47 @@ export class OrdersService {
 
   async findMyPick(id: number) {
     const pick = await this.orderRepository.find({
-      where: { buyerId: id },
+      where: { buyerId: id, deleteAt: null },
     });
     if (!pick.length) {
-      throw new NotFoundException(`${id}는 물건을 선택한적이 없습니다.`);
+      throw new NotFoundException(
+        `딜한 주문이 없거나 진행중인 상품이 없습니다.`,
+      );
     }
     return pick;
   }
 
   async findMySell(id: number) {
     return await this.productRepository.find({
-      where: { sellerId: id },
+      where: { sellerId: id, deletedAt: null },
     });
   }
 
-  async findMyProductsDealCheck(id: number) {
-    return await this.orderRepository.find({
-      where: { productId: id },
+  async findMyProductsDealCheck(userId: number, productId: number) {
+    const checkUser = await this.productRepository.findOne({
+      where: {
+        id: productId,
+        sellerId: userId,
+        deletedAt: null,
+      },
     });
+    if (!checkUser) {
+      throw new UnauthorizedException('당신의 물건이 아닙니다.');
+    }
+    const deal = await this.orderRepository.find({
+      where: { productId, status: 'sale' },
+    });
+    if (!deal.length) {
+      throw new NotFoundException(
+        '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
+      );
+    }
+    return deal;
   }
 
   async buyResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId },
+      where: { id: orderId, deleteAt: null },
     });
     if (!order) {
       throw new NotFoundException('해당되는 주문이 없습니다.');
@@ -68,32 +85,34 @@ export class OrdersService {
     });
     const sellerUser = await this.userRepository.findOne({
       where: { id: sellerInfo.id },
+      select: ['id', 'email', 'nickname'],
     });
     return sellerUser;
   }
 
   async sellResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId },
+      where: { id: orderId, status: 'success', deleteAt: null },
     });
     if (!order) {
       throw new NotFoundException('선택하신 주문이 없습니다.');
     }
-    if (order.status === 'sale') {
-      throw new UnauthorizedException('아직 선택하지 않았습니다.');
-    }
-    if (order.status === 'sold') {
-      throw new UnauthorizedException('다른 제안을 수락했습니다.');
+    const sellUser = await this.productRepository.findOne({
+      where: { id: order.productId, sellerId: userId, deletedAt: null },
+    });
+    if (!sellUser) {
+      throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
     }
     const buyerInfo = await this.userRepository.findOne({
       where: { id: userId },
+      select: ['id', 'email', 'nickname'],
     });
     return buyerInfo;
   }
 
   async getBuyList(userId: number) {
     const buyList = await this.orderRepository.find({
-      where: { buyerId: userId, status: 'success' },
+      where: { buyerId: userId, status: 'success', deleteAt: null },
     });
     if (!buyList.length) {
       throw new NotFoundException(`${userId}는 구매한 상품이 없습니다.`);
@@ -102,11 +121,11 @@ export class OrdersService {
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
-      where: { sellerId: userId },
+      where: { sellerId: userId, deletedAt: null },
       select: ['id'],
     });
     if (!myProduct.length) {
-      throw new NotFoundException('판매하귀 위해서 등록한 상품이 없습니다.');
+      throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
     }
     for (let i = 0; i < myProduct.length; i++) {
       const real = await this.orderRepository.find({
@@ -119,12 +138,18 @@ export class OrdersService {
       return real;
     }
   }
-  async purtdealAccept(userId: number, orderId: number) {
+  async putdealAccept(userId: number, orderId: number) {
     const selectOrder = await this.orderRepository.findOne({
-      where: { id: orderId },
+      where: { id: orderId, status: 'sale', deleteAt: null },
     });
     if (!selectOrder) {
-      throw new NotFoundException(`${orderId}는 없는 주문 아이디 입니다.`);
+      throw new NotFoundException(`${orderId}는 구매할 수 없는 주문입니다.`);
+    }
+    const product = await this.productRepository.findOne({
+      where: { id: selectOrder.productId, sellerId: userId },
+    });
+    if (!product) {
+      throw new UnauthorizedException('내가 판매하는 상품이 아닙니다.');
     }
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -137,7 +162,9 @@ export class OrdersService {
         { productId: selectOrder.productId, status: 'sale' },
         { status: 'sold' },
       );
+      await this.productRepository.softDelete({ id: selectOrder.productId });
     } catch (e) {
+      console.log(e);
       await queryRunner.rollbackTransaction();
       console.log(e);
     } finally {
@@ -145,25 +172,33 @@ export class OrdersService {
     }
   }
   async postPriceDeal(userId: number, productId: number, data: number) {
-    const order = await this.orderRepository.findOne({
-      where: { productId, buyerId: userId },
+    const product = await this.productRepository.findOne({
+      where: { id: productId, deletedAt: null },
     });
-    if (!order) {
+    if (!product) {
       throw new NotFoundException('상품 정보가 없습니다.');
     }
-    if (order.buyerId === Number(userId)) {
-      throw new UnauthorizedException('이미 가격 제시하였습니다');
+    if (product.sellerId === Number(userId)) {
+      throw new UnauthorizedException('자신의 상품에는 deal을 할 수 없습니다.');
+    }
+    const user = await this.orderRepository.findOne({
+      where: { productId: productId, buyerId: userId, deleteAt: null },
+    });
+    if (user) {
+      throw new UnauthorizedException(
+        '이미 제시했습니다. 수정하기 버튼을 눌러주세요.',
+      );
     }
     await this.orderRepository.insert({
       productId: productId,
       buyerId: userId,
       deal: data,
     });
-    return { messge: '가격 제시 완료' };
+    return { message: '가격 제시 완료' };
   }
   async changeDeal(userId: number, orderId: number, data: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId },
+      where: { id: orderId, deleteAt: null },
     });
 
     if (!order) {
@@ -172,8 +207,9 @@ export class OrdersService {
     if (order.buyerId !== Number(userId)) {
       throw new UnauthorizedException('해당 상품이 없습니다.');
     }
-
+    if (data > 1000000000) {
+      throw new UnauthorizedException('장난치지 마세요');
+    }
     await this.orderRepository.update({ id: orderId }, { deal: data });
-    return order;
   }
 }

@@ -36,9 +36,9 @@ export class OrdersEntity {
   @CreateDateColumn()
   createAt: Date;
 
-  @UpdateDateColumn()
-  updateAt: Date;
+  @UpdateDateColumn({ default: null })
+  updateAt?: Date;
 
   @DeleteDateColumn({ default: null })
-  deleteAt: Date;
+  deleteAt?: Date;
 }

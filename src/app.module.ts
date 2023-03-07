@@ -21,6 +21,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from 'src/helath-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
+import {ViewController} from "./views/view.controller";
 import { ProductsModule } from './products/products.module';
 @Module({
   imports: [
@@ -52,7 +53,7 @@ import { ProductsModule } from './products/products.module';
     TerminusModule,
     ProductsModule,
   ],
-  controllers: [AppController, HealthCheckController],
+  controllers: [AppController, HealthCheckController,ViewController],
   providers: [
     AppService,
     SmsService,
