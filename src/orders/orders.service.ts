@@ -50,18 +50,22 @@ export class OrdersService {
         deletedAt: null,
       },
     });
-    if (!checkUser) {
-      throw new UnauthorizedException('당신의 물건이 아닙니다.');
+    try {
+      if (!checkUser) {
+        throw new UnauthorizedException('당신의 물건이 아닙니다.');
+      }
+      const deal = await this.orderRepository.find({
+        where: { productId, status: 'sale' },
+      });
+      if (!deal.length) {
+        throw new NotFoundException(
+          '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
+        );
+      }
+      return deal;
+    } catch (e) {
+      console.log(e);
     }
-    const deal = await this.orderRepository.find({
-      where: { productId, status: 'sale' },
-    });
-    if (!deal.length) {
-      throw new NotFoundException(
-        '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
-      );
-    }
-    return deal;
   }
 
   async buyResult(userId: number, orderId: number) {
@@ -94,20 +98,26 @@ export class OrdersService {
     const order = await this.orderRepository.findOne({
       where: { id: orderId, status: 'success', deleteAt: null },
     });
-    if (!order) {
-      throw new NotFoundException('선택하신 주문이 없습니다.');
+    try {
+      if (!order) {
+        throw new NotFoundException('선택하신 주문이 없습니다.');
+      }
+      const sellUser = await this.productRepository.find({
+        where: { id: order.productId, sellerId: userId, deletedAt: null },
+      });
+      console.log(order.productId);
+      console.log(userId);
+      if (!sellUser) {
+        throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
+      }
+      const buyerInfo = await this.userRepository.findOne({
+        where: { id: order.buyerId },
+        select: ['id', 'email', 'nickname'],
+      });
+      return buyerInfo;
+    } catch (e) {
+      console.log(e);
     }
-    const sellUser = await this.productRepository.findOne({
-      where: { id: order.productId, sellerId: userId, deletedAt: null },
-    });
-    if (!sellUser) {
-      throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
-    }
-    const buyerInfo = await this.userRepository.findOne({
-      where: { id: userId },
-      select: ['id', 'email', 'nickname'],
-    });
-    return buyerInfo;
   }
 
   async getBuyList(userId: number) {
