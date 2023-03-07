@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>내가 가격제시한 상품 목록보기</title>
+    </head>
+    <body>
+        <h1>내가 가격제시한 상품 목록보기</h1>
+    <div>
+        <% for(let i =0; i < data.length; i++) { %>
+        title :<%= data[i].product.title %> <br>
+        price: <%= data[i].product.price %><br>
+        deal: <%= data[i].deal %><br>
+        viewCount: <%= data[i].product.viewCount %><br>
+        viewCount: <%= data[i].product.viewCount %><br>
+        likes: <%= data[i].product.likes %><br>
+        status: <%= data[i].status %><br>
+        ---------------------------------------------------------<br>
+        <% }%>
+    </div>
+    </body>
+    <script>
+    </script>
+</html>
