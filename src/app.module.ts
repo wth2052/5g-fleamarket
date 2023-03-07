@@ -23,6 +23,7 @@ import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
 import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
 import { AuthController } from './auth/auth.controller';
+import { SocialModule } from './social/social.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -57,12 +58,9 @@ import { AuthController } from './auth/auth.controller';
     OrdersModule,
     LoggingModule,
     TerminusModule,
+    SocialModule,
   ],
-  controllers: [
-    AppController,
-    HealthCheckController,
-    AuthController,
-  ],
+  controllers: [AppController, HealthCheckController, AuthController],
   providers: [
     AppService,
     SmsService,
@@ -72,7 +70,7 @@ import { AuthController } from './auth/auth.controller';
     HttpModule,
     JwtGoogleStrategy,
     HealthCheckController,
-    // { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}
