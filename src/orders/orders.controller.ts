@@ -90,10 +90,12 @@ export class OrdersController {
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
+  @Render('order-mySellList.ejs')
   @Get('mySellList')
-  getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    return this.ordersService.getSellList(userId);
+    const data = await this.ordersService.getSellList(userId);
+    return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
   @Put('dealAccept/:orderId')
