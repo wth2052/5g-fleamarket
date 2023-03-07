@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class JwtDecodeDto {
+export class LoginUserDto {
   @ApiProperty()
   @IsString()
   @IsEmail()

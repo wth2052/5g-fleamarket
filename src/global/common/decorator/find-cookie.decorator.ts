@@ -1,5 +1,5 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JwtDecodeDto } from '../../../user/dto/jwt-decode-dto';
+import { JwtDecodeDto } from '../../../user/dto';
 
 export const Cookies = createParamDecorator(
   (data: string, ctx: ExecutionContext): JwtDecodeDto => {
