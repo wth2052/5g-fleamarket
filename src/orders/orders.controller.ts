@@ -8,6 +8,7 @@ import {
   Delete,
   Put,
   Req,
+  Render,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -21,13 +22,13 @@ export class OrdersController {
     private readonly jwtService: JwtService,
   ) {}
   // 내가 파는 상품 목록보기
-
   @Get('mySellProduct/:sellerId')
   findMySell(
     @Param('sellerId') id: number,
     @Cookies('Authentication') jwt: string,
   ) {
     console.log('헤더', this.jwtService.decode(jwt));
+
     return this.ordersService.findMySell(id);
   }
   // 제시된 가격목록 보기
@@ -57,6 +58,7 @@ export class OrdersController {
     return this.ordersService.sellResult(userId, orderId);
   }
   // 내가 구매한 목록
+
   @Get('myBuyList/:userId')
   getBuyList(@Param('userId') userId: number) {
     return this.ordersService.getBuyList(userId);
