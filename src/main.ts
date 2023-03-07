@@ -27,6 +27,9 @@ async function bootstrap() {
     //   ],
     // }),
   });
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  app.setViewEngine('ejs');
   setupSwagger(app);
   app.use(cookieParser());
   app.enableCors({
