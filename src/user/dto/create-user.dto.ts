@@ -45,3 +45,5 @@ export class GoogleLoginUserDto extends PickType(CreateUserDto, [
   'email',
   'nickname',
 ]) {}
+
+export class EmailVerifyUserDto extends PickType(CreateUserDto, ['email']) {}

@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { CacheModule, MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -11,9 +11,6 @@ import { SmsModule } from './sms/sms.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from './global/entities/users.entity';
-import * as Joi from 'joi';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { OrdersModule } from './orders/orders.module';
@@ -24,9 +21,12 @@ import { LoggingModule } from './global/util/logger/logger.module';
 import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
 import { AuthController } from './auth/auth.controller';
 import { SocialModule } from './social/social.module';
-import { validationSchema } from './config/validationSchema';
+import { validationSchema } from './global/config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
+import { EmailService } from './email/email.service';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisConfigService } from './global/config/redis.config';
 
 @Module({
   imports: [
@@ -41,6 +41,14 @@ import { EmailModule } from './email/email.module';
       useClass: OrmConfig,
       inject: [ConfigService],
     }),
+    RedisModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: RedisConfigService,
+      inject: [ConfigService],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+    }),
     SmsModule,
     AdminModule,
     OrdersModule,
@@ -49,13 +57,19 @@ import { EmailModule } from './email/email.module';
     SocialModule,
     EmailModule,
   ],
-  controllers: [AppController, HealthCheckController, AuthController, EmailController],
+  controllers: [
+    AppController,
+    HealthCheckController,
+    AuthController,
+    EmailController,
+  ],
   providers: [
     AppService,
     SmsService,
     AuthService,
     UserService,
     JwtService,
+    EmailService,
     HttpModule,
     JwtGoogleStrategy,
     HealthCheckController,
