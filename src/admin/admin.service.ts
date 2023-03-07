@@ -4,11 +4,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AdminsEntity } from 'src/global/entities/admins.entity';
-import { CategoriesEntity } from 'src/global/entities/categories.entity';
-import { NoticesEntity } from 'src/global/entities/notices.entity';
-import { ProductsEntity } from 'src/global/entities/products.entity';
-import { UserEntity } from 'src/global/entities/users.entity';
+import { AdminsEntity } from '../global/entities/admins.entity';
+import { CategoriesEntity } from '../global/entities/categories.entity';
+import { NoticesEntity } from '../global/entities/notices.entity';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -39,17 +39,24 @@ export class AdminService {
   //상품정보 상세보기 API
   async getProductById(productId: number) {
     const product = await this.productRepository.findOne({
-      where: { id: productId },
+      where: { id: productId }
     });
+    //새로추가 
+    const sellerId = product.sellerId
+    const seller = await this.userRepository.findOne({where: {id : sellerId}})
+    const categoryId = product.categoryId
+    const category = await this.categoryRepository.findOne({where: {id : categoryId}})
+    //
     if (!product) {
       throw new NotFoundException('존재하지 않는 상품입니다.');
     } else {
-      return product;
+      //return product ==> return {product, seller}
+      return {product, seller, category};
     }
   }
 
   //상품 삭제 API
-  deleteProduct(productId: number) {
+  async deleteProduct(productId: number) {
     this.productRepository.delete(productId);
     return { message: '상품이 삭제되었습니다' };
   }
@@ -77,9 +84,14 @@ export class AdminService {
   //회원정보 수정(블랙리스트) API
   async banUser(userId: number, ban: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    const nickname = user.nickname;
-    const banStatus = user.ban;
-    if (ban === 1) {
+    if (!user){
+      throw new NotFoundException('존재하지 않는 유저입니다.');
+    }
+    else{
+      const nickname = user.nickname;
+      const banStatus = user.ban;
+
+      if (ban === 1) {
       if (banStatus === 1) {
         throw new UnauthorizedException('이미 블랙리스트 처리된 유저입니다.');
       } else {
@@ -90,6 +102,8 @@ export class AdminService {
       await this.userRepository.update(userId, { ban });
       return { message: `${nickname}님의 블랙리스트 처리가 취소되었습니다.` };
     }
+  }
+    
   }
 
   //회원 삭제 API
@@ -115,11 +129,11 @@ export class AdminService {
   }
 
   //카테고리 생성 API
-  createCategory(name: string) {
+  async createCategory(name: string) {
     if (name.length === 0) {
       throw new NotFoundException('내용이 비어있습니다.');
     } else {
-      this.categoryRepository.insert({ name });
+      await this.categoryRepository.insert({ name });
       return { message: '카테고리가 추가되었습니다' };
     }
   }
@@ -135,7 +149,7 @@ export class AdminService {
   }
 
   //카테고리 삭제 API
-  deleteCategory(categoryId: number) {
+ async deleteCategory(categoryId: number) {
     this.categoryRepository.delete(categoryId);
     return { message: '카테고리가 삭제되었습니다' };
   }
@@ -152,7 +166,7 @@ export class AdminService {
   }
 
   //공지사항 상세조회
-  async getNoticeById(noticeId: string) {
+  async getNoticeById(noticeId: number) {
     const notice = await this.noticeRepository.findOne({
       where: { id: noticeId },
     });
@@ -183,7 +197,7 @@ export class AdminService {
   }
 
   //공지사항 수정
-  async updateNotice(noticeId: string, title: string, description: string) {
+  async updateNotice(noticeId: number, title: string, description: string) {
     if (title.length === 0) {
       throw new NotFoundException('제목이 없습니다.');
     } else if (description.length === 0) {
@@ -195,24 +209,8 @@ export class AdminService {
   }
 
   //공지사항 삭제
-  deleteNotice(noticeId: string) {
+   async deleteNotice(noticeId: number) {
     this.noticeRepository.delete(noticeId);
     return { message: '공지가 삭제되었습니다' };
   }
-
-  // private async checkPassword(loginId: string, loginPw: string) {
-  //     const admin = await this.adminRepository.findOne({
-  //       where: {loginId: loginId },
-  //       select: ["loginPw"],
-  //     });
-  //     if (_.isNil(admin)) {
-  //       throw new NotFoundException(`admin not found.`);
-  //     }
-
-  //     if (admin.loginPw !== loginPw.toString()) {
-  //       throw new UnauthorizedException(
-  //         `admin password is not correct.`
-  //       );
-  //     }
-  //   }
 }

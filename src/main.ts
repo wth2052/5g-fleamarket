@@ -10,6 +10,8 @@ import {
 } from 'nest-winston';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+import { join } from 'path';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // 커스텀 로거 활성화시 주석 해제
@@ -31,7 +33,11 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
   app.setViewEngine('ejs');
   setupSwagger(app);
+  
   app.use(cookieParser());
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+app.setViewEngine('ejs');
   app.enableCors({
     credentials: true,
   });

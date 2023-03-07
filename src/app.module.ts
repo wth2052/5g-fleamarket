@@ -21,7 +21,10 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from 'src/helath-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
+import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { ViewController } from './views/view.controller';
+import { AdminLoginController } from './views/admin-login.controller';
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -50,8 +53,9 @@ import { ViewController } from './views/view.controller';
     OrdersModule,
     LoggingModule,
     TerminusModule,
+    AdminAuthModule,
   ],
-  controllers: [AppController, HealthCheckController, ViewController],
+  controllers: [AppController, HealthCheckController, ViewController,AdminLoginController],
   providers: [
     AppService,
     SmsService,

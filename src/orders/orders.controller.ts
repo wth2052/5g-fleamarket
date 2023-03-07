@@ -88,6 +88,7 @@ export class OrdersController {
     const userId = jwt.id;
     const buyList = await this.ordersService.getBuyList(userId);
     return { data: buyList };
+
   }
   // 내가 판매가 완료된 목록
   @Render('order-mySellList.ejs')

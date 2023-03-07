@@ -1,39 +1,43 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render} from '@nestjs/common';
+import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
+import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
 import { BanUserDto } from './dto/ban-user.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CreateNoticeDto } from './dto/create-notice.dto';
-// import { LoginAdminDto } from './dto/login-admin.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { Public } from '../global/common/decorator/skip-auth.decorator';
-import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
+import { JwtService } from '@nestjs/jwt';
+import { AdminCookies } from './decorator/find-cookie.decorator';
+
 
 @Controller()
-export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+@Public()
+@UseGuards(AdminAuthGuard)
 
-  @UseGuards(JwtAuthGuard)
+export class AdminController {
+
+    constructor(private readonly adminService: AdminService,
+        private jwtService: JwtService) {}
   // 상품정보 가져오기 API
   @Get('/products')
-  async getProducts() {
-    return await this.adminService.getProducts();
+  @Render('admin-products.ejs')
+  async getProducts(
+    
+  ) {
+    return {products : await this.adminService.getProducts()}
   }
 
   //상품정보 상세보기 API
   @Get('/products/:productId')
+  @Render('admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
-    return await this.adminService.getProductById(productId);
+    // 원래: return await this.adminService.getProductById(productId)
+  const result = await this.adminService.getProductById(productId)
+  const product = result.product
+  const seller = result.seller
+  const category = result.category
+    return {product, seller, category}
   }
 
   //상품 삭제 API
@@ -44,14 +48,16 @@ export class AdminController {
 
   //회원정보 가져오기 API
   @Get('/users')
+  @Render('admin-users.ejs')
   async getUsers() {
-    return await this.adminService.getUsers();
+    return {users: await this.adminService.getUsers()} 
   }
 
   //회원정보 상세보기 API
   @Get('/users/:userId')
+  @Render('admin-userById.ejs')
   async getUserById(@Param('userId') userId: number) {
-    return await this.adminService.getUserById(userId);
+    return {user: await this.adminService.getUserById(userId)}
   }
 
   //회원정보 수정(블랙리스트) API
@@ -62,20 +68,27 @@ export class AdminController {
 
   //회원 삭제 API
   @Delete('/users/:userId')
-  deleteUser(@Param('userId') userId: number) {
-    return this.adminService.deleteUser(userId);
+  async deleteUser(@Param('userId') userId: number) {
+    return await this.adminService.deleteUser(userId);
   }
 
   //카테고리 조회 API
   @Get('/category')
+  @Render('admin-category.ejs')
   async getCategory() {
-    return await this.adminService.getCategory();
+    return {category: await this.adminService.getCategory()} 
   }
 
   //카테고리 생성 API
+  @Get('/post/category')
+  @Render('admin-categoryPost.ejs')
+  async viewCategory(){
+    return {message: "카테고리 작성 페이지"}
+  }
+
   @Post('/category')
-  createCategory(@Body() data: CreateCategoryDto) {
-    return this.adminService.createCategory(data.name);
+  async createCategory(@Body() data: CreateCategoryDto) {
+    return await this.adminService.createCategory(data.name);
   }
 
   //카테고리 수정 API
@@ -96,35 +109,41 @@ export class AdminController {
   //공지사항 모두 조회
 
   @Get('/notice')
+  @Render('admin-notices.ejs')
   async getNotices() {
-    return await this.adminService.getNotices();
+    return {notices: await this.adminService.getNotices()}
   }
 
   //공지사항 상세조회
 
   @Get('/notice/:noticeId')
-  async getNoticeById(@Param('noticeId') noticeId: string) {
-    return await this.adminService.getNoticeById(noticeId);
+  @Render('admin-noticeById.ejs')
+  async getNoticeById(@Param('noticeId') noticeId: number) {
+    return {notice: await this.adminService.getNoticeById(noticeId)}
   }
 
   //공지사항 작성
-
-  @Post('/notice/:adminId')
-  async createNotice(
-    @Param('adminId') adminId: number,
-    @Body() data: CreateNoticeDto,
-  ) {
-    return await this.adminService.createNotice(
-      adminId,
-      data.title,
-      data.description,
-    );
+  @Get('/post/notice')
+  @Render('admin-noticePost.ejs')
+  async viewNotice(){
+    return {message: "공지작성 페이지"}
   }
+  @Post('/notice')
+  async createNotice(
+    @Body() data:CreateNoticeDto,
+    @AdminCookies('accessToken') jwt: string,
+){
+  const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
+  const adminId = decodeToken.id
+
+    return await this.adminService.createNotice(adminId, data.title, data.description);
+}
+
 
   //공지사항 수정
   @Put('/notice/:noticeId')
   async updateNotice(
-    @Param('noticeId') noticeId: string,
+    @Param('noticeId') noticeId: number,
     @Body() data: UpdateNoticeDto,
   ) {
     return await this.adminService.updateNotice(
@@ -136,7 +155,7 @@ export class AdminController {
 
   //공지사항 삭제
   @Delete('/notice/:noticeId')
-  deleteNotice(@Param('noticeId') noticeId: string) {
+  deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
 }
