@@ -55,7 +55,7 @@ export class OrdersController {
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMyPick(userId);
-    console.log(data[1].product.title);
+    console.log('111', data[1].product.title);
     return { data: data };
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
@@ -125,5 +125,15 @@ export class OrdersController {
   ) {
     const userId = jwt.id;
     return this.ordersService.changeDeal(userId, orderId, data.price);
+  }
+
+  // -------------------------
+  // test용 productlist
+  @Public()
+  @Render('test-product.ejs')
+  @Get('product')
+  async productList() {
+    const product = await this.ordersService.pl();
+    return { data: product };
   }
 }
