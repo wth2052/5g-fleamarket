@@ -43,8 +43,11 @@ export class OrdersController {
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    const data = await this.ordersService.findMyProductsDealCheck(userId, productId);
-    return { data : data }
+    const data = await this.ordersService.findMyProductsDealCheck(
+      userId,
+      productId,
+    );
+    return { data: data };
   }
   // 내가 가격제시한 상품 목록보기
   @Get('myPick')
