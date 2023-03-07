@@ -31,17 +31,19 @@ export class OrdersController {
   @Render('order-mySellProduct.ejs')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    const aa = await this.ordersService.findMySell(userId);
-    return { data: aa };
+    const data = await this.ordersService.findMySell(userId);
+    return { data: data };
   }
   // 제시된 가격목록 보기
   @Get('products/:productId')
-  findMyProductsDealCheck(
+  @Render('order-findMyProductsDealCheck.ejs')
+  async findMyProductsDealCheck(
     @Param('productId') productId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.findMyProductsDealCheck(userId, productId);
+    const data = await this.ordersService.findMyProductsDealCheck(userId, productId);
+    return { data : data }
   }
   // 내가 가격제시한 상품 목록보기
   @Get('myPick')
