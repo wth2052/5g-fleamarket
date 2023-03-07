@@ -9,6 +9,7 @@ import {
   Put,
   Req,
   UseGuards,
+  Render,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -18,6 +19,7 @@ import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
+import { Public } from '../global/common/decorator/skip-auth.decorator';
 @Controller('orders')
 export class OrdersController {
   constructor(
@@ -26,11 +28,11 @@ export class OrdersController {
   ) {}
   // 내가 파는 상품 목록보기
   @Get('mySellProduct')
-  findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  @Render('order-mySellProduct.ejs')
+  async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    // const user = this.jwtDecode(jwt);
-    // const userId = user.id;
-    return this.ordersService.findMySell(userId);
+    const aa = await this.ordersService.findMySell(userId);
+    return { data: aa };
   }
   // 제시된 가격목록 보기
   @Get('products/:productId')
