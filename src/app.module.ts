@@ -21,7 +21,6 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from 'src/helath-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
-import { ViewController } from '../views/view.controller';
 import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
 import { AuthController } from './auth/auth.controller';
 @Module({
@@ -41,7 +40,10 @@ import { AuthController } from './auth/auth.controller';
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         KAKAO_REST_API_KEY: Joi.string().required(),
         KAKAO_CLIENT_SECRET: Joi.string().required(),
-        KAKAO_REDIRECT_URI: Joi.string().required(),
+        KAKAO_REDIRECT_URL: Joi.string().required(),
+        GOOGLE_CLIENT_ID: Joi.string().required(),
+        GOOGLE_CLIENT_SECRET: Joi.string().required(),
+        GOOGLE_REDIRECT_URL: Joi.string().required(),
       }),
     }),
     UserModule,
@@ -59,7 +61,6 @@ import { AuthController } from './auth/auth.controller';
   controllers: [
     AppController,
     HealthCheckController,
-    ViewController,
     AuthController,
   ],
   providers: [
