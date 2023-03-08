@@ -40,7 +40,7 @@ export class ProductsService {
         'createdAt',
       ]
       //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
-    }); //셀러아이디에 조인되는 닉네임 뿌려야
+    }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
   }
 
   //status: 'sale' 를 status: sale로 바꿔라
@@ -69,19 +69,7 @@ export class ProductsService {
   //사진은 아직 안함, crud먼저//뭐 더 들어가야함? 모름
 
   //상품드록, 이미지 여기서 넣어야한다
-  // async createProduct(
-  //   title: string,
-  //   description: string,
-  //   price: number,
-  //   categoryId: number,
-  // ) {
-  //   this.productRepository.insert({
-  //     title,
-  //     description,
-  //     price,
-  //     categoryId,
-  //   });
-  // }
+
   async createProduct(
     title: string,
     description: string,
@@ -105,8 +93,7 @@ export class ProductsService {
     product.category = category;
     product.seller = user;
   
-    await this.productRepository.save(product);
-    return product;
+    return await this.productRepository.save({title, description, price, category, sellerId});
   }
 
 
@@ -116,8 +103,8 @@ export class ProductsService {
     title: string,
     description: string,
     price: number,
-    sellerId: number,
     categoryId: number,
+    sellerId: number,
   ) {
     await this.verifySomething(id, sellerId);
 
@@ -129,10 +116,16 @@ export class ProductsService {
     });
   }
   //로그인 된 사용자를 넣어줘야
-  async deleteProduct(id: number) {
-    // await this.verifySomething(id);
+  async deleteProduct(
+    id: number,
+    sellerId: number,
+    // status:string
+    ) {
+    await this.verifySomething(id, sellerId);
 
-    this.productRepository.softDelete(id);
+    // this.productRepository.softDelete(id);
+    this.productRepository.update(id, {
+      status: 'soldout'});
   }
 
   //보류
@@ -142,7 +135,7 @@ export class ProductsService {
       select: ['sellerId'],
     });
 
-    if (_.isNil(product)) {
+    if (product == null) {
       throw new NotFoundException(
         `찾으시는 판매글이 없습니다 sellerId: ${sellerId}님`,
       );
