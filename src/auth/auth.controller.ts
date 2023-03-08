@@ -52,7 +52,7 @@ export class AuthController {
     return user;
   }
 
-  @Public()
+  // @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('logout')
   async logOut(@Req() req, @Res({ passthrough: true }) res: Response) {
