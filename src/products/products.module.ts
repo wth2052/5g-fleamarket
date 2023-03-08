@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { ProductsEntity } from 'src/global/entities/products.entity';
@@ -12,6 +13,6 @@ import { ProductsService } from './products.service';
     TypeOrmModule.forFeature([CategoriesEntity,UserEntity,ProductsEntity]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService]
+  providers: [ProductsService, JwtService]
 })
 export class ProductsModule {}
