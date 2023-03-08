@@ -36,7 +36,6 @@ export class AuthController {
         user.email,
         user.nickname,
       );
-    // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);

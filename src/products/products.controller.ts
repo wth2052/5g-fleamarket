@@ -61,7 +61,6 @@ export class ProductsController {
     @Param('productId') productId: number,
     @Body() data: UpdateProductDto,
   ) {
-    console.log("4",jwt)
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
     }
@@ -83,7 +82,6 @@ export class ProductsController {
     @Param('productId') productId: number,
     @Body() data: DeleteProductDto
     ) {
-      console.log("3",jwt)
       if (!jwt || !jwt.id) {
         throw new BadRequestException('Invalid JWT');
       }
