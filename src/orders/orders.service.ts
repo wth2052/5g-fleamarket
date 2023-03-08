@@ -117,6 +117,7 @@ export class OrdersService {
           status: 'sale',
         },
       });
+      console.log('qwer', checkUser);
       if (!checkUser) {
         throw new UnauthorizedException('당신의 물건이 아닙니다.');
       }

@@ -31,7 +31,6 @@ import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { ViewController } from './views/view.controller';
 import { AdminLoginController } from './views/admin-login.controller';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -54,10 +53,17 @@ import { AdminLoginController } from './views/admin-login.controller';
     EmailModule,
     AdminAuthModule,
   ],
-  controllers: [AppController, HealthCheckController, AuthController, EmailController, ViewController,AdminLoginController ],
+  controllers: [
+    // AppController,
+    HealthCheckController,
+    AuthController,
+    EmailController,
+    ViewController,
+    AdminLoginController,
+  ],
 
   providers: [
-    AppService,
+    // AppService,
     SmsService,
     AuthService,
     UserService,
