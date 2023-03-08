@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -9,6 +9,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
+import { catchError } from 'rxjs';
 
 
 @Controller()
@@ -22,10 +23,13 @@ export class AdminController {
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin-products.ejs')
-  async getProducts(
-    
-  ) {
-    return {products : await this.adminService.getProducts()}
+  async getProducts() {
+    try{
+      return {products : await this.adminService.getProducts()}
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
   }
 
   //상품정보 상세보기 API
@@ -49,8 +53,12 @@ export class AdminController {
   //회원정보 가져오기 API
   @Get('/users')
   @Render('admin-users.ejs')
-  async getUsers() {
+  async getUsers() {try{
     return {users: await this.adminService.getUsers()} 
+  }
+  catch (error) {
+    return { errorMessage: error.message };
+  }
   }
 
   //회원정보 상세보기 API
@@ -76,7 +84,12 @@ export class AdminController {
   @Get('/category')
   @Render('admin-category.ejs')
   async getCategory() {
+    try {
     return {category: await this.adminService.getCategory()} 
+  }
+  catch (error) {
+    return { errorMessage: error.message };
+  }
   }
 
   //카테고리 생성 API
@@ -110,8 +123,15 @@ export class AdminController {
 
   @Get('/notice')
   @Render('admin-notices.ejs')
-  async getNotices() {
-    return {notices: await this.adminService.getNotices()}
+ 
+  async getNotices() 
+  {
+   try {
+      return {notices: await this.adminService.getNotices()}
+    }
+  catch (error) {
+    return  {errorMessage: error.message} 
+  }
   }
 
   //공지사항 상세조회

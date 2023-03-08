@@ -11,7 +11,11 @@
     </header>
     
     <div>
+        <% if (typeof errorMessage !== 'undefined') { %>
+            <%= errorMessage %>
+          <% } else if (users) { %>
         
+
          <% for(var i = 0; i < users.length; i++)
          { %>
             <button onclick="getUser(`<%=users[i].id %>`)">
@@ -22,6 +26,9 @@
             </button>
             <% } %>
 
+
+            
+            <%} %>
     </div>
     
 </body>

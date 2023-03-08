@@ -11,8 +11,12 @@
     </header>
     
     <div>
-        
-         <% for(var i = 0; i < notices.length; i++)
+        <% if (typeof errorMessage !== 'undefined') { %>
+            <%= errorMessage %>
+          <% } else if (notices) { %>
+
+
+              <% for(var i = 0; i < notices.length; i++)
          { %>
             <button onclick="getNotice(`<%=notices[i].id %>`)">
             title: <%= notices[i].title %> <br>
@@ -20,6 +24,9 @@
             </button>
             <% } %>
 
+        
+
+            <%} %>       
     </div>
     <footer>
         <button onclick="createNotice()">공지 작성하기</button>

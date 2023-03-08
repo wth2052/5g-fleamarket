@@ -12,14 +12,24 @@
     
     <div>
         <div id="categoryList"> 
+            <% if (typeof errorMessage !== 'undefined') { %>
+                <%= errorMessage %>
+              <% } else if (category) { %>
+
+
              <% for(var i = 0; i < category.length; i++)
          { %>
             <button>
             name: <%= category[i].name %> 
             </button>
 
-            <button onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button><br>
+            <button onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button>
+            <button onclick="deleteCategory(`<%=category[i].id %>`)">삭제</button><br>
             <% } %>
+
+
+
+            <%} %>
         </div> 
 
     </div>
@@ -69,5 +79,20 @@
         window.location.replace("http://localhost:3000/post/category")
     }
 
+    function deleteCategory(categoryId){
+        if(confirm('정말 삭제하시겠습니까?')){ 
+        axios
+        .delete(`/category/${categoryId}`)
+        .then((res) => {
+            // 응답처리
+            alert(JSON.stringify(res.data.message))
+            window.location.replace("http://localhost:3000/category")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+    }    
+    }
 </script>
 </html>

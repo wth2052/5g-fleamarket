@@ -54,10 +54,12 @@ import { AdminLoginController } from './views/admin-login.controller';
     EmailModule,
     AdminAuthModule,
   ],
-  controllers: [AppController, HealthCheckController, AuthController, EmailController, ViewController,AdminLoginController ],
+  controllers: [
+    // AppController, 
+    HealthCheckController, AuthController, EmailController, ViewController,AdminLoginController ],
 
   providers: [
-    AppService,
+    // AppService,
     SmsService,
     AuthService,
     UserService,

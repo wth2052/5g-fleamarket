@@ -11,17 +11,21 @@
     </header>
     
     <div>
-        
-         <% for(var i = 0; i < products.length; i++)
-         { %>
-            <button onclick="getProduct(`<%=products[i].id %>`)">
-            title: <%= products[i].title %> <br>
-            description: <%= products[i].description %> <br>
-            price: <%= products[i].price %> <br>
-            
-            </button>
+        <% if (typeof errorMessage !== 'undefined') { %>
+            <%= errorMessage %>
+          <% } else if (products) { %>
+
+
+            <% for (var i = 0; i < products.length; i++) { %>
+              <button onclick="getProduct('<%= products[i].id %>')">
+                title: <%= products[i].title %> <br>
+                description: <%= products[i].description %> <br>
+                price: <%= products[i].price %> <br>
+              </button>
             <% } %>
 
+            
+          <% } %>
     </div>
     
 </body>
