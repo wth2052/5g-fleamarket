@@ -16,8 +16,6 @@ export class EmailService {
     //https://www.npmjs.com/package/@nestjs-modules/mailer
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-    @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache,
     private readonly configService: ConfigService,
   ) {}
 
@@ -43,16 +41,16 @@ export class EmailService {
       },
     });
 
-    console.log(
-      '야호',
-      await this.cacheManager.get(`${user.email}'s Authentication Code`),
-    );
-    await this.cacheManager.get(`${user.email}'s Authentication Code`);
+    // console.log(
+    //   '야호',
+      // await this.cacheManager.get(`${user.email}'s Authentication Code`),
+    // );
+    // await this.cacheManager.get(`${user.email}'s Authentication Code`);
 
-    await this.cacheManager.set(
-      `${user.email}'s Authentication Code`,
-      randomCode,
-    );
+    // await this.cacheManager.set(
+    //   `${user.email}'s Authentication Code`,
+    //   randomCode,
+    // );
     return await transport.sendMail({
       from: {
         name: '5지는 플리마켓 운영자',

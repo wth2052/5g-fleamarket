@@ -25,8 +25,6 @@ import { validationSchema } from './global/config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { EmailService } from './email/email.service';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { RedisConfigService } from './global/config/redis.config';
 
 @Module({
   imports: [
@@ -40,14 +38,6 @@ import { RedisConfigService } from './global/config/redis.config';
     TypeOrmModule.forRootAsync({
       useClass: OrmConfig,
       inject: [ConfigService],
-    }),
-    RedisModule.forRootAsync({
-      imports: [ConfigModule],
-      useClass: RedisConfigService,
-      inject: [ConfigService],
-    }),
-    CacheModule.register({
-      isGlobal: true,
     }),
     SmsModule,
     AdminModule,
