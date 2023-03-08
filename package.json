@@ -1,7 +1,7 @@
 {
   "name": "5gnunfleamarket",
   "version": "0.0.1",
-  "description": "",
+  "description": "<p align=\"center\">\r   <a href=\"http://nestjs.com/\" target=\"blank\"><img src=\"https://nestjs.com/img/logo-small.svg\" width=\"200\" alt=\"Nest Logo\" /></a>\r </p>",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -64,6 +64,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "29.2.4",
+    "@types/multer": "^1.4.7",
     "@types/node": "18.11.18",
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
@@ -99,5 +100,17 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/5g-FleaMarket/5g-fleamarket.git"
+  },
+  "bugs": {
+    "url": "https://github.com/5g-FleaMarket/5g-fleamarket/issues"
+  },
+  "homepage": "https://github.com/5g-FleaMarket/5g-fleamarket#readme"
 }
