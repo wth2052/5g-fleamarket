@@ -9,6 +9,9 @@ import {
   Put,
   UseGuards,
   BadRequestException,
+  UseInterceptors,
+  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -18,7 +21,8 @@ import { Public } from 'src/global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Cookies } from 'src/global/common/decorator/find-cookie.decorator';
 import { JwtDecodeDto } from 'src/orders/dto/jwtdecode-order.dto';
-import { JwtRefreshGuard } from 'src/auth/guards/jwt-refresh.guard';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { diskStorage } from 'multer';
 
 @Controller('productss')
 export class ProductsController {
@@ -29,18 +33,19 @@ export class ProductsController {
   getProducts() {
     return this.productsService.getProducts();
   }
-
+  //상품 상세 생성
   @Public()
   @Get('/:productId')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
-  //상품상세조회
+  //상품등록
   @UseGuards(JwtAuthGuard)
   @Post('/')
   createProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() data: CreateProductDto,
+    @UploadedFiles() images: Array<Express.Multer.File>,
   ) {
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
@@ -91,3 +96,6 @@ export class ProductsController {
   //상품 좋아요
   //@Post('products/:productId')
 }
+
+
+

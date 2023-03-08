@@ -13,6 +13,7 @@ import { ProductsEntity } from 'src/global/entities/products.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { DataSource, FindOperator, Repository } from 'typeorm';
+import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 
 @Injectable()
 export class ProductsService {
@@ -23,6 +24,8 @@ export class ProductsService {
     private categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
+    @InjectRepository(ProductImagesEntity)
+    private ProductImagesEntity: Repository<ProductImagesEntity>
   ) {}
   //사진은 아직 안함, crud먼저
   async getProducts() {
@@ -89,7 +92,12 @@ export class ProductsService {
     product.category = category;
     product.seller = user;
   
-    return await this.productRepository.save({title, description, price, category, sellerId});
+    return await this.productRepository.save({
+      title, 
+      description, 
+      price, 
+      category, 
+      sellerId});
   }
 
 
@@ -138,4 +146,6 @@ export class ProductsService {
       );
     }
   }
+
+
 }
