@@ -17,6 +17,6 @@ export const cacheModule = CacheModule.registerAsync({
 @Module({
   imports: [cacheModule, TypeOrmModule.forFeature([UserEntity])],
   providers: [EmailService],
-  controllers: [EmailController, TestController],
+  controllers: [EmailController],
 })
 export class EmailModule {}

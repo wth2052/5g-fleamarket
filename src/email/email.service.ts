@@ -17,6 +17,7 @@ export class EmailService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
     private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
   async sendEmail(user: EmailVerifyUserDto): Promise<void> {
@@ -41,16 +42,17 @@ export class EmailService {
       },
     });
 
-    // console.log(
-    //   '야호',
-      // await this.cacheManager.get(`${user.email}'s Authentication Code`),
-    // );
-    // await this.cacheManager.get(`${user.email}'s Authentication Code`);
+    console.log(
+      '야호',
+      await this.cacheManager.get(`${user.email}'s Authentication Code`),
+    );
+    await this.cacheManager.get(`${user.email}'s Authentication Code`);
 
-    // await this.cacheManager.set(
-    //   `${user.email}'s Authentication Code`,
-    //   randomCode,
-    // );
+    await this.cacheManager.set(
+      `${user.email}'s Authentication Code`,
+      randomCode,
+      { ttl: 60000000 }
+    );
     return await transport.sendMail({
       from: {
         name: '5지는 플리마켓 운영자',
