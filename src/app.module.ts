@@ -21,24 +21,23 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthCheckController } from 'src/helath-check/health-check.controller';
 import { HttpModule } from '@nestjs/axios';
 import { LoggingModule } from './global/util/logger/logger.module';
-import {ViewController} from "./views/view.controller";
-import { ProductsModule } from './products/products.module';
+import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
+import { AuthController } from './auth/auth.controller';
+import { SocialModule } from './social/social.module';
+import { validationSchema } from './config/validationSchema';
+import { EmailController } from './email/email.controller';
+import { EmailModule } from './email/email.module';
+import { AdminAuthModule } from './admin-auth/admin-auth.module';
+import { ViewController } from './views/view.controller';
+import { AdminLoginController } from './views/admin-login.controller';
+
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
-      validationSchema: Joi.object({
-        DATABASE_HOST: Joi.string().required(),
-        DATABASE_PORT: Joi.number().required(),
-        DATABASE_USERNAME: Joi.string().required(),
-        DATABASE_PASSWORD: Joi.string().required(),
-        DATABASE_NAME: Joi.string().required(),
-        JWT_ACCESS_SECRETKEY: Joi.string().required(),
-        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        JWT_REFRESH_SECRETKEY: Joi.string().required(),
-        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-      }),
+      validationSchema,
     }),
     UserModule,
     AuthModule,
@@ -51,9 +50,12 @@ import { ProductsModule } from './products/products.module';
     OrdersModule,
     LoggingModule,
     TerminusModule,
-    ProductsModule,
+    SocialModule,
+    EmailModule,
+    AdminAuthModule,
   ],
-  controllers: [AppController, HealthCheckController,ViewController],
+  controllers: [AppController, HealthCheckController, AuthController, EmailController, ViewController,AdminLoginController ],
+
   providers: [
     AppService,
     SmsService,
@@ -61,8 +63,9 @@ import { ProductsModule } from './products/products.module';
     UserService,
     JwtService,
     HttpModule,
+    JwtGoogleStrategy,
     HealthCheckController,
-    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    // { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })
 export class AppModule {}

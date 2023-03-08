@@ -27,57 +27,76 @@ export class OrdersController {
     private readonly jwtService: JwtService,
   ) {}
   // 내가 파는 상품 목록보기
+  @UseGuards(JwtAuthGuard)
   @Get('mySellProduct')
   @Render('order-mySellProduct.ejs')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    const aa = await this.ordersService.findMySell(userId);
-    return { data: aa };
+    const data = await this.ordersService.findMySell(userId);
+    return { data: data };
   }
   // 제시된 가격목록 보기
   @Get('products/:productId')
-  findMyProductsDealCheck(
+  @Render('order-findMyProductsDealCheck.ejs')
+  async findMyProductsDealCheck(
     @Param('productId') productId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.findMyProductsDealCheck(userId, productId);
+    const data = await this.ordersService.findMyProductsDealCheck(
+      userId,
+      productId,
+    );
+    return { data: data };
   }
   // 내가 가격제시한 상품 목록보기
   @Get('myPick')
-  findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  @Render('order-findMyPick.ejs')
+  async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    return this.ordersService.findMyPick(userId);
+    const data = await this.ordersService.findMyPick(userId);
+    console.log('111', data[1].product.title);
+    return { data: data };
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
   @Get('buyResult/:orderId')
-  buyResult(
+  @Render('order-buyResult.ejs')
+  async buyResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.buyResult(userId, orderId);
+    const data = await this.ordersService.buyResult(userId, orderId);
+    return { data: data };
   }
   //성사된 거래 구매자 정보보기
   @Get('sellResult/:orderId')
-  sellResult(
+  @Render('order-sellResult.ejs')
+  async sellResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    return this.ordersService.sellResult(userId, orderId);
+    const buyer = await this.ordersService.sellResult(userId, orderId);
+    console.log(buyer);
+    return { data: buyer };
   }
   // 내가 구매한 목록
+  @Render('order-myBuyList.ejs')
   @Get('myBuyList')
-  getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    return this.ordersService.getBuyList(userId);
+    const buyList = await this.ordersService.getBuyList(userId);
+    return { data: buyList };
+
   }
   // 내가 판매가 완료된 목록
+  @Render('order-mySellList.ejs')
   @Get('mySellList')
-  getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    return this.ordersService.getSellList(userId);
+    const data = await this.ordersService.getSellList(userId);
+    return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
   @Put('dealAccept/:orderId')
@@ -107,5 +126,15 @@ export class OrdersController {
   ) {
     const userId = jwt.id;
     return this.ordersService.changeDeal(userId, orderId, data.price);
+  }
+
+  // -------------------------
+  // test용 productlist
+  @Public()
+  @Render('test-product.ejs')
+  @Get('product')
+  async productList() {
+    const product = await this.ordersService.pl();
+    return { data: product };
   }
 }

@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  HttpCode,
   Post,
   Query,
+  Render,
   Req,
   Res,
   UseGuards,
@@ -14,8 +17,16 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { Response } from 'express';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { ConfigService } from '@nestjs/config';
+interface IOAuthUser {
+  //interface 설정
+  user: {
+    name: string;
+    email: string;
+    password: string;
+  };
+}
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -31,11 +42,8 @@ export class AuthController {
   async login(@Req() req, @Res({ passthrough: true }) res: Response) {
     const user = req.user;
     const { accessToken, ...accessOption } =
-      this.authService.getCookieWithJwtAccessToken(
-        user.id,
-        user.email,
-        user.nickname,
-      );
+      this.authService.getCookieWithJwtAccessToken(user);
+    // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user.id);
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
@@ -67,16 +75,8 @@ export class AuthController {
   refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
     const user = req.user;
     const { accessToken, ...accessOption } =
-      this.authService.getCookieWithJwtAccessToken(
-        user.id,
-        user.email,
-        user.nickname,
-      );
+      this.authService.getCookieWithJwtAccessToken(user);
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }
-  // @Get('/kakao/callback')
-  // kakaoLogin(@Query('code') code: string) {
-  //   return this.authService.kakaoLogin(code);
-  // }
 }

@@ -7,7 +7,9 @@ import {
   ManyToOne,
   OneToOne,
   OneToMany,
-  UpdateDateColumn, CreateDateColumn,
+  DeleteDateColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
@@ -43,13 +45,13 @@ export class ProductsEntity {
   @Column({default:0})
   likes: number;
 
-  @Column({default:'sale'})
-  status: string
+  @Column({ default: 'sale' })
+  status: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn({default:null})
+  @UpdateDateColumn({ default: null })
   updatedAt?: Date;
 
   @OneToMany((type) => OrdersEntity, (orders) => orders.product)
