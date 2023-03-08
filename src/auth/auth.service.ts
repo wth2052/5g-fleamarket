@@ -22,6 +22,7 @@ export class AuthService {
       const user = await this.userService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
       const { password, ...result } = user;
+      console.log("2",user)
       return result;
     } catch (error) {
       throw new HttpException('잘못된 요청입니다.', HttpStatus.BAD_REQUEST);

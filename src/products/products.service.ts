@@ -31,10 +31,7 @@ export class ProductsService {
       select: [
         'id',
         'title',
-        //'description',
         'price',
-        //'sellerId',
-        //'categoryId',
         'viewCount',
         'likes',
         'createdAt',
@@ -68,8 +65,7 @@ export class ProductsService {
   }
   //사진은 아직 안함, crud먼저//뭐 더 들어가야함? 모름
 
-  //상품드록, 이미지 여기서 넣어야한다
-
+  //상품드록, 이미지 여기도 넣어야한다
   async createProduct(
     title: string,
     description: string,
@@ -115,20 +111,16 @@ export class ProductsService {
       categoryId,
     });
   }
-  //로그인 된 사용자를 넣어줘야
   async deleteProduct(
     id: number,
     sellerId: number,
-    // status:string
     ) {
     await this.verifySomething(id, sellerId);
 
-    // this.productRepository.softDelete(id);
     this.productRepository.update(id, {
       status: 'soldout'});
   }
 
-  //보류
   async verifySomething(id: number, sellerId: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },

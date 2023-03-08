@@ -35,7 +35,7 @@ export class ProductsController {
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
-
+  //상품상세조회
   @UseGuards(JwtAuthGuard)
   @Post('/')
   createProduct(
@@ -61,6 +61,7 @@ export class ProductsController {
     @Param('productId') productId: number,
     @Body() data: UpdateProductDto,
   ) {
+    console.log("4",jwt)
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
     }
@@ -71,21 +72,22 @@ export class ProductsController {
       data.description,
       data.price,
       data.categoryId,
-      userId, //이건 어떻게 고쳐야하나
+      userId, 
     );
   }
-  //상품 삭제 API//스태이터스 바꾸는 걸로 가야한다
-  @Delete('/:productId')
+
+  //상품삭제
+  @Delete(':productId')
   deleteProduct(    
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
     @Body() data: DeleteProductDto
     ) {
+      console.log("3",jwt)
       if (!jwt || !jwt.id) {
         throw new BadRequestException('Invalid JWT');
       }
-    // 프로덕트의 셀러아이디와 로그인아이디가 같은지 확인, 다르면 에러처리
-    //하고나면 밑에걸 지움
+
     return this.productsService.deleteProduct(productId,jwt.id,);
   }
   //상품 좋아요
