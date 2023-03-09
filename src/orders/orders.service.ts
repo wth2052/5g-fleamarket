@@ -29,7 +29,7 @@ export class OrdersService {
   async findMyPick(id: number) {
     try {
       const pick = await this.orderRepository.find({
-        where: { buyerId: id, deleteAt: null },
+        where: { buyerId: id, status: 'sale' },
         relations: ['product'],
       });
       console.log('22222333', pick);
