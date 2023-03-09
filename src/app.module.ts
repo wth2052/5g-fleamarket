@@ -21,7 +21,7 @@ import { LoggingModule } from './global/util/logger/logger.module';
 import { JwtGoogleStrategy } from './auth/strategy/jwt-google.strategy';
 import { AuthController } from './auth/auth.controller';
 import { SocialModule } from './social/social.module';
-import { validationSchema } from './global/config/validationSchema';
+import { validationSchema } from './config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { EmailService } from './email/email.service';

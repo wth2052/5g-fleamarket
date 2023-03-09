@@ -3,7 +3,10 @@
 // 이메일 인증 처리후 된 값 반환
 import { Body, Controller, Post } from '@nestjs/common';
 import { EmailService } from './email.service';
-import { EmailVerifyUserDto } from '../user/dto/create-user.dto';
+import {
+  EmailVerifyUserDto,
+  VerifyEmailNumberDto,
+} from '../user/dto/create-user.dto';
 
 @Controller('email-verify')
 export class EmailController {
@@ -11,6 +14,11 @@ export class EmailController {
   @Post()
   async sendEmail(@Body() user: EmailVerifyUserDto) {
     await this.emailService.sendEmail(user);
-    return user;
+    return `입력하신 메일주소로 인증번호를 발송했습니다 ${user.email}`;
+  }
+  @Post('verify-number')
+  async verifyEmailNumber(@Body() user: VerifyEmailNumberDto) {
+    await this.emailService.verifyEmailNumber(user);
+    console.log('검증 ', user.verifyNumber);
   }
 }

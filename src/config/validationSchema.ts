@@ -1,6 +1,4 @@
 import * as Joi from 'joi';
-import emailConfig from './email.config';
-
 export const validationSchema = Joi.object({
   DATABASE_HOST: Joi.string().required(),
   DATABASE_PORT: Joi.number().required(),
@@ -18,5 +16,4 @@ export const validationSchema = Joi.object({
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
   GOOGLE_REDIRECT_URL: Joi.string().required(),
   MAIL_TTL: Joi.number().required(),
-  load: [emailConfig],
 });
