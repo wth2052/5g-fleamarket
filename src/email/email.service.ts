@@ -1,6 +1,5 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-//null/undefined 판별을 위한 lodash
 import * as nodemailer from 'nodemailer';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
@@ -50,6 +49,8 @@ export class EmailService {
     console.log(
       `${user.email}의 인증번호 : `,
       await this.cacheManager.get(`${user.email}`),
+      `${user.email}의 MAIL_TTL`,
+      this.configService.get('MAIL_TTL'),
     );
     console.log(
       `${user.email}의 MAIL_TTL : `,
@@ -65,19 +66,14 @@ export class EmailService {
       text: `이메일 인증번호는 ${randomCode} 입니다.`,
     });
   }
-  async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<object> {
+  async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<void> {
     //Redis 내 : number userInput : String
     const fromRedisCacheCode = await this.cacheManager.get(`${user.email}`);
     console.log('Redis로부터 : ', fromRedisCacheCode);
     const userInputCode = user.verifyNumber;
-    console.log('userInput으로부터 : ', userInputCode);
-    console.log(typeof fromRedisCacheCode, typeof userInputCode);
-    console.log(fromRedisCacheCode.toString() === userInputCode);
-    //Redis의 값과 user가 입력한 값이 일치한다면
-    if (fromRedisCacheCode.toString() === userInputCode) {
-      return;
-    } else {
-      // throw new
+    console.log('UserInput으로부터 : ', userInputCode);
+    if (fromRedisCacheCode === userInputCode) {
+      console.log('인증번호가 일치합니다. 유저 인증에 성공하였습니다.');
     }
   }
 }
