@@ -22,30 +22,6 @@ export class UserService {
     await this.userRepository.save(user);
     return user;
   }
-  //TODO: getByEmail, getById 둘중 하나 없애던
-  //둘다 없애서 코드 리팩토링하기
-  async getByEmail(email: string) {
-    const user = this.userRepository.findOne({ where: { email } });
-    if (user) {
-      return user;
-    }
-    throw new HttpException(
-      '이메일이 존재하지 않습니다.',
-      HttpStatus.NOT_FOUND,
-    );
-  }
-
-  async getById(id: number) {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (user) {
-      return user;
-    }
-
-    throw new HttpException(
-      '아이디가 존재하지 않습니다.',
-      HttpStatus.NOT_FOUND,
-    );
-  }
 
   async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
@@ -53,7 +29,7 @@ export class UserService {
   }
 
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
-    const user = await this.getById(id);
+    const user = await this.userRepository.findOne({ where: { id } });
 
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
