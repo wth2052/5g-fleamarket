@@ -76,22 +76,22 @@ export class ProductsController {
       data.description,
       data.price,
       data.categoryId,
-      userId, 
+      userId,
     );
   }
 
   //상품삭제
   @Delete(':productId')
-  deleteProduct(    
+  deleteProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
-    @Body() data: DeleteProductDto
-    ) {
-      if (!jwt || !jwt.id) {
-        throw new BadRequestException('Invalid JWT');
-      }
+    @Body() data: DeleteProductDto,
+  ) {
+    if (!jwt || !jwt.id) {
+      throw new BadRequestException('Invalid JWT');
+    }
 
-    return this.productsService.deleteProduct(productId,jwt.id,);
+    return this.productsService.deleteProduct(productId, jwt.id);
   }
   //상품 좋아요
   //@Post('products/:productId')
