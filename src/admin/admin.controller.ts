@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+  Render,
+} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -10,22 +21,19 @@ import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 
-
 @Controller()
 @Public()
 @UseGuards(AdminAuthGuard)
-
 export class AdminController {
-
-    constructor(private readonly adminService: AdminService,
-        private jwtService: JwtService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private jwtService: JwtService,
+  ) {}
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin-products.ejs')
-  async getProducts(
-    
-  ) {
-    return {products : await this.adminService.getProducts()}
+  async getProducts() {
+    return { products: await this.adminService.getProducts() };
   }
 
   //상품정보 상세보기 API
@@ -33,11 +41,11 @@ export class AdminController {
   @Render('admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
     // 원래: return await this.adminService.getProductById(productId)
-  const result = await this.adminService.getProductById(productId)
-  const product = result.product
-  const seller = result.seller
-  const category = result.category
-    return {product, seller, category}
+    const result = await this.adminService.getProductById(productId);
+    const product = result.product;
+    const seller = result.seller;
+    const category = result.category;
+    return { product, seller, category };
   }
 
   //상품 삭제 API
@@ -50,14 +58,14 @@ export class AdminController {
   @Get('/users')
   @Render('admin-users.ejs')
   async getUsers() {
-    return {users: await this.adminService.getUsers()} 
+    return { users: await this.adminService.getUsers() };
   }
 
   //회원정보 상세보기 API
   @Get('/users/:userId')
   @Render('admin-userById.ejs')
   async getUserById(@Param('userId') userId: number) {
-    return {user: await this.adminService.getUserById(userId)}
+    return { user: await this.adminService.getUserById(userId) };
   }
 
   //회원정보 수정(블랙리스트) API
@@ -76,14 +84,14 @@ export class AdminController {
   @Get('/category')
   @Render('admin-category.ejs')
   async getCategory() {
-    return {category: await this.adminService.getCategory()} 
+    return { category: await this.adminService.getCategory() };
   }
 
   //카테고리 생성 API
   @Get('/post/category')
   @Render('admin-categoryPost.ejs')
-  async viewCategory(){
-    return {message: "카테고리 작성 페이지"}
+  async viewCategory() {
+    return { message: '카테고리 작성 페이지' };
   }
 
   @Post('/category')
@@ -111,7 +119,7 @@ export class AdminController {
   @Get('/notice')
   @Render('admin-notices.ejs')
   async getNotices() {
-    return {notices: await this.adminService.getNotices()}
+    return { notices: await this.adminService.getNotices() };
   }
 
   //공지사항 상세조회
@@ -119,26 +127,31 @@ export class AdminController {
   @Get('/notice/:noticeId')
   @Render('admin-noticeById.ejs')
   async getNoticeById(@Param('noticeId') noticeId: number) {
-    return {notice: await this.adminService.getNoticeById(noticeId)}
+    return { notice: await this.adminService.getNoticeById(noticeId) };
   }
 
   //공지사항 작성
   @Get('/post/notice')
   @Render('admin-noticePost.ejs')
-  async viewNotice(){
-    return {message: "공지작성 페이지"}
+  async viewNotice() {
+    return { message: '공지작성 페이지' };
   }
   @Post('/notice')
   async createNotice(
-    @Body() data:CreateNoticeDto,
+    @Body() data: CreateNoticeDto,
     @AdminCookies('accessToken') jwt: string,
-){
-  const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
-  const adminId = decodeToken.id
+  ) {
+    const decodeToken = this.jwtService.decode(jwt, { json: true }) as {
+      id: number;
+    };
+    const adminId = decodeToken.id;
 
-    return await this.adminService.createNotice(adminId, data.title, data.description);
-}
-
+    return await this.adminService.createNotice(
+      adminId,
+      data.title,
+      data.description,
+    );
+  }
 
   //공지사항 수정
   @Put('/notice/:noticeId')
