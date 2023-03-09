@@ -79,4 +79,5 @@ export class AuthController {
     res.cookie('Authentication', accessToken, accessOption);
     return user;
   }
+  //TODO: OAUTH USER 닉네임 휴대폰 주소 API 하나 더 만들기
 }
