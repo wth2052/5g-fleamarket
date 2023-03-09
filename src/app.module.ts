@@ -60,8 +60,7 @@ import { AdminLoginController } from './views/admin-login.controller';
     HealthCheckController,
     AuthController,
     EmailController,
-     ViewController,
-     AdminLoginController
+    AdminLoginController
   ],
 
   providers: [
