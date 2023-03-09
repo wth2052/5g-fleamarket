@@ -29,7 +29,7 @@
       axios
         .get('http://localhost:3000/orders/myPick')
         .then((res) => {
-          console.log(res.data.data);
+          console.log(res.data.data[0].deal);
           for (let i = 0; i < res.data.data.length; i++) {
             let temp = `
         <div class="row">
@@ -44,7 +44,7 @@
               <span style="float: right;">뭔지 모르겠지만 로고 몇개</span>
           </div>
       </div>
-          `;
+          `
           document.getElementById('bb').innerHTML = temp;
           }
         })
@@ -137,7 +137,7 @@
             <div class="col-md-9">
               <h3>판매명</h3>
               <p>등록일짜</p>
-              <h4>50,000원</h4>
+              <!-- <h4>50,000원</h4> -->
               <span>조회: 1000회</span>
               <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
             </div>
