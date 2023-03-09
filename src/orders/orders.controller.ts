@@ -30,7 +30,7 @@ export class OrdersController {
   // 내가 파는 상품 목록보기
   @UseGuards(JwtAuthGuard)
   @Get('mySellProduct')
-  @Render('order/order-mySellProduct.ejs')
+  // @Render('order/order-mySellProduct.ejs')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMySell(userId);
@@ -56,10 +56,9 @@ export class OrdersController {
   @Get('myPick')
   // @Render('order/order-findMyPick.ejs')
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
-    console.log(jwt);
+    console.log('@@@@@@@@@@@@@@@@@', jwt);
     const userId = jwt.id;
     const data = await this.ordersService.findMyPick(userId);
-    console.log('111', data[1].product.title);
     return { data: data };
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
@@ -88,7 +87,7 @@ export class OrdersController {
   }
   // 내가 구매한 목록
   @UseGuards(JwtAuthGuard)
-  @Render('order/order-myBuyList.ejs')
+  // @Render('order/order-myBuyList.ejs')
   @Get('myBuyList')
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -97,7 +96,7 @@ export class OrdersController {
   }
   // 내가 판매가 완료된 목록
   @UseGuards(JwtAuthGuard)
-  @Render('order/order-mySellList.ejs')
+  // @Render('order/order-mySellList.ejs')
   @Get('mySellList')
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
