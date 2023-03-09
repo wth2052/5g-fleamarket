@@ -1,4 +1,10 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  CACHE_MANAGER,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -52,10 +58,6 @@ export class EmailService {
       `${user.email}의 MAIL_TTL`,
       this.configService.get('MAIL_TTL'),
     );
-    console.log(
-      `${user.email}의 MAIL_TTL : `,
-      this.configService.get('MAIL_TTL'),
-    );
     return await transport.sendMail({
       from: {
         name: '5지는 플리마켓 운영자',
@@ -69,11 +71,15 @@ export class EmailService {
   async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<void> {
     //Redis 내 : number userInput : String
     const fromRedisCacheCode = await this.cacheManager.get(`${user.email}`);
-    console.log('Redis로부터 : ', fromRedisCacheCode);
     const userInputCode = user.verifyNumber;
-    console.log('UserInput으로부터 : ', userInputCode);
-    if (fromRedisCacheCode === userInputCode) {
-      console.log('인증번호가 일치합니다. 유저 인증에 성공하였습니다.');
+    //레디스에 있는 코드 = number
+    if (fromRedisCacheCode.toString() === userInputCode) {
+      return;
+    } else {
+      throw new BadRequestException({
+        status: HttpStatus.BAD_REQUEST,
+        error: '인증번호가 일치하지 않습니다. 다시 시도해주세요.',
+      });
     }
   }
 }
