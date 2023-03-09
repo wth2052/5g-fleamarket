@@ -46,13 +46,17 @@
               <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getUser(`<%=users[i].id %>`)">
                 <div class="row">
                   
-                    <div class="col-md-9">
-                      <h3>nickname: <%= users[i].nickname %></h3>
-                      <p>email: <%= users[i].email %> <br></p>
-                      <h4> phone: <%= users[i].phone %></h4>
-                      <% if (users[i].ban === 1) {%> <span>ban status: 블랙리스트 </span><%} %>
-                      <span style="float: right;">뭔지 모르겠지만 로고 몇개</span>
+                    <div class="col-md-9" >
+                      <h3>닉네임: <%= users[i].nickname %></h3>
+                      <h3>이메일: <%= users[i].email %> </h3>
+                      <h3> 전화번호: <%= users[i].phone %></h3>
+                      <br>
+                       
                     </div>
+                    <div class="col-md-3" id="image-container" style=" margin-top: 60px; border: 1px solid red">
+                      <% if (users[i].ban === 1) {%><span style="float: right;margin-top:45px"> 😡블랙리스트 </span><%} %>
+                    </div>
+                   
                 </div>
               </div>
             <% } %>
