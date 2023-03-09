@@ -10,8 +10,6 @@ export class EmailController {
   constructor(private readonly emailService: EmailService) {}
   @Post()
   async sendEmail(@Body() user: EmailVerifyUserDto) {
-    console.log('바디', user);
-    console.log('이메일', user.email);
     await this.emailService.sendEmail(user);
     return user;
   }
