@@ -25,7 +25,7 @@ export class CreateUserDto {
 
   @IsString()
   readonly nickname: string;
-
+  @IsNotEmpty()
   @IsString()
   @Matches(/^[a-zA-Z0-9]*$/, {
     message: '비밀번호는 영문과 숫자만 사용할 수 있습니다.',
@@ -53,3 +53,9 @@ export class VerifyEmailNumberDto extends EmailVerifyUserDto {
   @IsNumber()
   readonly verifyNumber: number;
 }
+
+export class OAuthAddInformationDto extends PickType(CreateUserDto, [
+  'nickname',
+  'phone',
+  'address',
+]) {}
