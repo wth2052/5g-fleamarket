@@ -6,7 +6,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
-import { EmailVerifyUserDto, VerifyEmailNumberDto } from "../user/dto/create-user.dto";
+import {
+  EmailVerifyUserDto,
+  VerifyEmailNumberDto,
+} from '../user/dto/create-user.dto';
 
 @Injectable()
 export class EmailService {
@@ -47,6 +50,8 @@ export class EmailService {
     console.log(
       `${user.email}의 인증번호 : `,
       await this.cacheManager.get(`${user.email}`),
+      `${user.email}의 MAIL_TTL`,
+      this.configService.get('MAIL_TTL'),
     );
     return await transport.sendMail({
       from: {
@@ -60,9 +65,9 @@ export class EmailService {
   }
   async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<void> {
     const fromRedisCacheCode = await this.cacheManager.get(`${user.email}`);
-    console.log(fromRedisCacheCode);
+    console.log('Redis로부터 : ', fromRedisCacheCode);
     const userInputCode = user.verifyNumber;
-    console.log(userInputCode);
+    console.log('UserInput으로부터 : ', userInputCode);
     if (fromRedisCacheCode === userInputCode) {
       console.log('인증번호가 일치합니다. 유저 인증에 성공하였습니다.');
     }
