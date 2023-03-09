@@ -6,7 +6,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 import { Cache } from 'cache-manager';
-import { EmailVerifyUserDto, VerifyEmailNumberDto } from "../user/dto/create-user.dto";
+import {
+  EmailVerifyUserDto,
+  VerifyEmailNumberDto,
+} from '../user/dto/create-user.dto';
 
 @Injectable()
 export class EmailService {
@@ -48,6 +51,10 @@ export class EmailService {
       `${user.email}의 인증번호 : `,
       await this.cacheManager.get(`${user.email}`),
     );
+    console.log(
+      `${user.email}의 MAIL_TTL : `,
+      this.configService.get('MAIL_TTL'),
+    );
     return await transport.sendMail({
       from: {
         name: '5지는 플리마켓 운영자',
@@ -58,13 +65,19 @@ export class EmailService {
       text: `이메일 인증번호는 ${randomCode} 입니다.`,
     });
   }
-  async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<void> {
+  async verifyEmailNumber(user: VerifyEmailNumberDto): Promise<object> {
+    //Redis 내 : number userInput : String
     const fromRedisCacheCode = await this.cacheManager.get(`${user.email}`);
-    console.log(fromRedisCacheCode);
+    console.log('Redis로부터 : ', fromRedisCacheCode);
     const userInputCode = user.verifyNumber;
-    console.log(userInputCode);
-    if (fromRedisCacheCode === userInputCode) {
-      console.log('인증번호가 일치합니다. 유저 인증에 성공하였습니다.');
+    console.log('userInput으로부터 : ', userInputCode);
+    console.log(typeof fromRedisCacheCode, typeof userInputCode);
+    console.log(fromRedisCacheCode.toString() === userInputCode);
+    //Redis의 값과 user가 입력한 값이 일치한다면
+    if (fromRedisCacheCode.toString() === userInputCode) {
+      return;
+    } else {
+      // throw new
     }
   }
 }

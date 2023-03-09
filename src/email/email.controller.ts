@@ -17,8 +17,10 @@ export class EmailController {
     return `입력하신 메일주소로 인증번호를 발송했습니다 ${user.email}`;
   }
   @Post('verify-number')
-  async verifyEmailNumber(@Body() user: VerifyEmailNumberDto) {
+  async verifyEmailNumber(@Body() user: VerifyEmailNumberDto): Promise<object> {
     await this.emailService.verifyEmailNumber(user);
-    console.log('검증 ', user.verifyNumber);
+    return {
+      message: '이메일 인증에 성공하였습니다.',
+    };
   }
 }
