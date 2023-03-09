@@ -23,6 +23,11 @@
 </head>
 <style>
 
+.col-md-9 > h3 {
+  border: 1px solid red; 
+  margin-top: 10px;
+  width: 300px;
+}
 </style>
 <script>
 
@@ -41,16 +46,18 @@
 
             <% for (var i = 0; i < products.length; i++) { %>
               <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getProduct('<%= products[i].id %>')">
-                <div class="row">
-                  <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                <div class="row" style="cursor: pointer;">
+                  <div class="col-md-3" style="border-right: 1px solid red; padding: 0;">
                     <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0">
                   </div>
                     <div class="col-md-9">
-                      <h3>title: <%= products[i].title %></h3>
-                      <p>description: <%= products[i].description %></p>
-                      <h4> price: <%= products[i].price %></h4>
-                      <span>조회</span>
-                      <span style="float: right;">뭔지 모르겠지만 로고 몇개</span>
+                      <h3 > <%= products[i].title %></h3>
+                      <!-- <p>description: <%= products[i].description %></p> -->
+                      <h3><%= products[i].price %> 원</h3>
+                      <br>
+                      <br>
+                      <span>조회:<%= products[i].viewCount %>회</span>
+                      <span style="float: right;">♡ <%= products[i].likes %></span>
                     </div>
                 </div>
               </div>
