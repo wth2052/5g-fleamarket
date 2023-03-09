@@ -25,6 +25,19 @@
 #user-btn{
     background-color: yellowgreen;
   }
+
+.col-md-9 > h3{
+  display: inline-block;
+   border: 1px solid red;
+   padding: 5px;
+  width:300px;
+}
+
+.col-md-9 > h4{
+  display: inline-block;
+   
+}
+
 </style>
 <script>
 
@@ -46,14 +59,19 @@
               <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getUser(`<%=users[i].id %>`)">
                 <div class="row">
                   
-                    <div class="col-md-9" >
-                      <h3>닉네임: <%= users[i].nickname %></h3>
-                      <h3>이메일: <%= users[i].email %> </h3>
-                      <h3> 전화번호: <%= users[i].phone %></h3>
+                    <div class="col-md-9" style="padding: 10px; cursor: pointer;">
+                      <h4>닉네임: </h4>
+                      <h3 > <%= users[i].nickname %></h3>
+                      <br>
+                      <h4>이메일: </h4>
+                      <h3 ><%= users[i].email %> </h3 >
+                      <br>
+                      <h4>전화번호: </h4>
+                      <h3>  <%= users[i].phone %></h3>
                       <br>
                        
                     </div>
-                    <div class="col-md-3" id="image-container" style=" margin-top: 60px; border: 1px solid red">
+                    <div class="col-md-3" id="image-container" style=" margin-top: 100px; border: 1px solid red">
                       <% if (users[i].ban === 1) {%><span style="float: right;margin-top:45px"> 😡블랙리스트 </span><%} %>
                     </div>
                    
