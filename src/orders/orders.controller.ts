@@ -37,8 +37,9 @@ export class OrdersController {
     return { data: data };
   }
   // 제시된 가격목록 보기
+  @UseGuards(JwtAuthGuard)
   @Get('products/:productId')
-  @Render('order/order-findMyProductsDealCheck.ejs')
+  // @Render('order/order-findMyProductsDealCheck.ejs')
   async findMyProductsDealCheck(
     @Param('productId') productId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,

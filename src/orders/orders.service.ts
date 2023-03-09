@@ -71,11 +71,15 @@ export class OrdersService {
     }
   }
 
-  async findMySell(id: number) {
+  async findMySell(userId: number) {
     try {
-      return await this.productRepository.find({
-        where: { sellerId: id, status: 'sale' },
+      const products = await this.productRepository.find({
+        where: { sellerId: userId, status: 'sale' },
       });
+      for (let i = 0; i < products.length; i++) {
+        console.log('**((', products[i].id);
+      }
+      return products;
     } catch (error) {
       if (error instanceof NotFoundException) {
         // Return a response with a 404 status code
@@ -170,13 +174,13 @@ export class OrdersService {
         throw new NotFoundException('해당되는 주문이 없습니다.');
       }
       if (order.buyerId !== Number(userId)) {
-        throw new UnauthorizedException('내가 구매한 상품이 아닙니다.');
+        throw new NotFoundException('내가 구매한 상품이 아닙니다.');
       }
       if (order.status === 'sale') {
-        throw new UnauthorizedException('아직 선택되지 않았습니다.');
+        throw new NotFoundException('아직 선택되지 않았습니다.');
       }
       if (order.status === 'sold') {
-        throw new UnauthorizedException('판매자가 다른 제안을 수락했습니다.');
+        throw new NotFoundException('판매자가 다른 제안을 수락했습니다.');
       }
       const sellerInfo = await this.productRepository.findOne({
         where: { id: order.productId },

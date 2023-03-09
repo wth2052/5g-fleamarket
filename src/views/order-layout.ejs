@@ -71,6 +71,7 @@
     axios
       .get('http://localhost:3000/orders/mySellProduct')
       .then(( res ) => {
+        console.log(res)
         let temp = "";
         for ( let i = 0; i < res.data.data.length; i++ ) {
           temp += `
@@ -94,7 +95,28 @@
       })
       .catch(( error ) => {
         // 예외처리
-        alert(`${ error.response.data.error }`);
+        if(error.response.status === 401){
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/'
+          return
+        }
+        let temp = "";
+           temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>구매 진행 상품이 없네용</h3>
+                <h4>아직 꾸미기 전입니다.</h4>
+                <p>asdfasdfasf</p>
+                <span>asdfasdfasf</span>
+                <span></span>
+            </div>
+        </div>
+      </div>`;
+            document.getElementById('bb').innerHTML = temp;
       });
   }
 
@@ -127,7 +149,7 @@
       })
       .catch(( error ) => {
         // 예외처리
-        alert(`${ error.response.data.error }`);
+        // alert(`${ error.response.data.error }`);
       });
   }
     // 판매내역
@@ -159,7 +181,24 @@
       })
       .catch(( error ) => {
         // 예외처리
-        alert(`${ error.response.data.error }`);
+        // alert(`${ error.response.data.error }`);
+        let temp = "";
+           temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>구매 진행 상품이 없네용</h3>
+                <h4>아직 꾸미기 전입니다.</h4>
+                <p>asdfasdfasf</p>
+                <span>asdfasdfasf</span>
+                <span></span>
+            </div>
+        </div>
+      </div>`;
+            document.getElementById('bb').innerHTML = temp;
       });
   }
 
@@ -207,51 +246,7 @@
     </div>
     <!-- 본문-->
     <div class="container" id="bb" style="background: #fff; margin-top: 20px; padding: 0">
-
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
-            <div class="row">
-                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
-                </div>
-                <div class="col-md-9">
-                    <h3>판매명</h3>
-                    <p>등록일짜</p>
-                    <h4>50,000원</h4>
-                    <span>조회: 1000회</span>
-                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
-            <div class="row">
-                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
-                </div>
-                <div class="col-md-9">
-                    <h3>판매명</h3>
-                    <p>등록일짜</p>
-                    <h4>50,000원</h4>
-                    <span>조회: 1000회</span>
-                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
-            <div class="row">
-                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; padding: 10px" />
-                </div>
-                <div class="col-md-9">
-                    <h3>판매명</h3>
-                    <p>등록일짜</p>
-                    <h4>50,000원</h4>
-                    <span>조회: 1000회</span>
-                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
 
 <!--하단 메뉴바-->
 <div class="container-fluid" style="
