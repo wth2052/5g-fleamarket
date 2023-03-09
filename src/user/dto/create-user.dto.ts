@@ -1,8 +1,10 @@
 import { PickType } from '@nestjs/mapped-types';
 import {
   IsEmail,
+  IsMobilePhone,
   IsNotEmpty,
   IsNumber,
+  IsPhoneNumber,
   IsString,
   IsStrongPassword,
   Matches,
@@ -17,7 +19,7 @@ export class CreateUserDto {
     },
   )
   @IsNotEmpty({
-    message: '이메일은 필수 입력값입니다.',
+    message: '이메일을 입력해주세요.',
   })
   readonly email: string;
 
@@ -45,3 +47,9 @@ export class GoogleLoginUserDto extends PickType(CreateUserDto, [
   'email',
   'nickname',
 ]) {}
+
+export class EmailVerifyUserDto extends PickType(CreateUserDto, ['email']) {}
+export class VerifyEmailNumberDto extends EmailVerifyUserDto {
+  @IsNumber()
+  readonly verifyNumber: number;
+}

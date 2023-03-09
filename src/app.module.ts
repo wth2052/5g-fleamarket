@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  CacheModule,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -6,14 +11,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrmConfig } from './config/orm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from './user/user.service';
-import { SmsService } from './sms/sms.service';
-import { SmsModule } from './sms/sms.module';
+// import { SmsService } from './sms/sms.service';
+// import { SmsModule } from './sms/sms.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from './global/entities/users.entity';
-import * as Joi from 'joi';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { OrdersModule } from './orders/orders.module';
@@ -27,6 +29,7 @@ import { SocialModule } from './social/social.module';
 import { validationSchema } from './config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
+import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { AdminLoginController } from './views/admin-login.controller';
 
@@ -43,7 +46,7 @@ import { AdminLoginController } from './views/admin-login.controller';
       useClass: OrmConfig,
       inject: [ConfigService],
     }),
-    SmsModule,
+    // SmsModule,
     AdminModule,
     OrdersModule,
     LoggingModule,
@@ -57,16 +60,17 @@ import { AdminLoginController } from './views/admin-login.controller';
     HealthCheckController,
     AuthController,
     EmailController,
-    // ViewController,
-    AdminLoginController,
+     ViewController,
+     AdminLoginController
   ],
 
   providers: [
     AppService,
-    SmsService,
+    // SmsService,
     AuthService,
     UserService,
     JwtService,
+    EmailService,
     HttpModule,
     JwtGoogleStrategy,
     HealthCheckController,
