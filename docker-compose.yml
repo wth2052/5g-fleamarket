@@ -51,7 +51,8 @@ services:
     #appendonly?
     #appendonly yes를 설정하면 redis는 모든 쓰기 명령을 appendonly.aof 파일에 기록
     #redis 서버가 재시작되더라도 데이터를 유지할 수 있도록 해줌.
-    command: redis-server --appendonly yes
+    #protected mode를 no로 하면 bind ip없이 ip/port 접속가능
+    command: redis-server --appendonly yes --protected-mode no
 
   mysql:
 
