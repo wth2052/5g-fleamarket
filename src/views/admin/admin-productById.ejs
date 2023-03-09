@@ -20,6 +20,45 @@
   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+<style>
+    .product-wrapper{
+    width: 800px;
+    height: 700px;
+    padding: 40px;
+    box-sizing: border-box;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.col-md-3-img{
+    border: 1px solid red;
+    height: 30%;
+    width: 80%;
+    margin-left: 70px;
+    
+}
+
+#image-box {
+    padding: 0 100px;
+}
+
+.col-md-9 {
+    border: 1px solid red;
+    width: 100%;
+    height: 100%
+}
+
+.col-md-9 > h3 {
+    border: 1px solid red;
+    margin-top: 10px;
+    width: 300px;
+}
+
+#description{
+    width: 100%;
+    padding-bottom: 100px;
+}
+</style>
 <body>
         <%- include('admin-header.ejs')%>
 
@@ -27,20 +66,22 @@
     <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
         <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
     
-            <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
-                <div class="col-md-3" style="border: 1px solid red; padding: 0">
+            <div class="product-wrapper" style="border: 1px solid red; margin-top: 20px;" >
+                <div class="col-md-3-img" id="image-box">
                     <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0">
                   </div><br>
                 <div class="row"> 
             
-                    <div class="col-md-9">
-                        title: <%= product.title %> <br>
-                        description: <%= product.description %> <br>
-                        price: <%= product.price %> <br>
-                        view counts: <%= product.viewCount %> <br>
-                        likes:  <%= product.likes %> <br>
-                        category: <%= category.name %> <br>
-                        seller: <%= seller.nickname %> <br>
+                    <div class="col-md-9"> 
+                        <span style="float: right; margin-top: 10px;">판매자: <%= seller.nickname %> </span> 
+                        <h3 ><%= product.price %>원 <br></h3>
+                        <h3 ><%= product.title %> <br></h3>
+                        <h3 id="description"><%= product.description %> <br></h3>
+                        <h3 >카테고리: <%= category.name %></h3> 
+                        <br>
+                        
+                        <span style="float: right;">👀 <%= product.viewCount %> ♡ <%= product.likes %> </span>          
+                        
                     </div>  
                 </div>  
             </div>   
@@ -57,7 +98,7 @@
           <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button onclick = "deleteProduct(`<%= product.id %>`)">삭제하기</button></div>
+            <div class="col" style="border: 1px solid black; height: 40px; width: 20%"><button onclick = "deleteProduct(`<%= product.id %>`)">삭제하기</button></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
           </div>
