@@ -23,6 +23,16 @@
 </head>
 <style>
 
+  #image-container{
+    border-right: 1px solid red;
+     padding: 0;
+     height: 168px;  
+  }
+
+  #product-btn{
+    background-color: yellowgreen;
+  }
+
 .col-md-9 > h3 {
   border: 1px solid red; 
   margin-top: 10px;
@@ -47,7 +57,7 @@
             <% for (var i = 0; i < products.length; i++) { %>
               <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getProduct('<%= products[i].id %>')">
                 <div class="row" style="cursor: pointer;">
-                  <div class="col-md-3" style="border-right: 1px solid red; padding: 0;">
+                  <div class="col-md-3" id="image-container">
                     <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0">
                   </div>
                     <div class="col-md-9">
