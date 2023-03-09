@@ -1,239 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>order레이아웃</title>
 
     <!--    BootStrap Library-->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  </head>
-  <style></style>
-  <script>
-    function a() {
-      axios
-        .get('http://localhost:3000/orders/myPick')
-        .then((res) => {
-          console.log(res.data.data);
-          for (let i = 0; i < res.data.data.length; i++) {
-            let temp = `
-        <div class="row">
-          <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0">
-          </div>
-          <div class="col-md-9">
-              <h3>${res.data.data[i].product.title}</h3>
-              <p>${res.data.data[i].buyerId}</p>
-              <h4>${res.data.data[i].deal}원</h4>
-              <span>조회: 1000회</span>
-              <span style="float: right;">뭔지 모르겠지만 로고 몇개</span>
-          </div>
-      </div>
-          `;
-          document.getElementById('bb').innerHTML = temp;
+</head>
+<style></style>
+<script>
+  // 구매진행
+    axios
+      .get('http://localhost:3000/orders/myPick')
+      .then(( res ) => {
+        console.log(res.data.data.length !== 0)
+        if(res.data.data.length !== 0){
+        let temp = "";
+        for ( let i = 0; i < res.data.data.length; i++ ) {
+          temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>${ res.data.data[i].product.title }</h3>
+<!--                <p>${ res.data.data[i].buyerId }</p>-->
+                <h4>${ res.data.data[i].deal }원</h4>
+                <p>날짜: ${ res.data.data[i].product.createdAt }회</p>
+                <span>조회: ${ res.data.data[i].product.viewCount }회</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes}</span>
+            </div>
+        </div>
+      </div>`;
+        }
+        document.getElementById('bb').innerHTML = temp;
           }
+      })
+        .catch(( error ) => {
+          let temp = "";
+           temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>구매 진행 상품이 없네용</h3>
+                <h4>아직 꾸미기 전입니다.</h4>
+                <p>asdfasdfasf</p>
+                <span>asdfasdfasf</span>
+                <span></span>
+            </div>
+        </div>
+      </div>`;
+            document.getElementById('bb').innerHTML = temp;
         })
-        .catch((error) => {
-          // 예외처리
-          alert('실패');
-        });
-    }
-  </script>
-  <body>
-    <!--상단 메뉴바-->
-    <div
-      class="container-fluid"
-      style="
+
+    // 판매 진행
+  function mySellProduct() {
+    axios
+      .get('http://localhost:3000/orders/mySellProduct')
+      .then(( res ) => {
+        let temp = "";
+        for ( let i = 0; i < res.data.data.length; i++ ) {
+          temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>${ res.data.data[i].title }</h3>
+<!--                <p>${ res.data.data[i].buyerId }</p>-->
+                <h4>${ res.data.data[i].price }원</h4>
+                <p>날짜: ${ res.data.data[i].createdAt }회</p>
+                <span>조회: ${ res.data.data[i].viewCount }회</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].likes}</span>
+            </div>
+        </div>
+      </div>`;
+        }
+        document.getElementById('bb').innerHTML = temp;
+      })
+      .catch(( error ) => {
+        // 예외처리
+        alert(`${ error.response.data.error }`);
+      });
+  }
+
+  // 구매내역
+  function myBuyList() {
+        axios
+      .get('http://localhost:3000/orders/myBuyList')
+      .then(( res ) => {
+        let temp = "";
+        for ( let i = 0; i < res.data.data.length; i++ ) {
+          temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>${ res.data.data[i].product.title }</h3></br>
+<!--                <p>${ res.data.data[i].buyerId }</p>-->
+                <h6>거래일 : ${ res.data.data[i].product.updatedAt }</h6>
+                <h4>거래완료 : ${ res.data.data[i].deal }원</h4>
+<!--                <span>조회: ${ res.data.data[i].product.viewCount }회</span>-->
+<!--                <p>날짜: ${ res.data.data[i].product.createdAt }회</p>-->
+                <span style="float: right;">❤${res.data.data[i].product.likes}</span>
+            </div>
+        </div>
+      </div>`;
+        }
+        document.getElementById('bb').innerHTML = temp;
+      })
+      .catch(( error ) => {
+        // 예외처리
+        alert(`${ error.response.data.error }`);
+      });
+  }
+    // 판매내역
+    function mySellList() {
+        axios
+      .get('http://localhost:3000/orders/mySellList')
+      .then(( res ) => {
+        console.log("@@@@@@@@@@@@@@@@", res);
+        const aa = res.data;
+        let temp = "";
+        for ( let i = 0; i < res.data.data.length; i++ ) {
+          temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>${ res.data.data[i].product.title }</h3></br>
+<!--                <p>${ res.data.data[i].buyerId }</p>-->
+                <h6>거래일 : ${ res.data.data[i].product.updatedAt }</h6>
+                <h4>거래완료 : ${ res.data.data[i].deal }원</h4>
+                <span style="float: right;">❤${res.data.data[i].product.likes}</span>
+            </div>
+        </div>
+      </div>`;
+        }
+        document.getElementById('bb').innerHTML = temp;
+      })
+      .catch(( error ) => {
+        // 예외처리
+        alert(`${ error.response.data.error }`);
+      });
+  }
+
+</script>
+
+<body>
+<!--상단 메뉴바-->
+<div class="container-fluid" style="
         height: 40px;
         position: fixed;
         top: 0;
         background: #fff;
-        height: 40px;
-      "
-    >
-      <div class="container">
+      ">
+    <div class="container">
         <div class="row">
-          <div class="col-md-2" style="background: red; height: 40px">주소</div>
-          <div class="col-md-8" style="background: yellow; height: 40px">
-            메인페이지
-          </div>
-          <div class="col-md-2" style="background: purple; height: 40px">
-            로그아웃
-          </div>
+            <div class="col-md-2" style="background: red; height: 40px">주소</div>
+            <div class="col-md-8" style="background: yellow; height: 40px">
+                메인페이지안녕하세영
+            </div>
+            <div class="col-md-2" style="background: purple; height: 40px">
+                로그아웃
+            </div>
         </div>
-      </div>
     </div>
-    <!--상단 내비게이션-->
-    <div
-      class="container-fluid"
-      style="background: #eee; margin-top: 40px; margin-bottom: 40px"
-    >
-      <div class="container" style="background: #fff; padding: 0">
+</div>
+<!--상단 내비게이션-->
+<div class="container-fluid" style="background: #eee; margin-top: 40px; margin-bottom: 40px">
+    <div class="container" style="background: #fff; padding: 0">
         <div id="headerMenu" style="padding: 0">
-          <div class="row">
-            <div
-              class="col-md-3"
-              style="height: 100px; text-align: center; line-height: 100px"
-            >
-              <a onclick="window.location.reload()">구매진행</a>
+            <div class="row">
+                <div class="col-md-3" style="height: 100px; text-align: center; line-height: 100px">
+                    <a onclick="window.location.reload()">구매진행</a>
+                </div>
+                <div class="col-md-3" style="height: 100px; text-align: center; line-height: 100px">
+                    <a onclick="mySellProduct()">판매진행</a>
+                </div>
+                <div class="col-md-3" style="height: 100px; text-align: center; line-height: 100px">
+                    <a onclick="myBuyList()">구매내역</a>
+                </div>
+                <div class="col-md-3" style="height: 100px; text-align: center; line-height: 100px">
+                    <a onclick="mySellList()">판매내역</a>
+                </div>
             </div>
-            <div
-              class="col-md-3"
-              style="height: 100px; text-align: center; line-height: 100px"
-            >
-              <a onclick="a()">판매진행</a>
-            </div>
-            <div
-              class="col-md-3"
-              style="height: 100px; text-align: center; line-height: 100px"
-            >
-              구매내역
-            </div>
-            <div
-              class="col-md-3"
-              style="height: 100px; text-align: center; line-height: 100px"
-            >
-              판매내역
-            </div>
-          </div>
         </div>
-      </div>
-      <!-- 본문-->
-      <div
-        class="container"
-        style="background: #fff; margin-top: 20px; padding: 0"
-      >
-        <div
-          id="bb"
-          class="container-fluid"
-          style="border: 1px solid red; margin-top: 20px"
-        >
-          <div class="row">
-            <div
-              class="col-md-3"
-              style="border-right: 1px solid red; padding: 0"
-            >
-              <img
-                src="img/1296285.jpg"
-                alt="spcFuck"
-                style="width: 100%; margin: 0"
-              />
-            </div>
-            <div class="col-md-9">
-              <h3>판매명</h3>
-              <p>등록일짜</p>
-              <h4>50,000원</h4>
-              <span>조회: 1000회</span>
-              <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="container-fluid"
-          style="border: 1px solid red; margin-top: 20px"
-        >
-          <div class="row">
-            <div
-              class="col-md-3"
-              style="border-right: 1px solid red; padding: 0"
-            >
-              <img
-                src="img/1296285.jpg"
-                alt="spcFuck"
-                style="width: 100%; margin: 0"
-              />
-            </div>
-            <div class="col-md-9">
-              <h3>판매명</h3>
-              <p>등록일짜</p>
-              <h4>50,000원</h4>
-              <span>조회: 1000회</span>
-              <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-            </div>
-          </div>
-        </div>
-        <div
-          class="container-fluid"
-          style="border: 1px solid red; margin-top: 20px"
-        >
-          <div class="row">
-            <div
-              class="col-md-3"
-              style="border-right: 1px solid red; padding: 0"
-            >
-              <img
-                src="img/1296285.jpg"
-                alt="spcFuck"
-                style="width: 100%; padding: 10px"
-              />
-            </div>
-            <div class="col-md-9">
-              <h3>판매명</h3>
-              <p>등록일짜</p>
-              <h4>50,000원</h4>
-              <span>조회: 1000회</span>
-              <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+    <!-- 본문-->
+    <div class="container" id="bb" style="background: #fff; margin-top: 20px; padding: 0">
 
-    <!--하단 메뉴바-->
-    <div
-      class="container-fluid"
-      style="
+        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+            <div class="row">
+                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                </div>
+                <div class="col-md-9">
+                    <h3>판매명</h3>
+                    <p>등록일짜</p>
+                    <h4>50,000원</h4>
+                    <span>조회: 1000회</span>
+                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+            <div class="row">
+                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                </div>
+                <div class="col-md-9">
+                    <h3>판매명</h3>
+                    <p>등록일짜</p>
+                    <h4>50,000원</h4>
+                    <span>조회: 1000회</span>
+                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+            <div class="row">
+                <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                    <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; padding: 10px" />
+                </div>
+                <div class="col-md-9">
+                    <h3>판매명</h3>
+                    <p>등록일짜</p>
+                    <h4>50,000원</h4>
+                    <span>조회: 1000회</span>
+                    <span style="float: right">뭔지 모르겠지만 로고 몇개</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--하단 메뉴바-->
+<div class="container-fluid" style="
         height: 100px;
         position: fixed;
         bottom: 0;
         background: #fff;
         padding: 0;
-      "
-    >
-      <div class="container" style="height: 100px; padding: 0">
+      ">
+    <div class="container" style="height: 100px; padding: 0">
         <div class="row" style="width: 100%; background-color: red; margin: 0">
-          <div
-            class="col"
-            style="border: 1px solid black; height: 100px; width: 20%"
-          >
-            검색
-          </div>
-          <div
-            class="col"
-            style="border: 1px solid black; height: 100px; width: 20%"
-          >
-            상품등록
-          </div>
-          <div
-            class="col"
-            style="border: 1px solid black; height: 100px; width: 20%"
-          >
-            쌍방딜
-          </div>
-          <div
-            class="col"
-            style="border: 1px solid black; height: 100px; width: 20%"
-          >
-            마이페이지
-          </div>
+            <div class="col" style="border: 1px solid black; height: 100px; width: 20%">
+                검색
+            </div>
+            <div class="col" style="border: 1px solid black; height: 100px; width: 20%">
+                상품등록
+            </div>
+            <div class="col" style="border: 1px solid black; height: 100px; width: 20%">
+                쌍방딜
+            </div>
+            <div class="col" style="border: 1px solid black; height: 100px; width: 20%">
+                마이페이지
+            </div>
         </div>
-      </div>
     </div>
-  </body>
+</div>
+</body>
+
 </html>

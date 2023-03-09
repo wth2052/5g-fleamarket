@@ -13,4 +13,8 @@ export class ViewController {
   @Get('index')
   @Render('order-layout.ejs')
   async index() {}
+
+  @Get('index2')
+  @Render('index.ejs')
+  async index2() {}
 }
