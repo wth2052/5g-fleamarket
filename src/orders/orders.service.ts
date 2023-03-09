@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -72,154 +73,159 @@ export class OrdersService {
   }
 
   async findMySell(userId: number) {
-    try {
-      const products = await this.productRepository.find({
-        where: { sellerId: userId, status: 'sale' },
-      });
-      for (let i = 0; i < products.length; i++) {
-        console.log('**((', products[i].id);
-      }
-      return products;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        // Return a response with a 404 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: error.message,
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else if (error instanceof UnauthorizedException) {
-        // Return a response with a 401 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: error.message,
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      } else {
-        // Return a generic response with a 500 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.INTERNAL_SERVER_ERROR,
-            error: 'Internal server error',
-          },
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
+    // try {
+    const products = await this.productRepository.find({
+      where: { sellerId: userId, status: 'sale' },
+    });
+    return products;
+    // } catch (error) {
+    //   if (error instanceof NotFoundException) {
+    //     // Return a response with a 404 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.NOT_FOUND,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.NOT_FOUND,
+    //     );
+    //   } else if (error instanceof UnauthorizedException) {
+    //     // Return a response with a 401 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.UNAUTHORIZED,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.UNAUTHORIZED,
+    //     );
+    //   } else {
+    //     // Return a generic response with a 500 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+    //         error: 'Internal server error',
+    //       },
+    //       HttpStatus.INTERNAL_SERVER_ERROR,
+    //     );
+    //   }
+    // }
   }
 
   async findMyProductsDealCheck(userId: number, productId: number) {
-    try {
-      const checkUser = await this.productRepository.findOne({
-        where: {
-          id: productId,
-          sellerId: userId,
-          status: 'sale',
-        },
-      });
-      console.log('qwer', checkUser);
-      if (!checkUser) {
-        throw new UnauthorizedException('당신의 물건이 아닙니다.');
-      }
-      const deal = await this.orderRepository.find({
-        where: { productId, status: 'sale' },
-      });
-      if (!deal.length) {
-        throw new NotFoundException(
-          '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
-        );
-      }
-      return deal;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        // Return a response with a 404 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: error.message,
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else if (error instanceof UnauthorizedException) {
-        // Return a response with a 401 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: error.message,
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      } else {
-        // Return a generic response with a 500 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.INTERNAL_SERVER_ERROR,
-            error: 'Internal server error',
-          },
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+    // try {
+    const checkUser = await this.productRepository.findOne({
+      where: {
+        id: productId,
+        sellerId: userId,
+        status: 'sale',
+      },
+    });
+    if (!checkUser) {
+      throw new ForbiddenException('당신의 물건이 아닙니다.');
     }
+    const deal = await this.orderRepository.find({
+      where: { productId, status: 'sale' },
+    });
+    if (!deal.length) {
+      throw new NotFoundException(
+        '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
+      );
+    }
+    return deal;
+    // } catch (error) {
+    //   if (error instanceof NotFoundException) {
+    //     // Return a response with a 404 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.NOT_FOUND,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.NOT_FOUND,
+    //     );
+    //   } else if (error instanceof UnauthorizedException) {
+    //     // Return a response with a 401 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.UNAUTHORIZED,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.UNAUTHORIZED,
+    //     );
+    //   } else {
+    //     // Return a generic response with a 500 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+    //         error: 'Internal server error',
+    //       },
+    //       HttpStatus.INTERNAL_SERVER_ERROR,
+    //     );
+    //   }
+    // }
   }
   async buyResult(userId: number, orderId: number) {
-    try {
-      const order = await this.orderRepository.findOne({
-        where: { id: orderId, deleteAt: null },
-      });
-      if (!order) {
-        throw new NotFoundException('해당되는 주문이 없습니다.');
-      }
-      if (order.buyerId !== Number(userId)) {
-        throw new NotFoundException('내가 구매한 상품이 아닙니다.');
-      }
-      if (order.status === 'sale') {
-        throw new NotFoundException('아직 선택되지 않았습니다.');
-      }
-      if (order.status === 'sold') {
-        throw new NotFoundException('판매자가 다른 제안을 수락했습니다.');
-      }
-      const sellerInfo = await this.productRepository.findOne({
-        where: { id: order.productId },
-      });
-      const sellerUser = await this.userRepository.findOne({
-        where: { id: sellerInfo.id },
-        select: ['id', 'email', 'nickname'],
-      });
-      return sellerUser;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        // Return a response with a 404 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: error.message,
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else if (error instanceof UnauthorizedException) {
-        // Return a response with a 401 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: error.message,
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      } else {
-        // Return a generic response with a 500 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.INTERNAL_SERVER_ERROR,
-            error: 'Internal server error',
-          },
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
+    // try {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId, deleteAt: null },
+    });
+    if (!order) {
+      throw new NotFoundException('해당되는 주문이 없습니다.');
     }
+    if (order.buyerId !== Number(userId)) {
+      throw new ForbiddenException('내가 구매한 상품이 아닙니다.');
+    }
+    if (order.status === 'sale') {
+      throw new ForbiddenException('아직 선택되지 않았습니다.');
+    }
+    if (order.status === 'sold') {
+      throw new ForbiddenException('판매자가 다른 제안을 수락했습니다.');
+    }
+    const sellerInfo = await this.productRepository.findOne({
+      where: { id: order.productId },
+    });
+    const sellerUser = await this.userRepository.findOne({
+      where: { id: sellerInfo.id },
+      select: ['id', 'email', 'nickname'],
+    });
+    return sellerUser;
+    // } catch (error) {
+    //   if (error instanceof NotFoundException) {
+    //     // Return a response with a 404 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.NOT_FOUND,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.NOT_FOUND,
+    //     );
+    //   } else if (error instanceof UnauthorizedException) {
+    //     // Return a response with a 401 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.UNAUTHORIZED,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.UNAUTHORIZED,
+    //     );
+    //   } else if (error instanceof ForbiddenException) {
+    //     // Return a response with a 403 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.FORBIDDEN,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.FORBIDDEN,
+    //     );
+    //   } else {
+    //     // Return a generic response with a 500 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+    //         error: 'Internal server error',
+    //       },
+    //       HttpStatus.INTERNAL_SERVER_ERROR,
+    //     );
+    //   }
+    // }
   }
 
   async sellResult(userId: number, orderId: number) {
@@ -234,7 +240,7 @@ export class OrdersService {
         where: { id: order.productId, sellerId: userId, status: 'success' },
       });
       if (!sellUser) {
-        throw new UnauthorizedException('내가 판매하는 물품이 아닙니다.');
+        throw new ForbiddenException('내가 판매하는 물품이 아닙니다.');
       }
       const buyerInfo = await this.userRepository.findOne({
         where: { id: order.buyerId },
@@ -278,41 +284,38 @@ export class OrdersService {
       where: { buyerId: userId, status: 'success', deleteAt: null },
       relations: ['product'],
     });
-    try {
-      if (!buyList.length) {
-        throw new NotFoundException(`${userId}는 구매한 상품이 없습니다.`);
-      }
-      return buyList;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        // Return a response with a 404 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.NOT_FOUND,
-            error: error.message,
-          },
-          HttpStatus.NOT_FOUND,
-        );
-      } else if (error instanceof UnauthorizedException) {
-        // Return a response with a 401 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: error.message,
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      } else {
-        // Return a generic response with a 500 status code
-        throw new HttpException(
-          {
-            status: HttpStatus.INTERNAL_SERVER_ERROR,
-            error: 'Internal server error',
-          },
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
+    // try {
+    return buyList;
+    // } catch (error) {
+    //   if (error instanceof NotFoundException) {
+    //     // Return a response with a 404 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.NOT_FOUND,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.NOT_FOUND,
+    //     );
+    //   } else if (error instanceof UnauthorizedException) {
+    //     // Return a response with a 401 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.UNAUTHORIZED,
+    //         error: error.message,
+    //       },
+    //       HttpStatus.UNAUTHORIZED,
+    //     );
+    //   } else {
+    //     // Return a generic response with a 500 status code
+    //     throw new HttpException(
+    //       {
+    //         status: HttpStatus.INTERNAL_SERVER_ERROR,
+    //         error: 'Internal server error',
+    //       },
+    //       HttpStatus.INTERNAL_SERVER_ERROR,
+    //     );
+    //   }
+    // }
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
@@ -409,13 +412,13 @@ export class OrdersService {
       throw new NotFoundException('상품 정보가 없습니다.');
     }
     if (product.sellerId === Number(userId)) {
-      throw new UnauthorizedException('자신의 상품에는 deal을 할 수 없습니다.');
+      throw new ForbiddenException('자신의 상품에는 deal을 할 수 없습니다.');
     }
     const user = await this.orderRepository.findOne({
       where: { productId: productId, buyerId: userId, deleteAt: null },
     });
     if (user) {
-      throw new UnauthorizedException(
+      throw new ForbiddenException(
         '이미 제시했습니다. 수정하기 버튼을 눌러주세요.',
       );
     }
@@ -424,7 +427,6 @@ export class OrdersService {
       buyerId: userId,
       deal: data,
     });
-    return { message: '가격 제시 완료' };
   }
   async changeDeal(userId: number, orderId: number, data: number) {
     const order = await this.orderRepository.findOne({

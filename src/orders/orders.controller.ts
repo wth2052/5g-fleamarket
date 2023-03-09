@@ -10,6 +10,9 @@ import {
   Req,
   UseGuards,
   Render,
+  Catch,
+  HttpException,
+  NotFoundException,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -20,6 +23,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
+@Catch(HttpException)
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
@@ -34,6 +38,9 @@ export class OrdersController {
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMySell(userId);
+    if (!data.length) {
+      throw new NotFoundException('내가 판매하고 있는 상품이 없습니다.');
+    }
     return { data: data };
   }
   // 제시된 가격목록 보기
@@ -83,7 +90,11 @@ export class OrdersController {
     const userId = jwt.id;
     console.log('33144154', userId);
     const buyer = await this.ordersService.sellResult(userId, orderId);
-    console.log(buyer);
+    if (!buyer) {
+      throw new NotFoundException(
+        `${jwt.nickname}과 거래가 완료된 구매자가 없습니다`,
+      );
+    }
     return { data: buyer };
   }
   // 내가 구매한 목록
@@ -93,6 +104,9 @@ export class OrdersController {
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const buyList = await this.ordersService.getBuyList(userId);
+    if (!buyList.length) {
+      throw new NotFoundException(`${userId}는 구매한 상품이 없습니다.`);
+    }
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
@@ -136,7 +150,7 @@ export class OrdersController {
   }
 
   // -------------------------
-  // test용 productlist
+  // test용 productList
   @Public()
   @Render('test-product.ejs')
   @Get('product')

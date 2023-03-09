@@ -28,7 +28,6 @@ import { validationSchema } from './config/validationSchema';
 import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
-import { ViewController } from './views/view.controller';
 import { AdminLoginController } from './views/admin-login.controller';
 
 @Module({
@@ -54,16 +53,16 @@ import { AdminLoginController } from './views/admin-login.controller';
     AdminAuthModule,
   ],
   controllers: [
-    // AppController,
+    AppController,
     HealthCheckController,
     AuthController,
     EmailController,
-    ViewController,
+    // ViewController,
     AdminLoginController,
   ],
 
   providers: [
-    // AppService,
+    AppService,
     SmsService,
     AuthService,
     UserService,
