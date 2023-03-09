@@ -29,7 +29,7 @@ import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { ViewController } from './views/view.controller';
-import { AdminLoginController } from './views/admin-login.controller';
+import { AdminLoginController } from './views/admin/admin-login.controller';
 
 
 @Module({

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
+        <div class="container" style="height: 40px; padding: 0">
+          <div class="row" style="width: 100%; background-color: red;margin: 0">
+            <div class="col" style="border: 1px solid black;height: 40px; width: 20%">검색🔍</div>
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="border: 1px solid black;height: 40px; width: 20%" ><button onclick="createNotice()">작성➕</button></div>  <%} 
+            else if(typeof category !== 'undefined') {%> <div class="col" style="border: 1px solid black;height: 40px; width: 20%" ><button onclick="createCategory()">작성➕</button></div> <%} 
+            else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
+            %>
+          </div>
+        </div>
+      
+      </div>
+   
+    
+</body>
+
+<script>
+
+     function logout() {
+    axios
+        .post('http://localhost:3000/admin/logout'
+        )
+        .then((res) => {
+            // 응답처리
+            alert(res.data)
+            window.location.replace("http://localhost:3000/admin-login")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+}
+
+</script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    
+    <!--상단 메뉴바-->
+<div class="container-fluid" style="height: 40px; position: fixed; top:0; background: #fff; height: 40px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2" style="background: red; height: 40px">관리자</div>
+        <div class="col-md-8" style="background: yellow; height: 40px">개굴상회</div>
+        <div class="col-md-2" style="background: purple; height: 40px"><button onclick="logout()">로그아웃🚪</button></div>
+      </div>
+    </div>
+  </div>
+  <!--본 내용-->
+  <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
+    <div class="container" style="background: #fff;padding: 0">
+      <div id="headerMenu" style="padding: 0">
+        <div class="row">
+          <div class="col-md-3" style="height: 80px; text-align: center; line-height: 80px;">
+            <button class="submit-btn" onclick="location.href='/products'">상품</button>
+          </div>
+          <div class="col-md-3" style="height: 80px; text-align: center; line-height: 80px;">
+            <button class="submit-btn" onclick="location.href='/users'">회원</button>
+          </div>
+          <div class="col-md-3" style="height: 80px; text-align: center; line-height: 80px;">
+            <button class="submit-btn" onclick="location.href='/category'">카테고리</button>
+          </div>
+          <div class="col-md-3" style="height: 80px; text-align: center; line-height: 80px;">
+            <button class="submit-btn" onclick="location.href='/notice'">공지사항</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+    
+</body>
+
+<script>
+  
+function logout() {
+    axios
+        .post('http://localhost:3000/admin/logout'
+        )
+        .then((res) => {
+            // 응답처리
+            alert(res.data)
+            window.location.replace("http://localhost:3000/admin-login")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+}
+     
+
+</script>
+</html>

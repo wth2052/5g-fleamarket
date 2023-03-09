@@ -22,7 +22,7 @@ export class AdminController {
         private jwtService: JwtService) {}
   // 상품정보 가져오기 API
   @Get('/products')
-  @Render('admin-products.ejs')
+  @Render('admin/admin-products.ejs')
   async getProducts() {
     try{
       return {products : await this.adminService.getProducts()}
@@ -34,7 +34,7 @@ export class AdminController {
 
   //상품정보 상세보기 API
   @Get('/products/:productId')
-  @Render('admin-productById.ejs')
+  @Render('admin/admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
     // 원래: return await this.adminService.getProductById(productId)
   const result = await this.adminService.getProductById(productId)
@@ -52,7 +52,7 @@ export class AdminController {
 
   //회원정보 가져오기 API
   @Get('/users')
-  @Render('admin-users.ejs')
+  @Render('admin/admin-users.ejs')
   async getUsers() {try{
     return {users: await this.adminService.getUsers()} 
   }
@@ -63,7 +63,7 @@ export class AdminController {
 
   //회원정보 상세보기 API
   @Get('/users/:userId')
-  @Render('admin-userById.ejs')
+  @Render('admin/admin-userById.ejs')
   async getUserById(@Param('userId') userId: number) {
     return {user: await this.adminService.getUserById(userId)}
   }
@@ -82,7 +82,7 @@ export class AdminController {
 
   //카테고리 조회 API
   @Get('/category')
-  @Render('admin-category.ejs')
+  @Render('admin/admin-category.ejs')
   async getCategory() {
     try {
     return {category: await this.adminService.getCategory()} 
@@ -94,7 +94,7 @@ export class AdminController {
 
   //카테고리 생성 API
   @Get('/post/category')
-  @Render('admin-categoryPost.ejs')
+  @Render('admin/admin-categoryPost.ejs')
   async viewCategory(){
     return {message: "카테고리 작성 페이지"}
   }
@@ -122,7 +122,7 @@ export class AdminController {
   //공지사항 모두 조회
 
   @Get('/notice')
-  @Render('admin-notices.ejs')
+  @Render('admin/admin-notices.ejs')
  
   async getNotices() 
   {
@@ -137,14 +137,14 @@ export class AdminController {
   //공지사항 상세조회
 
   @Get('/notice/:noticeId')
-  @Render('admin-noticeById.ejs')
+  @Render('admin/admin-noticeById.ejs')
   async getNoticeById(@Param('noticeId') noticeId: number) {
     return {notice: await this.adminService.getNoticeById(noticeId)}
   }
 
   //공지사항 작성
   @Get('/post/notice')
-  @Render('admin-noticePost.ejs')
+  @Render('admin/admin-noticePost.ejs')
   async viewNotice(){
     return {message: "공지작성 페이지"}
   }
