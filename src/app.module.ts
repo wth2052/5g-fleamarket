@@ -1,4 +1,9 @@
-import { CacheModule, MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import {
+  CacheModule,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -6,8 +11,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrmConfig } from './config/orm.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from './user/user.service';
-import { SmsService } from './sms/sms.service';
-import { SmsModule } from './sms/sms.module';
+// import { SmsService } from './sms/sms.service';
+// import { SmsModule } from './sms/sms.module';
 import { AuthService } from './auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from './global/entities/users.entity';
@@ -39,7 +44,7 @@ import { EmailService } from './email/email.service';
       useClass: OrmConfig,
       inject: [ConfigService],
     }),
-    SmsModule,
+    // SmsModule,
     AdminModule,
     OrdersModule,
     LoggingModule,
@@ -55,7 +60,7 @@ import { EmailService } from './email/email.service';
   ],
   providers: [
     AppService,
-    SmsService,
+    // SmsService,
     AuthService,
     UserService,
     JwtService,

@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { SmsService } from 'src/sms/sms.service';
+// import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtDecodeDto } from './dto';
 @Injectable()
