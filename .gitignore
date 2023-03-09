@@ -5,6 +5,7 @@
 /node_modules
 
 # Logs
+out.txt
 logs
 *.log
 npm-debug.log*

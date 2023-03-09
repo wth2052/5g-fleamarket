@@ -31,9 +31,7 @@ import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
-import { ViewController } from './views/view.controller';
 import { AdminLoginController } from './views/admin-login.controller';
-
 
 @Module({
   imports: [
@@ -62,8 +60,7 @@ import { AdminLoginController } from './views/admin-login.controller';
     HealthCheckController,
     AuthController,
     EmailController,
-     ViewController,
-     AdminLoginController
+    AdminLoginController
   ],
 
   providers: [
