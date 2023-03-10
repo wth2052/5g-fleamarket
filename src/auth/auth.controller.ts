@@ -10,6 +10,8 @@ import {
   Req,
   Res,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { UserEntity } from '../global/entities/users.entity';
@@ -19,6 +21,7 @@ import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { Response } from 'express';
 import { UserService } from '../user/user.service';
 import { ConfigService } from '@nestjs/config';
+import { AuthUserDto } from '../user/dto/create-user.dto';
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -37,10 +40,15 @@ export class AuthController {
 
   @Public()
   @UseGuards(LocalAuthGuard)
+  @UsePipes(ValidationPipe)
   @Post('login')
   //이제 Nest 기본 응답 개체와 상호 작용할 수 있지만 (예: 특정 조건에 따라 쿠키 또는 헤더 설정) 나머지는 프레임워크에 맡김
-  async login(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     const user = req.user;
+    console.log(user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
@@ -49,13 +57,15 @@ export class AuthController {
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
-    return user;
   }
 
   // @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('logout')
-  async logOut(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async logOut(
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     const { accessOption, refreshOption } =
       this.authService.getCookiesForLogOut();
     await this.userService.removeRefreshToken(req.user.id);
@@ -64,15 +74,19 @@ export class AuthController {
   }
 
   @Public()
+  @UsePipes(ValidationPipe)
   @Post('signup')
-  async register(@Body() user: UserEntity): Promise<any> {
-    return this.authService.register(user);
+  async register(@Body() user: AuthUserDto): Promise<void> {
+    return await this.authService.register(user);
   }
 
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
-  refresh(@Req() req, @Res({ passthrough: true }) res: Response) {
+  refresh(
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<void> {
     const user = req.user;
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);

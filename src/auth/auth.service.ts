@@ -14,6 +14,11 @@ import { HttpService } from '@nestjs/axios';
 import { CreateUserDto } from 'src/user/dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import {
+  AuthUserDto,
+  LoginUserDto,
+  TokenGenerateDto,
+} from '../user/dto/create-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -56,14 +61,19 @@ export class AuthService {
   }
 
   //회원가입, 아이디가 중복일 시 400에러와 함께 transaction rollback을 수행합니다.
-  async register(user: UserEntity) {
+  async register(user: AuthUserDto) {
     const hashedPassword = await bcrypt.hash(user.password, 10);
+    console.log(hashedPassword);
     try {
-      const { password, ...returnUser } = await this.userService.create({
-        ...user,
+      const { email, nickname, phone, address } = user;
+      const createdUser = await this.userRepository.create({
+        email,
         password: hashedPassword,
+        nickname,
+        phone,
+        address,
       });
-      return returnUser;
+      await this.userRepository.insert(createdUser);
     } catch (error) {
       if (error?.code === 'ER_DUP_ENTRY') {
         throw new HttpException(
@@ -74,8 +84,13 @@ export class AuthService {
     }
   }
   //payload 에서 유저의 아이디 이메일 닉네임을 가져와 Access token을 발행합니다.
-  getCookieWithJwtAccessToken(user: UserEntity) {
-    const payload = { id: user.id, email: user.email, nickname: user.nickname };
+  getCookieWithJwtAccessToken(user: TokenGenerateDto) {
+    const payload = {
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      address: user.address,
+    };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
       expiresIn: `${this.configService.get(
@@ -94,7 +109,7 @@ export class AuthService {
     };
   }
   //payload 에서 유저의 아이디를 가져와  Refresh token을 발행합니다.
-  getCookieWithJwtRefreshToken(user: UserEntity) {
+  getCookieWithJwtRefreshToken(user: TokenGenerateDto) {
     const payload = { id: user.id };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
