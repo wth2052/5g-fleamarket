@@ -13,6 +13,7 @@ import {
   Catch,
   HttpException,
   NotFoundException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -23,6 +24,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
+import { number } from 'joi';
 @UseGuards(JwtAuthGuard)
 @Catch(HttpException)
 @Controller('orders')
@@ -142,7 +144,15 @@ export class OrdersController {
     const userId = jwt.id;
     return this.ordersService.changeDeal(userId, orderId, data.price);
   }
-
+  // 제시한 Deal 삭제하기
+  @Delete('dealCancel/:orderId')
+  cancelDeal(
+    @Cookies('Authentication') jwt: JwtDecodeDto,
+    @Param('orderId') orderId: number,
+  ) {
+    const userId = jwt.id;
+    return this.ordersService.cancelDeal(userId, orderId);
+  }
   // -------------------------
   // test용 productList
   @Public()
