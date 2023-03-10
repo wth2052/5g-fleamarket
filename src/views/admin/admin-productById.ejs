@@ -58,6 +58,14 @@
     width: 100%;
     padding-bottom: 100px;
 }
+
+.footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
 </style>
 <body>
         <%- include('admin-header.ejs')%>
@@ -98,7 +106,7 @@
           <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="border: 1px solid black; height: 40px; width: 20%"><button onclick = "deleteProduct(`<%= product.id %>`)">삭제하기</button></div>
+            <div class="col" style="border: 1px solid black; height: 40px; width: 20%"><button class="footer-btn" onclick = "deleteProduct(`<%= product.id %>`)">삭제하기</button></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
           </div>

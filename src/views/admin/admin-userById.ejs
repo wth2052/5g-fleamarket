@@ -20,6 +20,27 @@
   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+<style>
+
+.col-md-9 > h3{
+  display: inline-block;
+   border: 1px solid red;
+   padding: 5px;
+  width:300px;
+}
+
+.col-md-9 > h4{
+  display: inline-block;  
+}
+
+.footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
+</style>
 <body>
     
         <%- include('admin-header.ejs')%>
@@ -29,14 +50,15 @@
 
         <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
             <div class="row">  
-                <div class="col-md-9">  
-
-                    nickname: <%= user.nickname %> <br>
-                    email: <%= user.email %> <br>
-                    phone: <%= user.phone %> <br>
-                    address: <%= user.address %> <br>
-                    <% if (user.ban === 1) {%> ban status: 블랙리스트 <%} %>
-        
+                
+                <div class="col-md-9" style="border: 1px solid red; margin-left:12%; height:500px; padding-top: 50px; padding-left: 20%;">  
+                    
+                    <h4>닉네임:</h4> <h3 style="margin-left: 30px;"><%= user.nickname %> </h3><br>
+                    <h4>이메일:</h4> <h3 style="margin-left: 30px;"><%= user.email %> </h3><br>
+                    <h4>전화번호:</h4> <h3 style="margin-left: 5px;"><%= user.phone %> </h3><br>
+                    <h4>주소:</h4> <h3 style="margin-left: 52px;"><%= user.address %> </h3><br>
+                    <% if (user.ban === 1) {%> <h4>상태:</h4> <h3 style="margin-left: 52px;">블랙리스트</h3><%} %>
+                    
                  </div>  
             </div>  
         </div>   
@@ -47,13 +69,13 @@
      <!-- 하단부 -->
 
      <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
-        <div class="container" style="height: 40px; padding: 0">
-          <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
+        <div class="container" style="height: 40px; padding: 0; border: 1px solid red">
+          <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0;">
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <% if (user.ban === 0) {%> <button onclick = "banUser(`<%= user.id %>`, 1)">블랙리스트 처리하기</button> <%}
-                else if (user.ban === 1) {%> <button onclick = "banUser(`<%= user.id %>`, 0)">블랙리스트 취소하기</button> <%} %><br></div>
+            <div class="col" style="height: 40px; width: 20%"> <% if (user.ban === 0) {%> <button class="footer-btn" onclick = "banUser(`<%= user.id %>`, 1)">밴 하기</button> <%}
+                else if (user.ban === 1) {%> <button class="footer-btn" onclick = "banUser(`<%= user.id %>`, 0)">밴 취소</button> <%} %><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button onclick = "deleteUser(`<%= user.id %>`)">회원정보 삭제</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick = "deleteUser(`<%= user.id %>`)">회원정보 삭제</button><br></div>
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
           </div>
         </div>
@@ -74,7 +96,6 @@
         .then((res) => {
             alert(JSON.stringify(res.data))
             window.location.replace(`/users/${userId}`)
-
         })
         .catch((error) => {
             // 예외처리

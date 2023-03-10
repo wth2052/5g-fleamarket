@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -35,14 +35,19 @@ export class AdminController {
   //상품정보 상세보기 API
   @Get('/products/:productId')
   @Render('admin/admin-productById.ejs')
-  async getProductById(@Param('productId') productId: number) {
-    // 원래: return await this.adminService.getProductById(productId)
+  async getProductById(
+    @Param('productId') productId: number,
+    
+  ) {
+
+       // 원래: return await this.adminService.getProductById(productId)
   const result = await this.adminService.getProductById(productId)
   const product = result.product
   const seller = result.seller
   const category = result.category
     return {product, seller, category}
-  }
+    }
+
 
   //상품 삭제 API
   @Delete('/products/:productId')

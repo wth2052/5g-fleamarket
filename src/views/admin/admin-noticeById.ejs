@@ -21,6 +21,23 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   
 </head>
+<style>
+    .footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
+
+  .col-md-8 > h4 {
+    border: 1px solid red;
+    margin-top: 10px;
+    padding: 5px;
+    
+}
+
+</style>
 <body>
         <%- include('admin-header.ejs')%>
     
@@ -29,10 +46,12 @@
 
         <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
             <div class="row">  
-                <div id="noticeInfo" class="col-md-9">  
-      
-                    title: <%= notice.title %> <br>
-                    description: <%= notice.description %> <br>
+                <div class="col-md-2" id="image-container"></div>  
+                <div id="noticeInfo" class="col-md-8" style="border: 1px solid red;">  
+                    <h3 style="padding-top: 10px;">제목:</h3>
+                     <h4><%= notice.title %></h4> <br>
+                     <h3>내용:</h3>
+                    <h4 ><%= notice.description %></h4> <br>
 
                 </div>  
             </div>  
@@ -48,9 +67,9 @@
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button onclick = "updateCategory(`<%= notice.id %>`)">공지사항 수정</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateCategory(`<%= notice.id %>`)">공지사항 수정</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button onclick ="deleteNotice(`<%= notice.id %>`)">공지사항 삭제</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteNotice(`<%= notice.id %>`)">공지사항 삭제</button><br></div>
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
           </div>
         </div>
