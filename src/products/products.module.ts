@@ -7,12 +7,11 @@ import { UserEntity } from 'src/global/entities/users.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 
-
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CategoriesEntity,UserEntity,ProductsEntity]),
+    TypeOrmModule.forFeature([CategoriesEntity, UserEntity, ProductsEntity]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService, JwtService]
+  providers: [ProductsService, JwtService],
 })
 export class ProductsModule {}
