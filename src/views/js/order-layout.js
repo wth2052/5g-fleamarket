@@ -7,15 +7,17 @@ axios
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                    <div class="container-fluid" onclick="alert('구매진행')" style="border: 1px solid red; margin-top: 20px">
                      <div class="row">
                       <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
                         <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>${res.data.data[i].product.title}</h3>
+                <span style="float: right;"><button onclick="dealUpdate(event)"> 수정하기</button></span>
 <!--                <p>${res.data.data[i].buyerId}</p>-->
                 <h4>${res.data.data[i].deal}원</h4>
+                <span style="float: right;"><button onclick="dealDelete(event)"> 취소하기</button></span>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
                 <span style="float: right;">🎯 ${res.data.data[i].product.dealCount} ❤ ${res.data.data[i].product.likes}</span>
@@ -55,7 +57,7 @@ function mySellProduct() {
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                    <div class="container-fluid" onclick="alert('판매진행')" style="border: 1px solid red; margin-top: 20px">
                      <div class="row">
                       <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
                         <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
@@ -165,7 +167,6 @@ function mySellList() {
   axios
     .get('http://localhost:3000/orders/mySellList')
     .then((res) => {
-      const aa = res.data;
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
         temp += `
@@ -263,4 +264,16 @@ function deal() {
       </div>`;
       document.getElementById('bb').innerHTML = temp;
     });
+}
+
+// 구매내역 -> 딜 수정하기
+function dealUpdate() {
+  event.stopPropagation();
+  alert('dealUpdate');
+}
+
+// 구매내역 -> 딜 삭제하기
+function dealDelete() {
+  event.stopPropagation();
+  alert('dealDelete');
 }
