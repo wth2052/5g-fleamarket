@@ -7,6 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { number } from 'joi';
 import { OrdersEntity } from 'src/global/entities/orders.entity';
 import { ProductsEntity } from 'src/global/entities/products.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
@@ -145,11 +146,12 @@ export class OrdersService {
     const selectOrder = await this.orderRepository.findOne({
       where: { id: orderId, status: 'sale', deleteAt: null },
     });
+    console.log('selectOrder', selectOrder);
     if (!selectOrder) {
       throw new NotFoundException(`${orderId}는 구매할 수 없는 주문입니다.`);
     }
     const product = await this.productRepository.findOne({
-      where: { id: selectOrder.productId, sellerId: userId, status: 'success' },
+      where: { id: selectOrder.productId, sellerId: userId },
     });
     if (!product) {
       throw new ForbiddenException('내가 판매하는 상품이 아닙니다.');
@@ -219,9 +221,9 @@ export class OrdersService {
   }
   async changeDeal(userId: number, orderId: number, data: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId, deleteAt: null },
+      where: { id: orderId },
     });
-
+    console.log('1234', order);
     if (!order) {
       throw new NotFoundException('해당 요청을 찾을수 없습니당');
     }
@@ -232,6 +234,15 @@ export class OrdersService {
       throw new ForbiddenException('장난치지 마세요');
     }
     await this.orderRepository.update({ id: orderId }, { deal: data });
+  }
+  async cancelDeal(userId: number, orderId: number) {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId, buyerId: userId, status: 'sale' },
+    });
+    if (!order) {
+      throw new NotFoundException('해당되는 주문이 없습니다.');
+    }
+    await this.orderRepository.softDelete({ id: orderId });
   }
 
   // -----------------------------
