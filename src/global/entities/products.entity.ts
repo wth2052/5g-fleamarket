@@ -39,14 +39,17 @@ export class ProductsEntity {
   @Column()
   categoryId: number;
 
-  @Column({default:0})
+  @Column({ default: 0 })
   viewCount: number;
 
-  @Column({default:0})
+  @Column({ default: 0 })
   likes: number;
 
   @Column({ default: 'sale' })
   status: string;
+  // 여기 임시수정
+  @Column({ default: 0 })
+  dealCount: number;
 
   @CreateDateColumn()
   createdAt: Date;
