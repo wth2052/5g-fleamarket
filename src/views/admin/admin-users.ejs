@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>회원</title>
+
+  <!--    BootStrap Library-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+      rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+  <!--    JQuery-->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!--    &lt;!&ndash;    JQuery Cookie&ndash;&gt;-->
+  <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>-->
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<style>
+#user-btn{
+    background-color: #05AFF2;
+  }
+
+.col-md-9 > h3{
+  display: inline-block;
+   border: 1px solid red;
+   padding: 5px;
+  width:300px;
+}
+
+.col-md-9 > h4{
+  display: inline-block;
+   
+}
+
+</style>
+<script>
+
+
+</script>
+<body>
+
+  <%- include('admin-header.ejs')%>
+
+<div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
+  <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
+    
+    <% if (typeof errorMessage !== 'undefined') { %>
+            <%= errorMessage %>
+          <% } else if (users) { %>
+
+
+            <% for (var i = 0; i < users.length; i++) { %>
+              <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getUser(`<%=users[i].id %>`)">
+                <div class="row">
+                  
+                    <div class="col-md-9" style="padding: 10px; cursor: pointer;">
+                      <h4>닉네임: </h4>
+                      <h3 style="margin-left: 30px;"> <%= users[i].nickname %></h3>
+                      <br>
+                      <h4>이메일: </h4>
+                      <h3 style="margin-left: 30px;"><%= users[i].email %> </h3 >
+                      <br>
+                      <h4>전화번호: </h4>
+                      <h3 style="margin-left: 7px;">  <%= users[i].phone %></h3>
+                      <br>
+                       
+                    </div>
+                    <div class="col-md-3" id="image-container" style=" margin-top: 100px; border: 1px solid red">
+                      <% if (users[i].ban === 1) {%><span style="float: right;margin-top:45px"> 😡블랙리스트 </span><%} %>
+                    </div>
+                   
+                </div>
+              </div>
+            <% } %>
+
+            
+          <% } %>
+  </div>
+</div>
+
+<!--하단 메뉴바-->
+
+<%- include('admin-footer.ejs')%>
+
+</body>
+
+<script>
+
+    function getUser (userId) {
+        window.location.replace(`http://localhost:3000/users/${userId}`)
+    }
+
+
+
+</script>
+
+</html>

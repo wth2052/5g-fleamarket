@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+    <title>공지</title>
+  
+    <!--    BootStrap Library-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!--    JQuery-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!--    &lt;!&ndash;    JQuery Cookie&ndash;&gt;-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>-->
+  
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<style>
+
+.footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
+
+</style>
+<body>
+
+  <%- include('admin-header.ejs')%>
+
+  <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
+    <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
+
+        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
+            <div class="row">  
+              <div class="col-md-2" id="image-container"></div> 
+              <div class="col-md-8" style="border: 1px solid red; padding-left: 15%; padding-top: 20px; padding-bottom: 17%;" >
+
+                    <h5>제목 : <br></h5>
+                    <input type="text" id="title" value="공지)"> 
+                    <br>
+                    <br>
+                    <h5>내용: <br></h5>
+                    <textarea  id="description" style="width:80%; height: 100%"></textarea>
+                    <!-- <input type="text" id="description"> <br> -->
+                
+                    
+
+                </div>  
+            </div>  
+        </div>   
+
+    </div>  
+  </div>
+
+<!-- 하단부 -->
+
+<div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
+  <div class="container" style="height: 40px; padding: 0">
+    <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
+      <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createNotice()">작성완료</button></div>
+      <div class="col" style="height: 40px; width: 20%"></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
+      <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+    </div>
+  </div>
+
+</body>
+
+<script>
+  function cancle() {
+    window.location.replace("http://localhost:3000/notice")
+  }
+
+  function createNotice() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+
+    axios
+        .post('http://localhost:3000/notice',
+            { title: title, description: description}
+        )
+        .then((res) => {
+            // 응답처리
+            alert(JSON.stringify(res.data))
+            window.location.replace("http://localhost:3000/notice")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+}
+
+</script>
+</html>
