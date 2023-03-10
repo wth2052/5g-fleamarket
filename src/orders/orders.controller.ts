@@ -25,7 +25,6 @@ import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 @UseGuards(JwtAuthGuard)
 @Catch(HttpException)
-
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
