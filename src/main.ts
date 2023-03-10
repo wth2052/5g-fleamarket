@@ -8,7 +8,9 @@ import * as winston from 'winston';
 import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
+
 } from 'nest-winston'
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -32,7 +34,7 @@ async function bootstrap() {
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
   app.setViewEngine('ejs');
   setupSwagger(app);
-  
+
   app.enableCors({
     credentials: true,
   });

@@ -11,15 +11,14 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
 
-
 @Controller()
 @Public()
 @UseGuards(AdminAuthGuard)
-
 export class AdminController {
-
-    constructor(private readonly adminService: AdminService,
-        private jwtService: JwtService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private jwtService: JwtService,
+  ) {}
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
@@ -70,7 +69,7 @@ export class AdminController {
   @Get('/users/:userId')
   @Render('admin/admin-userById.ejs')
   async getUserById(@Param('userId') userId: number) {
-    return {user: await this.adminService.getUserById(userId)}
+    return { user: await this.adminService.getUserById(userId) };
   }
 
   //회원정보 수정(블랙리스트) API
@@ -144,7 +143,7 @@ export class AdminController {
   @Get('/notice/:noticeId')
   @Render('admin/admin-noticeById.ejs')
   async getNoticeById(@Param('noticeId') noticeId: number) {
-    return {notice: await this.adminService.getNoticeById(noticeId)}
+    return { notice: await this.adminService.getNoticeById(noticeId) };
   }
 
   //공지사항 작성
@@ -155,15 +154,20 @@ export class AdminController {
   }
   @Post('/notice')
   async createNotice(
-    @Body() data:CreateNoticeDto,
+    @Body() data: CreateNoticeDto,
     @AdminCookies('accessToken') jwt: string,
-){
-  const decodeToken = this.jwtService.decode(jwt, { json: true }) as { id:number }
-  const adminId = decodeToken.id
+  ) {
+    const decodeToken = this.jwtService.decode(jwt, { json: true }) as {
+      id: number;
+    };
+    const adminId = decodeToken.id;
 
-    return await this.adminService.createNotice(adminId, data.title, data.description);
-}
-
+    return await this.adminService.createNotice(
+      adminId,
+      data.title,
+      data.description,
+    );
+  }
 
   //공지사항 수정
   @Put('/notice/:noticeId')
