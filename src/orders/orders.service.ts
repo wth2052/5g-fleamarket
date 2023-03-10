@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -11,7 +12,7 @@ import { number } from 'joi';
 import { OrdersEntity } from 'src/global/entities/orders.entity';
 import { ProductsEntity } from 'src/global/entities/products.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Like, Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
 @Injectable()
 export class OrdersService {
@@ -251,5 +252,23 @@ export class OrdersService {
     return await this.productRepository.find({
       relations: ['seller'],
     });
+  }
+
+  // 상품검색
+  async productSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const products = await this.productRepository.find({
+        where: { title: Like(`%${search}%`) },
+      });
+      if (products.length === 0) {
+        throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
+      }
+      return products;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 }

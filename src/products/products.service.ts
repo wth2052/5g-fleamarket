@@ -24,9 +24,9 @@ export class ProductsService {
     private categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
-    // @InjectRepository(ProductImagesEntity)
-    // private ProductImagesEntity: Repository<ProductImagesEntity>,
-  ) {}
+  ) // @InjectRepository(ProductImagesEntity)
+  // private ProductImagesEntity: Repository<ProductImagesEntity>,
+  {}
   //사진은 아직 안함, crud먼저
   async getProducts() {
     return await this.productRepository.find({
