@@ -33,6 +33,8 @@ import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { AdminLoginController } from './views/admin-login.controller';
 import { ProductsModule } from './products/products.module';
+import { ProductsController } from './products/products.controller';
+// import { ProductsService } from './products/products.service';
 
 @Module({
   imports: [
@@ -62,7 +64,8 @@ import { ProductsModule } from './products/products.module';
     HealthCheckController,
     AuthController,
     EmailController,
-    AdminLoginController
+    AdminLoginController,
+    // ProductsController
   ],
 
   providers: [
@@ -75,6 +78,8 @@ import { ProductsModule } from './products/products.module';
     HttpModule,
     JwtGoogleStrategy,
     HealthCheckController,
+    // ProductsService,
+    
     // { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })

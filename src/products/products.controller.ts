@@ -34,16 +34,25 @@ export class ProductsController {
   getProducts() {
     return this.productsService.getProducts();
   }
+  
   //상품 상세 생성
   @Public()
   @Get('view/:productId')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
-  상품등록
+  //상품등록 첸드포인트 렌더용 
+  @UseGuards(JwtAuthGuard)
+  @Get('up')
+  @Render('product/products-upload.ejs')
+  createProductForm() {
+    return {};
+  }
+
+  //상품등록/
   @UseGuards(JwtAuthGuard)
   @Post('up')
-  @Render('product/products-upload.ejs')
+  // @Render('product/products-upload.ejs')
   createProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() data: CreateProductDto,
@@ -61,8 +70,6 @@ export class ProductsController {
       userId,
     );
   }
-
-
 
 
 

@@ -13,7 +13,7 @@ import { ProductsEntity } from 'src/global/entities/products.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { DataSource, FindOperator, Repository } from 'typeorm';
-import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+// import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 
 @Injectable()
 export class ProductsService {
@@ -53,7 +53,7 @@ export class ProductsService {
       ],
       relations: ['category', 'seller'],
     });
-
+ 
     if (!product) {
       // product가 null인 경우 예외 처리
       throw new NotFoundException(`Product with ID ${id} not found`);
@@ -126,6 +126,8 @@ export class ProductsService {
       categoryId,
     });
   }
+
+  
   async deleteProduct(id: number, sellerId: number) {
     await this.verifySomething(id, sellerId);
 
