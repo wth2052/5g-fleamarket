@@ -27,6 +27,7 @@ async function bootstrap() {
     //   ],
     // }),
   });
+
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
