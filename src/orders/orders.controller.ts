@@ -13,6 +13,7 @@ import {
   Catch,
   HttpException,
   NotFoundException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -23,9 +24,9 @@ import { JwtService } from '@nestjs/jwt';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
+import { number } from 'joi';
 @UseGuards(JwtAuthGuard)
 @Catch(HttpException)
-
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
@@ -45,7 +46,6 @@ export class OrdersController {
     return { data: data };
   }
   // 제시된 가격목록 보기
-  @UseGuards(JwtAuthGuard)
   @Get('products/:productId')
   async findMyProductsDealCheck(
     @Param('productId') productId: number,
@@ -98,7 +98,6 @@ export class OrdersController {
     return { data: buyer };
   }
   // 내가 구매한 목록
-  @UseGuards(JwtAuthGuard)
   @Get('myBuyList')
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -109,7 +108,6 @@ export class OrdersController {
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
-  @UseGuards(JwtAuthGuard)
   @Get('mySellList')
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -117,7 +115,6 @@ export class OrdersController {
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
-  @UseGuards(JwtAuthGuard)
   @Put('dealAccept/:orderId')
   dealAccept(
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -147,7 +144,15 @@ export class OrdersController {
     const userId = jwt.id;
     return this.ordersService.changeDeal(userId, orderId, data.price);
   }
-
+  // 제시한 Deal 삭제하기
+  @Delete('dealCancel/:orderId')
+  cancelDeal(
+    @Cookies('Authentication') jwt: JwtDecodeDto,
+    @Param('orderId') orderId: number,
+  ) {
+    const userId = jwt.id;
+    return this.ordersService.cancelDeal(userId, orderId);
+  }
   // -------------------------
   // test용 productList
   @Public()
