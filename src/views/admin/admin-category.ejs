@@ -25,6 +25,27 @@
 #category-btn{
     background-color: yellowgreen;
   }
+
+
+  .col-md-8 > h3{
+  display: inline-block;
+   border: 1px solid red;
+   padding: 5px;
+  width:300px;
+}
+
+.col-md-8 > h4{
+  display: inline-block;
+  margin-right:10px;
+   
+}
+
+.category-btn{
+  width:150px;
+    border-radius: 6px;
+    
+}
+
 </style>
 <script>
 
@@ -44,13 +65,14 @@
             <% for (var i = 0; i < category.length; i++) { %>
               <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
                 <div class="row" id="categoryList">
-                    <div class="col-md-9">
-                      <h3>name: <%= category[i].name %></h3>
-                      <p>//</p>
-                      <h4> //</h4>
-                      <span>//</span>
-                      <button onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button>
-                    <button style="float: right;" onclick="deleteCategory(`<%=category[i].id %>`)">삭제</button>
+                  <div class="col-md-2" id="image-container"></div>  
+                  <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;">
+                      <h4>카테고리:</h4>
+                      <h3> <%= category[i].name %></h3>
+                      <br>
+                      <br>
+                      <button class="category-btn" onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button>
+                    <button class="category-btn" style="float: right;" onclick="deleteCategory(`<%=category[i].id %>`)">삭제</button>
                     </div>
                 </div>
               </div>
@@ -73,13 +95,14 @@
         
         document.getElementById("categoryList").innerHTML = "";
         let temp_html = `
-        <div class="col-md-9">
-                      <h3>
-                      name:
-                    <input type="text" id="name" value= "${name}">
-                    </h3>  
-                    <button style="float: left;"onclick ="completeUpdate(${categoryId})">수정완료</button> 
-                    <button style="float: right;" onclick ="cancleUpdate()">취소</button>
+        <div class="col-md-2" id="image-container"></div>  
+                  <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;">
+                      <h4>카테고리:</h4>
+                      <input type="text" id="name" style="height:45px; value= "${name}">
+                      <br>
+                      <br>
+                    <button class="category-btn" style="float: left;" onclick ="completeUpdate(${categoryId})">수정완료</button> 
+                    <button class="category-btn" style="float: right;" onclick ="cancleUpdate()">취소</button>
                     </div>
         `
         document.getElementById("categoryList").innerHTML = temp_html;
@@ -124,6 +147,7 @@
         });
     }    
     }
+
 
 
 

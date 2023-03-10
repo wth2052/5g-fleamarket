@@ -20,6 +20,15 @@
   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+<style>
+  .footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
+</style>
 <body>
 
   <%- include('admin-header.ejs')%>
@@ -29,10 +38,11 @@
 
         <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
             <div class="row">
-                <div class="col-md-9">
-
-                  name: <br>
-                  <input type="text" id="name"> <br>
+              <div class="col-md-2" id="image-container"></div> 
+              <div class="col-md-8" style="border: 1px solid red; padding-left: 20%; padding-bottom: 7%; padding-top: 2%;">
+                  <h3>카테고리:</h3> 
+                  <br>
+                  <h3><input type="text" id="name"></h3>
 
 
                 </div>  
@@ -48,9 +58,9 @@
   <div class="container" style="height: 40px; padding: 0">
     <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
       <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="submit-btn" onclick="createCategory()">작성완료</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createCategory()">작성완료</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="submit-btn" onclick="cancle()">취소</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
       <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
     </div>
   </div>

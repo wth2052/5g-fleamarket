@@ -20,6 +20,17 @@
   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+<style>
+
+.footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    border-radius: 6px;
+    border: 1px;
+  }
+
+</style>
 <body>
 
   <%- include('admin-header.ejs')%>
@@ -29,12 +40,16 @@
 
         <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
             <div class="row">  
-                <div class="col-md-9">
+              <div class="col-md-2" id="image-container"></div> 
+              <div class="col-md-8" style="border: 1px solid red; padding-left: 15%; padding-top: 20px; padding-bottom: 17%;" >
 
-                    title : <br>
-                    <input type="text" id="title"> <br>
-                    description : <br>
-                    <input type="text" id="description"> <br>
+                    <h5>제목 : <br></h5>
+                    <input type="text" id="title" value="공지)"> 
+                    <br>
+                    <br>
+                    <h5>내용: <br></h5>
+                    <textarea  id="description" style="width:80%; height: 100%"></textarea>
+                    <!-- <input type="text" id="description"> <br> -->
                 
                     
 
@@ -51,9 +66,9 @@
   <div class="container" style="height: 40px; padding: 0">
     <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0">
       <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="submit-btn" onclick="createNotice()">작성완료</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createNotice()">작성완료</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="submit-btn" onclick="cancle()">취소</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
       <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
     </div>
   </div>
