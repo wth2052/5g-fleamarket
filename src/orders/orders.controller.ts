@@ -16,14 +16,16 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { JwtDecodeDto } from './dto/jwtdecode-order.dto';
+import { JwtDecodeDto } from '../user/dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
+@UseGuards(JwtAuthGuard)
 @Catch(HttpException)
+
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
@@ -32,7 +34,7 @@ export class OrdersController {
     private readonly jwtService: JwtService,
   ) {}
   // 내가 파는 상품 목록보기
-  @UseGuards(JwtAuthGuard)
+
   @Get('mySellProduct')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -59,10 +61,11 @@ export class OrdersController {
     return { data: data };
   }
   // 내가 가격제시한 상품 목록보기
+
   @Get('myPick')
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
-    console.log('@@@@@@@@@@@@@@@@@', jwt);
     const userId = jwt.id;
+    console.log('유저아디', userId);
     const data = await this.ordersService.findMyPick(userId);
     return { data: data };
   }
@@ -131,6 +134,7 @@ export class OrdersController {
     @Body() data: CreateOrderDto,
   ) {
     const userId = jwt.id;
+    console.log(userId);
     return this.ordersService.postPriceDeal(userId, productId, data.price);
   }
   // 내가 제시한 가격 수정하기

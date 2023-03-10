@@ -17,7 +17,7 @@
     판매자: <%= data[i]?.seller?.nickname %><br/>
     개시날짜: <%= data[i]?.createdAt %><br/>
     <div style="display: none">상품id: <%= data[i]?.id %><br/></div>
-    <button onclick="ProductDetail(<%= data[i]?.id %>)">상세 보기</button><br>
+    <button onclick="ProductDetail(<%= data[i]?.id %>)">가격 제시1</button><br>
     <button onclick="findMyProducts(<%= data[i]?.id %>)">제시된 가격목록 보기</button><br>
 
     ---------------------------------------------------------<br>
@@ -26,7 +26,23 @@
 <script>
 
   function ProductDetail(productId) {
-    window.location.href = `products/${ productId }`;
+    console.log(productId)
+    const aa = prompt('숫자입력해주세여');
+    console.log('aa:', aa)
+    axios
+        .post(`http://localhost:3000/orders/priceDeal/${ productId }`,
+            { price: aa }
+        )
+        .then((res) => {
+            // 응답처리
+            alert("가격제시 테스트 입니댜")
+             window.location.replace(`http://localhost:3000/test`)
+            // window.location.href = `priceDeal/${ productId }`;
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
   }
 
 
