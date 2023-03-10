@@ -48,7 +48,7 @@ async login(adminDto: LoginAdminDto) {
     return {
       accessToken: token,
       message:  `${adminFind.loginId} 관리자님 로그인 하셨습니다`,
-      httpOnly: false,
+      httpOnly: true,
       domain:this.configService.get('COOKIE_DOMAIN'),
       path: '/',
       maxAge:
