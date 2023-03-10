@@ -16,4 +16,8 @@ export class AppController {
   @Get('index')
   @Render('order-layout.ejs')
   async index() {}
+
+  @Get('test')
+  @Render('index.ejs')
+  async test() {}
 }
