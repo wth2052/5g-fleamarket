@@ -42,8 +42,8 @@ export class ProductsController {
   }
   상품등록
   @UseGuards(JwtAuthGuard)
-  @Post('/up')
-  @Render('products-upload.ejs')
+  @Post('up')
+  @Render('product/products-upload.ejs')
   createProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() data: CreateProductDto,
