@@ -75,6 +75,7 @@ export class GoogleLoginUserDto extends PickType(CreateUserDto, [
 export class TokenGenerateDto extends PickType(CreateUserDto, [
   'email',
   'nickname',
+  'address',
 ]) {
   @IsNumber()
   readonly id: number;

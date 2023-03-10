@@ -14,7 +14,11 @@ import { HttpService } from '@nestjs/axios';
 import { CreateUserDto } from 'src/user/dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AuthUserDto, LoginUserDto, TokenGenerateDto } from "../user/dto/create-user.dto";
+import {
+  AuthUserDto,
+  LoginUserDto,
+  TokenGenerateDto,
+} from '../user/dto/create-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -81,7 +85,12 @@ export class AuthService {
   }
   //payload 에서 유저의 아이디 이메일 닉네임을 가져와 Access token을 발행합니다.
   getCookieWithJwtAccessToken(user: TokenGenerateDto) {
-    const payload = { id: user.id, email: user.email, nickname: user.nickname };
+    const payload = {
+      id: user.id,
+      email: user.email,
+      nickname: user.nickname,
+      address: user.address,
+    };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_ACCESS_SECRETKEY'),
       expiresIn: `${this.configService.get(
