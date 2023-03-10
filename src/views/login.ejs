@@ -20,7 +20,6 @@
   function login() {
     const email = document.getElementById('id').value;
     const password = document.getElementById('password').value;
-
     axios
         .post('http://localhost:3000/auth/login',
             { email: email, password: password }
