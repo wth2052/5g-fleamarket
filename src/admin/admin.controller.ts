@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -11,14 +11,19 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
 
+@Catch(HttpException)
 @Controller()
 @Public()
 @UseGuards(AdminAuthGuard)
+
+
 export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private jwtService: JwtService,
   ) {}
+
+
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
