@@ -134,6 +134,7 @@ export class OrdersController {
     @Body() data: CreateOrderDto,
   ) {
     const userId = jwt.id;
+    console.log(userId);
     return this.ordersService.postPriceDeal(userId, productId, data.price);
   }
   // 내가 제시한 가격 수정하기

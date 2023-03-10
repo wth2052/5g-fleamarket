@@ -25,20 +25,13 @@ export class ProductsService {
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
     @InjectRepository(ProductImagesEntity)
-    private ProductImagesEntity: Repository<ProductImagesEntity>
+    private ProductImagesEntity: Repository<ProductImagesEntity>,
   ) {}
   //사진은 아직 안함, crud먼저
   async getProducts() {
     return await this.productRepository.find({
       where: { status: 'sale' },
-      select: [
-        'id',
-        'title',
-        'price',
-        'viewCount',
-        'likes',
-        'createdAt',
-      ]
+      select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
       //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
     }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
   }
@@ -47,15 +40,28 @@ export class ProductsService {
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
-      select: ['id','title','description','price','sellerId','categoryId','viewCount','likes','createdAt',
+      select: [
+        'id',
+        'title',
+        'description',
+        'price',
+        'sellerId',
+        'categoryId',
+        'viewCount',
+        'likes',
+        'createdAt',
       ],
       relations: ['category', 'seller'],
     });
 
-    if (!product) {// product가 null인 경우 예외 처리
+    if (!product) {
+      // product가 null인 경우 예외 처리
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    const {category: { name },seller: { nickname }} = product; 
+    const {
+      category: { name },
+      seller: { nickname },
+    } = product;
     // 카테고리 ID와 이름, 판매자 닉네임 얻기
 
     return {
@@ -76,30 +82,32 @@ export class ProductsService {
     categoryId: number,
     sellerId: number,
   ) {
-    const user = await this.userEntity.findOne({where:{id: sellerId} });
+    const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const category = await this.categoriesRepository.findOne({where:{ id: categoryId }});
+    const category = await this.categoriesRepository.findOne({
+      where: { id: categoryId },
+    });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
-  
+
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
     product.price = price;
     product.category = category;
     product.seller = user;
-  
-    return await this.productRepository.save({
-      title, 
-      description, 
-      price, 
-      category, 
-      sellerId});
-  }
 
+    return await this.productRepository.save({
+      title,
+      description,
+      price,
+      category,
+      sellerId,
+    });
+  }
 
   //얘도 이미지
   async updateProduct(
@@ -119,14 +127,12 @@ export class ProductsService {
       categoryId,
     });
   }
-  async deleteProduct(
-    id: number,
-    sellerId: number,
-    ) {
+  async deleteProduct(id: number, sellerId: number) {
     await this.verifySomething(id, sellerId);
 
     this.productRepository.update(id, {
-      status: 'soldout'});
+      status: 'soldout',
+    });
   }
 
   async verifySomething(id: number, sellerId: number) {
@@ -146,6 +152,4 @@ export class ProductsService {
       );
     }
   }
-
-
 }

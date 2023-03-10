@@ -200,6 +200,22 @@ export class OrdersService {
       buyerId: userId,
       deal: data,
     });
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    const count = product.dealCount;
+    try {
+      await this.productRepository.update(
+        { id: productId },
+        { dealCount: count + 1 },
+      );
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+      console.log(e);
+    } finally {
+      await queryRunner.release();
+    }
   }
   async changeDeal(userId: number, orderId: number, data: number) {
     const order = await this.orderRepository.findOne({
