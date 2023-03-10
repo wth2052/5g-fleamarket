@@ -48,6 +48,64 @@ axios
     document.getElementById('bb').innerHTML = temp;
   });
 
+// // 판매 진행
+// function mySellProduct() {
+//   axios
+//     .get('http://localhost:3000/orders/mySellProduct')
+//     .then((res) => {
+//       console.log(res);
+//       let temp = '';
+//       for (let i = 0; i < res.data.data.length; i++) {
+//         temp += `
+//                     <div class="container-fluid" onclick="location.href='orders/products/${
+//                       res.data.data[i].id
+//                     }'" style="border: 1px solid red; margin-top: 20px">
+//                      <div class="row">
+//                       <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+//                         <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+//                        </div>
+//                     <div class="col-md-9">
+//                 <h3>${res.data.data[i].title}</h3>
+// <!--                <p>${res.data.data[i].buyerId}</p>-->
+//                 <h4>${res.data.data[i].price}원</h4>
+//                 <p>날짜: ${res.data.data[i].createdAt}회</p>
+//                 <span>조회: ${res.data.data[i].viewCount}회</span>
+//                 <span style="float: right;">🎯 ${0} ❤ ${
+//           res.data.data[i].likes
+//         }</span>
+//             </div>
+//         </div>
+//       </div>`;
+//       }
+//       document.getElementById('bb').innerHTML = temp;
+//     })
+//     .catch((error) => {
+//       // 예외처리
+//       if (error.response.status === 401) {
+//         alert('로그인하셔야 합니다.');
+//         window.location.href = '/';
+//         return;
+//       }
+//       let temp = '';
+//       temp += `
+//                     <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+//                      <div class="row">
+//                       <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+//                         <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+//                        </div>
+//                     <div class="col-md-9">
+//                 <h3>구매 진행 상품이 없네용</h3>
+//                 <h4>아직 꾸미기 전입니다.</h4>
+//                 <p>asdfasdfasf</p>
+//                 <span>asdfasdfasf</span>
+//                 <span></span>
+//             </div>
+//         </div>
+//       </div>`;
+//       document.getElementById('bb').innerHTML = temp;
+//     });
+// }
+
 // 판매 진행
 function mySellProduct() {
   axios
@@ -57,9 +115,12 @@ function mySellProduct() {
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
         temp += `
-                    <div class="container-fluid" onclick="alert('판매진행')" style="border: 1px solid red; margin-top: 20px">
+                    <div 
+                      class="container-fluid"
+                      onclick="productDealCheck(${res.data.data[i].id})" 
+                      style="border: 1px solid red; margin-top: 20px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                      <div class="col" style="border-right: 1px solid red; padding: 0">
                         <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -266,14 +327,92 @@ function deal() {
     });
 }
 
-// 구매내역 -> 딜 수정하기
+// 구매진행 -> 딜 수정하기
 function dealUpdate() {
   event.stopPropagation();
   alert('dealUpdate');
 }
 
-// 구매내역 -> 딜 삭제하기
+// 구매진행 -> 딜 삭제하기
 function dealDelete() {
   event.stopPropagation();
   alert('dealDelete');
+}
+
+// 판매진행 -> 상품 딜 목록보기
+function productDealCheck(productId) {
+  axios
+    .get(`http://localhost:3000/orders/products/${productId}`)
+    .then((res) => {
+      console.log(res);
+      let data = res.data.data;
+      let temp = '';
+      for (let i = 0; i < data.length; i++) {
+        temp += `
+                    <div 
+                      class="container-fluid"
+                      style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+<!--                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">-->
+<!--                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />-->
+<!--                       </div>-->
+                    <div class="col-md-9">
+                <h3>Deal : ${data[i].deal}원</h3>
+<!--                <p>${res.data.data[i].buyerId}</p>-->
+<!--                <h4>${res.data.data[i].price}원</h4>-->
+<!--                <p>날짜: ${res.data.data[i].createdAt}회</p>-->
+<!--                <span>조회: ${res.data.data[i].viewCount}회</span>-->
+                    <span style="float: right;">
+                      <button onclick="dealAccept(${data[i].id})">수락하기</button>
+                    </span>
+            </div>
+        </div>
+      </div>`;
+      }
+      document.getElementById('bb').innerHTML = temp;
+    })
+    .catch((error) => {
+      // 예외처리
+      if (error.response.status === 401) {
+        alert('로그인하셔야 합니다.');
+        window.location.href = '/';
+        return;
+      }
+      let temp = '';
+      temp += `
+                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                     <div class="row">
+                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
+                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>구매 진행 상품이 없네용</h3>
+                <h4>아직 꾸미기 전입니다.</h4>
+                <p>asdfasdfasf</p>
+                <span>asdfasdfasf</span>
+                <span></span>
+            </div>
+        </div>
+      </div>`;
+      document.getElementById('bb').innerHTML = temp;
+    });
+}
+
+// 판매자가 거래를 수락해서 거래종료
+function dealAccept(orderId) {
+  console.log(orderId);
+  axios
+    .put(`http://localhost:3000/orders/dealAccept/${orderId}`)
+    .then((res) => {
+      // 응답처리
+      alert('거래가 완료되었습니다.');
+      window.location.replace('http://localhost:3000/index');
+    })
+    .catch((error) => {
+      // 예외처리
+      alert(
+        error.response?.data?.message ||
+          error.response.data.errorMessage.details[0].message,
+      );
+    });
 }
