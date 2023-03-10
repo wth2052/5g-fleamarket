@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  Render,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -29,19 +30,20 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
   //상품목록조회
   @Public()
-  @Get('/')
+  @Get('view')
   getProducts() {
     return this.productsService.getProducts();
   }
   //상품 상세 생성
   @Public()
-  @Get('/:productId')
+  @Get('view/:productId')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
-  //상품등록
+  상품등록
   @UseGuards(JwtAuthGuard)
-  @Post('/')
+  @Post('/up')
+  @Render('products-upload.ejs')
   createProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() data: CreateProductDto,
@@ -59,6 +61,13 @@ export class ProductsController {
       userId,
     );
   }
+
+
+
+
+
+
+
   //상품수정
   @UseGuards(JwtAuthGuard)
   @Put('/:productId')

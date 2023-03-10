@@ -32,6 +32,7 @@ import { EmailModule } from './email/email.module';
 import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { AdminLoginController } from './views/admin-login.controller';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { AdminLoginController } from './views/admin-login.controller';
     SocialModule,
     EmailModule,
     AdminAuthModule,
+    ProductsModule
   ],
   controllers: [
     AppController,
