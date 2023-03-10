@@ -7,6 +7,9 @@
   <body>
     <h1>내가 구매한 목록</h1>
     <div>
+      <% if(!data.length) {%>
+
+
       <% for(let i =0; i < data.length; i++) { %> title :<%= data[i].title %>
       <br />
       상품이름: <%= data[i].product.title %> <br />

@@ -16,6 +16,4 @@ import { UserEntity } from '../global/entities/users.entity';
 // #TODO 복수형으로 바꾸기?
 // TODO : 유저 비밀번호 확인
 @Controller('users')
-export class UserController {
-
-}
+export class UserController {}

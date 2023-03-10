@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
-import { SmsService } from '../sms/sms.service';
+// import { SmsService } from '../sms/sms.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,12 +21,15 @@ import { PassportModule } from '@nestjs/passport';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_ACCESS_SECRETKEY'),
-        signOptions: { expiresIn: configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME') },
+        signOptions: {
+          expiresIn: configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME'),
+        },
       }),
       inject: [ConfigService],
     }),
   ],
-  providers: [UserService, SmsService, AuthService],
+  //SmsService,
+  providers: [UserService, AuthService],
   controllers: [UserController],
 })
 export class UserModule {}
