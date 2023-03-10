@@ -14,10 +14,10 @@ axios
                        </div>
                     <div class="col-md-9">
                 <h3>${res.data.data[i].product.title}</h3>
-                <span style="float: right;"><button onclick="dealUpdate(event)"> 수정하기</button></span>
+                <span style="float: right;"><button onclick="dealUpdate(${res.data.data[i].id})"> 수정하기</button></span>
 <!--                <p>${res.data.data[i].buyerId}</p>-->
                 <h4>${res.data.data[i].deal}원</h4>
-                <span style="float: right;"><button onclick="dealDelete(event)"> 취소하기</button></span>
+                <span style="float: right;"><button onclick="dealDelete(${res.data.data[i].id})"> 취소하기</button></span>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
                 <span style="float: right;">🎯 ${res.data.data[i].product.dealCount} ❤ ${res.data.data[i].product.likes}</span>
@@ -68,9 +68,7 @@ function mySellProduct() {
                 <h4>${res.data.data[i].price}원</h4>
                 <p>날짜: ${res.data.data[i].createdAt}회</p>
                 <span>조회: ${res.data.data[i].viewCount}회</span>
-                <span style="float: right;">🎯 ${0} ❤ ${
-          res.data.data[i].likes
-        }</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -235,9 +233,7 @@ function deal() {
                 <h4>${res.data.data[i].deal}원</h4>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
-                <span style="float: right;">🎯 ${0} ❤ ${
-            res.data.data[i].product.likes
-          }</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes}</span>
             </div>
         </div>
       </div>`;
@@ -267,13 +263,48 @@ function deal() {
 }
 
 // 구매내역 -> 딜 수정하기
-function dealUpdate() {
+function dealUpdate(orderId) {
   event.stopPropagation();
-  alert('dealUpdate');
+  let newDeal = prompt('수정하실 deal 값을 입력하세요');
+  while (isNaN(newDeal) || newDeal === '') {
+    newDeal = prompt('올바르게 입략');
+  }
+  if (newDeal === null) {
+    window.location.reload();
+  }
+  axios
+    .put(`http://localhost:3000/orders/changeDeal/${orderId}`, {
+      price: newDeal,
+    })
+    .then((res) => {
+      alert('수정완료F');
+      window.location.reload();
+    })
+    .catch((error) => {
+      if (error.response.status === 404) {
+        alert('주문이 없습니다.');
+      } else if (error.response.status === 403) {
+        alert('다른사람의 딜 입니다.');
+      }
+    });
 }
 
 // 구매내역 -> 딜 삭제하기
-function dealDelete() {
+function dealDelete(orderId) {
   event.stopPropagation();
-  alert('dealDelete');
+  axios
+    .delete(`http://localhost:3000/orders/dealCancel/${orderId}`)
+    .then((res) => {
+      alert('선택하신 deal이 삭제됬습니다.');
+      window.location.reload();
+    })
+    .catch((error) => {
+      if (error.response.status === 401) {
+        alert('로그인하셔야 합니다.');
+        window.location.href = '/';
+        return;
+      } else if (error.response.status === 404) {
+        alert('선택하신 deal은 없는 deal 입니다.');
+      }
+    });
 }
