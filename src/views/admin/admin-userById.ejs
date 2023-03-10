@@ -70,7 +70,7 @@
 
      <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
         <div class="container" style="height: 40px; padding: 0; border: 1px solid red">
-          <div class="row" id="noticeFooter"style="width: 100%; background-color: red;margin: 0;">
+          <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0;">
             <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"> <% if (user.ban === 0) {%> <button class="footer-btn" onclick = "banUser(`<%= user.id %>`, 1)">밴 하기</button> <%}
                 else if (user.ban === 1) {%> <button class="footer-btn" onclick = "banUser(`<%= user.id %>`, 0)">밴 취소</button> <%} %><br></div>

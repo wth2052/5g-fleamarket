@@ -33,13 +33,13 @@
     margin-left: 25%;
     margin-top: 4%;
     align-content: center;
-    background-color: salmon;
+    background-color: #F2F2F2;
     border-radius: 6px;
-    border: 1px salmon;
+    border: 1px #F2F2F2;
   }
 
   #logout-btn:hover{
-    background-color: rgba(250, 128, 114, 0.804);
+    background-color: #f2f2f2d6;
     border: 1px black;
     box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
@@ -54,9 +54,9 @@
 <div class="container-fluid" style="height: 40px; position: fixed; top:0; background: #fff; height: 40px;">
     <div class="container">
       <div class="row">
-        <div class="col-md-2" style="background: red; height: 40px; text-align: center; line-height: 40px;">관리자</div>
-        <div class="col-md-8" style="background: yellow; height: 40px; text-align: center; line-height: 40px;">개굴상회</div>
-        <div class="col-md-2" style="background: purple; height: 40px;"><input id="logout-btn"  type="button" onclick="logout()" value="로그아웃🚪"></div>
+        <div class="col-md-2" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">관리자</div>
+        <div class="col-md-8" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">개굴상회</div>
+        <div class="col-md-2" style="background: #5CD7F2; height: 40px;"><input id="logout-btn"  type="button" onclick="logout()" value="로그아웃🚪"></div>
       </div>
     </div>
   </div>
@@ -102,6 +102,15 @@ function logout() {
         });
 }
      
+// window.onload = getCookie()
+//     function getCookie(){
+      
+//      const cookie = document.cookie
+//       if (!cookie){
+//         alert('로그인 해야됩니다!')
+//         window.location('/admin-login')
+//       }
+//     }
 
 </script>
 </html>

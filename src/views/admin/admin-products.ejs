@@ -30,7 +30,7 @@
   }
 
   #product-btn{
-    background-color: yellowgreen;
+    background-color: #05AFF2;
   }
 
 .col-md-9 > h3 {
@@ -90,6 +90,16 @@
         window.location.replace(`http://localhost:3000/products/${productId}`)
     }
 
+        
+window.onload = getCookie()
+    function getCookie(){
+      
+     const cookie = document.cookie
+      if (!cookie){
+        alert('로그인 해야됩니다!')
+        window.location('/admin-login')
+      }
+    }
 
 
 </script>
