@@ -37,6 +37,7 @@
     }
     if ( aa === null) {
       window.location.reload();
+      return;
     }
     axios
       .post(`http://localhost:3000/orders/priceDeal/${ productId }`,
@@ -44,8 +45,8 @@
       )
       .then(( res ) => {
         // 응답처리
-        alert("가격제시 테스트 입니댜");
-        window.location.replace(`http://localhost:3000/test`);
+        alert("가격제시가 되었습니당.");
+        window.location.replace(`http://localhost:3000/orders/index`);
         // window.location.href = `priceDeal/${ productId }`;
       })
       .catch(( error ) => {
