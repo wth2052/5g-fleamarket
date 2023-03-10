@@ -20,7 +20,7 @@ import { DeleteProductDto } from './dto/delete-product.dto';
 import { Public } from 'src/global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Cookies } from 'src/global/common/decorator/find-cookie.decorator';
-import { JwtDecodeDto } from 'src/orders/dto/jwtdecode-order.dto';
+import { JwtDecodeDto } from '../user/dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
 
@@ -60,6 +60,7 @@ export class ProductsController {
     );
   }
   //상품수정
+  @UseGuards(JwtAuthGuard)
   @Put('/:productId')
   updateProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -81,6 +82,7 @@ export class ProductsController {
   }
 
   //상품삭제
+  @UseGuards(JwtAuthGuard)
   @Delete(':productId')
   deleteProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -96,6 +98,3 @@ export class ProductsController {
   //상품 좋아요
   //@Post('products/:productId')
 }
-
-
-

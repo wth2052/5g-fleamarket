@@ -42,16 +42,16 @@ export class SocialService {
   ) {}
   async googleLogin(req) {
     console.log('이메일이 될 친구', req.user.email);
-    console.log('닉네임이 될 친구', req.user.nickName);
+    // console.log('닉네임이 될 친구', req.user.nickName);
     console.log('비밀번호가 될 친구', req.user.passWord);
-    console.log('엑세스토큰이 될 친구', req.user.accessToken);
-    console.log('토큰이 될 친구', req.user.refreshToken);
+    // console.log('엑세스토큰이 될 친구', req.user.accessToken);
+    // console.log('토큰이 될 친구', req.user.refreshToken);
     const newUser = new UserEntity();
     newUser.email = req.user.email;
-    newUser.nickname = req.user.nickName;
+    newUser.nickname = '';
     newUser.password = req.user.passWord;
-    newUser.phone = '010-0000-0000';
-    newUser.address = '주소를 수정해주세요';
+    newUser.phone = '';
+    newUser.address = '';
     // this.userRepository
     //   .findOne(req.user.email)
     //   .then((result) => {
