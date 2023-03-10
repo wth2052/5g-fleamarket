@@ -159,7 +159,7 @@ export class AdminService {
   async getNotices() {
     const notices = await this.noticeRepository.find();
     if (notices.length === 0) {
-      throw new NotFoundException('공지사항이 없습니다.');
+      throw new NotFoundException('공지사항이 없습니다.')
     } else {
       return notices;
     }

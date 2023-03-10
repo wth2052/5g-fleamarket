@@ -8,7 +8,9 @@ import * as winston from 'winston';
 import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
-} from 'nest-winston';
+
+} from 'nest-winston'
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
