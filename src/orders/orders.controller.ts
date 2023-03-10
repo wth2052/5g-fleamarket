@@ -45,7 +45,6 @@ export class OrdersController {
     return { data: data };
   }
   // 제시된 가격목록 보기
-  @UseGuards(JwtAuthGuard)
   @Get('products/:productId')
   async findMyProductsDealCheck(
     @Param('productId') productId: number,
@@ -98,7 +97,6 @@ export class OrdersController {
     return { data: buyer };
   }
   // 내가 구매한 목록
-  @UseGuards(JwtAuthGuard)
   @Get('myBuyList')
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -109,7 +107,6 @@ export class OrdersController {
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
-  @UseGuards(JwtAuthGuard)
   @Get('mySellList')
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -117,7 +114,6 @@ export class OrdersController {
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
-  @UseGuards(JwtAuthGuard)
   @Put('dealAccept/:orderId')
   dealAccept(
     @Cookies('Authentication') jwt: JwtDecodeDto,
