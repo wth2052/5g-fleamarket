@@ -24,7 +24,6 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
     });
   }
   async validate(payload: LoginAdminDto, done: VerifiedCallback): Promise<any> {
-    console.log(222, payload.loginId)
 
     const admin = await this.adminAuthService.getAdminById(payload.loginId) 
     if (payload.loginId === undefined) {
