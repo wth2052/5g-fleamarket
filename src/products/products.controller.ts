@@ -41,7 +41,7 @@ export class ProductsController {
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
-  //상품등록 첸드포인트 렌더용 
+  //상품등록 렌더용 
   @UseGuards(JwtAuthGuard)
   @Get('up')
   @Render('product/products-upload.ejs')
@@ -61,6 +61,9 @@ export class ProductsController {
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
     }
+    if (data.price < 0) {
+      throw new BadRequestException('Price should be a positive value');
+    }
     const userId = jwt.id;
     return this.productsService.createProduct(
       data.title,
@@ -70,10 +73,6 @@ export class ProductsController {
       userId,
     );
   }
-
-
-
-
 
   //상품수정
   @UseGuards(JwtAuthGuard)
