@@ -67,6 +67,10 @@ export class SocialService {
     if (userFound) {
       throw Error(
         //TODO: # 추후 로직을 로그인을 시키는 방향으로 수정할 것
+        //TODO: 로그인을 시키는데 여기서 프론트에서 닉네임 휴대폰 주소 세개를 받는 폼 사이트에서
+        //TODO: 못나가게 해야되는데
+        //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
+        //TODO: 입력 안되면 가입 취소
         '이미 가입된 이메일입니다. ',
       );
     }
