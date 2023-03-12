@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SocialService } from './social.service';
 import { Response } from 'express';
@@ -12,9 +12,13 @@ export class SocialController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
-  @Get('')
+  // @Get('')
+  // @UseGuards(AuthGuard('google'))
+  // async googleAuth(@Req() req, @Res({ passthrough: true }) res: Response) {}
+
+  @Get('login')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req, @Res({ passthrough: true }) res: Response) {
+  async googleLogin(@Req() req, @Res({ passthrough: true }) res: Response) {
     const user = req.user;
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
@@ -28,7 +32,12 @@ export class SocialController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    return this.socialService.googleLogin(req);
+  googleAuthRedirect(@Req() req, @Res({ passthrough: true }) res: Response) {
+    console.log(req.existUser);
+    //
+    // if ((req.existUser = true)) {
+    //   res.redirect('/google/login');
+    // }
+    return this.socialService.googleSignup(req);
   }
 }

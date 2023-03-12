@@ -40,7 +40,7 @@ export class SocialService {
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {}
-  async googleLogin(req) {
+  async googleSignup(req) {
     console.log('이메일이 될 친구', req.user.email);
     // console.log('닉네임이 될 친구', req.user.nickName);
     console.log('비밀번호가 될 친구', req.user.passWord);
@@ -65,6 +65,7 @@ export class SocialService {
       where: { email: req.user.email },
     });
     if (user) {
+      const existUser = true;
       // 이쪽으로 빠졌다? DB에 아이디가 이미 있다
       //TODO: # 추후 로직을 로그인을 시키는 방향으로 수정할 것
       //TODO: 로그인을 시키는데 여기서 프론트에서 닉네임 휴대폰 주소 세개를 받는 폼 사이트에서
@@ -72,15 +73,10 @@ export class SocialService {
       //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
       //TODO: 입력 안되면 가입 취소
       //TODO: 토큰 발급해주고 로그인 처리후 리턴시킴(아래로 넘어가면 안됨)
-      console.log('이미 가입된 유저니 로그인 처리 해드릴께염');
-      return this.ifUserExistGoogleLogin(user);
-      // const { accessToken, ...accessOption } =
-      //   this.authService.getCookieWithJwtAccessToken(user);
-      // const { refreshToken, ...refreshOption } =
-      //   this.authService.getCookieWithJwtRefreshToken(user);
-
-      // 토큰 발급은 해줬으니 리턴시켜줘야겠지?
-      return;
+      console.log(
+        '이미 가입된 유저니 로그인 처리 해드릴께염, 근데 다른 api로 가세여',
+      );
+      return existUser;
     }
 
     this.authService
@@ -104,9 +100,5 @@ export class SocialService {
       message: '구글 로그인에 성공하였습니다. 가입되는 정보는 아래와 같습니다.',
       user: req.user,
     };
-  }
-  async ifUserExistGoogleLogin(user) {
-    this.authService.getCookieWithJwtAccessToken(user);
-    this.authService.getCookieWithJwtRefreshToken(user.id);
   }
 }
