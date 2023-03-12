@@ -20,4 +20,8 @@ export class AppController {
   @Get('test')
   @Render('index.ejs')
   async test() {}
+
+  @Get('mypage')
+  @Render('mypage.ejs')
+  async mypage() {}
 }
