@@ -1,26 +1,32 @@
+// import { getTimeAgo } from './main-header.js';
+// getTimeAgo();
+// import 하면 함수가 깨짐.
+
 // 구매진행
 axios
   .get('http://localhost:3000/orders/myPick')
   .then((res) => {
-    console.log(res.data.data.length !== 0);
-    if (res.data.data.length !== 0) {
+    let data = res.data.data;
+    if (data !== 0) {
       let temp = '';
-      for (let i = 0; i < res.data.data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
+        const timeAgo = getTimeAgo(data[i].product.createdAt);
         temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border: 1px solid red; margin-top: 20px">
+                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${res.data.data[i].product.title}</h3>
-                <span style="float: right;"><button onclick="dealUpdate(${res.data.data[i].id})"> 수정하기</button></span>
-<!--                <p>${res.data.data[i].buyerId}</p>-->
-                <h4>${res.data.data[i].deal}원</h4>
-                <span style="float: right;"><button onclick="dealDelete(${res.data.data[i].id})"> 취소하기</button></span>
-                <p>날짜: ${res.data.data[i].product.createdAt}회</p>
-                <span>조회: ${res.data.data[i].product.viewCount}회</span>
-                <span style="float: right;">🎯 ${res.data.data[i].product.dealCount} ❤ ${res.data.data[i].product.likes}</span>
+                <h3>${data[i].product.title}</h3>
+                <span style="float: right;"><button onclick="dealUpdate(${data[i].id})"> 수정하기</button></span>
+                <h4>${data[i].deal}원</h4>
+                <span style="float: right;"><button onclick="dealDelete(${data[i].id})"> 취소하기</button></span>
+                <h6>${timeAgo}</h6>
+                <span>조회: ${data[i].product.viewCount}회</span>
+                <br>
+                <span style="float: right;">🎯 ${data[i].product.dealCount} ❤ ${data[i].product.likes}</span>
             </div>
         </div>
       </div>`;
@@ -31,10 +37,11 @@ axios
   .catch((error) => {
     let temp = '';
     temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>구매 진행 상품이 없네용</h3>
@@ -53,25 +60,24 @@ function mySellProduct() {
   axios
     .get('http://localhost:3000/orders/mySellProduct')
     .then((res) => {
-      console.log(res);
+      let data = res.data.data;
       let temp = '';
-      for (let i = 0; i < res.data.data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
+        const timeAgo = getTimeAgo(data[i].createdAt);
         temp += `
-                    <div 
-                      class="container-fluid"
-                      onclick="productDealCheck(${res.data.data[i].id})" 
-                      style="border: 1px solid red; margin-top: 20px">
+                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${res.data.data[i].title}</h3>
-<!--                <p>${res.data.data[i].buyerId}</p>-->
-                <h4>${res.data.data[i].price}원</h4>
-                <p>날짜: ${res.data.data[i].createdAt}회</p>
-                <span>조회: ${res.data.data[i].viewCount}회</span>
-                <span style="float: right;">🎯 ${res.data.data[i].dealCount} ❤ ${res.data.data[i].likes}</span>
+                <h3>${data[i].title}</h3>
+<!--                <p>${data[i].buyerId}</p>-->
+                <h4>${data[i].price}원</h4>
+                <h6>${timeAgo}</h6>
+                <span>조회: ${data[i].viewCount}회</span>
+                <span style="float: right;">🎯 ${data[i].dealCount} ❤ ${data[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -87,10 +93,11 @@ function mySellProduct() {
       }
       let temp = '';
       temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                 <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>구매 진행 상품이 없네용</h3>
@@ -110,22 +117,22 @@ function myBuyList() {
   axios
     .get('http://localhost:3000/orders/myBuyList')
     .then((res) => {
+      let data = res.data.data;
       let temp = '';
-      for (let i = 0; i < res.data.data.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                        <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${res.data.data[i].product.title}</h3></br>
-<!--                <p>${res.data.data[i].buyerId}</p>-->
-                <h6>거래일 : ${res.data.data[i].product.updatedAt}</h6>
-                <h4>거래완료 : ${res.data.data[i].deal}원</h4>
-<!--                <span>조회: ${res.data.data[i].product.viewCount}회</span>-->
-<!--                <p>날짜: ${res.data.data[i].product.createdAt}회</p>-->
-                <span style="float: right;">❤${res.data.data[i].product.likes}</span>
+                <h3>${data[i].product.title}</h3></br>
+<!--                <p>${data[i].buyerId}</p>-->
+                <h6>거래일 : ${data[i].product.updatedAt}</h6>
+                <h4>거래완료 : ${data[i].deal}원</h4>
+                <span style="float: right;">❤${data[i].product.likes}</span>
             </div>
         </div>
       </div>`;
@@ -144,10 +151,11 @@ function myBuyList() {
       else if (error.response.status === 404) {
         let temp = '';
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                        <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>구매하신 상품이 없습니다. ㅎㅎㅎ</h3>
@@ -171,10 +179,11 @@ function mySellList() {
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>${res.data.data[i].product.title}</h3></br>
@@ -197,10 +206,11 @@ function mySellList() {
       } else if (error.response.status === 404) {
         let temp = '';
         temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>아직 파신 물건이 없내용</h3>
@@ -225,10 +235,11 @@ function deal() {
         let temp = '';
         for (let i = 0; i < res.data.data.length; i++) {
           temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>${res.data.data[i].product.title}</h3>
@@ -249,10 +260,11 @@ function deal() {
     .catch((error) => {
       let temp = '';
       temp += `
-                    <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">
+                                      <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
-                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">
-                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>구매 진행 상품이 없네용</h3>
@@ -390,4 +402,34 @@ function dealAccept(orderId) {
           error.response.data.errorMessage.details[0].message,
       );
     });
+}
+
+// Date 객체를 사용하여 일정 기간 전인지 계산하는 함수
+function getTimeAgo(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diff = now - date;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  const weeks = Math.floor(diff / 604800000);
+  const months = Math.floor(diff / 2592000000);
+  const years = Math.floor(diff / 31536000000);
+
+  switch (true) {
+    case minutes < 5:
+      return `방금 전`;
+    case hours < 1:
+      return `${minutes}분 전`;
+    case days < 1:
+      return `${hours}시간 전`;
+    case weeks < 1:
+      return `${days}일 전`;
+    case months < 1:
+      return `${weeks}주 전`;
+    case years < 1:
+      return `${months}달 전`;
+    default:
+      return `${years}년 전`;
+  }
 }
