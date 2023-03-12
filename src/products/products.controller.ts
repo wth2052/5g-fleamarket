@@ -93,43 +93,16 @@ export class ProductsController {
     }),
   )
 
-  // @UseInterceptors(
-  //   FilesInterceptor('images', 10, {
-  //     storage: diskStorage({
-  //       destination: './tmp',
-  //       filename: (req, file, cb) => {
-  //         const filename: string = uuidv4();
-  //         const ext: string = file.originalname.split('.').pop();
-  //         cb(null, `${filename}.${ext}`);
-  //         console.log('tmp 이미지 이름 로그', filename);
-  //       },
-  //     }),
-
-  //     fileFilter: (req, file, cb) => {
-  //       try {
-  //         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-  //           req.fileValidationError = 'Only image files are allowed!';
-  //           console.log('이미지가 아닌', file.originalname, '이 제거됨');
-  //           return cb(
-  //             new BadRequestException('Only image files are allowed!'),
-  //             false,
-  //           );
-  //         }
-  //         cb(null, true);
-  //       } catch (error) {
-  //         cb(error, false);
-  //       }
-  //     },
-  //   }),
-  // )
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() payload: any, // payload 타입을 any로 설정합니다
-    @UploadedFiles() images: Array<Express.Multer.File>,
+    @UploadedFiles() rawImages: Record<string, Array<Express.Multer.File>>,
   ) {
     try {
+      let images = rawImages.images;
+
       console.log('Create product called with payload:', payload);
       if (!jwt || !jwt.id) {
         throw new BadRequestException('Invalid JWT');
@@ -157,32 +130,13 @@ export class ProductsController {
         price,
         categoryId,
         userId,
-        // images,
-      );
+      ); 
 
-      const promises = images.map(async (image) => {
+      for (const image of images) {
         const { path, filename } = image;
-        const fileStream = fs.createReadStream(path);
-        console.log("패스", path);
-        const writeStream = fs.createWriteStream(`./uploads/${filename}`);
-        await fileStream.pipe(writeStream);
-        await fs.promises.unlink(path);
-  
-        // productimages.entity에 이미지 파일명 저장
-        await this.ProductImagesService.saveProductImage( product.id, filename);
-      });
+        await this.ProductImagesService.saveProductImage(product.id, path, filename);
+      }
 
-      await Promise.all(promises);
-
-      // 이미지 이동 및 ProductImagesEntity 저장
-
-      // const productImages = await this.ProductImagesService.saveProductImage(
-      //   product.id,
-      //   images
-      // );
-      // console.log(productImages);
-      // console.log("이미지스",images);
-      // console.log('Product created with id:', product.id);
       return product;
     } catch (error) {
       console.log('Error occurred in createProduct:', error);

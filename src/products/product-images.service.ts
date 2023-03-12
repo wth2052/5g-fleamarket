@@ -18,12 +18,15 @@ export class ProductImagesService {
 
   //   // 임시 폴더에서 최종 저장 경로로 파일 이동
   //   await fs.promises.rename(path.join(__dirname, './tmp', images.filename), finalImagePath);
-  async saveProductImage(productId: number, imageFilename: string): Promise<void> {
-    // 이미지 파일을 저장할 경로 설정
-    const finalImagePath = path.join(__dirname, './uploads', imageFilename);
+  async saveProductImage(productId: number, imagePath: string, imageFilename: string): Promise<void> {
+    const tmpImagePath = path.join('.', imagePath);
+    const finalImagePath = path.join('.', 'uploads', imageFilename);
 
-    // 임시 폴더에서 최종 저장 경로로 파일 이동
-    await fs.promises.rename(imageFilename, finalImagePath);
+    // 이미지 이동
+    const fileStream = fs.createReadStream(tmpImagePath);
+    const writeStream = fs.createWriteStream(finalImagePath);
+    fileStream.pipe(writeStream);
+    await fs.promises.unlink(imagePath);
 
     // ProductImagesEntity 인스턴스 생성
     const productImage = new ProductImagesEntity();
@@ -32,6 +35,6 @@ export class ProductImagesService {
 
     // ProductImagesEntity 인스턴스 저장
     await this.productImagesRepository.save(productImage); 
-  } 
+  }
 
 }
