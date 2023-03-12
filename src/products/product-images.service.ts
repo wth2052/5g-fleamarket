@@ -11,11 +11,6 @@ export class ProductImagesService {
     @InjectRepository(ProductImagesEntity)
     private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
-
-  // async saveProductImage(productId: number, images): Promise<void> {
-  //   // 이미지 파일을 저장할 경로 설정
-  //   const finalImagePath = path.join(__dirname, './uploads', images.filename);
-
   //   // 임시 폴더에서 최종 저장 경로로 파일 이동
   //   await fs.promises.rename(path.join(__dirname, './tmp', images.filename), finalImagePath);
   async saveProductImage(productId: number, imagePath: string, imageFilename: string): Promise<void> {
