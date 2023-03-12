@@ -32,7 +32,7 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
       //패스워드는 36진수의 랜덤숫자로 생성되어 저장할 예정
       passWord: Math.random().toString(36).substring(2, 12),
       // picture: photos[0].value,
-      accessToken,
+      // accessToken,
     };
     done(null, user);
   }

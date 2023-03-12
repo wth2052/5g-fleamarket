@@ -61,18 +61,26 @@ export class SocialService {
     //     console.log(err);
     //   });
     //오늘의 TIL감 Promise <pending> 으로 나온다? -> async await을 안붙였다 .. 댕청쓰
-    const userFound = await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       where: { email: req.user.email },
     });
-    if (userFound) {
-      throw Error(
-        //TODO: # 추후 로직을 로그인을 시키는 방향으로 수정할 것
-        //TODO: 로그인을 시키는데 여기서 프론트에서 닉네임 휴대폰 주소 세개를 받는 폼 사이트에서
-        //TODO: 못나가게 해야되는데
-        //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
-        //TODO: 입력 안되면 가입 취소
-        '이미 가입된 이메일입니다. ',
-      );
+    if (user) {
+      // 이쪽으로 빠졌다? DB에 아이디가 이미 있다
+      //TODO: # 추후 로직을 로그인을 시키는 방향으로 수정할 것
+      //TODO: 로그인을 시키는데 여기서 프론트에서 닉네임 휴대폰 주소 세개를 받는 폼 사이트에서
+      //TODO: 못나가게 해야되는데
+      //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
+      //TODO: 입력 안되면 가입 취소
+      //TODO: 토큰 발급해주고 로그인 처리후 리턴시킴(아래로 넘어가면 안됨)
+      console.log('이미 가입된 유저니 로그인 처리 해드릴께염');
+      return this.ifUserExistGoogleLogin(user);
+      // const { accessToken, ...accessOption } =
+      //   this.authService.getCookieWithJwtAccessToken(user);
+      // const { refreshToken, ...refreshOption } =
+      //   this.authService.getCookieWithJwtRefreshToken(user);
+
+      // 토큰 발급은 해줬으니 리턴시켜줘야겠지?
+      return;
     }
 
     this.authService
@@ -91,9 +99,14 @@ export class SocialService {
     if (!req.user) {
       return '정상적인 경로로 가입된 유저가 아닙니다. 서비스 관리자에게 문의해주세요.';
     }
+
     return {
-      message: 'User information from google',
+      message: '구글 로그인에 성공하였습니다. 가입되는 정보는 아래와 같습니다.',
       user: req.user,
     };
+  }
+  async ifUserExistGoogleLogin(user) {
+    this.authService.getCookieWithJwtAccessToken(user);
+    this.authService.getCookieWithJwtRefreshToken(user.id);
   }
 }
