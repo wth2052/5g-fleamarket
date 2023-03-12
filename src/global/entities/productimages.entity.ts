@@ -14,7 +14,7 @@ export class ProductImagesEntity {
   id: string;
 
   @ManyToOne(() => ProductsEntity)
-  productsId: number;
+  productId: number;
 
   @Column()
   imagePath: string;

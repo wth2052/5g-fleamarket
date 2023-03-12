@@ -13,7 +13,13 @@ import { ProductsEntity } from 'src/global/entities/products.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { DataSource, FindOperator, Repository } from 'typeorm';
-// import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+import * as fs from 'fs';
+import * as path from 'path';
+
+
+
+
 
 @Injectable()
 export class ProductsService {
@@ -24,8 +30,8 @@ export class ProductsService {
     private categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
-    // @InjectRepository(ProductImagesEntity)
-    // private ProductImagesEntity: Repository<ProductImagesEntity>,
+    @InjectRepository(ProductImagesEntity)
+    private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
   //사진은 아직 안함, crud먼저
   async getProducts() {
@@ -74,13 +80,15 @@ export class ProductsService {
   }
   //사진은 아직 안함, crud먼저//뭐 더 들어가야함? 모름
 
-  //상품드록, 이미지 여기도 넣어야한다
+  //상품드록, 이미지 여기도 넣어야한다    // images
+
   async createProduct(
     title: string,
     description: string,
     price: number,
     categoryId: number,
     sellerId: number,
+    // images
   ) {
     const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
@@ -98,6 +106,7 @@ export class ProductsService {
     product.price = price;
     product.category = category;
     product.seller = user;
+    // images;
 
     return await this.productRepository.save({
       title,
@@ -153,4 +162,8 @@ export class ProductsService {
       );
     }
   }
+  async createProductImages(images: ProductImagesEntity[]): Promise<ProductImagesEntity[]> {
+    return this.productImagesRepository.save(images);
+  }
+  
 }
