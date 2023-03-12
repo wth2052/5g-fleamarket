@@ -93,7 +93,7 @@ function mySellProduct() {
       }
       let temp = '';
       temp += `
-                 <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                 <div class="container-fluid"  style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
@@ -336,25 +336,18 @@ function productDealCheck(productId) {
       let temp = '';
       for (let i = 0; i < data.length; i++) {
         temp += `
-                    <div 
-                      class="container-fluid"
-                      style="border: 1px solid red; margin-top: 20px">
-                     <div class="row">
-<!--                      <div class="col-md-3" style="border-right: 1px solid red; padding: 0">-->
-<!--                        <img src="img/1296285.jpg" alt="spcFuck" style="width: 100%; margin: 0" />-->
-<!--                       </div>-->
-                    <div class="col-md-9">
-                <h3>Deal : ${data[i].deal}원</h3>
-<!--                <p>${res.data.data[i].buyerId}</p>-->
-<!--                <h4>${res.data.data[i].price}원</h4>-->
-<!--                <p>날짜: ${res.data.data[i].createdAt}회</p>-->
-<!--                <span>조회: ${res.data.data[i].viewCount}회</span>-->
-                    <span style="float: right;">
-                      <button onclick="dealAccept(${data[i].id})">수락하기</button>
-                    </span>
-            </div>
-        </div>
-      </div>`;
+  <div class="container-fluid" style="border: 1px solid red; margin-top: 20px; display: flex">
+      <div class="col-md-6" style="width: 50%;">
+        <h3>Deal : ${data[i].deal}원</h3>
+                <span style="float: right;">
+          <button onclick="dealAccept(${data[i].id})">수락하기</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+`;
       }
       document.getElementById('bb').innerHTML = temp;
     })
