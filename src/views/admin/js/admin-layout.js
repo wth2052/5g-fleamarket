@@ -210,7 +210,6 @@ function updateCategory (categoryId, name) {
                   window.location.href = '/admin/login'
               }}
      )
-      
   }
 
  //카테고리 삭제 
@@ -366,7 +365,7 @@ function cancleCategory() {
             }
             
  // 공지 수정하기 
- function updateCategory (noticeId, title , description) {
+ function updateNotice (noticeId, title , description) {
         
     document.getElementById("noticeInfo").innerHTML = "";
     document.getElementById("noticeFooter").innerHTML = "";
@@ -385,7 +384,7 @@ function cancleCategory() {
     `
     let temp_footer =`
     <div class="col" style="height: 40px; width: 20%"></div>
-        <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick ="completeUpdate(${noticeId})">수정완료</button><br></div>
+        <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick ="completeUpdateNotice(${noticeId})">수정완료</button><br></div>
         <div class="col" style="height: 40px; width: 20%"></div>
         <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="cancleUpdate()">취소</button><br></div>
         <div class="col" style="height: 40px; width: 20%"></div>
@@ -395,7 +394,7 @@ function cancleCategory() {
 }
 
 //공지 수정 완료
-    function completeUpdate(noticeId){
+    function completeUpdateNotice(noticeId){
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         axios
@@ -420,9 +419,16 @@ function cancleCategory() {
 
 //공지 수정 취소
 
-    function cancleUpdate(){
-        window.location.reload()
-    }
+function cancleUpdate(){
+    axios
+    .get('http://localhost:3000/notice')
+    .then((res)=> window.location.reload())
+    .catch((error) => { if (error.response.status === 401) {
+                  alert('로그인하셔야 합니다.');
+                  window.location.href = '/admin/login'
+              }}
+     )
+  }
 
 //공지 삭제 
     function deleteNotice(noticeId){

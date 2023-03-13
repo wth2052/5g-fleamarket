@@ -215,6 +215,8 @@ export class AdminService {
     return { message: '공지가 삭제되었습니다' };
   }
 
+  ///testcode 없음//// 
+
   //상품검색
   async productSearch(search: string) {
     try {
@@ -291,6 +293,7 @@ export class AdminService {
     }
   }
 
+  // 블랙리스트 회원 목록 보기
   async getBanUsers(){
     const banUsers = await this.userRepository.find({where: {ban : 1}});
     if (banUsers.length === 0) {
