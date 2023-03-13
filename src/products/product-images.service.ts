@@ -19,7 +19,13 @@ export class ProductImagesService {
     imageFilename: string,
   ): Promise<void> {
     const tmpImagePath = path.join('.', imagePath);
-    const finalImagePath = path.join('.', 'uploads', imageFilename);
+    const finalImagePath = path.join(
+      '.',
+      'src',
+      'public',
+      'img',
+      imageFilename,
+    );
 
     // 이미지 이동
     const fileStream = fs.createReadStream(tmpImagePath);
@@ -30,7 +36,7 @@ export class ProductImagesService {
     // ProductImagesEntity 인스턴스 생성
     const productImage = new ProductImagesEntity();
     productImage.productId = productId;
-    productImage.imagePath = finalImagePath;
+    productImage.imagePath = imageFilename;
 
     // ProductImagesEntity 인스턴스 저장
     await this.productImagesRepository.save(productImage);
