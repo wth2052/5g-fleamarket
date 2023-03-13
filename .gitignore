@@ -39,5 +39,5 @@ lerna-debug.log*
 
 #이미지 업로드 실험용 이미지들
 
-/uploads
-/tmp
+# /uploads
+# /tmp
