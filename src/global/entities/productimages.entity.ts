@@ -11,7 +11,7 @@ import { ProductsEntity } from './products.entity';
 @Entity({ name: 'productimages' })
 export class ProductImagesEntity {
   length: number;
-  map(arg0: (image: any) => { imagePath: any; }) {
+  map(arg0: (image: any) => { imagePath: any }) {
     throw new Error('Method not implemented.');
   }
   @PrimaryGeneratedColumn()
@@ -28,5 +28,4 @@ export class ProductImagesEntity {
 
   @DeleteDateColumn({ default: null })
   deletedAt?: Date;
-
 }

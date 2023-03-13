@@ -18,8 +18,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
 
-
-
 @Injectable()
 export class ProductsService {
   constructor(
@@ -48,35 +46,46 @@ export class ProductsService {
     // console.log(products[0].images)
 
     return products;
-
   }
-  
-  
-  
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
-      select: ['id','title','description','price','sellerId','categoryId','viewCount','likes','createdAt'],
+      select: [
+        'id',
+        'title',
+        'description',
+        'price',
+        'sellerId',
+        'categoryId',
+        'viewCount',
+        'likes',
+        'createdAt',
+      ],
       relations: ['category', 'seller', 'images'],
     });
-  
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-  
-    const { category: { name }, seller: { nickname } , images: { imagePath }} = product;  
 
-    const images = product.images.map(image => ({ imagePath: image.imagePath }));
+    const {
+      category: { name },
+      seller: { nickname },
+      images: { imagePath },
+    } = product;
 
+    const images = product.images.map((image) => ({
+      imagePath: image.imagePath,
+    }));
 
     return {
       product: {
         ...product,
         category: { name },
         seller: { nickname },
-        images: images
-            },
+        images: images,
+      },
     };
   }
 
@@ -158,5 +167,4 @@ export class ProductsService {
       );
     }
   }
-
 }

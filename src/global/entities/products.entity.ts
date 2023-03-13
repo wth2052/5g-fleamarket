@@ -19,7 +19,8 @@ import { ProductImagesEntity } from './productimages.entity';
 @Entity({ name: 'products' })
 export class ProductsEntity {
   @OneToMany(() => ProductImagesEntity, (images) => images.productId)
-  images: ProductImagesEntity
+  images: ProductImagesEntity;
+
   @PrimaryGeneratedColumn()
   id: number;
 
