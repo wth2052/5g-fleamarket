@@ -53,6 +53,9 @@
     box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
+/* #tq{
+  inner-
+} */
 </style>
 <script>
 
@@ -70,15 +73,15 @@
 
 
             <% for (var i = 0; i < category.length; i++) { %>
-              <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
-                <div class="row" id="categoryList">
+              <div class="container-fluid" style="border: 1px solid rgb(38, 0, 255); margin-top: 20px;" >
+                <div class="row" id="categoryList<%=category[i].id %>">
                   <div class="col-md-2" id="image-container"></div>  
                   <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;">
                       <h4>카테고리:</h4>
-                      <h3> <%= category[i].name %></h3>
+                      <h3 id="cat-name"> <%= category[i].name %></h3>
                       <br>
                       <br>
-                      <button class="category-btn" onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button>
+                      <button class="category-btn" id="updateCategory-btn" onclick="updateCategory(`<%=category[i].id %>`, `<%= category[i].name %>`)">수정</button>
                     <button class="category-btn" style="float: right;" onclick="deleteCategory(`<%=category[i].id %>`)">삭제</button>
                     </div>
                 </div>
@@ -97,26 +100,49 @@
 </body>
 
 <script>
+//   window.onload =getCategory()
+// function getCategory(){
+//    axios
+//   .get('http://localhost:3000/category' )
+//   .then((res)=> {
+//     console.log(res)
+//   })
+// }
+
+
 
     function updateCategory (categoryId, name) {
+      console.log(111, categoryId, name)
         
-        document.getElementById("categoryList").innerHTML = "";
+        document.getElementById(`categoryList${categoryId}`).innerHTML = "";
         let temp_html = `
-        <div class="col-md-2" id="image-container"></div>  
+        
+                <div class="row" id="categoryList${categoryId}">
+                  <div class="col-md-2" id="image-container"></div>  
                   <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;">
-                      <h4>카테고리:</h4>
-                      <input type="text" id="name" style="height:45px; value= "${name}">
+                      <h4>카테고리: </h4>
+                      <input type="text" id="tq" style="height:45px;" value= "${name}">
                       <br>
                       <br>
                     <button class="category-btn" style="float: left;" onclick ="completeUpdate(${categoryId})">수정완료</button> 
                     <button class="category-btn" style="float: right;" onclick ="cancleUpdate()">취소</button>
-                    </div>
-        `
-        document.getElementById("categoryList").innerHTML = temp_html;
+                  </div>
+                </div>
+             
+                    `
+        document.getElementById(`categoryList${categoryId}`).innerHTML = temp_html;
     }
 
     function cancleUpdate(){
-        window.location.reload()
+      axios
+      .get('http://localhost:3000/category')
+      .then((res)=> window.location.reload())
+      .catch((error) => { if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }}
+       )
+        
     }
     function completeUpdate(categoryId){
         const name =  document.getElementById('name').value;
@@ -130,8 +156,13 @@
             window.location.replace("http://localhost:3000/category")
         })
         .catch((error) => {
+          if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin-login'
+                }
+            else{alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);}
             // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+            
         });
     }
 
@@ -150,7 +181,12 @@
         })
         .catch((error) => {
             // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+            if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin-login'
+                }
+              else{ alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);}
+           
         });
     }    
     }

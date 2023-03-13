@@ -4,7 +4,7 @@
 
 // 구매진행
 axios
-  .get('http://localhost:3000/orders/myPick')
+  .get('http://localhost:3000/orders/me/pick')
   .then((res) => {
     let data = res.data.data;
     if (data !== 0) {
@@ -58,7 +58,7 @@ axios
 // 판매 진행
 function mySellProduct() {
   axios
-    .get('http://localhost:3000/orders/mySellProduct')
+    .get('http://localhost:3000/orders/me/sell/product')
     .then((res) => {
       let data = res.data.data;
       let temp = '';
@@ -115,7 +115,7 @@ function mySellProduct() {
 // 구매내역
 function myBuyList() {
   axios
-    .get('http://localhost:3000/orders/myBuyList')
+    .get('http://localhost:3000/orders/me/buy/list')
     .then((res) => {
       let data = res.data.data;
       let temp = '';
@@ -174,7 +174,7 @@ function myBuyList() {
 // 판매내역
 function mySellList() {
   axios
-    .get('http://localhost:3000/orders/mySellList')
+    .get('http://localhost:3000/orders/me/sell/list')
     .then((res) => {
       let temp = '';
       for (let i = 0; i < res.data.data.length; i++) {
@@ -228,7 +228,7 @@ function mySellList() {
 
 function deal() {
   axios
-    .get('http://localhost:3000/orders/myPick')
+    .get('http://localhost:3000/orders/me/pick')
     .then((res) => {
       console.log(res.data.data.length !== 0);
       if (res.data.data.length !== 0) {
@@ -290,7 +290,7 @@ function dealUpdate(orderId) {
     window.location.reload();
   }
   axios
-    .put(`http://localhost:3000/orders/changeDeal/${orderId}`, {
+    .put(`http://localhost:3000/orders/deal/change/${orderId}`, {
       price: newDeal,
     })
     .then((res) => {
@@ -310,7 +310,7 @@ function dealUpdate(orderId) {
 function dealDelete(orderId) {
   event.stopPropagation();
   axios
-    .delete(`http://localhost:3000/orders/dealCancel/${orderId}`)
+    .delete(`http://localhost:3000/orders/deal/cancel/${orderId}`)
     .then((res) => {
       alert('선택하신 deal이 삭제됬습니다.');
       window.location.reload();
@@ -382,7 +382,7 @@ function productDealCheck(productId) {
 function dealAccept(orderId) {
   console.log(orderId);
   axios
-    .put(`http://localhost:3000/orders/dealAccept/${orderId}`)
+    .put(`http://localhost:3000/orders/deal/accept/${orderId}`)
     .then((res) => {
       // 응답처리
       alert('거래가 완료되었습니다.');

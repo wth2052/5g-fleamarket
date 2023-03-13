@@ -66,16 +66,16 @@
       <div id="headerMenu" style="padding: 0">
         <div class="row">
           <div class="col-md-3">
-            <input type="button" id="product-btn" class="submit-btn" onclick="location.href='/products'" value="상품">
+            <input type="button" id="product-btn" class="submit-btn" onclick="checkLogin('product')" value="상품">
           </div>
           <div class="col-md-3">
-            <input type="button" id="user-btn" class="submit-btn" onclick="location.href='/users'" value="회원">
+            <input type="button" id="user-btn" class="submit-btn" onclick="checkLogin('user')" value="회원">
           </div>
           <div class="col-md-3" >
-            <input type="button" id="category-btn" class="submit-btn" onclick="location.href='/category'" value="카테고리">
+            <input type="button" id="category-btn" class="submit-btn" onclick="checkLogin('category')" value="카테고리">
           </div>
           <div class="col-md-3">
-            <input type="button" id="notice-btn" class="submit-btn" onclick="location.href='/notice'" value="공지사항">
+            <input type="button" id="notice-btn" class="submit-btn" onclick="checkLogin('notice')" value="공지사항">
           </div>
         </div>
       </div>
@@ -101,6 +101,83 @@ function logout() {
             alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
         });
 }
+
+
+
+function checkLogin(service) {
+
+    if(service === "product") {
+        axios
+            .get('http://localhost:3000/products')
+            .then((res) => {
+              window.location.href = '/products'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+              }
+    else if (service === 'user'){
+      axios
+            .get('http://localhost:3000/users')
+            .then((res) => {
+              window.location.replace('http://localhost:3000/users')
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+    else if(service === "category"){
+      axios
+            .get('http://localhost:3000/category')
+            .then((res) => {
+              window.location.href = '/category'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+    else if(service === "notice"){
+      axios
+            .get('http://localhost:3000/notice')
+            .then((res) => {
+              window.location.href = '/notice'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+              }
+
+
+
+        //         function checkLoginUsers() {
+        // axios
+        //     .get('http://localhost:3000/users')
+        //     .then((res) => {
+        //      console.log(111)
+        //         })
+        //     .catch((error) => {
+        //         // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        //         console.log(error)
+        //         if (error.response.status === 401) {
+        //             alert('로그인하셔야 합니다.');
+        //             window.location.href = '/admin-login'
+        //         }})};
      
 // window.onload = getCookie()
 //     function getCookie(){
