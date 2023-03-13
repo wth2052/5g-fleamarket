@@ -42,6 +42,7 @@ export class ProductsService {
   async getAllProducts() {
     const products = await this.productRepository.find({
       relations: ['category', 'seller', 'images'],
+      order: { updatedAt: 'DESC' },
     });
     const productsWithSellerNickname = products.map((product) => {
       const sellerNickname = product.seller.nickname;
