@@ -10,10 +10,13 @@ import { ProductsEntity } from './products.entity';
 
 @Entity({ name: 'productimages' })
 export class ProductImagesEntity {
+  map(arg0: (image: any) => { imagePath: any; }) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => ProductsEntity)
+  @ManyToOne(() => ProductsEntity, (products) => products.images)
   productId: number;
 
   @Column()

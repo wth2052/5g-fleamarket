@@ -14,9 +14,12 @@ import {
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
 import { OrdersEntity } from './orders.entity';
+import { ProductImagesEntity } from './productimages.entity';
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
+  @OneToMany(() => ProductImagesEntity, (images) => images.productId)
+  images: ProductImagesEntity
   @PrimaryGeneratedColumn()
   id: number;
 

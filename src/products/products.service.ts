@@ -47,28 +47,27 @@ export class ProductsService {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
       select: ['id','title','description','price','sellerId','categoryId','viewCount','likes','createdAt'],
-      relations: ['category', 'seller'],
+      relations: ['category', 'seller', 'images'],
     });
   
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
   
-    const { category: { name }, seller: { nickname } } = product;
+    const { category: { name }, seller: { nickname } , images: { imagePath }} = product;
     console.log("좀 되라 제발",id);
   
-    // ProductImagesService의 ShowMoreImage 메서드를 호출하여
-    // 해당 상품의 이미지 정보를 가져옵니다.
-    const productImages = await this.productImagesService.ShowMoreImage(id);
-    
+
+    const images = product.images.map(image => ({ imagePath: image.imagePath }));
+
 
     return {
       product: {
         ...product,
         category: { name },
         seller: { nickname },
-        productImages, // 이미지 정보를 추가합니다.
-      },
+        images: images
+            },
     };
   }
 
