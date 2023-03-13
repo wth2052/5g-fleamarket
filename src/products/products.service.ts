@@ -33,15 +33,25 @@ export class ProductsService {
     @InjectRepository(ProductImagesEntity)
     private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
-  //사진은 아직 안함, crud먼저
-  async getProducts() {
-    return await this.productRepository.find({
-      where: { status: 'sale' },
-      select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
-      //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
-    }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
-  }
 
+  // async getProducts() {
+  //   return await this.productRepository.find({
+  //     where: { status: 'sale' },
+  //     select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
+  //     //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
+  //   }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
+  // }
+  async getAllProducts() {
+    const products = await this.productRepository.find({
+      relations: ['category', 'seller', 'images'],
+    });
+    console.log(products[0].images)
+
+    return products;
+  }
+  
+  
+  
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
@@ -54,9 +64,7 @@ export class ProductsService {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
   
-    const { category: { name }, seller: { nickname } , images: { imagePath }} = product;
-    console.log("좀 되라 제발",id);
-  
+    const { category: { name }, seller: { nickname } , images: { imagePath }} = product;  
 
     const images = product.images.map(image => ({ imagePath: image.imagePath }));
 

@@ -45,7 +45,7 @@ export class ProductsController {
   @Public()
   @Get('view')
   getProducts() {
-    return this.productsService.getProducts();
+    return this.productsService.getAllProducts();
   }
 
   //상품 상세 보기

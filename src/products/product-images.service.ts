@@ -35,15 +35,17 @@ export class ProductImagesService {
   
   
   async ShowMoreImage(productId: number) {
-    console.log("들어오나?",productId)
+
     const productImages = await this.productImagesRepository.find({
       where: { productId },
       select: ['imagePath'],
     });
-
-    console.log("들어오나2?",productImages)
     return productImages;
   }
-  
 
+
+  async getImagePath(productId: number) {
+    const image = await this.productImagesRepository.findOne({ where: { productId } });
+    return image ? image.imagePath : '이미지 없음';
+  }
 }
