@@ -12,6 +12,7 @@
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
     <!--    Js -->
     <script><%- include('js/order-layout.js') %></script>
     <script><%- include('js/main-header.js') %></script>
@@ -32,23 +33,27 @@
             </div>
             <form onsubmit="return false;">
                 <div class="form-group">
-                    <label for="id" class="form-label mt-4">아이디</label>
-                    <input type="text" class="form-control" id="id" aria-describedby="emailHelp">
+                    <label for="email" class="form-label mt-4">아이디</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="emailHelp">
                 </div>
                 <div class="form-group">
-                    <label class="form-label mt-4" for="inputValid">비밀번호</label>
-                    <input type="password" class="form-control is-valid" id="inputValid">
+                    <label class="form-label mt-4" for="password">비밀번호</label>
+                    <input type="password" class="form-control is-valid" id="password">
                     <div class="valid-feedback"></div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label mt-4" for="inputInvalid">비밀번호 재확인</label>
-                    <input type="password" class="form-control is-invalid" id="inputInvalid">
+                    <label class="form-label mt-4" for="repeatPassword">비밀번호 재확인</label>
+                    <input type="password" class="form-control is-invalid" id="repeatPassword">
                     <!--                    <div class="invalid-feedback">비밀번호가 일치하지 않습니다</div>-->
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1" class="form-label mt-4">이름</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <label for="nickname" class="form-label mt-4">이름</label>
+                    <input type="text" class="form-control" id="nickname" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1" class="form-label mt-4">휴대폰 번호</label>
+                    <input type="number" class="form-control" id="phoneNumber" aria-describedby="phoneNumber">
                 </div>
                 <div class ="addr_wrap">
                     <label class="form-label mt-4">주소</label>
@@ -76,7 +81,7 @@
 
                 </div>
                 <div class="d-grid gap-2">
-                    <button class="btn btn-primary btn-lg" type="button">가입하기</button>
+                    <button class="btn btn-primary btn-lg" type="button" onclick="signUp()">가입하기</button>
                 </div>
 
             </form>
@@ -87,7 +92,9 @@
 
 
 <script>
-
+  let regEmail =/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/; // 이메일 주소 길이까지 확실한 검증
+  let regNickname = /^[가-힣]+$/; // 한글만
+  let regPhone = /^\d{3}-\d{3,4}-\d{4}$/; // 휴대폰 번호
 
   // 우편번호 찾기 화면을 넣을 element
 
@@ -178,10 +185,11 @@
   //   메일 전송
   function sendMail(event) {
     const email = document.getElementById('email').value;
-    let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+
     // 검증에 사용할 정규식
 
-    if(email.match(regExp) != null) {
+    if(email.match(regEmail) != null) {
     } else {
       alert('올바른 형식의 이메일이 아닙니다.')
       return
@@ -192,6 +200,7 @@
       )
     alert('메일이 성공적으로 전송되었습니다. 인증번호의 유효기간은 10분입니다.')
   }
+
   function startTimer() {
   let time = 600; //기준시간 작성
   let min = ""; //분
@@ -209,10 +218,62 @@
     //타임아웃 시
     if (time < 0) {
       clearInterval(x); //setInterval() 실행을 끝냄
-      document.getElementById("mailTimer").innerHTML = "시간초과, 다시 인증을 진행해주세요.";
+      document.getElementById("mailTimer").innerHTML = "시간이 초과되었습니다. 다시 인증을 진행해주세요.";
     }
   }, 1000);
   }
+  function signUp() {
+    let userid = document.getElementById("email")
+    let password = document.getElementById("password");
+    let rptpassword = document.getElementById("repeatPassword");
+    let usernickname = document.getElementById("nickname")
+    let phonenumber = document.getElementById("phoneNumber") // 휴대폰번호
+    let address1 = document.getElementById("address") // 경기 **시 **로
+    let address2 = document.getElementById("detailAddress") // 상세 주소 (유저 입력)
+    let address3 = document.getElementById("extraAddress") // 00동
+    let address4 = document.getElementById("postcode") // 우편번호
+    if (userid.value === "") { //해당 입력값이 없을 경우
+      alert("아이디를 입력해주세요.");
+      userid.focus();
+      return false;
+    }
+    if (password.value === "") {
+      alert("비밀번호를 입력해주세요.");
+      password.focus();
+      return false;
+    }
+    //영+숫+특 6~20자 까지 허용
+    const pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,20}$/;
+    if (!pwdCheck.test(password.value)) {
+      alert("비밀번호는 영문+숫자+특수문자 조합으로 6~20자리까지 사용할 수 있습니다.");
+    password.focus();
+    return false;
+  }
+    if (rptpassword.value !== password.value) {
+      alert("비밀번호가 일치하지 않습니다.");
+      rptpassword.focus();
+      return false;
+    }
+    if (usernickname.value === "") {
+      alert("이름을 입력하세요.");
+      usernickname.focus();
+      return false;
+    }
+    let reg = /^[0-9]+/g; //숫자만 허용
+    if (!reg.test(phonenumber.value)) {
+      alert("전화번호는 숫자만 입력할 수 있습니다.");
+      phonenumber.focus();
+      return false;
+    }
+    if (userid.value === "") {
+      alert("이메일 주소를 입력하세요.");
+      userid.focus();
+      return false;
+    }
+
+  }
+  document.signup.submit()
+  //회원가입
 </script>
 
 
