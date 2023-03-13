@@ -12,7 +12,11 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
-
+  @Public()
+  @Get('view/signup')
+  @Render('signup.ejs')
+  async viewSignup() {
+  }
   @Get('orders/index')
   @Render('order-layout.ejs')
   async index() {}
