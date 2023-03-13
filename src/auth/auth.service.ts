@@ -109,7 +109,7 @@ export class AuthService {
   }
   //payload 에서 유저의 아이디를 가져와  Refresh token을 발행합니다.
   getCookieWithJwtRefreshToken(user: TokenGenerateDto) {
-    const payload = { email: user.email };
+    const payload = { email : user.email };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
       expiresIn: `${this.configService.get(

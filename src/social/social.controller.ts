@@ -28,12 +28,12 @@ export class SocialController {
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
-    console.log(accessToken);
+    console.log('엑토', accessToken);
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user);
-    console.log(refreshToken);
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+    console.log('리토', refreshToken);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
+    res.redirect('/');
   }
 }

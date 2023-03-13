@@ -47,6 +47,8 @@ export class SocialService {
     // console.log('엑세스토큰이 될 친구', req.user.accessToken);
     // console.log('토큰이 될 친구', req.user.refreshToken);
     const newUser = new UserEntity();
+    console.log("야호 아이디",req.id);
+    newUser.id = req.id;
     newUser.email = req.email;
     newUser.nickname = '';
     newUser.password = req.passWord;
@@ -64,11 +66,9 @@ export class SocialService {
     const user = await this.userRepository.findOne({
       where: { email: req.email },
     });
-    console.log("유저유저",user);
+    console.log('유저유저', user);
     if (!user) {
-      console.log(
-        '이미 가입된 유저니 로그인 처리 해드릴께염, 근데 다른 api로 가세여',
-      );
+      console.log('가입처리 진행');
       this.authService
         .register(newUser)
         .then((result) => console.log('회원가입 성공', result))
@@ -83,7 +83,6 @@ export class SocialService {
       //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
       //TODO: 입력 안되면 가입 취소
       //TODO: 토큰 발급해주고 로그인 처리후 리턴시킴(아래로 넘어가면 안됨)
-
     }
 
     //이 함수 내에서 회원가입을 처리해야하는데.. 음..
@@ -98,7 +97,7 @@ export class SocialService {
     }
 
     return {
-      message: '구글 로그인에 성공하였습니다. 가입되는 정보는 아래와 같습니다.',
+      message: '구글 로그인에 성공하였습니다. 로그인 정보는 다음과 같습니다.',
       user: req.user,
     };
   }

@@ -53,8 +53,8 @@ export class AuthController {
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
-      this.authService.getCookieWithJwtRefreshToken(user.id);
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+      this.authService.getCookieWithJwtRefreshToken(user);
+    await this.userService.setCurrentRefreshToken(refreshToken, user);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
   }
