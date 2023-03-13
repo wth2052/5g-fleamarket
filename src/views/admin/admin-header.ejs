@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<style>
+  .col-md-3{
+    height: 80px;  
+    text-align: center; 
+    line-height: 40px;
+  }
+
+  .col-md-3 > input {
+    width: 70%; 
+    height: 50%; 
+    margin-top: 30px;
+    border: 1px solid red;
+    background-color: white;
+    border-radius: 6px;
+  }
+
+  .col-md-3 > input[type="button"]:hover{
+  border-radius: 6px;
+  border: 2px solid red;
+
+   
+    }
+
+  #logout-btn{
+    margin-left: 25%;
+    margin-top: 4%;
+    align-content: center;
+    background-color: #F2F2F2;
+    border-radius: 6px;
+    border: 1px #F2F2F2;
+  }
+
+  #logout-btn:hover{
+    background-color: #f2f2f2d6;
+    border: 1px black;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  /* .logout-btn:hover {
+    background-color: red;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  } */
+</style>
+<body>
+    
+    <!--상단 메뉴바-->
+<div class="container-fluid" style="height: 40px; position: fixed; top:0; background: #fff; height: 40px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">관리자</div>
+        <div class="col-md-8" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">개굴상회</div>
+        <div class="col-md-2" style="background: #5CD7F2; height: 40px;"><input id="logout-btn"  type="button" onclick="logout()" value="로그아웃🚪"></div>
+      </div>
+    </div>
+  </div>
+  <!--본 내용-->
+  <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
+    <div class="container" style="background: #fff;padding: 0">
+      <div id="headerMenu" style="padding: 0">
+        <div class="row">
+          <div class="col-md-3">
+            <input type="button" id="product-btn" class="submit-btn" onclick="checkLogin('product')" value="상품">
+          </div>
+          <div class="col-md-3">
+            <input type="button" id="user-btn" class="submit-btn" onclick="checkLogin('user')" value="회원">
+          </div>
+          <div class="col-md-3" >
+            <input type="button" id="category-btn" class="submit-btn" onclick="checkLogin('category')" value="카테고리">
+          </div>
+          <div class="col-md-3">
+            <input type="button" id="notice-btn" class="submit-btn" onclick="checkLogin('notice')" value="공지사항">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+    
+</body>
+
+<script>
+  
+function logout() {
+    axios
+        .post('http://localhost:3000/admin/logout'
+        )
+        .then((res) => {
+            // 응답처리
+            alert(res.data)
+            window.location.replace("http://localhost:3000/admin-login")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+}
+
+
+
+function checkLogin(service) {
+
+    if(service === "product") {
+        axios
+            .get('http://localhost:3000/products')
+            .then((res) => {
+              window.location.href = '/products'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+              }
+    else if (service === 'user'){
+      axios
+            .get('http://localhost:3000/users')
+            .then((res) => {
+              window.location.replace('http://localhost:3000/users')
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+    else if(service === "category"){
+      axios
+            .get('http://localhost:3000/category')
+            .then((res) => {
+              window.location.href = '/category'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+    else if(service === "notice"){
+      axios
+            .get('http://localhost:3000/notice')
+            .then((res) => {
+              window.location.href = '/notice'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+              }
+
+
+
+        //         function checkLoginUsers() {
+        // axios
+        //     .get('http://localhost:3000/users')
+        //     .then((res) => {
+        //      console.log(111)
+        //         })
+        //     .catch((error) => {
+        //         // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        //         console.log(error)
+        //         if (error.response.status === 401) {
+        //             alert('로그인하셔야 합니다.');
+        //             window.location.href = '/admin-login'
+        //         }})};
+     
+// window.onload = getCookie()
+//     function getCookie(){
+      
+//      const cookie = document.cookie
+//       if (!cookie){
+//         alert('로그인 해야됩니다!')
+//         window.location('/admin-login')
+//       }
+//     }
+
+</script>
+</html>

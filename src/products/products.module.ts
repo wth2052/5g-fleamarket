@@ -9,12 +9,12 @@ import { ProductsService } from './products.service';
 import {ProductImagesService} from './product-images.service';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([CategoriesEntity,UserEntity,ProductsEntity,ProductImagesEntity]),
   ],
   controllers: [ProductsController],
   providers: [ProductsService, JwtService, ProductImagesService]
+
 })
 export class ProductsModule {}

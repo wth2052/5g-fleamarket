@@ -13,11 +13,15 @@ export class AppController {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
 
-  @Get('index')
+  @Get('orders/index')
   @Render('order-layout.ejs')
   async index() {}
 
   @Get('test')
   @Render('index.ejs')
   async test() {}
+
+  @Get('mypage')
+  @Render('mypage.ejs')
+  async mypage() {}
 }

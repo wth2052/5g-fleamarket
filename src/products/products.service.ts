@@ -48,6 +48,7 @@ export class ProductsService {
     // console.log(products[0].images)
 
     return products;
+
   }
   
   

@@ -31,10 +31,8 @@ import { EmailController } from './email/email.controller';
 import { EmailModule } from './email/email.module';
 import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
-import { AdminLoginController } from './views/admin-login.controller';
+import { AdminLoginController } from './views/admin/admin-login.controller';
 import { ProductsModule } from './products/products.module';
-import { ProductsController } from './products/products.controller';
-import { ProductsService } from './products/products.service';
 
 @Module({
   imports: [
@@ -57,7 +55,7 @@ import { ProductsService } from './products/products.service';
     SocialModule,
     EmailModule,
     AdminAuthModule,
-    ProductsModule
+    ProductsModule,
   ],
   controllers: [
     AppController,
@@ -65,7 +63,6 @@ import { ProductsService } from './products/products.service';
     AuthController,
     EmailController,
     AdminLoginController,
-    // ProductsController
   ],
 
   providers: [
