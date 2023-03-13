@@ -47,7 +47,7 @@ export class SocialService {
     // console.log('엑세스토큰이 될 친구', req.user.accessToken);
     // console.log('토큰이 될 친구', req.user.refreshToken);
     const newUser = new UserEntity();
-    console.log("야호 아이디",req.id);
+    console.log('야호 아이디', req.id);
     newUser.id = req.id;
     newUser.email = req.email;
     newUser.nickname = '';

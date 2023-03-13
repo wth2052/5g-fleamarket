@@ -15,8 +15,7 @@ export class AppController {
   @Public()
   @Get('view/signup')
   @Render('signup.ejs')
-  async viewSignup() {
-  }
+  async viewSignup() {}
   @Get('orders/index')
   @Render('order-layout.ejs')
   async index() {}
