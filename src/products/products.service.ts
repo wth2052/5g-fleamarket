@@ -16,14 +16,14 @@ import { DataSource, FindOperator, Repository } from 'typeorm';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 import * as fs from 'fs';
 import * as path from 'path';
-
-
+import { ProductImagesService } from './product-images.service';
 
 
 
 @Injectable()
 export class ProductsService {
   constructor(
+    private productImagesService: ProductImagesService,
     @InjectRepository(ProductsEntity)
     private productRepository: Repository<ProductsEntity>,
     @InjectRepository(CategoriesEntity)
@@ -42,45 +42,35 @@ export class ProductsService {
     }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
   }
 
-  //status: 'sale' 를 status: sale로 바꿔라
+
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
-      select: [
-        'id',
-        'title',
-        'description',
-        'price',
-        'sellerId',
-        'categoryId',
-        'viewCount',
-        'likes',
-        'createdAt',
-      ],
+      select: ['id','title','description','price','sellerId','categoryId','viewCount','likes','createdAt'],
       relations: ['category', 'seller'],
     });
- 
+  
     if (!product) {
-      // product가 null인 경우 예외 처리
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-    const {
-      category: { name },
-      seller: { nickname },
-    } = product;
-    // 카테고리 ID와 이름, 판매자 닉네임 얻기
+  
+    const { category: { name }, seller: { nickname } } = product;
+    console.log("좀 되라 제발",id);
+  
+    // ProductImagesService의 ShowMoreImage 메서드를 호출하여
+    // 해당 상품의 이미지 정보를 가져옵니다.
+    const productImages = await this.productImagesService.ShowMoreImage(id);
+    
 
     return {
       product: {
-        ...product, // 기존 product 속성 복사
-        category: { name }, // name 속성만 가진 category 객체 추가
-        seller: { nickname }, // nickname 속성만 가진 seller 객체 추가
+        ...product,
+        category: { name },
+        seller: { nickname },
+        productImages, // 이미지 정보를 추가합니다.
       },
-    }; //주소추가
+    };
   }
-  //사진은 아직 안함, crud먼저//뭐 더 들어가야함? 모름
-
-  //상품드록, 이미지 여기도 넣어야한다    // images
 
   async createProduct(
     title: string,
@@ -106,7 +96,6 @@ export class ProductsService {
     product.price = price;
     product.category = category;
     product.seller = user;
-    // images;
 
     return await this.productRepository.save({
       title,
@@ -136,7 +125,6 @@ export class ProductsService {
     });
   }
 
-  
   async deleteProduct(id: number, sellerId: number) {
     await this.verifySomething(id, sellerId);
 
@@ -162,8 +150,5 @@ export class ProductsService {
       );
     }
   }
-  async createProductImages(images: ProductImagesEntity[]): Promise<ProductImagesEntity[]> {
-    return this.productImagesRepository.save(images);
-  }
-  
+
 }

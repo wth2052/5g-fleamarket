@@ -48,7 +48,7 @@ export class ProductsController {
     return this.productsService.getProducts();
   }
 
-  //상품 상세 생성
+  //상품 상세 보기
   @Public()
   @Get('view/:productId')
   findProduct(@Param('productId') productId: number) {
@@ -103,7 +103,7 @@ export class ProductsController {
     try {
       let images = rawImages.images;
 
-      console.log('Create product called with payload:', payload);
+      // console.log('Create product called with payload:', payload);
       if (!jwt || !jwt.id) {
         throw new BadRequestException('Invalid JWT');
       }
@@ -121,7 +121,7 @@ export class ProductsController {
       }
 
       const userId = jwt.id;
-      console.log('Creating product for user:', userId);
+      // console.log('Creating product for user:', userId);
       // product 저장
 
       const product = await this.productsService.createProduct(

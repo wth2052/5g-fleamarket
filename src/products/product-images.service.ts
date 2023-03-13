@@ -30,6 +30,18 @@ export class ProductImagesService {
 
     // ProductImagesEntity 인스턴스 저장
     await this.productImagesRepository.save(productImage); 
+
   }
+  
+  
+  async ShowMoreImage(productId: number) {
+    const productImages = await this.productImagesRepository.find({
+      where: { productId },
+      select: ['imagePath'],
+    });
+  
+    return productImages;
+  }
+  
 
 }
