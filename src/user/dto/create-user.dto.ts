@@ -57,8 +57,9 @@ export class AuthUserDto {
   readonly nickname: string;
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[a-zA-Z0-9]*$/, {
-    message: '비밀번호는 영문과 숫자만 사용할 수 있습니다.',
+  @Matches(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,20}$/, {
+    message:
+      '비밀번호는 영문+숫자+특수문자 조합으로 6~20자리까지 사용할 수 있습니다.',
   })
   readonly password: string;
   readonly phone: string;
