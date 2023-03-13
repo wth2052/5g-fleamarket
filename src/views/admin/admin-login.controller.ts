@@ -1,7 +1,7 @@
 import { Controller, Get, Render } from '@nestjs/common';
 import * as skipAuthDecorator from 'src/global/common/decorator/skip-auth.decorator';
 
-@Controller('admin-login')
+@Controller('admin/login')
 export class AdminLoginController {
   @skipAuthDecorator.Public()
   @Get()

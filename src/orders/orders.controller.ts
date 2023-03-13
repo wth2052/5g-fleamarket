@@ -14,6 +14,7 @@ import {
   HttpException,
   NotFoundException,
   NotAcceptableException,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -36,7 +37,7 @@ export class OrdersController {
   ) {}
   // 내가 파는 상품 목록보기
 
-  @Get('mySellProduct')
+  @Get('me/sell/product')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMySell(userId);
@@ -62,7 +63,7 @@ export class OrdersController {
   }
   // 내가 가격제시한 상품 목록보기
 
-  @Get('myPick')
+  @Get('me/pick')
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     console.log('유저아디', userId);
@@ -70,7 +71,7 @@ export class OrdersController {
     return { data: data };
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
-  @Get('buyResult/:orderId')
+  @Get('buy/result/:orderId')
   @Render('order-buyResult.ejs')
   async buyResult(
     @Param('orderId') orderId: number,
@@ -81,7 +82,7 @@ export class OrdersController {
     return { data: data };
   }
   //성사된 거래 구매자 정보보기
-  @Get('sellResult/:orderId')
+  @Get('sell/result/:orderId')
   @Render('order/order-sellResult.ejs')
   async sellResult(
     @Param('orderId') orderId: number,
@@ -98,7 +99,7 @@ export class OrdersController {
     return { data: buyer };
   }
   // 내가 구매한 목록
-  @Get('myBuyList')
+  @Get('me/buy/list')
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const buyList = await this.ordersService.getBuyList(userId);
@@ -108,14 +109,14 @@ export class OrdersController {
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
-  @Get('mySellList')
+  @Get('me/sell/list')
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.getSellList(userId);
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
-  @Put('dealAccept/:orderId')
+  @Put('deal/accept/:orderId')
   dealAccept(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('orderId') orderId: number,
@@ -124,7 +125,7 @@ export class OrdersController {
     return this.ordersService.putdealAccept(userId, orderId);
   }
   // 상품 선택해서 가격 제시하고 주문 테이블에 저장
-  @Post('priceDeal/:productId')
+  @Post('deal/price/:productId')
   postPriceDeal(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
@@ -135,7 +136,7 @@ export class OrdersController {
     return this.ordersService.postPriceDeal(userId, productId, data.price);
   }
   // 내가 제시한 가격 수정하기
-  @Put('changeDeal/:orderId')
+  @Put('deal/change/:orderId')
   changeDeal(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('orderId') orderId: number,
@@ -145,7 +146,7 @@ export class OrdersController {
     return this.ordersService.changeDeal(userId, orderId, data.price);
   }
   // 제시한 Deal 삭제하기
-  @Delete('dealCancel/:orderId')
+  @Delete('deal/cancel/:orderId')
   cancelDeal(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('orderId') orderId: number,
@@ -160,6 +161,14 @@ export class OrdersController {
   @Get('product')
   async productList() {
     const product = await this.ordersService.pl();
+    return { data: product };
+  }
+
+  // 상품검색
+  @Public()
+  @Get('productSearch')
+  async productSearch(@Query('search') search: string) {
+    const product = await this.ordersService.productSearch(search);
     return { data: product };
   }
 }
