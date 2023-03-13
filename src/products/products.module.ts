@@ -6,12 +6,15 @@ import { ProductsEntity } from 'src/global/entities/products.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
+import {ProductImagesService} from './product-images.service';
+import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CategoriesEntity, UserEntity, ProductsEntity]),
+    TypeOrmModule.forFeature([CategoriesEntity,UserEntity,ProductsEntity,ProductImagesEntity]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService, JwtService],
+  providers: [ProductsService, JwtService, ProductImagesService]
+
 })
 export class ProductsModule {}

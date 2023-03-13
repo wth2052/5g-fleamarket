@@ -36,3 +36,8 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+#이미지 업로드 실험용 이미지들
+
+/uploads
+/tmp
