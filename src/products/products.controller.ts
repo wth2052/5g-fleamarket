@@ -67,19 +67,19 @@ export class ProductsController {
     FileFieldsInterceptor([{ name: 'images', maxCount: 3 }], {
       storage: diskStorage({
         destination: (req, file, callback) => {
-          console.log('File upload destination:', './tmp');
+          // console.log('File upload destination:', './tmp');
           callback(null, './tmp');
         },
         filename: (req, file, callback) => {
           const uniqueSuffix = uuidv4();
           const extension = extname(file.originalname);
-          console.log('File upload filename:', `${uniqueSuffix}${extension}`);
+          // console.log('File upload filename:', `${uniqueSuffix}${extension}`);
           callback(null, `${uniqueSuffix}${extension}`);
         },
       }),
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-          console.log('Invalid file type:', file.originalname);
+          // console.log('Invalid file type:', file.originalname);
           return callback(
             new BadRequestException('Only image files are allowed'),
             false,
