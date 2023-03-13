@@ -26,14 +26,15 @@
     background-color: #05AFF2;
   }
 
-.col-md-9 > h3{
+.col-md-8 > h3{
   display: inline-block;
-   border: 1px solid red;
+   border: 1px solid #05AFF2;
    padding: 5px;
   width:300px;
+  border-radius: 4px;
 }
 
-.col-md-9 > h4{
+.col-md-8 > h4{
   display: inline-block;
    
 }
@@ -48,7 +49,7 @@
   <%- include('admin-header.ejs')%>
 
 <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
-  <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
+  <div class="container" style="background: #fff; margin-top: 20px;padding: 0;" id="bb">
     
     <% if (typeof errorMessage !== 'undefined') { %>
             <%= errorMessage %>
@@ -56,10 +57,10 @@
 
 
             <% for (var i = 0; i < users.length; i++) { %>
-              <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" onclick="getUser(`<%=users[i].id %>`)">
+              <div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(`<%=users[i].id %>`)">
                 <div class="row">
-                  
-                    <div class="col-md-9" style="padding: 10px; cursor: pointer;">
+                  <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                    
                       <h4>닉네임: </h4>
                       <h3 style="margin-left: 30px;"> <%= users[i].nickname %></h3>
                       <br>
@@ -68,10 +69,6 @@
                       <br>
                       <h4>전화번호: </h4>
                       <h3 style="margin-left: 7px;">  <%= users[i].phone %></h3>
-                      <br>
-                       
-                    </div>
-                    <div class="col-md-3" id="image-container" style=" margin-top: 100px; border: 1px solid red">
                       <% if (users[i].ban === 1) {%><span style="float: right;margin-top:45px"> 😡블랙리스트 </span><%} %>
                     </div>
                    
@@ -95,6 +92,7 @@
     function getUser (userId) {
         window.location.replace(`http://localhost:3000/users/${userId}`)
     }
+
 
 
 </script>

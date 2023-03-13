@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch, Query} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -192,4 +192,42 @@ export class AdminController {
   deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
+
+// 상품검색
+@Public()
+@Get('productSearch')
+async productSearch(@Query('search') search: string) {
+  const product = await this.adminService.productSearch(search);
+  return { data : product };
 }
+
+
+//회원검색
+@Public()
+@Get('userSearch')
+async userSearch(@Query('search') search: string) {
+  const user = await this.adminService.userSearch(search);
+  return { data : user };
+}
+
+//카테고리 검색
+
+@Public()
+@Get('categorySearch')
+async categorySearch(@Query('search') search: string) {
+  const category = await this.adminService.categorySearch(search);
+  return { data : category };
+}
+
+//공지 검색
+
+@Public()
+@Get('noticeSearch')
+async noticeSearch(@Query('search') search: string) {
+  const notice = await this.adminService.noticeSearch(search);
+  return { data : notice };
+}
+
+}
+
+

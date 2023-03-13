@@ -30,8 +30,14 @@
     border: 1px;
   }
 
+  .footer-btn:hover{
+    background-color: #f2f2f2d6;
+    border: 1px black;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
   .col-md-8 > h4 {
-    border: 1px solid red;
+    border: 1px solid #05AFF2; border-radius: 4px;
     margin-top: 10px;
     padding: 5px;
     
@@ -44,10 +50,10 @@
 <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
     <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
 
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
-            <div class="row">  
+        <div class="container-fluid" style=" margin-top: 20px;" >
+            <div class="row" id="noticeInfo">  
                 <div class="col-md-2" id="image-container"></div>  
-                <div id="noticeInfo" class="col-md-8" style="border: 1px solid red;">  
+                <div  class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px;">  
                     <h3 style="padding-top: 10px;">제목:</h3>
                      <h4><%= notice.title %></h4> <br>
                      <h3>내용:</h3>
@@ -66,11 +72,11 @@
     <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateCategory(`<%= notice.id %>`)">공지사항 수정</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteNotice(`<%= notice.id %>`)">공지사항 삭제</button><br></div>
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
           </div>
         </div>
 
@@ -82,20 +88,25 @@
         document.getElementById("noticeInfo").innerHTML = "";
         document.getElementById("noticeFooter").innerHTML = "";
         let temp_html = `
-        <div>
-        title : <br>
-        <input type="text" id="title" value= "<%= notice.title %>"><br>
-        description : <br>
-        <input type="text" id="description" value= "<%= notice.description %>">
+
+        <div class="col-md-2" id="image-container"></div>  
+        <div class="col-md-8" style="border: 1px solid #05AFF2; border-radius: 3px; padding-left: 15%; padding-top: 20px; padding-bottom: 17%;" >
+            <h5>제목 : <br></h5>
+                    <input type="text" id="title" value="<%= notice.title %>"> 
+                    <br>
+                    <br>
+                    <h5>내용: <br></h5>
+                    <textarea  id="description" style="width:80%; height: 100%"><%= notice.description %></textarea>
+    </div>  
+            </div>  
         
-        </div>
         `
         let temp_footer =`
-        <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button onclick ="completeUpdate(${noticeId})">수정완료</button><br></div>
+        <div class="col" style="height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick ="completeUpdate(${noticeId})">수정완료</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button onclick ="cancleUpdate()">취소</button><br></div>
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="cancleUpdate()">취소</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
         `
         document.getElementById("noticeInfo").innerHTML = temp_html;
         document.getElementById("noticeFooter").innerHTML = temp_footer;

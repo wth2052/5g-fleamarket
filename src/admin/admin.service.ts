@@ -1,5 +1,6 @@
 import {
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,7 +10,7 @@ import { CategoriesEntity } from '../global/entities/categories.entity';
 import { NoticesEntity } from '../global/entities/notices.entity';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { UserEntity } from '../global/entities/users.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like} from 'typeorm';
 
 @Injectable()
 export class AdminService {
@@ -213,4 +214,83 @@ export class AdminService {
     this.noticeRepository.delete(noticeId);
     return { message: '공지가 삭제되었습니다' };
   }
+
+  //상품검색
+  async productSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const products = await this.productRepository.find({
+        where: { title: Like(`%${search}%`) },
+      });
+      if (products.length === 0) {
+        throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
+      }
+      return products;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  //회원 검색
+
+  async userSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const users = await this.userRepository.find({
+        where: { nickname: Like(`%${search}%`) },
+      });
+      if (users.length === 0) {
+        throw new NotFoundException(`검색한 회원이 없습니다.'${search}'`);
+      }
+      return users;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  //카테고리 검색
+
+  async categorySearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const category = await this.categoryRepository.find({
+        where: { name : Like(`%${search}%`) },
+      });
+      if (category.length === 0) {
+        throw new NotFoundException(`검색한 카테고리가 없습니다.'${search}'`);
+      }
+      return category;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+
+  //공지 검색
+
+  async noticeSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const notice = await this.noticeRepository.find({
+        where: { title : Like(`%${search}%`) },
+      });
+      if (notice.length === 0) {
+        throw new NotFoundException(`검색한 공지사항이 없습니다.'${search}'`);
+      }
+      return notice;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+
 }
+

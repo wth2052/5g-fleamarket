@@ -27,11 +27,11 @@
     <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" style="width: 100%; background-color: #79D0F2;margin: 0">
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%">검색🔍</div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="border: 1px solid black;height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNotice()" value="작성➕"></div>  <%} 
-            else if(typeof category !== 'undefined') {%> <div class="col" style="border: 1px solid black;height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategory()" value="작성➕"></div> <%} 
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNotice()" value="작성➕"></div>  <%} 
+            else if(typeof category !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategory()" value="작성➕"></div> <%} 
             else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
             %>
           </div>
@@ -44,20 +44,6 @@
 
 <script>
 
-     function logout() {
-    axios
-        .post('http://localhost:3000/admin/logout'
-        )
-        .then((res) => {
-            // 응답처리
-            alert(res.data)
-            window.location.replace("http://localhost:3000/admin-login")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-}
 
 </script>
 </html>
