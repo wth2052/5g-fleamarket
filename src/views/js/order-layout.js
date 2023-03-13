@@ -20,8 +20,9 @@ axios
                        </div>
                     <div class="col-md-9">
                 <h3>${data[i].product.title}</h3>
+                <h4>상품 가격 : ${data[i].product.price}원</h4>
                 <span style="float: right;"><button onclick="dealUpdate(${data[i].id})"> 수정하기</button></span>
-                <h4>${data[i].deal}원</h4>
+                <h5>제시가격 : ${data[i].deal}원</h5>
                 <span style="float: right;"><button onclick="dealDelete(${data[i].id})"> 취소하기</button></span>
                 <h6>${timeAgo}</h6>
                 <span>조회: ${data[i].product.viewCount}회</span>
@@ -282,9 +283,9 @@ function deal() {
 // 구매진행 -> 딜 수정하기
 function dealUpdate(orderId) {
   event.stopPropagation();
-  let newDeal = prompt('수정하실 deal 값을 입력하세요');
+  let newDeal = prompt('판매자가 제시한 가격보다 높게 제시해주세요!');
   while (isNaN(newDeal) || newDeal === '') {
-    newDeal = prompt('올바르게 입략');
+    newDeal = prompt('올바르게 입력해주세요');
   }
   if (newDeal === null) {
     window.location.reload();
@@ -298,11 +299,7 @@ function dealUpdate(orderId) {
       window.location.reload();
     })
     .catch((error) => {
-      if (error.response.status === 404) {
-        alert('주문이 없습니다.');
-      } else if (error.response.status === 403) {
-        alert('다른사람의 딜 입니다.');
-      }
+      alert(error.response.data.message);
     });
 }
 

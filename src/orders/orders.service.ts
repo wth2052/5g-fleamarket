@@ -223,6 +223,7 @@ export class OrdersService {
   async changeDeal(userId: number, orderId: number, data: number) {
     const order = await this.orderRepository.findOne({
       where: { id: orderId },
+      relations: ['product'],
     });
     console.log('1234', order);
     if (!order) {
@@ -232,7 +233,11 @@ export class OrdersService {
       throw new ForbiddenException('해당 상품이 없습니다.');
     }
     if (data > 1000000000) {
-      throw new ForbiddenException('장난치지 마세요');
+      throw new ForbiddenException('너무 큰 가격입니다. 다시 확인해주세요');
+    }
+    console.log('@@@@@@@@@@@@@@', order.product.price);
+    if (order.product.price > data) {
+      throw new ForbiddenException('판매자가 제시한 가격보다 낮습니다.');
     }
     await this.orderRepository.update({ id: orderId }, { deal: data });
   }
