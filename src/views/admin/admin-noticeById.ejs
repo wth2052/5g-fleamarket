@@ -55,9 +55,9 @@
                 <div class="col-md-2" id="image-container"></div>  
                 <div  class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px;">  
                     <h3 style="padding-top: 10px;">제목:</h3>
-                     <h4><%= notice.title %></h4> <br>
+                     <h4 id="noticeTitle"><%= notice.title %></h4> <br>
                      <h3>내용:</h3>
-                    <h4 ><%= notice.description %></h4> <br>
+                    <h4 id="noticeDes"><%= notice.description %></h4> <br>
 
                 </div>  
             </div>  
@@ -73,7 +73,7 @@
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateCategory(`<%= notice.id %>`)">공지사항 수정</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateCategory(`<%= notice.id %>`, `<%= notice.title %>`, `<%= notice.description %>`)">공지사항 수정</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteNotice(`<%= notice.id %>`)">공지사항 삭제</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
@@ -82,75 +82,6 @@
 
     
 </body>
+<script><%- include('js/admin-layout.js') %></script>
 
-<script>
-    function updateCategory (noticeId) {
-        document.getElementById("noticeInfo").innerHTML = "";
-        document.getElementById("noticeFooter").innerHTML = "";
-        let temp_html = `
-
-        <div class="col-md-2" id="image-container"></div>  
-        <div class="col-md-8" style="border: 1px solid #05AFF2; border-radius: 3px; padding-left: 15%; padding-top: 20px; padding-bottom: 17%;" >
-            <h5>제목 : <br></h5>
-                    <input type="text" id="title" value="<%= notice.title %>"> 
-                    <br>
-                    <br>
-                    <h5>내용: <br></h5>
-                    <textarea  id="description" style="width:80%; height: 100%"><%= notice.description %></textarea>
-    </div>  
-            </div>  
-        
-        `
-        let temp_footer =`
-        <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick ="completeUpdate(${noticeId})">수정완료</button><br></div>
-            <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="cancleUpdate()">취소</button><br></div>
-            <div class="col" style="height: 40px; width: 20%"></div>
-        `
-        document.getElementById("noticeInfo").innerHTML = temp_html;
-        document.getElementById("noticeFooter").innerHTML = temp_footer;
-    }
-
-    function cancleUpdate(){
-        window.location.reload()
-    }
-
-    function completeUpdate(noticeId){
-        const title = document.getElementById('title').value;
-        const description = document.getElementById('description').value;
-        axios
-        .put(`http://localhost:3000/notice/${noticeId}`,
-        { title: title, description: description}
-        )
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data))
-            window.location.replace(`http://localhost:3000/notice/${noticeId}`)
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-    }
-
-    function deleteNotice(noticeId){
-        if(confirm('정말 삭제하시겠습니까?')){ 
-        axios
-        .delete(`/notice/${noticeId}`)
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data.message))
-            window.location.replace("http://localhost:3000/notice")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-    }    
-
-    }
-
-    
-</script>
 </html>

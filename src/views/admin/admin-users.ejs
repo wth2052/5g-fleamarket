@@ -86,15 +86,6 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-
-<script>
-
-    function getUser (userId) {
-        window.location.replace(`http://localhost:3000/users/${userId}`)
-    }
-
-
-
-</script>
+<script><%- include('js/admin-layout.js') %></script>
 
 </html>

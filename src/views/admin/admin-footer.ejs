@@ -30,8 +30,9 @@
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNotice()" value="작성➕"></div>  <%} 
-            else if(typeof category !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategory()" value="작성➕"></div> <%} 
+            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNoticePage()" value="작성➕"></div>  <%} 
+            else if(typeof category !== 'undefined' || typeof errorMessage !== 'undefined' ) {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategoryPage()" value="작성➕"></div> <%} 
+            else if( typeof users !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getBan()" value=" 😡블랙리스트"></div> <%}
             else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
             %>
           </div>

@@ -194,7 +194,7 @@ export class AdminController {
   }
 
 // 상품검색
-@Public()
+
 @Get('productSearch')
 async productSearch(@Query('search') search: string) {
   const product = await this.adminService.productSearch(search);
@@ -203,7 +203,7 @@ async productSearch(@Query('search') search: string) {
 
 
 //회원검색
-@Public()
+
 @Get('userSearch')
 async userSearch(@Query('search') search: string) {
   const user = await this.adminService.userSearch(search);
@@ -212,7 +212,7 @@ async userSearch(@Query('search') search: string) {
 
 //카테고리 검색
 
-@Public()
+
 @Get('categorySearch')
 async categorySearch(@Query('search') search: string) {
   const category = await this.adminService.categorySearch(search);
@@ -221,11 +221,21 @@ async categorySearch(@Query('search') search: string) {
 
 //공지 검색
 
-@Public()
 @Get('noticeSearch')
 async noticeSearch(@Query('search') search: string) {
   const notice = await this.adminService.noticeSearch(search);
   return { data : notice };
+}
+
+// 블랙리스트 모아보기 
+@Get('ban/users')
+async getBanUsers(){
+  try {
+    return {banUsers: await this.adminService.getBanUsers()}
+  }
+catch (error) {
+  return  {errorMessage: error.message} 
+}
 }
 
 }

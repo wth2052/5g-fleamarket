@@ -74,36 +74,11 @@
       <div class="col" style="height: 40px; width: 20%"></div>
       <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createNotice()">작성완료</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancleNotice()">취소</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
     </div>
   </div>
 
 </body>
-
-<script>
-  function cancle() {
-    window.location.replace("http://localhost:3000/notice")
-  }
-
-  function createNotice() {
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-
-    axios
-        .post('http://localhost:3000/notice',
-            { title: title, description: description}
-        )
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/notice")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-}
-
-</script>
+<script><%- include('js/admin-layout.js') %></script>
 </html>

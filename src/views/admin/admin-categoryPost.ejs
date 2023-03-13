@@ -66,35 +66,12 @@
       <div class="col" style="height: 40px; width: 20%"></div>
       <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createCategory()">작성완료</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancleCategory()">취소</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
     </div>
   </div>
 
 </body>
+<script><%- include('js/admin-layout.js') %></script>
 
-<script>
-
-function cancle() {
-    window.location.replace("http://localhost:3000/category")
-  }
-
-  function createCategory() {
-    const name = document.getElementById('name').value;
-    axios
-        .post('http://localhost:3000/category',
-            { name: name}
-        )
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/category")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-}
-
-</script>
 </html>

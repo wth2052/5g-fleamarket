@@ -17,6 +17,7 @@
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+  
 
 </head>
 <style>
@@ -76,7 +77,6 @@
                   </div>
                   <div class="col-md-8" id="products-column" >
                       <h3 > <%= products[i].title %></h3>
-                      <!-- <p>description: <%= products[i].description %></p> -->
                       <h3><%= products[i].price %> 원</h3>
                       <br>
                       <span style="float: right;">❤ <%= products[i].likes %></span>
@@ -101,17 +101,6 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-
-<script>
-
-  function getProduct (productId) {
-        window.location.replace(`http://localhost:3000/products/${productId}`)
-    }
-
-
-        
-
-
-</script>
+<script><%- include('js/admin-layout.js') %></script>
 
 </html>

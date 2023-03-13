@@ -291,6 +291,15 @@ export class AdminService {
     }
   }
 
+  async getBanUsers(){
+    const banUsers = await this.userRepository.find({where: {ban : 1}});
+    if (banUsers.length === 0) {
+      throw new NotFoundException('블랙리스트 회원이 없습니다.');
+    } else {
+      return banUsers;
+    }
+  }
+
 
 }
 

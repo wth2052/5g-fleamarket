@@ -68,19 +68,6 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-
-<script>
-
-function getNotice (noticeId) {
-        window.location.replace(`http://localhost:3000/notice/${noticeId}`)
-    }
-
-    function createNotice(){
-        window.location.replace("http://localhost:3000/post/notice")
-    }
-
-
-
-</script>
+<script><%- include('js/admin-layout.js') %></script>
 
 </html>
