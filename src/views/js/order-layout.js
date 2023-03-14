@@ -12,7 +12,7 @@ axios
       for (let i = 0; i < data.length; i++) {
         const timeAgo = getTimeAgo(data[i].product.createdAt);
         temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                   
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
@@ -325,6 +325,7 @@ function dealDelete(orderId) {
 
 // 판매진행 -> 상품 딜 목록보기
 function productDealCheck(productId) {
+  console.log(productId);
   axios
     .get(`http://localhost:3000/orders/products/${productId}`)
     .then((res) => {
