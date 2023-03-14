@@ -1,6 +1,7 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Param, Query, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './global/common/decorator/skip-auth.decorator';
+import { ProductsService } from './products/products.service';
 
 @Controller()
 export class AppController {
@@ -28,4 +29,11 @@ export class AppController {
   @Get('product/create')
   @Render('product-create.ejs')
   async productCreate() {}
+
+  @Public()
+  @Get('product/detail')
+  // @Render('product-create.ejs')
+  async detail(@Query('productId') productId: number) {
+    return await this.appService.prDetail(productId);
+  }
 }
