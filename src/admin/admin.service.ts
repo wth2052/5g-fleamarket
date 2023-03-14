@@ -28,13 +28,21 @@ export class AdminService {
   ) {}
 
   // 상품정보 가져오기 API
-  async getProducts() {
-    const products = await this.productRepository.find();
+  async getProducts(limit: number, offset:number) {
+    const products = await this.productRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
     } else {
       return products;
     }
+  }
+  async getTotalProducts() {
+    return this.productRepository.count();
   }
 
   //상품정보 상세보기 API
