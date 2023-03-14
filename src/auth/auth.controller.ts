@@ -77,7 +77,7 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('signup')
   async register(@Body() user: AuthUserDto): Promise<void> {
-    return await this.authService.register(user);
+    await this.authService.register(user);
   }
 
   @Public()
