@@ -52,13 +52,14 @@ export class ProductsController {
   //상품 상세 보기
   @Public()
   @Get('view/:productId')
+  @Render('product/products-detail.ejs')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
   //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
   @Get('up')
-  @Render('product/products-upload.ejs')
+  @Render('product/proiducts-upload.ejs')
   createProductForm() {
     return {};
   }

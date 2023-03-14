@@ -18,8 +18,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
 
-
-
 @Injectable()
 export class ProductsService {
   constructor(
@@ -34,51 +32,58 @@ export class ProductsService {
     private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
 
-  // async getProducts() {
-  //   return await this.productRepository.find({
-  //     where: { status: 'sale' },
-  //     select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
-  //     //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
-  //   }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
-  // }
   async getAllProducts() {
     const products = await this.productRepository.find({
       relations: ['category', 'seller', 'images'],
+      order: { updatedAt: 'DESC' },
     });
-  
-    const productsWithSellerNickname = products.map(product => {
+
+    const productsWithSellerNickname = products.map((product) => {
       const sellerNickname = product.seller.nickname;
       return { ...product, seller: { nickname: sellerNickname } };
     });
-  
     return productsWithSellerNickname;
   }
-  
-  
+
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
-      select: ['id','title','description','price','sellerId','categoryId','viewCount','likes','createdAt'],
+      select: [
+        'id',
+        'title',
+        'description',
+        'price',
+        'sellerId',
+        'categoryId',
+        'viewCount',
+        'likes',
+        'createdAt',
+      ],
       relations: ['category', 'seller', 'images'],
     });
-  
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-  
-    const { category: { name }, seller: { nickname } , images: { imagePath }} = product;  
 
-    const images = product.images.map(image => ({ imagePath: image.imagePath }));
+    const {
+      category: { name },
+      seller: { nickname },
+      images: { imagePath },
+    } = product;
 
+    const images = product.images.map((image) => ({
+      imagePath: image.imagePath,
+    }));
 
     return {
       product: {
         ...product,
         category: { name },
         seller: { nickname },
-        images: images
-            },
+        images: images,
+      },
     };
   }
 
@@ -160,5 +165,4 @@ export class ProductsService {
       );
     }
   }
-
 }

@@ -13,11 +13,19 @@ export class ProductImagesService {
   ) {}
   //   // 임시 폴더에서 최종 저장 경로로 파일 이동
   //   await fs.promises.rename(path.join(__dirname, './tmp', images.filename), finalImagePath);
-  async saveProductImage(productId: number, imagePath: string, imageFilename: string): Promise<void> {
+  async saveProductImage(
+    productId: number,
+    imagePath: string,
+    imageFilename: string,
+  ): Promise<void> {
     const tmpImagePath = path.join('.', imagePath);
-    const finalImagePath = path.join('.', 'src','public', imageFilename);//경로에서 폴더명 뺌
-    // const finalImagePath = path.join('.', imageFilename);
-
+    const finalImagePath = path.join(
+      '.',
+      'src',
+      'public',
+      'img',
+      imageFilename,
+    );
 
     // 이미지 이동
     const fileStream = fs.createReadStream(tmpImagePath);
@@ -28,16 +36,13 @@ export class ProductImagesService {
     // ProductImagesEntity 인스턴스 생성
     const productImage = new ProductImagesEntity();
     productImage.productId = productId;
-    productImage.imagePath = finalImagePath;
+    productImage.imagePath = imageFilename;
 
     // ProductImagesEntity 인스턴스 저장
-    await this.productImagesRepository.save(productImage); 
-
+    await this.productImagesRepository.save(productImage);
   }
-  
-  
-  async ShowMoreImage(productId: number) {
 
+  async ShowMoreImage(productId: number) {
     const productImages = await this.productImagesRepository.find({
       where: { productId },
       select: ['imagePath'],
@@ -45,9 +50,10 @@ export class ProductImagesService {
     return productImages;
   }
 
-
   async getImagePath(productId: number) {
-    const image = await this.productImagesRepository.findOne({ where: { productId } });
+    const image = await this.productImagesRepository.findOne({
+      where: { productId },
+    });
     return image ? image.imagePath : '이미지 없음';
   }
 }
