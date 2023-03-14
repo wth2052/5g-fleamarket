@@ -1,4 +1,25 @@
 
+//로그인 
+function login() {
+    const loginId = document.getElementById('id').value;
+    const loginPw = document.getElementById('password').value;
+
+    axios
+        .post('http://localhost:3000/admin/login',
+            { loginId: loginId, loginPw: loginPw }
+        )
+        .then((res) => {
+            // 응답처리
+            alert(res.data)
+            window.location.replace("http://localhost:3000/products")
+        })
+        .catch((error) => {
+            // 예외처리
+            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+        });
+}
+
+
 //상품 상세 보기
 function getProduct (productId) {
     axios
