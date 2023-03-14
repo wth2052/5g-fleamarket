@@ -61,6 +61,9 @@ export class ProductsEntity {
   @UpdateDateColumn({ default: null })
   updatedAt?: Date;
 
+  @Column({ default: null })
+  pullUp: Date;
+
   @OneToMany((type) => OrdersEntity, (orders) => orders.product)
   orders: OrdersEntity[];
 }
