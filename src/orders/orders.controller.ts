@@ -157,11 +157,10 @@ export class OrdersController {
   // -------------------------
   // test용 productList
   @Public()
-  @Render('test-product.ejs')
-  @Get('product')
-  async productList() {
-    const product = await this.ordersService.pl();
-    return { data: product };
+  @Get('product/detail/graph/:productId')
+  async productList(@Param('productId') productId: number) {
+    const product = await this.ordersService.graph(productId);
+    return product;
   }
 
   // 상품검색

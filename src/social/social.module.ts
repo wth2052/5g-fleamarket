@@ -14,7 +14,6 @@ import { JwtService } from '@nestjs/jwt';
   controllers: [SocialController],
   providers: [
     SocialService,
-    AppService,
     JwtService,
     JwtGoogleStrategy,
     UserService,

@@ -33,10 +33,18 @@ import { EmailService } from './email/email.service';
 import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { AdminLoginController } from './views/admin/admin-login.controller';
 import { ProductsModule } from './products/products.module';
+import { ProductsEntity } from './global/entities/products.entity';
+import { CategoriesEntity } from './global/entities/categories.entity';
+import { ProductImagesEntity } from './global/entities/productimages.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([
+      CategoriesEntity,
+      UserEntity,
+      ProductsEntity,
+      ProductImagesEntity,
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema,

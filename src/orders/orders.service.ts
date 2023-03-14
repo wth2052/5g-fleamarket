@@ -36,7 +36,7 @@ export class OrdersService {
       .leftJoinAndSelect('product.images', 'images')
       .where(`buyerId = :id`, { id })
       .andWhere('orders.status = :status', { status: 'sale' })
-      .getMany();   //getRawMany 변경예정
+      .getMany(); //getRawMany 변경예정
     if (!pick.length) {
       throw new NotFoundException(
         `딜한 주문이 없거나 진행중인 상품이 없습니다.`,
@@ -254,12 +254,30 @@ export class OrdersService {
     await this.orderRepository.softDelete({ id: orderId });
   }
 
-  // -----------------------------
-  // test
-  async pl() {
-    return await this.productRepository.find({
-      relations: ['seller'],
+  //시세 그래프 ?
+  async graph(productId: number) {
+    const deals = await this.orderRepository.find({
+      where: { productId: productId },
+      select: ['deal', 'updateAt'],
     });
+    let sum = 0;
+    let maxDeal = 0;
+    let minDeal = deals[0].deal;
+    deals.map((deal) => {
+      console.log(deal);
+      console.log(deal.deal);
+      if (deal.deal > maxDeal) {
+        maxDeal = deal.deal;
+      }
+      if (minDeal > deal.deal) {
+        minDeal = deal.deal;
+      }
+      sum += deal.deal;
+    });
+    const avg = sum / deals.length;
+    console.log('%^&(', avg);
+    const result = { avg, maxDeal, minDeal };
+    return { deals, result };
   }
 
   // 상품검색
