@@ -28,7 +28,6 @@ export class AdminController {
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
-  @ApiOperation({ summary: 'Get products with pagination' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
   async getProducts(
@@ -52,7 +51,7 @@ export class AdminController {
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
   async getProducts2(
     @Query('limit') limit: number =10,
-    @Query('offset') offset: number = 0,
+    @Query('offset') offset: number = 10,
   ) {
     try{ 
       const products = await this.adminService.getProducts(limit, offset)

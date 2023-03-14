@@ -473,3 +473,162 @@ function cancleUpdate(){
     }    
     }
 
+// 상품 페이지네이션
+
+ //버튼으로 
+// function pageProduct(productsLength, totalProducts){
+//     console.log(productsLength)
+//     console.log(totalProducts)
+    
+//       const loadMoreBtn = document.getElementById('load-more-btn');
+//         const limit = Number(loadMoreBtn.getAttribute('data-limit')) 
+//         const offset = Number(loadMoreBtn.getAttribute('data-offset'));
+      
+//         axios.get('/api/products?limit=' + limit + '&offset=' + offset )
+//               .then(function(res) {
+                
+//                 loadMoreBtn.remove()
+//                 const products = res.data.products
+//                 console.log(products)
+//                 let temp = '';
+//                 for (let i = 0; i < products.length; i++) {
+                
+//                   temp += `
+//                   <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct(${products[i].id})">
+//                     <div class="row" style="cursor: pointer; "  >
+//                       <div class="col-md-3" style="margin-left: 13%;" id="image-container">
+//                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+//                       </div>
+//                       <div class="col-md-8" id="products-column" >
+//                           <h3 >${products[i].title} </h3>
+//                           <h3> ${products[i].price}원</h3>
+//                           <br>
+//                           <span style="float: right;">❤ ${products[i].likes}</span>
+//                           <span style="float: right;">🎯 ${products[i].dealCount} &nbsp </span>
+//                           <span style="float: right;">👀:${products[i].viewCount}회 &nbsp</span>
+                          
+//                         </div>
+//                     </div>
+//                   </div>
+//                   `
+//                 }
+//                 $('#bb').append(temp)
+                
+    
+//                  if (products.length < res.data.totalProducts) {
+//                   const newLength = products.length + productsLength
+//                   const TotalProducts = res.data.totalProducts
+//                   const loadMoreBtn = `
+//                     <div class="text-center mt-3">
+//                       <button onclick="pageProduct(${newLength}, ${TotalProducts})" id="load-more-btn" class="btn btn-primary load-more" data-limit="${newLength}" data-offset="${newLength}"> 더 보기 </button>
+//                     </div>
+//                   `
+//                   $('#bb').append(loadMoreBtn)
+//                  }
+//               })
+//               .catch(function(error) {
+//                 if (productsLength === totalProducts){
+//                   alert('끝') 
+//                  }
+//                  else if (error.response.status === 401) {
+//                         alert('로그인하셔야 합니다.');
+//                         window.location.href = '/admin/login'
+//                     }
+//                  else{
+//                    alert('데이터를 불러오는 중 오류가 발생했습니다.');
+//                  }
+//               });
+//             }
+
+//상품 무한 스크롤 
+function debounce(func, wait = 5, immediate = false) {
+    let timeout;
+    return function() {
+      const context = this
+      const args = arguments
+  
+      const later = function() {
+        // sets timeout to null so that a new timeout can be set after the function has been called
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+  
+      //'immediate' determines whether the function should be called immediately or after the delay.
+      //when immediate = true, the function is executed immediately 
+      //we can set 'wait',which specifies the delay between calls, for the wait interval before executing the function again. 
+      //This means that the function is executed first (immediately), then have the delay.
+      //I put immediate = false, to have a delay first then the function to be executed. 
+  
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
+  
+  // A delay of 50ms between calls.
+  const debouncedPageProduct = debounce(pageProduct, 50);
+  
+  window.addEventListener('scroll', debouncedPageProduct);
+  
+  function pageProduct() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+  
+      const totalProducts = TotalProducts
+      const productsLength = limit
+      console.log(productsLength)
+      console.log(totalProducts)
+  
+      axios.get(`/api/products?limit=${limit}&offset=${offset}`)
+        .then(res => {
+          const products = res.data.products;
+          console.log(products)
+          let temp = '';
+          for (let i = 0; i < products.length; i++) {
+            temp += `
+              <div class="container-fluid" style="margin-top: 20px;" onclick="getProduct(${products[i].id})">
+                <div class="row" style="cursor: pointer;">
+                  <div class="col-md-3" style="margin-left: 13%;" id="image-container">
+                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+                  </div>
+                  <div class="col-md-8" id="products-column">
+                    <h3>${products[i].title}</h3>
+                    <h3>${products[i].price}원</h3>
+                    <br>
+                    <span style="float: right;">❤ ${products[i].likes}</span>
+                    <span style="float: right;">🎯 ${products[i].dealCount} &nbsp </span>
+                    <span style="float: right;">👀:${products[i].viewCount}회 &nbsp</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+          $('#bb').append(temp);
+  
+          if (products.length < res.data.totalProducts) {
+  
+                    limit += products.length
+  
+                   offset += products.length
+                   }
+        })
+        .catch(error => {
+                  if (productsLength === totalProducts){
+                    alert('끝 페이지입니다.') 
+                    window.removeEventListener('scroll', debouncedPageProduct);
+                   }
+                   else if (error.response.status === 401) {
+                          alert('로그인하셔야 합니다.');
+                          window.location.href = '/admin/login'
+                      }
+                   else{
+                     alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                   }
+        });
+    }
+  };
+
+
+
+    
