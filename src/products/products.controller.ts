@@ -40,10 +40,11 @@ export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly ProductImagesService: ProductImagesService,
-  ) {} 
+  ) {}
   //상품목록조회
   @Public()
   @Get('view')
+  // @Render('product/products-view.ejs')
   getProducts() {
     return this.productsService.getAllProducts();
   }
@@ -89,12 +90,11 @@ export class ProductsController {
         callback(null, true);
       },
       limits: {
-        fileSize: 1024 * 1024 * 4,//4mb
-        fieldNameSize:200,
-        fieldSize: 10000*10000
+        fileSize: 1024 * 1024 * 2, // 2MB
       },
     }),
   )
+
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
@@ -132,15 +132,11 @@ export class ProductsController {
         price,
         categoryId,
         userId,
-      );
+      ); 
 
       for (const image of images) {
         const { path, filename } = image;
-        await this.ProductImagesService.saveProductImage(
-          product.id,
-          path,
-          filename,
-        );
+        await this.ProductImagesService.saveProductImage(product.id, path, filename);
       }
 
       return product;
