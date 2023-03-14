@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -36,7 +37,7 @@ export class OrdersService {
       .leftJoinAndSelect('product.images', 'images')
       .where(`buyerId = :id`, { id })
       .andWhere('orders.status = :status', { status: 'sale' })
-      .getMany();   //getRawMany 변경예정
+      .getMany(); //getRawMany 변경예정
     if (!pick.length) {
       throw new NotFoundException(
         `딜한 주문이 없거나 진행중인 상품이 없습니다.`,
@@ -277,6 +278,60 @@ export class OrdersService {
       return products;
     } catch (error) {
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  //끌어올리기
+  async pullUpProduct(productId: number) {
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+
+    const now = new Date();
+
+    // 마지막 끌올 시간 체크
+    // 일수 * 시간 * 분 * 초 * 밀리초
+    if (
+      product.pullUp !== null &&
+      now.getTime() - product.pullUp.getTime() < 2 * 24 * 60 * 60 * 1000
+    ) {
+      const nextPullUpTime =
+        product.pullUp.getTime() + 2 * 24 * 60 * 60 * 1000 - now.getTime();
+      const days = Math.floor(nextPullUpTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((nextPullUpTime / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((nextPullUpTime / (1000 * 60)) % 60);
+      let message = '';
+      if (days > 0) {
+        message += `${days}일 `;
+      }
+      if (hours > 0) {
+        message += `${hours}시간 `;
+      }
+      message += `${minutes}분 뒤에 끌어올릴 수 있어요`;
+      throw new NotAcceptableException(message);
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      // 끌올 현재시간 넣기
+      await this.productRepository.update(productId, {
+        pullUp: now,
+      });
+
+      // 상품 updateAt 업데이트
+      await this.productRepository.update(productId, {
+        updatedAt: now,
+      });
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
   }
 }

@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import {
-  Injectable,
+  ForbiddenException,
+  Injectable, NotAcceptableException,
   NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+  UnauthorizedException
+} from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateProductDto } from './dto/create-product.dto';
@@ -12,7 +13,7 @@ import { DeleteProductDto } from './dto/delete-product.dto';
 import { ProductsEntity } from 'src/global/entities/products.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
-import { DataSource, FindOperator, Repository } from 'typeorm';
+import { DataSource, FindOperator, getConnection, Repository } from 'typeorm';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -30,6 +31,7 @@ export class ProductsService {
     private userEntity: Repository<UserEntity>,
     @InjectRepository(ProductImagesEntity)
     private productImagesRepository: Repository<ProductImagesEntity>,
+    private dataSource: DataSource,
   ) {}
 
   // async getProducts() {
@@ -41,8 +43,8 @@ export class ProductsService {
   // }
   async getAllProducts() {
     const products = await this.productRepository.find({
-      order: { updatedAt: 'DESC' },
       relations: ['category', 'seller', 'images'],
+      order: { updatedAt: 'DESC' },
     });
     const productsWithSellerNickname = products.map((product) => {
       const sellerNickname = product.seller.nickname;

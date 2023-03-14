@@ -13,13 +13,9 @@ export class AppController {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
 
-  @Get('orders/index')
-  @Render('order-layout.ejs')
+  @Get('order')
+  @Render('order/order-layout.ejs')
   async index() {}
-
-  @Get('test')
-  @Render('index.ejs')
-  async test() {}
 
   @Get('mypage')
   @Render('mypage.ejs')
