@@ -30,8 +30,14 @@
     border: 1px;
   }
 
+  .footer-btn:hover{
+    background-color: #f2f2f2d6;
+    border: 1px black;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
   .col-md-8 > h4 {
-    border: 1px solid red;
+    border: 1px solid #05AFF2; border-radius: 4px;
     margin-top: 10px;
     padding: 5px;
     
@@ -44,14 +50,14 @@
 <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
     <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
 
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
-            <div class="row">  
+        <div class="container-fluid" style=" margin-top: 20px;" >
+            <div class="row" id="noticeInfo">  
                 <div class="col-md-2" id="image-container"></div>  
-                <div id="noticeInfo" class="col-md-8" style="border: 1px solid red;">  
+                <div  class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px;">  
                     <h3 style="padding-top: 10px;">제목:</h3>
-                     <h4><%= notice.title %></h4> <br>
+                     <h4 id="noticeTitle"><%= notice.title %></h4> <br>
                      <h3>내용:</h3>
-                    <h4 ><%= notice.description %></h4> <br>
+                    <h4 id="noticeDes"><%= notice.description %></h4> <br>
 
                 </div>  
             </div>  
@@ -66,80 +72,16 @@
     <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateCategory(`<%= notice.id %>`)">공지사항 수정</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"> <button class="footer-btn" onclick = "updateNotice(`<%= notice.id %>`, `<%= notice.title %>`, `<%= notice.description %>`)">공지사항 수정</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteNotice(`<%= notice.id %>`)">공지사항 삭제</button><br></div>
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
           </div>
         </div>
 
     
 </body>
+<script><%- include('js/admin-layout.js') %></script>
 
-<script>
-    function updateCategory (noticeId) {
-        document.getElementById("noticeInfo").innerHTML = "";
-        document.getElementById("noticeFooter").innerHTML = "";
-        let temp_html = `
-        <div>
-        title : <br>
-        <input type="text" id="title" value= "<%= notice.title %>"><br>
-        description : <br>
-        <input type="text" id="description" value= "<%= notice.description %>">
-        
-        </div>
-        `
-        let temp_footer =`
-        <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <button onclick ="completeUpdate(${noticeId})">수정완료</button><br></div>
-            <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button onclick ="cancleUpdate()">취소</button><br></div>
-            <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
-        `
-        document.getElementById("noticeInfo").innerHTML = temp_html;
-        document.getElementById("noticeFooter").innerHTML = temp_footer;
-    }
-
-    function cancleUpdate(){
-        window.location.reload()
-    }
-
-    function completeUpdate(noticeId){
-        const title = document.getElementById('title').value;
-        const description = document.getElementById('description').value;
-        axios
-        .put(`http://localhost:3000/notice/${noticeId}`,
-        { title: title, description: description}
-        )
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data))
-            window.location.replace(`http://localhost:3000/notice/${noticeId}`)
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-    }
-
-    function deleteNotice(noticeId){
-        if(confirm('정말 삭제하시겠습니까?')){ 
-        axios
-        .delete(`/notice/${noticeId}`)
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data.message))
-            window.location.replace("http://localhost:3000/notice")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-    }    
-
-    }
-
-    
-</script>
 </html>
