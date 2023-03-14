@@ -113,7 +113,8 @@ function signUp() {
       address: newAddress.toString(),
     })
     .then((result) => {
-      console.log(result);
+      alert('회원가입이 완료되었습니다.');
+      window.location.href = '/';
     })
     .catch((error) => {
       if (error.response.status === 400 || 401) alert(error);
