@@ -1,4 +1,12 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { IsString } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { LikesEntity } from './likes.entity';
@@ -35,9 +43,18 @@ export class UserEntity {
   @Column({ nullable: true })
   @Exclude()
   currentHashedRefreshToken?: string;
-  @OneToMany(() => OrdersEntity, (orders) => orders.buyer)
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn({ default: null })
+  updatedAt?: Date;
+  @DeleteDateColumn()
+  deletedAt?: Date | null;
+
+  @OneToMany(() => OrdersEntity, (orders) => orders.buyer, { cascade: true })
   orders: OrdersEntity[];
 
-  @OneToMany((type) => ProductsEntity, (products) => products.seller)
+  @OneToMany((type) => ProductsEntity, (products) => products.seller, {
+    cascade: true,
+  })
   products: ProductsEntity[];
 }

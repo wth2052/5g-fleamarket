@@ -12,6 +12,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Delete,
 } from '@nestjs/common';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { UserEntity } from '../global/entities/users.entity';
@@ -22,6 +23,10 @@ import { Response } from 'express';
 import { UserService } from '../user/user.service';
 import { ConfigService } from '@nestjs/config';
 import { AuthUserDto } from '../user/dto/create-user.dto';
+import { Cookies } from '../global/common/decorator/find-cookie.decorator';
+import { JwtDecodeDto } from '../user/dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -35,6 +40,8 @@ interface IOAuthUser {
 @Controller('auth')
 export class AuthController {
   constructor(
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private authService: AuthService,
     private readonly userService: UserService,
     private configService: ConfigService,
@@ -82,7 +89,6 @@ export class AuthController {
     await this.authService.register(user);
   }
 
-
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
   refresh(
@@ -97,4 +103,14 @@ export class AuthController {
   }
   //TODO: OAUTH USER 닉네임 휴대폰 주소 API 하나 더 만들기
   //TODO: 회원 탈퇴 API 만들기
+  @Post('delete')
+  async userSoftDelete(
+    @Req() req,
+    @Res({ passthrough: true }) res: Response,
+    //구현중, 추후 쿠키에서 값 뽑기
+    // @Cookies('Authentication') jwt: JwtDecodeDto,
+  ) {
+    // const userId = jwt.id;
+    await this.userRepository.softRemove({ id: 1 });
+  }
 }
