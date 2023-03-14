@@ -30,10 +30,13 @@ export class OrdersService {
   }
 
   async findMyPick(id: number) {
-    const pick = await this.orderRepository.find({
-      where: { buyerId: id, status: 'sale' },
-      relations: ['product'],
-    });
+    const pick = await this.orderRepository
+      .createQueryBuilder('orders')
+      .leftJoinAndSelect('orders.product', 'product')
+      .leftJoinAndSelect('product.images', 'images')
+      .where(`buyerId = :id`, { id })
+      .andWhere('orders.status = :status', { status: 'sale' })
+      .getMany();   //getRawMany 변경예정
     if (!pick.length) {
       throw new NotFoundException(
         `딜한 주문이 없거나 진행중인 상품이 없습니다.`,
