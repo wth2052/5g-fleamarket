@@ -76,7 +76,7 @@ function signUp() {
   //   return false;
   // }
 
-  if (rptpassword.value !== password.value) {
+  if (rptpassword !== password) {
     alert('비밀번호가 일치하지 않습니다.');
     rptpassword.focus();
     return false;
@@ -111,6 +111,7 @@ function signUp() {
     })
     .then((result) => {
       console.log(result);
+      alert('회원가입이 완료되었습니다.');
     })
     .catch((error) => {
       console.log(error);
