@@ -30,6 +30,8 @@ interface IOAuthUser {
     password: string;
   };
 }
+
+//TODO: auth를 없애서 API를 조금 더 RESTFUL하게 만드는게 맞을까?
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -80,7 +82,7 @@ export class AuthController {
     await this.authService.register(user);
   }
 
-  @Public()
+
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
   refresh(
@@ -94,4 +96,5 @@ export class AuthController {
     return user;
   }
   //TODO: OAUTH USER 닉네임 휴대폰 주소 API 하나 더 만들기
+  //TODO: 회원 탈퇴 API 만들기
 }
