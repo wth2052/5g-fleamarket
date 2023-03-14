@@ -87,14 +87,12 @@
                 </div>
               </div>
             <% } %>
+            <div id="ss"></div>
 
-            <div id="ss">
-            </div>
-
-            <div id="hh"></div>
+            
             <% if (products.length < totalProducts) { %>
               <div class="text-center mt-3">
-                <button onclick="pageProduct(<%= products.length %>)" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
+                <button onclick="pageProduct(<%= products.length %>, <%= totalProducts%> )" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
               </div>
             <% } %>
             
@@ -114,18 +112,17 @@
 <script>
 
   
-function pageProduct(productsLength){
+function pageProduct(productsLength, totalProducts){
 console.log(productsLength)
-if (productsLength === 32){
-              alert('끝')
-              
-             }
+console.log(totalProducts)
+
   const loadMoreBtn = document.getElementById('load-more-btn');
     const limit = Number(loadMoreBtn.getAttribute('data-limit')) 
     const offset = Number(loadMoreBtn.getAttribute('data-offset'));
   
     axios.get('/api/products?limit=' + limit + '&offset=' + offset )
           .then(function(res) {
+            
             loadMoreBtn.remove()
             const products = res.data.products
             console.log(products)
@@ -151,22 +148,27 @@ if (productsLength === 32){
               </div>
               `
             }
-            
             $('#ss').append(temp)
+            
 
              if (products.length < res.data.totalProducts) {
               const newLength = products.length + productsLength
+              const TotalProducts = res.data.totalProducts
               const loadMoreBtn = `
                 <div class="text-center mt-3">
-                  <button onclick="pageProduct(${newLength})" id="load-more-btn" class="btn btn-primary load-more" data-limit="${newLength}" data-offset="${newLength}"> 더 보기 </button>
+                  <button onclick="pageProduct(${newLength}, ${TotalProducts})" id="load-more-btn" class="btn btn-primary load-more" data-limit="${newLength}" data-offset="${newLength}"> 더 보기 </button>
                 </div>
               `
               $('#ss').append(loadMoreBtn)
              }
-             
           })
           .catch(function(error) {
-            //alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            if (productsLength === totalProducts){
+              alert('끝') 
+             }
+             else{
+               alert('데이터를 불러오는 중 오류가 발생했습니다.');
+             }
           });
         }
 
