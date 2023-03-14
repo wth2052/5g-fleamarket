@@ -111,9 +111,6 @@ function signUp() {
     })
     .then((result) => {
       console.log(result);
-      alert('회원가입이 완료되었습니다.');
-      //회원가입후 로그인창으로 리디렉션
-      location.href = '/';
     })
     .catch((error) => {
       console.log(error);
