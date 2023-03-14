@@ -14,29 +14,38 @@ import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
 import { DataSource, FindOperator, Repository } from 'typeorm';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+import * as fs from 'fs';
+import * as path from 'path';
+import { ProductImagesService } from './product-images.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
+    private productImagesService: ProductImagesService,
     @InjectRepository(ProductsEntity)
     private productRepository: Repository<ProductsEntity>,
     @InjectRepository(CategoriesEntity)
     private categoriesRepository: Repository<CategoriesEntity>,
     @InjectRepository(UserEntity)
     private userEntity: Repository<UserEntity>,
-    // @InjectRepository(ProductImagesEntity)
-    // private ProductImagesEntity: Repository<ProductImagesEntity>,
+    @InjectRepository(ProductImagesEntity)
+    private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
-  //사진은 아직 안함, crud먼저
-  async getProducts() {
-    return await this.productRepository.find({
-      where: { status: 'sale' },
-      select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
-      //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
-    }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
+
+  async getAllProducts() {
+    const products = await this.productRepository.find({
+      relations: ['category', 'seller', 'images'],
+      order: { updatedAt: 'DESC' },
+    });
+
+    const productsWithSellerNickname = products.map((product) => {
+      const sellerNickname = product.seller.nickname;
+      return { ...product, seller: { nickname: sellerNickname } };
+    });
+    return productsWithSellerNickname;
   }
 
-  //status: 'sale' 를 status: sale로 바꿔라
+
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
@@ -51,36 +60,40 @@ export class ProductsService {
         'likes',
         'createdAt',
       ],
-      relations: ['category', 'seller'],
+      relations: ['category', 'seller', 'images'],
     });
 
     if (!product) {
-      // product가 null인 경우 예외 처리
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
+
     const {
       category: { name },
       seller: { nickname },
+      images: { imagePath },
     } = product;
-    // 카테고리 ID와 이름, 판매자 닉네임 얻기
+
+    const images = product.images.map((image) => ({
+      imagePath: image.imagePath,
+    }));
 
     return {
       product: {
-        ...product, // 기존 product 속성 복사
-        category: { name }, // name 속성만 가진 category 객체 추가
-        seller: { nickname }, // nickname 속성만 가진 seller 객체 추가
+        ...product,
+        category: { name },
+        seller: { nickname },
+        images: images,
       },
-    }; //주소추가
+    };
   }
-  //사진은 아직 안함, crud먼저//뭐 더 들어가야함? 모름
 
-  //상품드록, 이미지 여기도 넣어야한다
   async createProduct(
     title: string,
     description: string,
     price: number,
     categoryId: number,
     sellerId: number,
+    // images
   ) {
     const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
@@ -92,7 +105,6 @@ export class ProductsService {
     if (!category) {
       throw new NotFoundException('Category not found');
     }
-
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
@@ -127,6 +139,7 @@ export class ProductsService {
       categoryId,
     });
   }
+
   async deleteProduct(id: number, sellerId: number) {
     await this.verifySomething(id, sellerId);
 

@@ -53,8 +53,8 @@ export class AuthController {
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
-      this.authService.getCookieWithJwtRefreshToken(user.id);
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+      this.authService.getCookieWithJwtRefreshToken(user);
+    await this.userService.setCurrentRefreshToken(refreshToken, user);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
   }
@@ -77,7 +77,7 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('signup')
   async register(@Body() user: AuthUserDto): Promise<void> {
-    return await this.authService.register(user);
+    await this.authService.register(user);
   }
 
   @Public()

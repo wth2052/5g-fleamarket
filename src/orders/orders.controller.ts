@@ -14,6 +14,7 @@ import {
   HttpException,
   NotFoundException,
   NotAcceptableException,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -160,6 +161,14 @@ export class OrdersController {
   @Get('product')
   async productList() {
     const product = await this.ordersService.pl();
+    return { data: product };
+  }
+
+  // 상품검색
+  @Public()
+  @Get('productSearch')
+  async productSearch(@Query('search') search: string) {
+    const product = await this.ordersService.productSearch(search);
     return { data: product };
   }
 }
