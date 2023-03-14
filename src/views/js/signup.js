@@ -66,15 +66,18 @@ function signUp() {
     password.focus();
     return false;
   }
-  //영+숫+특 포함 8자 이상
-  //   const pwdCheck = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-  //   if (!pwdCheck.test(password.value)) {
-  //     alert("비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.");
-  //     setTimeout(function(){
-  //       document.getElementById("password").focus();
-  //     },100)
-  //   return false;
-  // }
+  // 영+숫+특 포함 8자 이상
+  const pwdCheck =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  if (!pwdCheck.test(password)) {
+    alert(
+      '비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.',
+    );
+    setTimeout(function () {
+      document.getElementById('password').focus();
+    }, 100);
+    return false;
+  }
 
   if (rptpassword !== password) {
     alert('비밀번호가 일치하지 않습니다.');
@@ -113,6 +116,6 @@ function signUp() {
       console.log(result);
     })
     .catch((error) => {
-      console.log(error);
+      if (error.response.status === 400 || 401) alert(error);
     });
 }
