@@ -66,6 +66,7 @@ export class AuthService {
     console.log(hashedPassword);
     try {
       const { email, nickname, phone, address } = user;
+      // console.log('유우우우우우우저어어어어어', user);
       const createdUser = await this.userRepository.create({
         email,
         password: hashedPassword,
@@ -73,7 +74,8 @@ export class AuthService {
         phone,
         address,
       });
-      await this.userRepository.insert(createdUser);
+      console.log('만들어진 유저', createdUser);
+      return await this.userRepository.insert(createdUser);
     } catch (error) {
       if (error?.code === 'ER_DUP_ENTRY') {
         throw new HttpException(
@@ -109,7 +111,7 @@ export class AuthService {
   }
   //payload 에서 유저의 아이디를 가져와  Refresh token을 발행합니다.
   getCookieWithJwtRefreshToken(user: TokenGenerateDto) {
-    const payload = { email : user.email };
+    const payload = { email: user.email };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_REFRESH_SECRETKEY'),
       expiresIn: `${this.configService.get(

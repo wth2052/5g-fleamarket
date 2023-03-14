@@ -27,6 +27,7 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const { name, emails, photos } = profile;
     //photo가져올경우 photos 추가
     const user = {
+      // id: profile.id,
       email: emails[0].value,
       nickname: name.familyName + name.givenName,
       // nickName: name.familyName + name.givenName,

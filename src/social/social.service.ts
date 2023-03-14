@@ -41,17 +41,15 @@ export class SocialService {
     private userRepository: Repository<UserEntity>,
   ) {}
   async googleSignup(req) {
-    console.log('이메일이 될 친구', req.email);
     // console.log('닉네임이 될 친구', req.user.nickName);
     // console.log('비밀번호가 될 친구', req.user.passWord);
     // console.log('엑세스토큰이 될 친구', req.user.accessToken);
     // console.log('토큰이 될 친구', req.user.refreshToken);
     const newUser = new UserEntity();
-    console.log('야호 아이디', req.id);
     newUser.id = req.id;
     newUser.email = req.email;
     newUser.nickname = '';
-    newUser.password = req.passWord;
+    newUser.password = req.password;
     newUser.phone = '';
     newUser.address = '';
     // this.userRepository
@@ -66,15 +64,23 @@ export class SocialService {
     const user = await this.userRepository.findOne({
       where: { email: req.email },
     });
-    console.log('유저유저', user);
     if (!user) {
       console.log('가입처리 진행');
-      this.authService
+      const userIdReturnNotExist = await this.authService
         .register(newUser)
-        .then((result) => console.log('회원가입 성공', result))
+        //이때 register 메소드는 Promise를 리턴하는데, 이때 result.indentifiers[0].id는 생성된 아이디의 id를 의미함.
+        //이쪽에서 가입처리될때는 id가 없음.
+        .then((result) => {
+          console.log(
+            '생성될때 유저의 아이디는~ id: ',
+            result.identifiers[0].id,
+          );
+          return result.identifiers[0].id;
+        })
         .catch((err) => {
           console.log(err);
         });
+      return userIdReturnNotExist;
       // 이쪽으로 빠졌다? DB에 아이디가 이미 있다
       // 로그인에 관련된 정보를 리턴해줘야 될거같음.
       //TODO: # 추후 로직을 로그인을 시키는 방향으로 수정할 것
@@ -83,6 +89,12 @@ export class SocialService {
       //TODO: 모든 버튼을 막는다? 모든 버튼의 redirect 페이지를 바꾼다...?
       //TODO: 입력 안되면 가입 취소
       //TODO: 토큰 발급해주고 로그인 처리후 리턴시킴(아래로 넘어가면 안됨)
+    } else {
+      console.log('이미 가입된 유저입니다. 아이디를 찾습니다.');
+      const userExist = await this.userRepository.findOne({
+        where: { id: user.id },
+      });
+      return userExist.id;
     }
 
     //이 함수 내에서 회원가입을 처리해야하는데.. 음..
@@ -92,13 +104,8 @@ export class SocialService {
     //이메일이 중복되는지 확인해야함
     //이메일이 중복되면, 로그인을 시켜버리고
     //이메일이 중복되지 않으면, 가입처리를 해야함
-    if (!req.user) {
-      return '정상적인 경로로 가입된 유저가 아닙니다. 서비스 관리자에게 문의해주세요.';
-    }
-
-    return {
-      message: '구글 로그인에 성공하였습니다. 로그인 정보는 다음과 같습니다.',
-      user: req.user,
-    };
+    // if (!req.user) {
+    //   return '정상적인 경로로 가입된 유저가 아닙니다. 서비스 관리자에게 문의해주세요.';
+    // }
   }
 }
