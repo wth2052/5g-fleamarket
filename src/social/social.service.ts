@@ -65,16 +65,11 @@ export class SocialService {
       where: { email: req.email },
     });
     if (!user) {
-      console.log('가입처리 진행');
       const userIdReturnNotExist = await this.authService
         .register(newUser)
         //이때 register 메소드는 Promise를 리턴하는데, 이때 result.indentifiers[0].id는 생성된 아이디의 id를 의미함.
         //이쪽에서 가입처리될때는 id가 없음.
         .then((result) => {
-          console.log(
-            '생성될때 유저의 아이디는~ id: ',
-            result.identifiers[0].id,
-          );
           return result.identifiers[0].id;
         })
         .catch((err) => {

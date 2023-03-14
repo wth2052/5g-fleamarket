@@ -29,9 +29,7 @@ export class SocialController {
   ) {
     //결과적으로 가입시키고 userId 리턴시킴
     const userSignupReturnId = await this.socialService.googleSignup(req.user);
-    console.log('로그로 찍어보자 함 ', userSignupReturnId);
     const user = req.user;
-    console.log('유쩌쓰', user);
     //TODO: 유저 찾는 트랜잭션 개선시켜야함
     //TODO: 현재 메인페이지에서 order/my/pick 트랜잭션이 발생되는데 원인 찾아봐야함
     // const findUser = await this.userRepository.findOne({
@@ -47,7 +45,6 @@ export class SocialController {
     // console.log('구글 유저 콘솔★', user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
-    console.log('엑토 안에 아이디가 있냐?', accessToken);
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user);
     res.cookie('Authentication', accessToken, accessOption);
