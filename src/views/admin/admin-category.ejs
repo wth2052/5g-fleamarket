@@ -78,7 +78,7 @@
                 <div class="row" id="categoryList<%=category[i].id %>">
                   <div class="col-md-2" id="image-container"></div>  
                   <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
-                      <h4>카테고리:</h4>
+                      <h4>카테고리: </h4>
                       <h3 id="cat-name"> <%= category[i].name %></h3>
                       <br>
                       <br>
@@ -99,6 +99,13 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-<script><%- include('js/admin-layout.js') %></script>
+
+<script>
+let limit = <%= category.length %>
+let offset = <%= category.length %>
+let TotalCategory = <%= totalcategory %>
+
+<%- include('js/admin-layout.js') %>
+</script>
 
 </html>

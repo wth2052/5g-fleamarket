@@ -86,6 +86,14 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-<script><%- include('js/admin-layout.js') %></script>
+
+
+
+<script>
+let limit = <%= users.length %>
+let offset = <%= users.length %>
+let TotalUsers = <%= totalUsers %>
+
+<%- include('js/admin-layout.js') %></script>
 
 </html>

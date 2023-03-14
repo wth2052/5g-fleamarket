@@ -68,6 +68,11 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-<script><%- include('js/admin-layout.js') %></script>
+<script>
+let limit = <%= notices.length %>
+let offset = <%= notices.length %>
+let TotalNotice = <%= totalNotice %>
+
+<%- include('js/admin-layout.js') %></script>
 
 </html>

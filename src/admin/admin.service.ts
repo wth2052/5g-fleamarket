@@ -71,13 +71,21 @@ export class AdminService {
   }
 
   //회원정보 가져오기 API
-  async getUsers() {
-    const users = await this.userRepository.find();
+  async getUsers(limit: number, offset:number) {
+    const users = await this.userRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (users.length === 0) {
       throw new NotFoundException('회원정보가 존재하지 않습니다.');
     } else {
       return users;
     }
+  }
+  async getTotalUsers() {
+    return this.userRepository.count();
   }
 
   //회원정보 상세보기 API
@@ -128,13 +136,21 @@ export class AdminService {
   }
 
   //카테고리 조회 API
-  async getCategory() {
-    const categories = await this.categoryRepository.find();
+  async getCategory(limit: number, offset:number) {
+    const categories = await this.categoryRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (categories.length === 0) {
       throw new NotFoundException('카테고리가 없습니다.');
     } else {
       return categories;
     }
+  }
+  async getTotalcategory() {
+    return this.categoryRepository.count();
   }
 
   //카테고리 생성 API
@@ -165,13 +181,21 @@ export class AdminService {
 
   //공지사항 모두 조회
 
-  async getNotices() {
-    const notices = await this.noticeRepository.find();
+  async getNotices(limit: number, offset:number ) {
+    const notices = await this.noticeRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (notices.length === 0) {
       throw new NotFoundException('공지사항이 없습니다.')
     } else {
       return notices;
     }
+  }
+  async getTotalNotice() {
+    return this.noticeRepository.count();
   }
 
   //공지사항 상세조회

@@ -81,51 +81,6 @@ function getUser (userId) {
               }})
   }
 
-  //블랙리스트 목록 불러오기
-  function getBan() {
-    axios
-  .get('http://localhost:3000/ban/users')
-  .then((res) => {
-    console.log(res.data.banUsers)
-    const banUsers = res.data.banUsers
-    let temp = '';
-    for (let i = 0; i < banUsers.length; i++) {
-        document.getElementById(`bb`).innerHTML = "";
-
-        temp += `<div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${banUsers[i].id})">
-              <div class="row">
-                <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
-                  
-                    <h4>닉네임: </h4>
-                    <h3 style="margin-left: 30px;"> ${banUsers[i].nickname}</h3>
-                    <br>
-                    <h4>이메일: </h4>
-                    <h3 style="margin-left: 30px;">${banUsers[i].email} </h3 >
-                    <br>
-                    <h4>전화번호: </h4>
-                    <h3 style="margin-left: 7px;">  ${banUsers[i].phone}</h3>
-                    <span style="float: right;margin-top:45px"> 😡블랙리스트 </span>
-                  </div>
-                 
-              </div>
-            </div>`
-
-    }
-    document.getElementById('bb').innerHTML = temp;
-
-  })
-  .catch((error) => {
-    if (error.response.status === 401) {
-                  alert('로그인하셔야 합니다.');
-                  window.location.href = '/admin/login'
-              }
-          else{
-              alert(error.response.data.message);
-    window.location.reload();
-          }
-  })
-
-  }
 
   //밴 처리 하기 
 
@@ -540,7 +495,8 @@ function cancleUpdate(){
 //               });
 //             }
 
-//상품 무한 스크롤 
+
+
 function debounce(func, wait = 5, immediate = false) {
     let timeout;
     return function() {
@@ -565,8 +521,10 @@ function debounce(func, wait = 5, immediate = false) {
       if (callNow) func.apply(context, args);
     };
   }
-  
-  // A delay of 50ms between calls.
+
+if (window.location.href === 'http://localhost:3000/products'){
+//상품 무한 스크롤 
+// A delay of 50ms between calls.
   const debouncedPageProduct = debounce(pageProduct, 50);
   
   window.addEventListener('scroll', debouncedPageProduct);
@@ -629,6 +587,251 @@ function debounce(func, wait = 5, immediate = false) {
     }
   };
 
+}
+else if (window.location.href === 'http://localhost:3000/users'){
+
+//회원 페이지네이션 
+  // A delay of 50ms between calls.
+  const debouncedPageUser = debounce(pageUser, 50);
+  
+  window.addEventListener('scroll', debouncedPageUser);
+  
+  function pageUser() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+  
+     const totalUsers = TotalUsers
+      const usersLength = limit
+      console.log(usersLength)
+      console.log(totalUsers)
+  
+      axios.get(`/api/users?limit=${limit}&offset=${offset}`)
+        .then(res => {
+          const users = res.data.users;
+          console.log(users)
+          let temp = '';
+          
+          for (let i = 0; i < users.length; i++) {
+            temp += `
+              <div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${users[i].id})">
+                <div class="row">
+                  <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                    
+                      <h4>닉네임: </h4>
+                      <h3 style="margin-left: 30px;"> ${users[i].nickname}</h3>
+                      <br>
+                      <h4>이메일: </h4>
+                      <h3 style="margin-left: 30px;">${users[i].email} </h3 >
+                      <br>
+                      <h4>전화번호: </h4>
+                      <h3 style="margin-left: 7px;">  ${users[i].phone}</h3>
+                     <span style="float: right;margin-top:45px" id="blacklist"></span>
+                    </div>
+                   
+                </div>
+              </div>
+            `;
+        if(users[i].ban === 1){
+            document.getElementById('blacklist').innerHTML = '😡블랙리스트'
+        }
+          }
+          $('#bb').append(temp);
+  
+          if (users.length < res.data.totalUsers) {
+  
+                    limit += users.length
+  
+                   offset += users.length
+                   }
+        })
+        .catch(error => {
+                  if (usersLength === totalUsers){
+                    alert('끝 페이지입니다.') 
+                    window.removeEventListener('scroll', debouncedPageUser);
+                   }
+                   else if (error.response.status === 401) {
+                          alert('로그인하셔야 합니다.');
+                          window.location.href = '/admin/login'
+                      }
+                   else{
+                     alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                   }
+        });
+    }
+  };
+
+  //블랙리스트 목록 불러오기
+function getBan() {
+    axios
+  .get('http://localhost:3000/ban/users')
+  .then((res) => {
+    window.removeEventListener('scroll', debouncedPageUser);
+    console.log(res.data.banUsers)
+    const banUsers = res.data.banUsers
+    let temp = '';
+    for (let i = 0; i < banUsers.length; i++) {
+        document.getElementById(`bb`).innerHTML = "";
+
+        temp += `<div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${banUsers[i].id})">
+              <div class="row">
+                <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                  
+                    <h4>닉네임: </h4>
+                    <h3 style="margin-left: 30px;"> ${banUsers[i].nickname}</h3>
+                    <br>
+                    <h4>이메일: </h4>
+                    <h3 style="margin-left: 30px;">${banUsers[i].email} </h3 >
+                    <br>
+                    <h4>전화번호: </h4>
+                    <h3 style="margin-left: 7px;">  ${banUsers[i].phone}</h3>
+                    <span style="float: right;margin-top:45px"> 😡블랙리스트 </span>
+                  </div>
+                 
+              </div>
+            </div>`
+
+    }
+    document.getElementById('bb').innerHTML = temp;
+
+  })
+  .catch((error) => {
+    if (error.response.status === 401) {
+                  alert('로그인하셔야 합니다.');
+                  window.location.href = '/admin/login'
+              }
+          else{
+              alert(error.response.data.message);
+    window.location.reload();
+          }
+  })
+  }
+}
+else if (window.location.href === 'http://localhost:3000/category'){
+//카테고리 페이지네이션 
+
+// A delay of 50ms between calls.
+const debouncedPageCategory= debounce(pageCategory, 50);
+  
+window.addEventListener('scroll', debouncedPageCategory);
+
+function pageCategory() {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 5) {
+
+    const totalCategory = TotalCategory
+    const categoryLength = limit
+    console.log(categoryLength)
+    console.log(totalCategory)
+
+    axios.get(`/api/category?limit=${limit}&offset=${offset}`)
+      .then(res => {
+        const category = res.data.category;
+        console.log(category)
+        let temp = '';
+        for (let i = 0; i < category.length; i++) {
+          temp += `
+          <div class="container-fluid" style=" margin-top: 20px;" >
+          <div class="row" id="categoryList${category[i].id}">
+            <div class="col-md-2" id="image-container"></div>  
+            <div class="col-md-8" style="padding-bottom: 10px; padding-top: 15px;border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                <h4>카테고리:</h4>
+                <h3 id="cat-name"> ${category[i].name}</h3>
+                <br>
+                <br>
+                <button class="category-btn" id="updateCategory-btn" onclick="updateCategory(${category[i].id}, '${category[i].name}')">수정</button>
+              <button class="category-btn" style="float: right;" onclick="deleteCategory(${category[i].id})">삭제</button>
+              </div>
+          </div>
+        </div>
+          `;
+        }
+        $('#bb').append(temp);
+        
+
+        if (category.length < res.data.totalcategory) {
+      
+                  limit += category.length
+
+                 offset += category.length
+
+                 }
+      })
+      .catch(error => {
+                if (categoryLength === totalCategory){
+                  alert('끝 페이지입니다.') 
+                  window.removeEventListener('scroll', debouncedPageCategory);
+                 }
+                 else if (error.response.status === 401) {
+                        alert('로그인하셔야 합니다.');
+                        window.location.href = '/admin/login'
+                    }
+                 else{
+                   alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                 }
+      });
+  }
+};
+}
+else if (window.location.href === 'http://localhost:3000/notice'){
+//공지 페이지네이션 
+
+// A delay of 50ms between calls.
+  const debouncedPageNotice = debounce(pageNotice, 50);
+  
+  window.addEventListener('scroll', debouncedPageNotice);
+  
+  function pageNotice() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+  
+      const totalNotice = TotalNotice
+      const noticeLength = limit
+      console.log( noticeLength)
+      console.log( totalNotice)
+  
+      axios.get(`/api/notice?limit=${limit}&offset=${offset}`)
+        .then(res => {
+          const notices = res.data.notices;
+          console.log( notices)
+          let temp = '';
+          for (let i = 0; i < notices.length; i++) {
+            temp += `
+            <div class="container-fluid" style=" margin-top: 20px;" onclick="getNotice(${notices[i].id})">
+            <div class="row">
+              <div class="col-md-2" id="image-container"></div> 
+                <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                  <h3>${notices[i].title}</h3>
+                  <br>
+                </div>
+            </div>
+          </div>
+            `;
+          }
+          $('#bb').append(temp);
+  
+          if (notices.length < res.data.totalNotice) {
+  
+                    limit += notices.length
+  
+                   offset += notices.length
+                   }
+        })
+        .catch(error => {
+                  if (noticeLength === totalNotice){
+                    alert('끝 페이지입니다.') 
+                    window.removeEventListener('scroll', debouncedPageNotice);
+                   }
+                   else if (error.response.status === 401) {
+                          alert('로그인하셔야 합니다.');
+                          window.location.href = '/admin/login'
+                      }
+                   else{
+                     alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                   }
+        });
+    }
+  };
+}
 
 
     
