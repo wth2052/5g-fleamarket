@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch, Query, Header} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -10,6 +10,7 @@ import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
 
 @Catch(HttpException)
 @Controller()
@@ -27,14 +28,42 @@ export class AdminController {
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
-  async getProducts() {
-    try{
-      return {products : await this.adminService.getProducts()}
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getProducts(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) {
+    try{ 
+      const products = await this.adminService.getProducts(limit, offset)
+      const totalProducts = await this.adminService.getTotalProducts();
+      return {products, totalProducts}
+    
     }
     catch (error) {
        return { errorMessage: error.message };
     }
   }
+
+  @Get('/api/products')
+  @ApiOperation({ summary: 'Get products with pagination' })
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getProducts2(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 10,
+  ) {
+    try{ 
+      const products = await this.adminService.getProducts(limit, offset)
+      const totalProducts = await this.adminService.getTotalProducts();
+      return {products, totalProducts}
+    
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+  
 
   //상품정보 상세보기 API
   @Get('/products/:productId')
@@ -192,4 +221,52 @@ export class AdminController {
   deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
+
+// 상품검색
+
+@Get('productSearch')
+async productSearch(@Query('search') search: string) {
+  const product = await this.adminService.productSearch(search);
+  return { data : product };
 }
+
+
+//회원검색
+
+@Get('userSearch')
+async userSearch(@Query('search') search: string) {
+  const user = await this.adminService.userSearch(search);
+  return { data : user };
+}
+
+//카테고리 검색
+
+
+@Get('categorySearch')
+async categorySearch(@Query('search') search: string) {
+  const category = await this.adminService.categorySearch(search);
+  return { data : category };
+}
+
+//공지 검색
+
+@Get('noticeSearch')
+async noticeSearch(@Query('search') search: string) {
+  const notice = await this.adminService.noticeSearch(search);
+  return { data : notice };
+}
+
+// 블랙리스트 모아보기 
+@Get('ban/users')
+async getBanUsers(){
+  try {
+    return {banUsers: await this.adminService.getBanUsers()}
+  }
+catch (error) {
+  return  {errorMessage: error.message} 
+}
+}
+
+}
+
+
