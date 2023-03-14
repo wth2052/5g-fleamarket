@@ -87,16 +87,14 @@
                 </div>
               </div>
             <% } %>
+            <div id="ss"></div>
 
-            <div id="ss">
-            </div>
-
-            <div id="hh"></div>
-            <% if (products.length < totalProducts) { %>
+            
+            <!-- <% if (products.length < totalProducts) { %>
               <div class="text-center mt-3">
-                <button onclick="pageProduct(<%= products.length %>)" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
+                <button onclick="pageProduct(<%= products.length %>, <%= totalProducts%> )" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
               </div>
-            <% } %>
+            <% } %> -->
             
           <% } %>
   </div>
@@ -110,67 +108,12 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
-<script><%- include('js/admin-layout.js') %></script>
 <script>
-
-  
-function pageProduct(productsLength){
-console.log(productsLength)
-if (productsLength === 32){
-              alert('끝')
-              
-             }
-  const loadMoreBtn = document.getElementById('load-more-btn');
-    const limit = Number(loadMoreBtn.getAttribute('data-limit')) 
-    const offset = Number(loadMoreBtn.getAttribute('data-offset'));
-  
-    axios.get('/api/products?limit=' + limit + '&offset=' + offset )
-          .then(function(res) {
-            loadMoreBtn.remove()
-            const products = res.data.products
-            console.log(products)
-            let temp = '';
-            for (let i = 0; i < products.length; i++) {
-            
-              temp += `
-              <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct(${products[i].id})">
-                <div class="row" style="cursor: pointer; "  >
-                  <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
-                  </div>
-                  <div class="col-md-8" id="products-column" >
-                      <h3 >${products[i].title} </h3>
-                      <h3> ${products[i].price}원</h3>
-                      <br>
-                      <span style="float: right;">❤ ${products[i].likes}</span>
-                      <span style="float: right;">🎯 ${products[i].dealCount} &nbsp </span>
-                      <span style="float: right;">👀:${products[i].viewCount}회 &nbsp</span>
-                      
-                    </div>
-                </div>
-              </div>
-              `
-            }
-            
-            $('#ss').append(temp)
-
-             if (products.length < res.data.totalProducts) {
-              const newLength = products.length + productsLength
-              const loadMoreBtn = `
-                <div class="text-center mt-3">
-                  <button onclick="pageProduct(${newLength})" id="load-more-btn" class="btn btn-primary load-more" data-limit="${newLength}" data-offset="${newLength}"> 더 보기 </button>
-                </div>
-              `
-              $('#ss').append(loadMoreBtn)
-             }
-             
-          })
-          .catch(function(error) {
-            //alert('데이터를 불러오는 중 오류가 발생했습니다.');
-          });
-        }
-
-  
+let limit = <%= products.length %>
+let offset = <%= products.length %>
+let TotalProducts = <%= totalProducts%>
+<%- include('js/admin-layout.js') %>
 </script>
+
 
 </html>
