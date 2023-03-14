@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>상세보기</title>
+    <!--    BootStrap Library-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!--    Axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--    Js -->
+    <script><%- include('../js/order-layout.js') %></script>
+    <script><%- include('../js/main-header.js') %></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.slider').slick({
+          arrows: true,
+          dots: true,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          asNavFor: '.image-nav' // 다른 슬라이더와 연동하기 위해 사용
+        });
+        $('.image-nav').slick({
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          asNavFor: '.slider', // 다른 슬라이더와 연동하기 위해 사용
+          centerMode: true,
+          focusOnSelect: true
+        });
+      });
+    </script>
+<script>
+  $(document).ready(function() {
+    $('.slider').slick({
+      arrows: true, // 좌우 화살표
+      dots: true, // 동그라미 버튼
+      slidesToShow: 1, // 한 번에 보여줄 슬라이드 개수
+      slidesToScroll: 1, // 한 번에 넘길 슬라이드 개수
+      asNavFor: '.image-nav' // 다른 슬라이더와 연동하기 위해 사용
+    });
+  });
+</script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      #wrap {
+        min-height: calc(100% - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #product-detail {
+        max-width: 1000px;
+        display: flex;
+      }
+
+      .product-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .image-container {
+        width: 20vw;
+        margin-right: 20px;
+        max-height: 70vh;
+        overflow: hidden;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* 이미지 최대 높이를 초과하는 경우 */
+      .image-container img[src$=".jpg"]:not(:last-child),
+      .image-container img[src$=".jpeg"]:not(:last-child),
+      .image-container img[src$=".png"]:not(:last-child),
+      .image-container img[src$=".gif"]:not(:last-child) {
+        width: 100%;
+        height: 70vh; /* 이미지 최대 높이로 설정 */
+        object-fit: contain; /* 이미지 비율 유지 */
+        object-position: center; /* 이미지 중앙 정렬 */
+      }
+
+      @media (max-width: 768px) {
+        #product-detail {
+          flex-direction: column;
+          align-items: center;
+        }
+        .image-container {
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 20px;
+          max-height: none;
+          overflow: visible;
+        }
+      }
+      
+
+      .category,
+      .category,
+      .createdAt {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .description,
+      .seller,
+      .views,
+      .likes,
+      .price {
+        margin-bottom: 10px;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <header><%- include('../main-header.ejs') %></header>
+    <div id="wrap">
+      <div id="product-detail">
+        <div class="image-container">
+          <div class="image-container">
+            <% if (product.images && product.images.length > 0) { %>
+              <% if (product.images.length == 1) { %>
+                <div><img src="/img/<%= product.images[0].imagePath %>" /></div>
+              <% } else { %>
+                <div class="slider">
+                  <% for (var i = 0; i < Math.min(product.images.length, 3); i++) { %>
+                    <div><img src="/img/<%= product.images[i].imagePath %>" /></div>
+                  <% } %>
+                </div>
+                <div class="image-nav">
+                  <% for (var i = 0; i < Math.min(product.images.length, 3); i++) { %>
+                    <div><img src="/img/<%= product.images[i].imagePath %>%>" /></div>
+                  <% } %>
+                </div>
+              <% } %>
+            <% } else { %>
+              <div><img src="/img/image-not-available.png" /></div>
+            <% } %>
+          </div>
+        </div>
+        <div class="info-container">
+          <h1><%= product.title %></h1>    
+          <div class="category"><u><%= product.category.name %></u></div>
+          <div class="createdAt"><%= product.createdAt.getFullYear() %>/<%= product.createdAt.getMonth() + 1 %>/<%= product.createdAt.getDate() %> <%= product.createdAt.getHours() %>:<%= product.createdAt.getMinutes() %></div>
+          <div class="script"> 판매자: <%= product.seller.nickname %></div>
+        </br>
+          <div class="description"> <%= product.description %></div>
+          <div class="views">Views: <%= product.viewCount %></div>
+          <div class="likes">Likes: <%= product.likes %></div>
+          <div class="price">Price: <%= product.price %></div>
+        </div>
+      </div>
+    </div>
+    <footer><%- include('../main-footer.ejs') %></footer>
+  </body>
+</html>

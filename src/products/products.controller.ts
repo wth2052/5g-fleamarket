@@ -40,7 +40,7 @@ export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly ProductImagesService: ProductImagesService,
-  ) {}
+  ) {} 
   //상품목록조회
   @Public()
   @Get('view')
@@ -51,13 +51,14 @@ export class ProductsController {
   //상품 상세 보기
   @Public()
   @Get('view/:productId')
+  @Render('product/products-detail.ejs')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
   //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
   @Get('up')
-  @Render('product/products-upload.ejs')
+  @Render('product/proiducts-upload.ejs')
   createProductForm() {
     return {};
   }
@@ -88,7 +89,9 @@ export class ProductsController {
         callback(null, true);
       },
       limits: {
-        fileSize: 1024 * 1024 * 2, // 2MB
+        fileSize: 1024 * 1024 * 4,//4mb
+        fieldNameSize:200,
+        fieldSize: 10000*10000
       },
     }),
   )
