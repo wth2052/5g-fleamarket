@@ -19,7 +19,7 @@ import { ProductImagesEntity } from './productimages.entity';
 @Entity({ name: 'products' })
 export class ProductsEntity {
   @OneToMany(() => ProductImagesEntity, (images) => images.productId)
-  images: ProductImagesEntity
+  images: ProductImagesEntity;
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -59,6 +59,9 @@ export class ProductsEntity {
 
   @UpdateDateColumn({ default: null })
   updatedAt?: Date;
+
+  @Column({ default: null })
+  pullUp: Date;
 
   @OneToMany((type) => OrdersEntity, (orders) => orders.product)
   orders: OrdersEntity[];

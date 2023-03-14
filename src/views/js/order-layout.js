@@ -12,7 +12,7 @@ axios
       for (let i = 0; i < data.length; i++) {
         const timeAgo = getTimeAgo(data[i].product.createdAt);
         temp += `
-                   <div class="container-fluid" onclick="productDealCheck(${res.data.data[i].id})" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                   <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
@@ -62,9 +62,10 @@ function mySellProduct() {
     .get('http://localhost:3000/orders/me/sell/product')
     .then((res) => {
       let data = res.data.data;
+      console.log(data);
       let temp = '';
       for (let i = 0; i < data.length; i++) {
-        const timeAgo = getTimeAgo(data[i].createdAt);
+        const timeAgo = getTimeAgo(data[i].updatedAt);
         temp += `
                     <div class="container-fluid" onclick="productDealCheck(${res.data.data[i].id})" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
@@ -73,6 +74,7 @@ function mySellProduct() {
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
+                <span style="float: right;"><button onclick="pullUp(${data[i].id})">끌어올리기</button></span>
                 <h3>${data[i].title}</h3>
 <!--                <p>${data[i].buyerId}</p>-->
                 <h4>${data[i].price}원</h4>
@@ -384,7 +386,7 @@ function dealAccept(orderId) {
     .then((res) => {
       // 응답처리
       alert('거래가 완료되었습니다.');
-      window.location.replace('http://localhost:3000/orders/index');
+      window.location.replace('http://localhost:3000/orders');
     })
     .catch((error) => {
       // 예외처리
@@ -423,4 +425,21 @@ function getTimeAgo(dateString) {
     default:
       return `${years}년 전`;
   }
+}
+
+// 끌어올리기
+function pullUp(productId) {
+  event.stopPropagation();
+  axios
+    .post(`/orders/pullUp/${productId}`)
+    .then((res) => {
+      alert('게시글을 끌어올렸어요.');
+      window.location.replace('http://localhost:3000/order');
+    })
+    .catch((error) => {
+      alert(
+        error.response?.data?.message ||
+          error.response.data.errorMessage.details[0].message,
+      );
+    });
 }
