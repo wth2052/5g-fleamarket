@@ -139,12 +139,9 @@ export class ProductsController {
         price,
         categoryId,
         userId,
-      ); 
-
-      for (const image of images) {
-        const { path, filename } = image;
-        await this.ProductImagesService.saveProductImage(product.id, path, filename);
-      }
+        images,
+      );
+      
 
       return product;
     } catch (error) {

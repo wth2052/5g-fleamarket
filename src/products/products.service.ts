@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -12,15 +13,17 @@ import { DeleteProductDto } from './dto/delete-product.dto';
 import { ProductsEntity } from 'src/global/entities/products.entity';
 import { CategoriesEntity } from 'src/global/entities/categories.entity';
 import { UserEntity } from 'src/global/entities/users.entity';
-import { DataSource, FindOperator, Repository } from 'typeorm';
+import { Connection, DataSource, FindOperator, Repository } from 'typeorm';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
 
+
 @Injectable()
 export class ProductsService {
   constructor(
+    private readonly connection: Connection,
     private productImagesService: ProductImagesService,
     @InjectRepository(ProductsEntity)
     private productRepository: Repository<ProductsEntity>,
@@ -104,32 +107,75 @@ export class ProductsService {
     };
   }
 
+
   async createProduct(
     title: string,
     description: string,
     price: number,
     categoryId: number,
     sellerId: number,
+    images: Express.Multer.File[], // 이미지 배열을 받아옵니다.
   ) {
-    const user = await this.userEntity.findOne({ where: { id: sellerId } });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    const category = await this.categoriesRepository.findOne({ where: { id: categoryId } });
-    if (!category) {
-      throw new NotFoundException('Category not found');
-    }
-  
+    // 글 저장
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
     product.price = price;
-    product.category = category;
-    product.seller = user;
+    product.categoryId = categoryId;
+    product.sellerId = sellerId;
   
-    return await this.productRepository.save(product);
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+  
+    try {
+      const user = await queryRunner.manager.findOne(UserEntity, { where:{ id: sellerId }});
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+  
+      const category = await queryRunner.manager.findOne(CategoriesEntity, { where: { id: categoryId } });
+      if (!category) {
+        throw new NotFoundException('Category not found');
+      }
+  
+      // 글 저장
+      const savedProduct = await queryRunner.manager.save(product);
+  
+      // 이미지 처리
+      for (const image of images) {
+        const imageFilename = image.filename;
+        const finalImagePath = path.join(
+          '.',
+          'src',
+          'public',
+          'img',
+          imageFilename,
+        );
+  
+        const fileStream = fs.createReadStream(image.path);
+        const writeStream = fs.createWriteStream(finalImagePath);
+        fileStream.pipe(writeStream);
+  
+        // ProductImagesEntity 인스턴스 생성
+        const productImage = new ProductImagesEntity();
+        productImage.productId = savedProduct.id;
+        productImage.imagePath = imageFilename;
+  
+        // ProductImagesEntity 인스턴스 저장
+        await queryRunner.manager.save(productImage);
+      }
+  
+      await queryRunner.commitTransaction();
+  
+      return savedProduct;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
-  
   
 
   //얘도 이미지
