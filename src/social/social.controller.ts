@@ -49,6 +49,9 @@ export class SocialController {
       this.authService.getCookieWithJwtRefreshToken(user);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
+    res.setHeader('Authentication', accessToken);
+    res.setHeader('refreshToken', refreshToken);
+
     res.redirect('/mypage');
   }
 }

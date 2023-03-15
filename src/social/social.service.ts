@@ -45,13 +45,14 @@ export class SocialService {
     // console.log('비밀번호가 될 친구', req.user.passWord);
     // console.log('엑세스토큰이 될 친구', req.user.accessToken);
     // console.log('토큰이 될 친구', req.user.refreshToken);
-    const newUser = new UserEntity();
+    const newUser = this.userRepository.create();
     newUser.id = req.id;
     newUser.email = req.email;
     newUser.nickname = '';
     newUser.password = req.password;
     newUser.phone = '';
     newUser.address = '';
+
     // this.userRepository
     //   .findOne(req.user.email)
     //   .then((result) => {
