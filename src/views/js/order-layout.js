@@ -15,7 +15,7 @@ axios
                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="img/${data[i].product.images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -76,7 +76,7 @@ function mySellProduct() {
                     <div class="container-fluid" onclick="productDealCheck(${res.data.data[i].id})" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="img/${data[i].images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -95,29 +95,31 @@ function mySellProduct() {
     })
     .catch((error) => {
       // 예외처리
+      console.log(error);
       if (error.response.status === 401) {
         alert('로그인하셔야 합니다.');
         window.location.href = '/';
         return;
+      } else if (error.response.status === 404) {
+        let temp = '';
+        temp += `
+                   <div class="container-fluid"  style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                       <div class="row">
+                        <div class="col-md-3" style=" padding: 0">
+                          <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                          style="width: 100%; height: 100%; margin: 0" />
+                         </div>
+                      <div class="col-md-9">
+                  <h3>구매 진행 상품이 없네용</h3>
+                  <h4>아직 꾸미기 전입니다.</h4>
+                  <p>asdfasdfasf</p>
+                  <span>asdfasdfasf</span>
+                  <span></span>
+              </div>
+          </div>
+        </div>`;
+        document.getElementById('bb').innerHTML = temp;
       }
-      let temp = '';
-      temp += `
-                 <div class="container-fluid"  style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
-                     <div class="row">
-                      <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
-                        style="width: 100%; height: 100%; margin: 0" />
-                       </div>
-                    <div class="col-md-9">
-                <h3>구매 진행 상품이 없네용</h3>
-                <h4>아직 꾸미기 전입니다.</h4>
-                <p>asdfasdfasf</p>
-                <span>asdfasdfasf</span>
-                <span></span>
-            </div>
-        </div>
-      </div>`;
-      document.getElementById('bb').innerHTML = temp;
     });
 }
 
@@ -134,7 +136,7 @@ function myBuyList() {
                                         <div class="container-fluid" onclick="location.href='/productss/view/${data[i].product.id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="img/${data[i].product.images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -186,21 +188,23 @@ function mySellList() {
   axios
     .get('http://localhost:3000/orders/me/sell/list')
     .then((res) => {
+      let order = res.data.data.real;
+      let product = res.data.data.myProduct;
+      console.log(res);
       let temp = '';
-      for (let i = 0; i < res.data.data.length; i++) {
+      for (let i = 0; i < order.length; i++) {
         temp += `
-                                       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="img/${product[i].images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${res.data.data[i].product.title}</h3></br>
-<!--                <p>${res.data.data[i].buyerId}</p>-->
-                <h6>거래일 : ${res.data.data[i].product.updatedAt}</h6>
-                <h4>거래완료 : ${res.data.data[i].deal}원</h4>
-                <span style="float: right;">❤${res.data.data[i].product.likes}</span>
+                <h3>${product[i].title}</h3></br>
+                <h6>거래일 : ${order[i].updatedAt}</h6>
+                <h4>거래완료 : ${order[i].deal}원</h4>
+                <span style="float: right;">❤${product[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -248,7 +252,7 @@ function deal() {
                                        <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="img/${data[i].product.images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -257,8 +261,7 @@ function deal() {
                 <h4>${res.data.data[i].deal}원</h4>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
-                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes
-            }</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes}</span>
             </div>
         </div>
       </div>`;

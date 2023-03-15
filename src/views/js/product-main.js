@@ -12,7 +12,7 @@ axios
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="img/${products[i].images[0].imagePath}" alt="spcFuck" 
-                        style="width: 100%; height: 100%; margin: 0" />
+                        style="width: 100%; height: 150px; margin: 0" />
                        </div>
                     <div class="col-md-9">
                 <h3>${products[i].title}</h3>

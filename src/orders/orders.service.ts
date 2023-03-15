@@ -49,6 +49,8 @@ export class OrdersService {
   async findMySell(userId: number) {
     const products = await this.productRepository.find({
       where: { sellerId: userId, status: 'sale' },
+      order: { updatedAt: 'DESC' },
+      relations: ['category', 'images'],
     });
     return products;
   }
@@ -109,6 +111,7 @@ export class OrdersService {
     }
     const sellUser = await this.productRepository.find({
       where: { id: order.productId, sellerId: userId, status: 'success' },
+      order: { updatedAt: 'DESC' },
     });
     if (!sellUser) {
       throw new ForbiddenException('내가 판매하는 물품이 아닙니다.');
@@ -124,13 +127,15 @@ export class OrdersService {
     const buyList = await this.orderRepository.find({
       where: { buyerId: userId, status: 'success', deletedAt: null },
       relations: ['product'],
+      order: { updatedAt: 'DESC' },
     });
     return buyList;
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
       where: { sellerId: userId, status: 'success' },
-      select: ['id'],
+      relations: ['category', 'images'],
+      order: { updatedAt: 'DESC' },
     });
     if (!myProduct.length) {
       throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
@@ -139,12 +144,13 @@ export class OrdersService {
       const real = await this.orderRepository.find({
         where: { productId: myProduct[i].id, status: 'success' },
         relations: ['product'],
+        order: { updatedAt: 'DESC' },
       });
       console.log('판매 성공', real);
       if (!real.length) {
         throw new NotFoundException('판매를 성공한 상품이 없습니다.');
       }
-      return real;
+      return {real, myProduct};
     }
   }
   async putdealAccept(userId: number, orderId: number) {
@@ -260,6 +266,7 @@ export class OrdersService {
     const deals = await this.orderRepository.find({
       where: { productId: productId },
       select: ['deal', 'updatedAt'],
+      order: { updatedAt: 'DESC' },
     });
     let sum = 0;
     let maxDeal = 0;
