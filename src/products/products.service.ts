@@ -32,17 +32,34 @@ export class ProductsService {
     private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
 
-  async getAllProducts() {
-    const products = await this.productRepository.find({
-      relations: ['category', 'seller', 'images'],
-      order: { updatedAt: 'DESC' },
-    });
 
-    const productsWithSellerNickname = products.map((product) => {
-      const sellerNickname = product.seller.nickname;
-      return { ...product, seller: { nickname: sellerNickname } };
-    });
-    return productsWithSellerNickname;
+  async getAllProducts() {
+    const queryBuilder = this.productRepository.createQueryBuilder('product');
+  
+    const products = await queryBuilder
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect('product.images', 'images')
+      .where('product.status = :status', { status: 'sale' })
+      .select([
+        'product.id',
+        'product.title',
+        'product.price',
+        'product.viewCount',
+        'product.likes',
+        'product.dealCount',
+        'product.createdAt',
+        'product.updatedAt',
+        'category.id',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .orderBy('product.updatedAt', 'DESC')
+      .getMany();
+  
+    return products;
+
   }
 
 
@@ -93,33 +110,27 @@ export class ProductsService {
     price: number,
     categoryId: number,
     sellerId: number,
-    // images
   ) {
     const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const category = await this.categoriesRepository.findOne({
-      where: { id: categoryId },
-    });
+    const category = await this.categoriesRepository.findOne({ where: { id: categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
+  
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
     product.price = price;
     product.category = category;
     product.seller = user;
-
-    return await this.productRepository.save({
-      title,
-      description,
-      price,
-      category,
-      sellerId,
-    });
+  
+    return await this.productRepository.save(product);
   }
+  
+  
 
   //얘도 이미지
   async updateProduct(

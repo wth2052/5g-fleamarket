@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '../global/entities/users.entity';
 import * as jwt from 'jsonwebtoken';
 import { HttpService } from '@nestjs/axios';
-import { CreateUserDto } from 'src/user/dto';
+import { CreateUserDto, JwtDecodeDto } from 'src/user/dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -19,11 +19,20 @@ import {
   LoginUserDto,
   TokenGenerateDto,
 } from '../user/dto/create-user.dto';
+import { OrdersEntity } from '../global/entities/orders.entity';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(ProductsEntity)
+    private productsRepository: Repository<ProductsEntity>,
+    @InjectRepository(ProductImagesEntity)
+    private productsImagesRepository: Repository<ProductImagesEntity>,
+    @InjectRepository(OrdersEntity)
+    private ordersRepository: Repository<OrdersEntity>,
     private userService: UserService,
     private jwtService: JwtService,
     private configService: ConfigService,
@@ -85,6 +94,20 @@ export class AuthService {
       }
     }
   }
+  async removeUserFromDB(userId: number) {
+    //탈퇴하고자 하는 유저의 정보를 불러와서 이걸 토대로
+    //그가 등록한 물품 -> 물품 사진 -> 물품 주문 -> 물품 좋아요 순으로 제거를 한다.
+    //추후 TODO: softdeleted 된지 90일 경과시 hard delete?
+    //TODO: soft-delete : 회원 users의 정보
+    // const user = await this.userRepository.findOneOrFail({where: {id: 1}});
+    //탈퇴한 유저 현재는 하드딜리트, 허나 수정해야함
+    const user = await this.userRepository.findOneOrFail({
+      where: { id: userId },
+    });
+    console.log('유저아디', userId);
+    await this.userRepository.remove(user);
+  }
+
   //payload 에서 유저의 아이디 이메일 닉네임을 가져와 Access token을 발행합니다.
   getCookieWithJwtAccessToken(user: TokenGenerateDto) {
     const payload = {
