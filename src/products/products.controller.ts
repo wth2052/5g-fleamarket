@@ -116,7 +116,7 @@ export class ProductsController {
     @UploadedFiles() rawImages: Record<string, Array<Express.Multer.File>>,
   ) {
     try {
-      let images = rawImages.images;g
+      let images = rawImages.images;
 
       // console.log('Create product called with payload:', payload);
       if (!jwt || !jwt.id) {
