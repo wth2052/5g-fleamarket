@@ -34,11 +34,11 @@ export class OrdersEntity {
   status: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ default: null })
-  updateAt?: Date;
+  updatedAt?: Date;
 
   @DeleteDateColumn({ default: null })
-  deleteAt?: Date;
+  deletedAt?: Date;
 }
