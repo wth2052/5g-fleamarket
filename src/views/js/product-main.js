@@ -1,6 +1,7 @@
 axios
   .get('http://localhost:3000/productss/view')
   .then((res) => {
+    console.log(res);
     let data = res.data;
     let products = data.products;
     if (data !== 0) {

@@ -15,6 +15,7 @@ import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductImagesEntity } from './productimages.entity';
+import { LikesEntity } from "./likes.entity";
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
@@ -49,6 +50,9 @@ export class ProductsEntity {
 
   @Column({ default: 0 })
   viewCount: number;
+
+  @OneToMany(() => LikesEntity, (like) => like.product)
+  likesJoin: LikesEntity[];
 
   @Column({ default: 0 })
   likes: number;
