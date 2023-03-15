@@ -25,19 +25,18 @@ export class UserService {
     return user;
   }
 
-  async setCurrentRefreshToken(refreshToken: string, email: string) {
+  async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    console.log('또끈 ', currentHashedRefreshToken);
-    // await this.cacheManager
-    await this.userRepository.update(email, { currentHashedRefreshToken });
+    await this.userRepository.update(id, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
-
+    console.log('토큰 아이디는 잘 들어옴 ㅋ?ㅋ?ㅋ?', refreshToken, id);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
     );
+    console.log('토큰맞음?ㅋ?ㅋ?ㅋ?', isRefreshTokenMatching);
 
     if (isRefreshTokenMatching) {
       return user;

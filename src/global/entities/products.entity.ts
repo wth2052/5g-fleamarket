@@ -19,7 +19,7 @@ import { ProductImagesEntity } from './productimages.entity';
 @Entity({ name: 'products' })
 export class ProductsEntity {
   @OneToMany(() => ProductImagesEntity, (images) => images.productId)
-  images: ProductImagesEntity
+  images: ProductImagesEntity;
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -32,12 +32,16 @@ export class ProductsEntity {
   @Column()
   price: number;
 
-  @ManyToOne(() => UserEntity, (seller) => seller.products)
+  @ManyToOne(() => UserEntity, (seller) => seller.products, {
+    onDelete: 'CASCADE',
+  })
   seller: UserEntity;
   @Column()
   sellerId: number;
 
-  @ManyToOne(() => CategoriesEntity, (category) => category.products)
+  @ManyToOne(() => CategoriesEntity, (category) => category.products, {
+    onDelete: 'CASCADE',
+  })
   category: CategoriesEntity;
   @Column()
   categoryId: number;
@@ -60,6 +64,8 @@ export class ProductsEntity {
   @UpdateDateColumn({ default: null })
   updatedAt?: Date;
 
-  @OneToMany((type) => OrdersEntity, (orders) => orders.product)
+  @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
+    cascade: true,
+  })
   orders: OrdersEntity[];
 }
