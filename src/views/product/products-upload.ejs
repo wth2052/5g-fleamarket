@@ -102,6 +102,7 @@
 				console.log(response.data);
 				alert('Product uploaded successfully');
 				form.reset();
+				window.location.href = '/';
 			} catch (error) {
 				console.error(error);
 				alert('Failed to upload product. Please try again.');

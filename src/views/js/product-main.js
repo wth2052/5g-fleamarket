@@ -3,9 +3,6 @@ axios
   .then((res) => {
     let data = res.data;
     let products = data.products;
-    console.log(data);
-    console.log('12314', products);
-    console.log('12314', products[0]);
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < products.length; i++) {
