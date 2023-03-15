@@ -22,7 +22,7 @@
 
 
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" /> -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
@@ -146,7 +146,7 @@
                           </div>
                           <div class="image-nav">
                             <% for (var i = 0; i < Math.min(images.length, 3); i++) { %>
-                              <div><img src="/img/<%= images[i].imagePath %>%>" /></div>
+                              <div><img src="/img/<%= images[i].imagePath %>%>" style="height: 100px"/></div>
                             <% } %>
                           </div>
                         <% } %>
@@ -229,7 +229,7 @@ $(document).ready(function() {
 
 
 <%- include('js/admin-layout.js') %>
-document.getElementById('timeProduct').innerHTML = getMonth(<%= product.createdAt %>)
+
 </script>
 
 
