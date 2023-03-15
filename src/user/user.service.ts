@@ -25,11 +25,9 @@ export class UserService {
     return user;
   }
 
-  async setCurrentRefreshToken(refreshToken: string, email: string) {
+  async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    console.log('또끈 ', currentHashedRefreshToken);
-    // await this.cacheManager
-    await this.userRepository.update(email, { currentHashedRefreshToken });
+    await this.userRepository.update(id, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });

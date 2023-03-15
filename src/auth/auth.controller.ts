@@ -57,13 +57,13 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const user = req.user;
-    console.log(user);
+    console.log('유저', user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
-      this.authService.getCookieWithJwtRefreshToken(user);
-    await this.userService.setCurrentRefreshToken(refreshToken, user);
+      this.authService.getCookieWithJwtRefreshToken(user.id);
+    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
   }
@@ -111,6 +111,10 @@ export class AuthController {
     // @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     // const userId = jwt.id;
-    await this.userRepository.softRemove({ id: 1 });
+    await this.userRepository
+      .createQueryBuilder('users')
+      .softDelete()
+      .where('id = :id', { id: 1 })
+      .execute();
   }
 }

@@ -150,5 +150,4 @@ export class AuthService {
       },
     };
   }
-  userSoftDelete
 }
