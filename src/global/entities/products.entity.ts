@@ -33,12 +33,16 @@ export class ProductsEntity {
   @Column()
   price: number;
 
-  @ManyToOne(() => UserEntity, (seller) => seller.products)
+  @ManyToOne(() => UserEntity, (seller) => seller.products, {
+    onDelete: 'CASCADE',
+  })
   seller: UserEntity;
   @Column()
   sellerId: number;
 
-  @ManyToOne(() => CategoriesEntity, (category) => category.products)
+  @ManyToOne(() => CategoriesEntity, (category) => category.products, {
+    onDelete: 'CASCADE',
+  })
   category: CategoriesEntity;
   @Column()
   categoryId: number;
@@ -64,6 +68,11 @@ export class ProductsEntity {
   @Column({ default: null })
   pullUp: Date;
 
-  @OneToMany((type) => OrdersEntity, (orders) => orders.product)
+  @Column({ default: null })
+  pullUp: Date;
+
+  @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
+    cascade: true,
+  })
   orders: OrdersEntity[];
 }

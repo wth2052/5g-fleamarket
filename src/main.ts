@@ -8,8 +8,7 @@ import * as winston from 'winston';
 import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
-
-} from 'nest-winston'
+} from 'nest-winston';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function bootstrap() {

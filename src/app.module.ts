@@ -34,14 +34,17 @@ import { AdminAuthModule } from './admin-auth/admin-auth.module';
 import { AdminLoginController } from './views/admin/admin-login.controller';
 import { ProductsModule } from './products/products.module';
 import { ProductsEntity } from './global/entities/products.entity';
-import { CategoriesEntity } from './global/entities/categories.entity';
 import { ProductImagesEntity } from './global/entities/productimages.entity';
+import {OrdersEntity} from './global/entities/orders.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       CategoriesEntity,
       UserEntity,
+      OrdersEntity,
       ProductsEntity,
       ProductImagesEntity,
     ]),
@@ -84,6 +87,7 @@ import { ProductImagesEntity } from './global/entities/productimages.entity';
     JwtGoogleStrategy,
     HealthCheckController,
     // ProductsService,
+    //TODO: 전역 가드 적용, 추후 서비스때 적용 해야함
     // { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
 })

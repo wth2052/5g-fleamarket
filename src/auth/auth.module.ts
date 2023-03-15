@@ -15,10 +15,18 @@ import { JwtGoogleStrategy } from './strategy/jwt-google.strategy';
 import { SocialModule } from '../social/social.module';
 import { SocialController } from '../social/social.controller';
 import { SocialService } from 'src/social/social.service';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { OrdersEntity } from '../global/entities/orders.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      ProductsEntity,
+      ProductImagesEntity,
+      OrdersEntity,
+    ]),
     PassportModule,
     ConfigModule,
     UserModule,

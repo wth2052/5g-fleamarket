@@ -13,6 +13,7 @@ import {
   UploadedFile,
   UploadedFiles,
   Render,
+  PayloadTooLargeException,
   Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
@@ -91,6 +92,9 @@ export class ProductsController {
           callback(null, `${uniqueSuffix}${extension}`);
         },
       }),
+      limits: {
+        fileSize: 1024 * 1024 * 5, // 5MB
+      },
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
           // console.log('Invalid file type:', file.originalname);
@@ -99,12 +103,14 @@ export class ProductsController {
             false,
           );
         }
+        if (file.size > 1024 * 1024 * 5) {
+          // console.log('File size exceeds the limit:', file.originalname);
+          return callback(
+            new PayloadTooLargeException('File size exceeds the limit'),
+            false,
+          );
+        }
         callback(null, true);
-      },
-      limits: {
-        fieldNameSize: 200,
-        fieldSize: 10000 * 10000,
-        fileSize: 1024 * 1024 * 4, // 4MB
       },
     }),
   )
@@ -163,9 +169,19 @@ export class ProductsController {
     }
   }
 
+  //상품수정 렌더 및 수정하기 폼에서 기존 정보를 불러옴
+  @Get('edit/:id')
+  @Render('product/product-update.ejs')
+  async getEditProductPage(@Param('id') id: number) {
+    const product = await this.productsService.getProductById(id);
+    return { product };
+  }
+
+
+
   //상품수정
   @UseGuards(JwtAuthGuard)
-  @Put('/:productId')
+  @Put('edit/:productId')
   updateProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,

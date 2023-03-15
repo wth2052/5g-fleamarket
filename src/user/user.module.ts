@@ -9,10 +9,18 @@ import { AuthService } from '../auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { cacheModule } from '../email/email.module';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { OrdersEntity } from '../global/entities/orders.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      ProductsEntity,
+      ProductImagesEntity,
+      OrdersEntity,
+    ]),
     ConfigModule.forRoot({ isGlobal: true }),
     PassportModule.register({
       defaultStrategy: 'jwt-access-token',

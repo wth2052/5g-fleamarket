@@ -35,6 +35,7 @@ export class ProductsService {
     private dataSource: DataSource,
   ) {}
 
+
   async getAllProducts(limit: number, offset: number) {
     const products = await this.productRepository.find({
       take: limit,
@@ -102,33 +103,27 @@ export class ProductsService {
     price: number,
     categoryId: number,
     sellerId: number,
-    // images
   ) {
     const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const category = await this.categoriesRepository.findOne({
-      where: { id: categoryId },
-    });
+    const category = await this.categoriesRepository.findOne({ where: { id: categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
+  
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
     product.price = price;
     product.category = category;
     product.seller = user;
-
-    return await this.productRepository.save({
-      title,
-      description,
-      price,
-      category,
-      sellerId,
-    });
+  
+    return await this.productRepository.save(product);
   }
+  
+  
 
   //얘도 이미지
   async updateProduct(
