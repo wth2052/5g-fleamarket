@@ -419,6 +419,12 @@ catch (error) {
   }
   }
 
+  //신고 삭제하기
+  @Delete('/reports/:reportId')
+  deleteReport(@Param('reportId') reportId: number) {
+    return this.adminService.deleteReport(reportId);
+  }
+
 }
 
 

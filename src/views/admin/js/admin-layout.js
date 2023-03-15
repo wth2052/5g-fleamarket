@@ -1339,5 +1339,48 @@ function getReport(reportId){
                       }})
 }
 
+//신고 삭제
+function deleteReport(reportId){
+  if(confirm('정말 삭제하시겠습니까?')){ 
+  axios
+  .delete(`/reports/${reportId}`)
+  .then((res) => {
+      // 응답처리
+      alert(JSON.stringify(res.data.message))
+      window.location.replace("http://localhost:3000/reports")
+  })
+  .catch((error) => {
+      if (error.response.status === 401) {
+              alert('로그인하셔야 합니다.');
+              window.location.href = '/admin/login'
+          }
+      else{
+      alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+      }
+  });
+}    
+}
+
+
+//신고 확인하기 
+function checkReport(reportId, status){
+  axios
+  .put(`/reports/${reportId}`, 
+  { reportId: reportId, status: status}
+  )
+  .then((res) => {
+      alert(JSON.stringify(res.data))
+      window.location.replace(`/reports/${reportId}`)
+  })
+  .catch((error) => {
+      if (error.response.status === 401) {
+              alert('로그인하셔야 합니다.');
+              window.location.href = '/admin/login'
+          }
+      else{
+         alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message); 
+      }
+  });
+}
 
     

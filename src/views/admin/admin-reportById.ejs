@@ -80,7 +80,7 @@
             <div class="col" style="height: 40px; width: 20%"> <% if (report.status === 0) {%> <button class="footer-btn" onclick = "checkReport(`<%= report.id %>`, 1)">확인하기</button> <%}
                 else if (report.status === 1) {%> <button class="footer-btn" onclick = "checkReport(`<%= report.id %>`, 0)">확인 취소</button> <%} %><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteReport()">삭제하기</button><br></div>
+            <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteReport(`<%= report.id %>`)">삭제하기</button><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
           </div>
         </div>
@@ -88,25 +88,6 @@
     
 </body>
 <script>
- function checkReport(reportId, status){
-    axios
-    .put(`/reports/${reportId}`, 
-    { reportId: reportId, status: status}
-    )
-    .then((res) => {
-        alert(JSON.stringify(res.data))
-        window.location.replace(`/reports/${reportId}`)
-    })
-    .catch((error) => {
-        if (error.response.status === 401) {
-                alert('로그인하셔야 합니다.');
-                window.location.href = '/admin/login'
-            }
-        else{
-           alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message); 
-        }
-    });
-}
 
 <%- include('js/admin-layout.js') %></script>
 

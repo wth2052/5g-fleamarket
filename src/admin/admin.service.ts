@@ -399,6 +399,7 @@ export class AdminService {
     return this.reportRepository.count();
   }
 
+  //신고 상세 보기
 async getReportById(reportId: number) {
   const report = await this.reportRepository.findOne({
     where: { id: reportId }
@@ -433,6 +434,12 @@ async getReportById(reportId: number) {
     return { message: `신고 확인이 취소되었습니다.` };
   }
 }
+}
+
+ //신고 삭제
+ async deleteReport(reportId: number) {
+  this.reportRepository.delete(reportId);
+  return { message: '신고가 삭제되었습니다' };
 }
 
 }
