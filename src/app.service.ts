@@ -12,15 +12,4 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-  async prDetail(productId: number) {
-    const detail = await this.productRepository
-      .createQueryBuilder('products')
-      .leftJoinAndSelect('products.category', 'category')
-      .leftJoinAndSelect('products.images', 'images')
-      .where(`products.id = :id`, { id: productId })
-      // .andWhere(`status = :status`, { status: 'sale' })
-      .getMany();
-
-    return detail;
-  }
 }
