@@ -30,7 +30,7 @@ import { Repository } from 'typeorm';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
-import {JwtAuthGuard} from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 interface IOAuthUser {
   //interface 설정
   user: {

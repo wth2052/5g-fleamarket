@@ -47,4 +47,14 @@ export class UserService {
       currentHashedRefreshToken: null,
     });
   }
+  async getUserInformation(userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    return {
+      nickname: user.nickname,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+    };
+  }
 }

@@ -24,7 +24,7 @@ export class AppController {
   @Render('index.ejs')
   async test() {}
 
-  @Get('mypage')
+  @Get('user/mypage')
   @Render('mypage.ejs')
   async mypage() {}
 }

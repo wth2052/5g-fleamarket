@@ -15,7 +15,6 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
-    <script><%- include('js/order-layout.js') %></script>
     <script><%- include('js/main-header.js') %></script>
 </head>
 
@@ -69,17 +68,14 @@ width: 100%; margin: 0">
     <div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">프로필사진+ 닉네임</div>
+                <div class="col-md-8">프로필사진 <%= data.email%> </div>
                 <div class="col-6 col-md-4">내 정보 관리</div>
             </div>
             <div class="col">
                 한칸 공백
             </div>
             <div class="container"></div>
-            <div class="col-md-2">❤ 관심목록</div>
-            <div class="col">🛒 구매내역</div>
-            <div class="col">💰 판매내역</div>
-            <div class="col">🗺️ 내 지역</div>
+            <div class="col">🚨 유저 신고하기</div>
         </div>
 </div>
 </div>
@@ -89,4 +85,18 @@ width: 100%; margin: 0">
 
 </body>
 
+<script>
+    axios.get('/user/me')
+    .then(function (res){
+	    if (res.status === 401) {
+		    alert("로그인이 필요합니다.")
+		    window.location.href = "/login"
+	    }
+	    const data = res.data;
+	    console.log("성공", data)
+      return data
+    }).catch(function (error) {
+	    console.log("에러",error)
+    })
+</script>
 </html>
