@@ -121,10 +121,11 @@ function myBuyList() {
     .get('http://localhost:3000/orders/me/buy/list')
     .then((res) => {
       let data = res.data.data;
+      console.log(data);
       let temp = '';
       for (let i = 0; i < data.length; i++) {
         temp += `
-                                        <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                                        <div class="container-fluid" onclick="location.href='/productss/view/${data[i].product.id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
@@ -250,9 +251,8 @@ function deal() {
                 <h4>${res.data.data[i].deal}원</h4>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
-                <span style="float: right;">🎯 ${0} ❤ ${
-            res.data.data[i].product.likes
-          }</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes
+            }</span>
             </div>
         </div>
       </div>`;
@@ -392,7 +392,7 @@ function dealAccept(orderId) {
       // 예외처리
       alert(
         error.response?.data?.message ||
-          error.response.data.errorMessage.details[0].message,
+        error.response.data.errorMessage.details[0].message,
       );
     });
 }

@@ -13,9 +13,12 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
-
-  @Get('order')
-  @Render('order/order-layout.ejs')
+  @Public()
+  @Get('view/signup')
+  @Render('signup.ejs')
+  async viewSignup() {}
+  @Get('orders/index')
+  @Render('order-layout.ejs')
   async index() {}
 
   @Get('mypage')
@@ -26,14 +29,7 @@ export class AppController {
   @Render('product-main.ejs')
   async product() {}
 
-  @Get('product/create')
-  @Render('product-create.ejs')
-  async productCreate() {}
-
-  @Public()
-  @Get('product/detail')
+  // @Get('product/create')
   // @Render('product-create.ejs')
-  async detail(@Query('productId') productId: number) {
-    return await this.appService.prDetail(productId);
-  }
+  // async productCreate() {}
 }

@@ -12,7 +12,6 @@ export interface JwtDecodeDto {
   id: number;
   email: string;
   nickname: string;
-  address: string;
   iat: number;
   exp: number;
 }
