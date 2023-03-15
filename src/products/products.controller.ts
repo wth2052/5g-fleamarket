@@ -94,7 +94,6 @@ export class ProductsController {
       },
     }),
   )
-
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
@@ -132,11 +131,15 @@ export class ProductsController {
         price,
         categoryId,
         userId,
-      ); 
+      );
 
       for (const image of images) {
         const { path, filename } = image;
-        await this.ProductImagesService.saveProductImage(product.id, path, filename);
+        await this.ProductImagesService.saveProductImage(
+          product.id,
+          path,
+          filename,
+        );
       }
 
       return product;
