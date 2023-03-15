@@ -452,7 +452,7 @@ function cancleUpdate(){
 //                   <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct(${products[i].id})">
 //                     <div class="row" style="cursor: pointer; "  >
 //                       <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-//                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+//                         <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="image" id="image"/>
 //                       </div>
 //                       <div class="col-md-8" id="products-column" >
 //                           <h3 >${products[i].title} </h3>
@@ -552,7 +552,7 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
               <div class="container-fluid" style="margin-top: 20px;" onclick="getProduct(${products[i].id})">
                 <div class="row" style="cursor: pointer;">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="image" id="image"/>
                   </div>
                   <div class="col-md-8" id="products-column">
                     <h3>${products[i].title}</h3>
@@ -618,7 +618,7 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
         <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct(${data[i].id})" id="bb">
                 <div class="row" style="cursor: pointer; ">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="image" id="image"/>
                   </div>
                   <div class="col-md-8" id="products-column" >
                       <h3 > ${title}</h3>
