@@ -14,23 +14,17 @@
             crossorigin="anonymous"></script>
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script><%- include('js/get-user-information.js')%></script>
     <script>
-			axios.get('/user/me')
-				.then(function (res){
-					const data = res.data;
-					console.log("성공", data)
-					return data
-				}).catch(function (error) {
-				if (error.response.status === 401) {
-					alert('로그인하셔야 합니다.');
-					window.location.href = '/login'
-				}
-				console.log("에러",error)
-			})
+			window.onload = function(){
+				getUserInformation()
+			}
     </script>
     <!--    Js -->
     <script><%- include('js/main-header.js') %></script>
 </head>
+
+
 
 <body style="background-color: #F2F2F2">
 <!--상단 메뉴바-->
