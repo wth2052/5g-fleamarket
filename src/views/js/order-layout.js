@@ -36,28 +36,29 @@ axios
     }
   })
   .catch((error) => {
-    console.log(error)
-    // let temp = '';
-    // temp += `
-    //                 <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
-    //                  <div class="row">
-    //                   <div class="col-md-3" style=" padding: 0">
-    //                     <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
-    //                     style="width: 100%; height: 100%; margin: 0" />
-    //                    </div>
-    //                 <div class="col-md-9">
-    //             <h3>구매 진행 상품이 없네용</h3>
-    //             <h4>아직 꾸미기 전입니다.</h4>
-    //             <p>asdfasdfasf</p>
-    //             <span>asdfasdfasf</span>
-    //             <span></span>
-    //         </div>
-    //     </div>
-    //   </div>`;
-    // document.getElementById('bb').innerHTML = temp;
+    console.log(error);
     if (error.request.status === 401) {
       alert('로그인 하고 오세요');
       window.location.href = 'http://localhost:3000/login';
+    } else if (error.request.status === 404) {
+      let temp = '';
+      temp += `
+                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                     <div class="row">
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        style="width: 100%; height: 100%; margin: 0" />
+                       </div>
+                    <div class="col-md-9">
+                <h3>구매 진행 상품이 없네용</h3>
+                <h4>아직 꾸미기 전입니다.</h4>
+                <p>asdfasdfasf</p>
+                <span>asdfasdfasf</span>
+                <span></span>
+            </div>
+        </div>
+      </div>`;
+      document.getElementById('bb').innerHTML = temp;
     }
   });
 
