@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -57,4 +58,7 @@ export class UserEntity {
     cascade: true,
   })
   products: ProductsEntity[];
+
+  @OneToMany(() => LikesEntity, (like) => like.user)
+  likes: LikesEntity[];
 }

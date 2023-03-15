@@ -1,42 +1,32 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Put,
-  UseGuards,
   BadRequestException,
-  UseInterceptors,
-  UploadedFile,
-  UploadedFiles,
-  Render,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
   PayloadTooLargeException,
+  Post,
+  Put,
   Query,
-} from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { ProductImagesService } from './product-images.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { DeleteProductDto } from './dto/delete-product.dto';
-import { Public } from 'src/global/common/decorator/skip-auth.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Cookies } from 'src/global/common/decorator/find-cookie.decorator';
-import { JwtDecodeDto } from '../user/dto';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express/multer';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { v4 as uuidv4 } from 'uuid';
-import * as path from 'path';
-import * as fs from 'fs';
-import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
-import { ApiQuery } from '@nestjs/swagger';
+  Render,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
+import { ProductsService } from "./products.service";
+import { ProductImagesService } from "./product-images.service";
+import { UpdateProductDto } from "./dto/update-product.dto";
+import { DeleteProductDto } from "./dto/delete-product.dto";
+import { Public } from "src/global/common/decorator/skip-auth.decorator";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
+import { Cookies } from "src/global/common/decorator/find-cookie.decorator";
+import { JwtDecodeDto } from "../user/dto";
+import { FileFieldsInterceptor } from "@nestjs/platform-express/multer";
+import { diskStorage } from "multer";
+import { extname } from "path";
+import { v4 as uuidv4 } from "uuid";
+import { ApiQuery } from "@nestjs/swagger";
 
 @Controller('productss')
 export class ProductsController {
@@ -177,8 +167,6 @@ export class ProductsController {
     return { product };
   }
 
-
-
   //상품수정
   @UseGuards(JwtAuthGuard)
   @Put('edit/:productId')
@@ -216,5 +204,13 @@ export class ProductsController {
     return this.productsService.deleteProduct(productId, jwt.id);
   }
   //상품 좋아요
-  //@Post('products/:productId')
+  @UseGuards(JwtAuthGuard)
+  @Post('like/:productId')
+  likeProduct(
+    @Cookies('Authentication') jwt: JwtDecodeDto,
+    @Param('productId') productId: number,
+  ) {
+    const userId = jwt.id;
+    return this.productsService.likeProduct(productId, userId);
+  }
 }

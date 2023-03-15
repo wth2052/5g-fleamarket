@@ -8,6 +8,7 @@ import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
 import { ProductImagesService } from './product-images.service';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+import { LikesEntity } from '../global/entities/likes.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
       UserEntity,
       ProductsEntity,
       ProductImagesEntity,
+      LikesEntity,
     ]),
   ],
   controllers: [ProductsController],
