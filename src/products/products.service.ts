@@ -32,23 +32,35 @@ export class ProductsService {
     private productImagesRepository: Repository<ProductImagesEntity>,
   ) {}
 
-  // async getProducts() {
-  //   return await this.productRepository.find({
-  //     where: { status: 'sale' },
-  //     select: ['id', 'title', 'price', 'viewCount', 'likes', 'createdAt'],
-  //     //sellerId-닉네임, 이메일, 주소/ 카테고리아이디추가-name도 추가로 보냄
-  //   }); //셀러아이디에 조인되는 닉네임 뿌려야//서버부담때문에 안하기로함
-  // }
+
   async getAllProducts() {
-    const products = await this.productRepository.find({
-      relations: ['category', 'seller', 'images'],
-      order: { updatedAt: 'DESC' },
-    });
-    const productsWithSellerNickname = products.map((product) => {
-      const sellerNickname = product.seller.nickname;
-      return { ...product, seller: { nickname: sellerNickname } };
-    });
-    return productsWithSellerNickname;
+    const queryBuilder = this.productRepository.createQueryBuilder('product');
+  
+    const products = await queryBuilder
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect('product.images', 'images')
+      .where('product.status = :status', { status: 'sale' })
+      .select([
+        'product.id',
+        'product.title',
+        'product.price',
+        'product.viewCount',
+        'product.likes',
+        'product.dealCount',
+        'product.createdAt',
+        'product.updatedAt',
+        'category.id',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .orderBy('product.updatedAt', 'DESC')
+      .getMany();
+  
+    return products;
+    //이미지 경로 하나만 반환하는 게 좋은데 대표이미지 컬럼추가나 리소스 잡아먹는거밖에 없어서
+    //일단 프론트에서 처리하죠, 0개 시 예외도 그렇고
   }
 
   async getProductById(id: number) {
@@ -98,33 +110,27 @@ export class ProductsService {
     price: number,
     categoryId: number,
     sellerId: number,
-    // images
   ) {
     const user = await this.userEntity.findOne({ where: { id: sellerId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const category = await this.categoriesRepository.findOne({
-      where: { id: categoryId },
-    });
+    const category = await this.categoriesRepository.findOne({ where: { id: categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
+  
     const product = new ProductsEntity();
     product.title = title;
     product.description = description;
     product.price = price;
     product.category = category;
     product.seller = user;
-
-    return await this.productRepository.save({
-      title,
-      description,
-      price,
-      category,
-      sellerId,
-    });
+  
+    return await this.productRepository.save(product);
   }
+  
+  
 
   //얘도 이미지
   async updateProduct(
