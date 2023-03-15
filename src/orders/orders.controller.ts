@@ -101,9 +101,6 @@ export class OrdersController {
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const buyList = await this.ordersService.getBuyList(userId);
-    if (!buyList.length) {
-      throw new NotFoundException(`${userId}는 구매한 상품이 없습니다.`);
-    }
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록

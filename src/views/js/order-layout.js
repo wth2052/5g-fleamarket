@@ -131,20 +131,19 @@ function myBuyList() {
       let data = res.data.data;
       console.log(data);
       let temp = '';
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.buyList.length; i++) {
         temp += `
-                                        <div class="container-fluid" onclick="location.href='/productss/view/${data[i].product.id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+      <div class="container-fluid" onclick="location.href='/productss/view/${data.product[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="img/${data[i].product.images[0].imagePath}" alt="spcFuck" 
+                        <img src="img/${data.product[i].images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${data[i].product.title}</h3></br>
-<!--                <p>${data[i].buyerId}</p>-->
-                <h6>거래일 : ${data[i].product.updatedAt}</h6>
-                <h4>거래완료 : ${data[i].deal}원</h4>
-                <span style="float: right;">❤${data[i].product.likes}</span>
+                <h3>${data.product[i].title}</h3></br>
+                <h6>구매날짜 : ${data.buyList[i].updatedAt}</h6>
+                <h4>구매완료 : ${data.buyList[i].deal}원</h4>
+                <span style="float: right;">❤${data.product[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -159,7 +158,6 @@ function myBuyList() {
         window.location.href = '/';
         return;
       }
-      // 404 구매내역이 없을 때
       else if (error.response.status === 404) {
         let temp = '';
         temp += `

@@ -42,9 +42,6 @@ export class ProductsService {
       relations: ['category', 'images'],
       order: { updatedAt: 'DESC' },
     });
-    console.log('!^%*&^@*&$', limit);
-    console.log('!^%*&^@*&$', offset);
-    console.log('!^%*&^@*&$', products);
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
     } else {
@@ -58,7 +55,7 @@ export class ProductsService {
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
-      where: { id: id, status: 'sale' },
+      where: { id: id },
       select: [
         'id',
         'title',

@@ -126,10 +126,19 @@ export class OrdersService {
   async getBuyList(userId: number) {
     const buyList = await this.orderRepository.find({
       where: { buyerId: userId, status: 'success', deletedAt: null },
-      relations: ['product'],
       order: { updatedAt: 'DESC' },
     });
-    return buyList;
+    if (!buyList.length) {
+      throw new NotFoundException();
+    }
+    for (let i = 0; i < buyList.length; i++) {
+      const product = await this.productRepository.find({
+        where: { id: buyList[i].productId, status: 'success' },
+        relations: ['images'],
+        order: { updatedAt: 'DESC' },
+      });
+      return { buyList, product };
+    }
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
@@ -150,7 +159,7 @@ export class OrdersService {
       if (!real.length) {
         throw new NotFoundException('판매를 성공한 상품이 없습니다.');
       }
-      return {real, myProduct};
+      return { real, myProduct };
     }
   }
   async putdealAccept(userId: number, orderId: number) {
