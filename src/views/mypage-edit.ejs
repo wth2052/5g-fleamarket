@@ -111,14 +111,16 @@ width: 100%; margin: 0">
 <script>
     axios.get('/user/me')
     .then(function (res){
-	    if (res.status === 401) {
-		    alert("로그인이 필요합니다.")
-		    window.location.href = "/login"
-	    }
+
 	    const data = res.data;
 	    console.log("성공", data)
       return data
     }).catch(function (error) {
+	    if (error.response.status === 401) {
+		    alert('로그인하셔야 합니다.');
+		    window.location.href = '/';
+		    return;
+	    }
 	    console.log("에러",error)
     })
     //TODO: 전에 썼던 비밀번호와 일치할 경우 비밀번호 변경 불가능하게 만들기
@@ -154,7 +156,7 @@ width: 100%; margin: 0">
 					    },
 					    nickname: usernickname.toString(),
 					    password: password.toString(),
-					    phone: .toString(),
+					    phone: newPhoneNumber.toString(),
 					    address: newAddress.toString(),})
 			    .then(function (res) {
 				    if (res.status === 401) {

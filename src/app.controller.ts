@@ -43,12 +43,12 @@ export class AppController {
   @Render('product-create.ejs')
   async productCreate() {}
 
+
   //TODO: 마이페이지에서 한번, 정보 수정에서 똑같은 로직이 한번씩 더 들어가는데 줄일 방법이 없을까?
   @Get('/me')
   @Render('mypage.ejs')
   @UseGuards(JwtAuthGuard)
   async getInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
-    console.log('아디쓰', jwt.id);
     const userId = jwt.id;
     const User = await this.userService.getUserInformation(userId);
     const data = {
@@ -57,7 +57,6 @@ export class AppController {
       phone: User.phone,
       address: User.address,
     };
-    console.log('결과적으론 데이터가 리턴중', data);
     return { data: data };
   }
   //회원정보 수정
