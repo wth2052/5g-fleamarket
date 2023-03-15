@@ -14,7 +14,6 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
-    <script><%- include('../js/order-layout.js') %></script>
     <script><%- include('../js/main-header.js') %></script>
     <style>
       html,
@@ -131,7 +130,10 @@
     }
   });
 
-	
+  if(error.request.status === 401){
+          alert('로그인 하고 오세요');
+      window.location.href = 'http://localhost:3000/login';
+        }
 </script>
 
 <style>

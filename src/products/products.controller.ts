@@ -13,6 +13,7 @@ import {
   UploadedFile,
   UploadedFiles,
   Render,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductImagesService } from './product-images.service';
@@ -34,6 +35,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('productss')
 export class ProductsController {
@@ -44,9 +46,19 @@ export class ProductsController {
   //상품목록조회
   @Public()
   @Get('view')
-  // @Render('product/products-view.ejs')
-  getProducts() {
-    return this.productsService.getAllProducts();
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
+  async getProducts(
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    try {
+      const products = await this.productsService.getAllProducts(limit, offset);
+      const totalProducts = await this.productsService.getTotalProducts();
+      return { products, totalProducts };
+    } catch (error) {
+      return error;
+    }
   }
 
   //상품 상세 보기
@@ -94,7 +106,6 @@ export class ProductsController {
       },
     }),
   )
-
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
@@ -132,11 +143,15 @@ export class ProductsController {
         price,
         categoryId,
         userId,
-      ); 
+      );
 
       for (const image of images) {
         const { path, filename } = image;
-        await this.ProductImagesService.saveProductImage(product.id, path, filename);
+        await this.ProductImagesService.saveProductImage(
+          product.id,
+          path,
+          filename,
+        );
       }
 
       return product;

@@ -10,7 +10,7 @@ import { CategoriesEntity } from '../global/entities/categories.entity';
 import { NoticesEntity } from '../global/entities/notices.entity';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { UserEntity } from '../global/entities/users.entity';
-import { Repository, Like} from 'typeorm';
+import { Repository, Like } from 'typeorm';
 
 @Injectable()
 export class AdminService {
@@ -28,13 +28,11 @@ export class AdminService {
   ) {}
 
   // 상품정보 가져오기 API
-  async getProducts(limit: number, offset:number) {
-    const products = await this.productRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+  async getProducts(limit: number, offset: number) {
+    const products = await this.productRepository.find({
+      take: limit,
+      skip: offset,
+    });
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
     } else {
@@ -48,19 +46,23 @@ export class AdminService {
   //상품정보 상세보기 API
   async getProductById(productId: number) {
     const product = await this.productRepository.findOne({
-      where: { id: productId }
+      where: { id: productId },
     });
-    //새로추가 
-    const sellerId = product.sellerId
-    const seller = await this.userRepository.findOne({where: {id : sellerId}})
-    const categoryId = product.categoryId
-    const category = await this.categoryRepository.findOne({where: {id : categoryId}})
+    //새로추가
+    const sellerId = product.sellerId;
+    const seller = await this.userRepository.findOne({
+      where: { id: sellerId },
+    });
+    const categoryId = product.categoryId;
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
     //
     if (!product) {
       throw new NotFoundException('존재하지 않는 상품입니다.');
     } else {
       //return product ==> return {product, seller}
-      return {product, seller, category};
+      return { product, seller, category };
     }
   }
 
@@ -93,26 +95,24 @@ export class AdminService {
   //회원정보 수정(블랙리스트) API
   async banUser(userId: number, ban: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user){
+    if (!user) {
       throw new NotFoundException('존재하지 않는 유저입니다.');
-    }
-    else{
+    } else {
       const nickname = user.nickname;
       const banStatus = user.ban;
 
       if (ban === 1) {
-      if (banStatus === 1) {
-        throw new UnauthorizedException('이미 블랙리스트 처리된 유저입니다.');
-      } else {
+        if (banStatus === 1) {
+          throw new UnauthorizedException('이미 블랙리스트 처리된 유저입니다.');
+        } else {
+          await this.userRepository.update(userId, { ban });
+          return { message: `${nickname}님이 블랙리스트 처리되었습니다.` };
+        }
+      } else if (ban === 0) {
         await this.userRepository.update(userId, { ban });
-        return { message: `${nickname}님이 블랙리스트 처리되었습니다.` };
+        return { message: `${nickname}님의 블랙리스트 처리가 취소되었습니다.` };
       }
-    } else if (ban === 0) {
-      await this.userRepository.update(userId, { ban });
-      return { message: `${nickname}님의 블랙리스트 처리가 취소되었습니다.` };
     }
-  }
-    
   }
 
   //회원 삭제 API
@@ -158,7 +158,7 @@ export class AdminService {
   }
 
   //카테고리 삭제 API
- async deleteCategory(categoryId: number) {
+  async deleteCategory(categoryId: number) {
     this.categoryRepository.delete(categoryId);
     return { message: '카테고리가 삭제되었습니다' };
   }
@@ -168,7 +168,7 @@ export class AdminService {
   async getNotices() {
     const notices = await this.noticeRepository.find();
     if (notices.length === 0) {
-      throw new NotFoundException('공지사항이 없습니다.')
+      throw new NotFoundException('공지사항이 없습니다.');
     } else {
       return notices;
     }
@@ -218,12 +218,12 @@ export class AdminService {
   }
 
   //공지사항 삭제
-   async deleteNotice(noticeId: number) {
+  async deleteNotice(noticeId: number) {
     this.noticeRepository.delete(noticeId);
     return { message: '공지가 삭제되었습니다' };
   }
 
-  ///testcode 없음//// 
+  ///testcode 없음////
 
   //상품검색
   async productSearch(search: string) {
@@ -270,7 +270,7 @@ export class AdminService {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
       const category = await this.categoryRepository.find({
-        where: { name : Like(`%${search}%`) },
+        where: { name: Like(`%${search}%`) },
       });
       if (category.length === 0) {
         throw new NotFoundException(`검색한 카테고리가 없습니다.'${search}'`);
@@ -281,7 +281,6 @@ export class AdminService {
     }
   }
 
-
   //공지 검색
 
   async noticeSearch(search: string) {
@@ -290,7 +289,7 @@ export class AdminService {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
       const notice = await this.noticeRepository.find({
-        where: { title : Like(`%${search}%`) },
+        where: { title: Like(`%${search}%`) },
       });
       if (notice.length === 0) {
         throw new NotFoundException(`검색한 공지사항이 없습니다.'${search}'`);
@@ -302,15 +301,12 @@ export class AdminService {
   }
 
   // 블랙리스트 회원 목록 보기
-  async getBanUsers(){
-    const banUsers = await this.userRepository.find({where: {ban : 1}});
+  async getBanUsers() {
+    const banUsers = await this.userRepository.find({ where: { ban: 1 } });
     if (banUsers.length === 0) {
       throw new NotFoundException('블랙리스트 회원이 없습니다.');
     } else {
       return banUsers;
     }
   }
-
-
 }
-

@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import {
   ForbiddenException,
-  Injectable, NotAcceptableException,
+  Injectable,
+  NotAcceptableException,
   NotFoundException,
-  UnauthorizedException
-} from "@nestjs/common";
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateProductDto } from './dto/create-product.dto';
@@ -34,19 +35,25 @@ export class ProductsService {
     private dataSource: DataSource,
   ) {}
 
-  async getAllProducts() {
+  async getAllProducts(limit: number, offset: number) {
     const products = await this.productRepository.find({
-      relations: ['category', 'seller', 'images'],
+      take: limit,
+      skip: offset,
+      relations: ['category', 'images'],
       order: { updatedAt: 'DESC' },
     });
-
-    const productsWithSellerNickname = products.map((product) => {
-      const sellerNickname = product.seller.nickname;
-      return { ...product, seller: { nickname: sellerNickname } };
-    });
-    return productsWithSellerNickname;
+    console.log('!^%*&^@*&$', limit);
+    console.log('!^%*&^@*&$', offset);
+    console.log('!^%*&^@*&$', products);
+    if (products.length === 0) {
+      throw new NotFoundException('상품이 존재하지 않습니다.');
+    } else {
+      return products;
+    }
   }
-
+  async getTotalProducts() {
+    return this.productRepository.count();
+  }
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
