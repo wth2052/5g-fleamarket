@@ -53,8 +53,9 @@
         <div class="container-fluid" style=" margin-top: 20px;" >
             <div class="row" id="noticeInfo">  
                 <div class="col-md-2" id="image-container"></div>  
-                <div  class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px;">  
-                    <h3 style="padding-top: 10px;">제목:</h3>
+                <div  class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px;"> 
+                    <span style="float: right; margin-top: 10px;">작성일: <%= notice.createdAt.getFullYear() %>년 <%= notice.createdAt.getMonth()+ 1%>월 <%= notice.createdAt.getDate() %>일 <%= notice.createdAt.getHours() %>:<%= notice.createdAt.getMinutes() %></span><br>
+                    <h3 style="padding-top: 10px; display: inline-block">제목:</h3>
                      <h4 id="noticeTitle"><%= notice.title %></h4> <br>
                      <h3>내용:</h3>
                     <h4 id="noticeDes"><%= notice.description %></h4> <br>

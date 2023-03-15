@@ -552,12 +552,13 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
               <div class="container-fluid" style="margin-top: 20px;" onclick="getProduct(${products[i].id})">
                 <div class="row" style="cursor: pointer;">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+                    <img src="/img/${products[i].images[0].imagePath}" alt="spcFuck" id="image"/>
                   </div>
                   <div class="col-md-8" id="products-column">
                     <h3>${products[i].title}</h3>
                     <h3>${products[i].price}원</h3>
                     <br>
+                    <span>작성자: ${products[i].seller.nickname}</span>
                     <span style="float: right;">❤ ${products[i].likes}</span>
                     <span style="float: right;">🎯 ${products[i].dealCount} &nbsp </span>
                     <span style="float: right;">👀:${products[i].viewCount}회 &nbsp</span>
@@ -618,12 +619,13 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
         <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct(${data[i].id})" id="bb">
                 <div class="row" style="cursor: pointer; ">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+                    <img src="/img/${data[i].images[0].imagePath}" alt="spcFuck" id="image"/>
                   </div>
                   <div class="col-md-8" id="products-column" >
                       <h3 > ${title}</h3>
                       <h3>${data[i].price} 원</h3>
                       <br>
+                      <span>작성자: ${data[i].seller.nickname}</span>
                       <span style="float: right;">❤ ${data[i].likes}</span>
                       <span style="float: right;">🎯${data[i].dealCount}  &nbsp </span>
                       <span style="float: right;">👀:${data[i].viewCount}회 &nbsp</span>
@@ -1383,4 +1385,34 @@ function checkReport(reportId, status){
   });
 }
 
+
+// Date 객체를 사용하여 일정 기간 전인지 계산하는 함수
+function getTimeAgo(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diff = now - date;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  const weeks = Math.floor(diff / 604800000);
+  const months = Math.floor(diff / 2592000000);
+  const years = Math.floor(diff / 31536000000);
+
+  switch (true) {
+    case minutes < 5:
+      return `방금 전`;
+    case hours < 1:
+      return `${minutes}분 전`;
+    case days < 1:
+      return `${hours}시간 전`;
+    case weeks < 1:
+      return `${days}일 전`;
+    case months < 1:
+      return `${weeks}주 전`;
+    case years < 1:
+      return `${months}달 전`;
+    default:
+      return `${years}년 전`;
+  }
+}
     

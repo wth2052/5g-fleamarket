@@ -12,6 +12,7 @@ import { ProductsEntity } from '../global/entities/products.entity';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository, Like} from 'typeorm';
 import { ReportsEntity } from '../global/entities/reports.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
 
 @Injectable()
 export class AdminService {
@@ -32,12 +33,38 @@ export class AdminService {
 
   // 상품정보 가져오기 API
   async getProducts(limit: number, offset:number) {
-    const products = await this.productRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+    // const products = await this.productRepository.find(
+    //   {
+    //     take: limit,
+    //     skip: offset,
+    //   }
+    // );
+
+    const queryBuilder = this.productRepository.createQueryBuilder('product');
+  
+    const products = await queryBuilder
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect('product.images', 'images')
+      .take(limit)
+      .skip(offset)
+      .select([
+        'product.id',
+        'product.title',
+        'product.price',
+        'product.viewCount',
+        'product.likes',
+        'product.dealCount',
+        'product.createdAt',
+        'product.updatedAt',
+        'category.id',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .getMany();
+
+    
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
     } else {
@@ -51,19 +78,25 @@ export class AdminService {
   //상품정보 상세보기 API
   async getProductById(productId: number) {
     const product = await this.productRepository.findOne({
-      where: { id: productId }
+      where: { id: productId },
+      relations: ['images']
     });
-    //새로추가 
+    //리팩토링 필요
     const sellerId = product.sellerId
     const seller = await this.userRepository.findOne({where: {id : sellerId}})
     const categoryId = product.categoryId
     const category = await this.categoryRepository.findOne({where: {id : categoryId}})
+    // const images = await this.imageRepository.find({where: {productId: productId}})
     //
+
+    const images = product.images.map((image) => ({
+      imagePath: image.imagePath,
+    }));
     if (!product) {
       throw new NotFoundException('존재하지 않는 상품입니다.');
     } else {
       //return product ==> return {product, seller}
-      return {product, seller, category};
+      return {product, seller, category, images};
     }
   }
 
@@ -257,9 +290,32 @@ export class AdminService {
       if (!search) {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
-      const products = await this.productRepository.find({
-        where: { title: Like(`%${search}%`) },
-      });
+      const queryBuilder = this.productRepository.createQueryBuilder('product');
+
+      const products = await queryBuilder
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect('product.images', 'images')
+      .where({title: Like(`%${search}%`) })
+      .select([
+        'product.id',
+        'product.title',
+        'product.price',
+        'product.viewCount',
+        'product.likes',
+        'product.dealCount',
+        'product.createdAt',
+        'product.updatedAt',
+        'category.id',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .getMany();
+
+      // const products = await this.productRepository.find({
+      //   where: { title: Like(`%${search}%`) },
+      // });
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }

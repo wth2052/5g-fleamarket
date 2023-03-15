@@ -76,7 +76,8 @@ export class AdminController {
   const product = result.product
   const seller = result.seller
   const category = result.category
-    return {product, seller, category}
+  const images = result.images
+    return {product, seller, category, images}
     }
 
 
