@@ -87,14 +87,9 @@
                 </div>
               </div>
             <% } %>
-            <div id="ss"></div>
+            <input type="hidden" value="<%= products.length %>" id="productsLength">
+            <input type="hidden" value="<%= totalProducts%>" id="totalProducts">
 
-            
-            <!-- <% if (products.length < totalProducts) { %>
-              <div class="text-center mt-3">
-                <button onclick="pageProduct(<%= products.length %>, <%= totalProducts%> )" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
-              </div>
-            <% } %> -->
             
           <% } %>
   </div>

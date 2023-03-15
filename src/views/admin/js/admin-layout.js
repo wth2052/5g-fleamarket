@@ -524,6 +524,10 @@ function debounce(func, wait = 5, immediate = false) {
 
 if (window.location.href === 'http://localhost:3000/products'){
 //상품 무한 스크롤 
+
+let limit = Number(document.getElementById('productsLength').value)
+let offset = Number(document.getElementById('productsLength').value)
+let TotalProducts = Number(document.getElementById('totalProducts').value)
 // A delay of 50ms between calls.
   const debouncedPageProduct = debounce(pageProduct, 50);
   
@@ -589,7 +593,9 @@ if (window.location.href === 'http://localhost:3000/products'){
 
 }
 else if (window.location.href === 'http://localhost:3000/users'){
-
+  let limit = Number(document.getElementById('usersLength').value)
+  let offset = Number(document.getElementById('usersLength').value)
+  let TotalUsers = Number(document.getElementById('totalUsers').value)
 //회원 페이지네이션 
   // A delay of 50ms between calls.
   const debouncedPageUser = debounce(pageUser, 50);
@@ -611,31 +617,54 @@ else if (window.location.href === 'http://localhost:3000/users'){
           console.log(users)
           let temp = '';
           
+          
           for (let i = 0; i < users.length; i++) {
+            if(users[i].ban === 1){
+              temp += `
+                          <div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${users[i].id})">
+                            <div class="row">
+                              <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                                
+                                  <h4>닉네임: </h4>
+                                  <h3 style="margin-left: 30px;"> ${users[i].nickname}</h3>
+                                  <br>
+                                  <h4>이메일: </h4>
+                                  <h3 style="margin-left: 30px;">${users[i].email} </h3 >
+                                  <br>
+                                  <h4>전화번호: </h4>
+                                  <h3 style="margin-left: 7px;">  ${users[i].phone}</h3>
+                                <span style="float: right;margin-top:45px" class="blacklist">😡블랙리스트</span>
+                                </div>
+                              
+                            </div>
+                          </div>
+                        `
+            }
+            else{
             temp += `
-              <div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${users[i].id})">
-                <div class="row">
-                  <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
-                    
-                      <h4>닉네임: </h4>
-                      <h3 style="margin-left: 30px;"> ${users[i].nickname}</h3>
-                      <br>
-                      <h4>이메일: </h4>
-                      <h3 style="margin-left: 30px;">${users[i].email} </h3 >
-                      <br>
-                      <h4>전화번호: </h4>
-                      <h3 style="margin-left: 7px;">  ${users[i].phone}</h3>
-                     <span style="float: right;margin-top:45px" id="blacklist"></span>
-                    </div>
-                   
-                </div>
-              </div>
-            `;
-        if(users[i].ban === 1){
-            document.getElementById('blacklist').innerHTML = '😡블랙리스트'
-        }
+                          <div class="container-fluid" style=" margin-top: 20px;" onclick="getUser(${users[i].id})">
+                            <div class="row">
+                              <div class="col-md-8" style="padding: 10px; margin-left: 17%; border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                                
+                                  <h4>닉네임: </h4>
+                                  <h3 style="margin-left: 30px;"> ${users[i].nickname}</h3>
+                                  <br>
+                                  <h4>이메일: </h4>
+                                  <h3 style="margin-left: 30px;">${users[i].email} </h3 >
+                                  <br>
+                                  <h4>전화번호: </h4>
+                                  <h3 style="margin-left: 7px;">  ${users[i].phone}</h3>
+                                <span style="float: right;margin-top:45px" class="blacklist"></span>
+                                </div>
+                              
+                            </div>
+                          </div>
+                        `
+            }
           }
-          $('#bb').append(temp);
+
+        $('#bb').append(temp);
+          
   
           if (users.length < res.data.totalUsers) {
   
@@ -708,6 +737,9 @@ function getBan() {
 }
 else if (window.location.href === 'http://localhost:3000/category'){
 //카테고리 페이지네이션 
+let limit = Number(document.getElementById('categoryLength').value)
+let offset = Number(document.getElementById('categoryLength').value)
+let TotalCategory = Number(document.getElementById('totalcategory').value)
 
 // A delay of 50ms between calls.
 const debouncedPageCategory= debounce(pageCategory, 50);
@@ -774,6 +806,9 @@ function pageCategory() {
 }
 else if (window.location.href === 'http://localhost:3000/notice'){
 //공지 페이지네이션 
+let limit = Number(document.getElementById('noticeLength').value)
+let offset = Number(document.getElementById('noticeLength').value)
+let TotalNotice = Number(document.getElementById('totalNotice').value)
 
 // A delay of 50ms between calls.
   const debouncedPageNotice = debounce(pageNotice, 50);
@@ -831,6 +866,186 @@ else if (window.location.href === 'http://localhost:3000/notice'){
         });
     }
   };
+}
+else if (window.location.href === 'http://localhost:3000/reports'){
+//신고 페이지네이션
+let limit = Number(document.getElementById('reportsLength').value)
+let offset = Number(document.getElementById('reportsLength').value)
+let TotalReports = Number(document.getElementById('totalReports').value)
+
+  // A delay of 50ms between calls.
+  const debouncedPageReport = debounce(pageReport, 50);
+  
+  window.addEventListener('scroll', debouncedPageReport);
+  
+  function pageReport() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+  
+     const totalReports = TotalReports
+      const reportsLength = limit
+      console.log(reportsLength)
+      console.log(totalReports)
+  
+      axios.get(`/api/reports?limit=${limit}&offset=${offset}`)
+        .then(res => {
+          const reports = res.data.reports;
+          console.log(reports)
+          let temp = '';
+          for (let i = 0; i < reports.length; i++) {
+            if(reports[i].status === 1){
+            temp += `
+                        <div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${reports[i].id})">
+                        <div class="row">
+                          <div class="col-md-2" id="image-container"></div> 
+                            <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                              <h3>${reports[i].title}</h3>
+                              <span style="float: right;">✅</span>
+                            </div>
+                        </div>
+                      </div>
+                    `
+            }
+            else if (reports[i].status === 0){
+              temp += `
+              <div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${reports[i].id})">
+              <div class="row">
+                <div class="col-md-2" id="image-container"></div> 
+                  <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                    <h3>${reports[i].title}</h3>
+                    <span style="float: right;">❌</span>
+                  </div>
+              </div>
+            </div>
+          `
+            }
+          } 
+          $('#bb').append(temp);
+          if (reports.length < res.data.totalReports) {
+  
+                    limit += reports.length
+  
+                   offset += reports.length
+                   }
+        })
+        .catch(error => {
+                  if (reportsLength === totalReports){
+                    alert('끝 페이지입니다.') 
+                    window.removeEventListener('scroll', debouncedPageReport);
+                   }
+                   else if (error.response.status === 401) {
+                          alert('로그인하셔야 합니다.');
+                          window.location.href = '/admin/login'
+                      }
+                   else{
+                     alert('데이터를 불러오는 중 오류가 발생했습니다.');
+                   }
+        });
+    }
+  };
+
+  //확인안된 신고목록 불러오기
+function getUncheckedReport() {
+  axios
+.get('http://localhost:3000/unchecked/reports')
+.then((res) => {
+  window.removeEventListener('scroll', debouncedPageReport);
+  console.log(res.data.uncheckedReports)
+  const uncheckedReports = res.data.uncheckedReports
+  let temp = '';
+  for (let i = 0; i < uncheckedReports.length; i++) {
+      document.getElementById(`bb`).innerHTML = "";
+
+      temp += `
+      <div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${uncheckedReports[i].id})">
+              <div class="row">
+                <div class="col-md-2" id="image-container"></div> 
+                  <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                    <h3>${uncheckedReports[i].title}</h3>
+                    <span style="float: right;">❌</span>
+                  </div>
+              </div>
+            </div>
+      `
+
+  }
+  document.getElementById('bb').innerHTML = temp;
+
+})
+.catch((error) => {
+  if (error.response.status === 401) {
+                alert('로그인하셔야 합니다.');
+                window.location.href = '/admin/login'
+            }
+        else{
+            alert(error.response.data.message);
+  window.location.reload();
+        }
+})
+}
+
+ //확인된 신고목록 불러오기
+ function getCheckedReport() {
+  axios
+.get('http://localhost:3000/checked/reports')
+.then((res) => {
+  window.removeEventListener('scroll', debouncedPageReport);
+  console.log(res.data.checkedReports)
+  const checkedReports = res.data.checkedReports
+  let temp = '';
+  for (let i = 0; i < checkedReports.length; i++) {
+      document.getElementById(`bb`).innerHTML = "";
+
+      temp += `
+      <div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${checkedReports[i].id})">
+              <div class="row">
+                <div class="col-md-2" id="image-container"></div> 
+                  <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                    <h3>${checkedReports[i].title}</h3>
+                    <span style="float: right;">✅</span>
+                  </div>
+              </div>
+            </div>
+      `
+
+  }
+  document.getElementById('bb').innerHTML = temp;
+
+})
+.catch((error) => {
+  if (error.response.status === 401) {
+                alert('로그인하셔야 합니다.');
+                window.location.href = '/admin/login'
+            }
+        else{
+            alert(error.response.data.message);
+  window.location.reload();
+        }
+})
+}
+}
+
+
+
+
+
+
+
+
+//신고 상세 보기
+function getReport(reportId){
+  axios
+                  .get('http://localhost:3000/reports')
+                  .then((res) => {
+                  window.location.replace(`http://localhost:3000/reports/${reportId}`)
+                      })
+                  .catch((error) => {
+                      // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                      console.log(error)
+                      if (error.response.status === 401) {
+                          alert('로그인하셔야 합니다.');
+                          window.location.href = '/admin/login'
+                      }})
 }
 
 

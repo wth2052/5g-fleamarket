@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
 import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { CheckReportDto } from './dto/check-report.dto';
 
 @Catch(HttpException)
 @Controller()
@@ -318,6 +319,14 @@ async noticeSearch(@Query('search') search: string) {
   return { data : notice };
 }
 
+//신고 검색
+
+@Get('reportSearch')
+async reportSearch(@Query('search') search: string) {
+  const report = await this.adminService.reportSearch(search);
+  return { data : report };
+}
+
 // 블랙리스트 모아보기 
 @Get('ban/users')
 async getBanUsers(){
@@ -328,6 +337,87 @@ catch (error) {
   return  {errorMessage: error.message} 
 }
 }
+
+//신고 목록 보기 
+  @Get('/reports')
+  @Render('admin/admin-reports.ejs')
+  async getReports(
+  @Query('limit') limit: number = 10,
+  @Query('offset') offset: number = 0,) {
+    try{ 
+      const reports = await this.adminService.getReports(limit, offset)
+      // const reportsUnchecked = await this.adminService.getUncheckedReports(limit, offset)
+      // const reportsChecked = await this.adminService.getCheckedReports(limit, offset)
+      const totalReports = await this.adminService.getTotalReports();
+      return {reports, totalReports}
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+
+  @Get('/api/reports')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getReports2(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    try{ 
+      const reports = await this.adminService.getReports(limit, offset)
+      // const Uncheckedreports = await this.adminService.getUncheckedReports(limit, offset)
+      // const Checkedreports = await this.adminService.getCheckedReports(limit, offset)
+      const totalReports = await this.adminService.getTotalReports();
+      return {reports, totalReports}
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+  
+
+  //신고 상세보기 API
+  @Get('/reports/:reportId')
+  @Render('admin/admin-reportById.ejs')
+  async getReportById(
+    @Param('reportId') reportId: number,
+  ) {
+  const result = await this.adminService.getReportById(reportId)
+  const report = result.report
+  const reporter = result.reporter
+    return {report, reporter}
+    }
+
+  //신고 수정 (확인하기)
+  @Put('/reports/:reportId')
+  async checkReport(@Param('reportId') reportId: number, @Body() data: CheckReportDto) {
+    return await this.adminService.checkReport(reportId, data.status);
+  } 
+
+  //확인된 신고 모아보기 
+@Get('checked/reports')
+async getCheckedreports(){
+  try {
+    const checkedReports = await this.adminService.getCheckedReports()
+    return {checkedReports}
+  }
+catch (error) {
+  return  {errorMessage: error.message} 
+}
+}
+
+
+  //확인이 되지 않은 신고 모아보기 
+  @Get('unchecked/reports')
+  async getUncheckedreports(){
+    try {
+      const uncheckedReports = await this.adminService.getUncheckedReports()
+      return {uncheckedReports}
+    }
+  catch (error) {
+    return  {errorMessage: error.message} 
+  }
+  }
 
 }
 

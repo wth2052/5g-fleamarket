@@ -75,6 +75,8 @@
                 </div>
               </div>
             <% } %>
+            <input type="hidden" value="<%= users.length %>" id="usersLength">
+            <input type="hidden" value="<%= totalUsers %>" id="totalUsers">
 
             
           <% } %>
@@ -90,9 +92,7 @@
 
 
 <script>
-let limit = <%= users.length %>
-let offset = <%= users.length %>
-let TotalUsers = <%= totalUsers %>
+
 
 <%- include('js/admin-layout.js') %></script>
 

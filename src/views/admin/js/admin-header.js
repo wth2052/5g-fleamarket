@@ -73,7 +73,27 @@ function checkLogin(service) {
                     window.location.href = '/admin/login'
                 }})
     }
+    else if(service === "reports"){
+      axios
+            .get('http://localhost:3000/reports')
+            .then((res) => {
+              window.location.href = '/reports'
+                })
+            .catch((error) => {
+                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+                if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }})
+    }
+
+
               }
+
+
+
+
+
 
 
 
@@ -302,6 +322,65 @@ else if (window.location.href === 'http://localhost:3000/notice'){
     });
 
 }
+else if (window.location.href === 'http://localhost:3000/reports'){
+  // window.removeEventListener('scroll', debouncedPageReport);
+//신고 검색
+    axios
+    .get(`http://localhost:3000/reportSearch?search=${search}`)
+    .then((res) => {
+      let data = res.data.data;
+      let temp = '';
+      for (let i = 0; i < data.length; i++) {
+
+        document.getElementById(`bb`).innerHTML = "";
+
+        // 검색어 배경색 적용
+        const title = data[i].title.replace(
+          new RegExp(`(${search})`, 'gi'),
+          '<span style="background-color: yellow">$1</span>',
+        );
+
+        if (data[i].status === 1) {
+
+           temp += `<div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${data[i].id})">
+           <div class="row">
+             <div class="col-md-2" id="image-container"></div> 
+               <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                 <h3>${title}</h3>
+                 <span style="float: right;"> ✅ </span>
+               </div>
+           </div>
+         </div>`
+        }
+
+        else{
+          temp += `<div class="container-fluid" style=" margin-top: 20px;" onclick="getReport(${data[i].id})">
+           <div class="row">
+             <div class="col-md-2" id="image-container"></div> 
+               <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; cursor: pointer;">
+                 <h3>${title}</h3>
+                 <span style="float: right;"> ❌ </span>
+               </div>
+           </div>
+         </div>`
+        }
+
+       ;
+      }
+      document.getElementById('bb').innerHTML = temp;
+    })
+    .catch((error) => {
+      if (error.response.status === 401) {
+                    alert('로그인하셔야 합니다.');
+                    window.location.href = '/admin/login'
+                }
+            else{
+                alert(error.response.data.message);
+      window.location.reload();
+            }
+    });
+}
+
 else{
   alert( '이 페이지에서는 검색이 불가능 합니다.')
 }

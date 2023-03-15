@@ -88,7 +88,8 @@
                 </div>
               </div>
             <% } %>
-
+            <input type="hidden" value="<%= category.length %>" id="categoryLength">
+            <input type="hidden" value="<%= totalcategory %>" id="totalcategory">
             
           <% } %>
   </div>
@@ -101,9 +102,6 @@
 </body>
 
 <script>
-let limit = <%= category.length %>
-let offset = <%= category.length %>
-let TotalCategory = <%= totalcategory %>
 
 <%- include('js/admin-layout.js') %>
 </script>
