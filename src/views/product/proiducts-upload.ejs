@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>상품 업로드</title>
+    <!--    BootStrap Library-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <!--    Axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--    Js -->
+    <script><%- include('../js/order-layout.js') %></script>
+    <script><%- include('../js/main-header.js') %></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      #wrap {
+        min-height: calc(100% - 120px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    </style>
+  </head>
+  <body>
+    <header><%- include('../main-header.ejs') %></header>
+    <main>
+			<div id="upload-form-wrap">
+				<form id="upload-form">
+					<div class="form-group">
+						<label for="title">Title:</label>
+						<textarea id="title" name="title" required></textarea>
+					</div>
+		
+					<div class="form-group">
+						<label for="description">Description:</label>
+						<textarea id="description" name="description" required></textarea>
+					</div>
+		
+					<div class="form-group">
+						<label for="price">Price:</label>
+						<input type="number" id="price" name="price" min="0" required>
+					</div>
+		
+					<div class="form-group">
+						<label for="category">Category:</label>
+						<select id="category" name="categoryId" required>
+							<option value="">-- Select a category --</option>
+							<option value="1">Category 1</option>
+							<option value="2">Category 2</option>
+							<option value="3">Category 3</option>
+						</select>
+					</div>
+		
+					<div class="form-group">
+						<label for="images">Images:</label>
+						<input type="file" id="images" name="images" accept="image/*" multiple required>
+						<div id="image-preview"></div>
+					</div>
+
+					
+		
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+		</main>
+    <footer><%- include('../main-footer.ejs') %></footer>
+  </body>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+		const form = document.querySelector('#upload-form');
+		
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			const formData = new FormData();
+			formData.append('title', form.title.value);
+			formData.append('description', form.description.value);
+			formData.append('price', form.price.value);
+			formData.append('categoryId', form.categoryId.value);
+			
+			const files = document.querySelector('[type=file]').files;
+			for (let i = 0; i < files.length; i++) {
+				formData.append('images', files[i]);
+			}
+			
+			try {
+				const response = await axios.post('/productss/up', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
+				});
+				console.log(response.data);
+				alert('Product uploaded successfully');
+				form.reset();
+			} catch (error) {
+				console.error(error);
+				alert('Failed to upload product. Please try again.');
+			}
+		});
+		const imageInput = document.querySelector('#images');
+  const imagePreview = document.querySelector('#image-preview');
+
+  imageInput.addEventListener('change', () => {
+    const files = imageInput.files;
+    imagePreview.innerHTML = '';
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const imageType = /image.*/;
+
+      if (!file.type.match(imageType)) {
+        continue;
+      }
+
+      const image = document.createElement('img');
+      image.src = URL.createObjectURL(file);
+      image.classList.add('preview-image');
+      imagePreview.appendChild(image);
+    }
+  });
+
+	
+</script>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    height: calc(100% - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #upload-form-wrap {
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .preview-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+	</script>
+</body>
+</html>

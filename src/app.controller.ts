@@ -12,7 +12,10 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
-
+  @Public()
+  @Get('view/signup')
+  @Render('signup.ejs')
+  async viewSignup() {}
   @Get('orders/index')
   @Render('order-layout.ejs')
   async index() {}
@@ -20,4 +23,16 @@ export class AppController {
   @Get('test')
   @Render('index.ejs')
   async test() {}
+
+  @Get('mypage')
+  @Render('mypage.ejs')
+  async mypage() {}
+
+  @Get('product')
+  @Render('product-main.ejs')
+  async product() {}
+
+  @Get('product/create')
+  @Render('product-create.ejs')
+  async productCreate() {}
 }

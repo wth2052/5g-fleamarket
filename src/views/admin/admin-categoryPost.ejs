@@ -28,6 +28,12 @@
     border-radius: 6px;
     border: 1px;
   }
+
+  .footer-btn:hover{
+    background-color: #f2f2f2d6;
+    border: 1px black;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
 </style>
 <body>
 
@@ -36,10 +42,10 @@
   <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
     <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
 
-        <div class="container-fluid" style="border: 1px solid red; margin-top: 20px;" >
+        <div class="container-fluid" style=" margin-top: 20px;" >
             <div class="row">
               <div class="col-md-2" id="image-container"></div> 
-              <div class="col-md-8" style="border: 1px solid red; padding-left: 20%; padding-bottom: 7%; padding-top: 2%;">
+              <div class="col-md-8" style="border: 3px dotted #5cd7f2; border-radius: 3px; padding-left: 15%; padding-bottom: 7%; padding-top: 2%;">
                   <h3>카테고리:</h3> 
                   <br>
                   <h3><input type="text" id="name"></h3>
@@ -57,38 +63,15 @@
 <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
   <div class="container" style="height: 40px; padding: 0">
     <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
-      <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+      <div class="col" style="height: 40px; width: 20%"></div>
       <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="createCategory()">작성완료</button></div>
       <div class="col" style="height: 40px; width: 20%"></div>
-      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancle()">취소</button></div>
-      <div class="col" style="border: 1px solid black;height: 40px; width: 20%"></div>
+      <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick="cancleCategory()">취소</button></div>
+      <div class="col" style="height: 40px; width: 20%"></div>
     </div>
   </div>
 
 </body>
+<script><%- include('js/admin-layout.js') %></script>
 
-<script>
-
-function cancle() {
-    window.location.replace("http://localhost:3000/category")
-  }
-
-  function createCategory() {
-    const name = document.getElementById('name').value;
-    axios
-        .post('http://localhost:3000/category',
-            { name: name}
-        )
-        .then((res) => {
-            // 응답처리
-            alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/category")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-}
-
-</script>
 </html>

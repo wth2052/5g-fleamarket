@@ -1,0 +1,39 @@
+<!--상단 메뉴바-->
+<div class="container-fluid" style="
+        height: 50px;
+        position: fixed;
+        top: 0;
+        background: #0597F2;
+
+      ">
+    <div class="container" style="width: 45%">
+        <div class="row">
+            <div class="col-md-2"
+                 onclick="location.href='productss/view'"
+                 style="background: #0597F2; height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0"><!--상품목록으로 연결되어있는데 주의,"location.href='product'-->
+                <img src="https://velog.velcdn.com/images/ms_sh0728/post/d04aed63-939c-41d1-aaca-d220bb0b70f8/image.png"
+                     alt="spcFuck" style="width: 100%; height: 100%; margin: 0" />
+
+            </div>
+            <div class="col-md-8" style="background: #0597F2; height: 50px; display: flex;">
+                <input id="search" type="text" placeholder="  검색어를 입력해주세요!"
+                       style="flex: 1 1 auto; height: 100%; border-radius: 50px; border: 0; padding: 0;text-align: center"
+                       onkeypress="handleKeyPress(event)">
+            </div>
+            <div class="col-md-2"
+                 style="background: #0597F2; height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0">
+                <img src="https://velog.velcdn.com/images/ms_sh0728/post/e0dda7af-fce9-44d0-96ca-aab759886270/image.png"
+                     alt="spcFuck" style="width: 100%; height: 50px; margin: 0;" />
+
+            </div>
+        </div>
+    </div>
+</div>
