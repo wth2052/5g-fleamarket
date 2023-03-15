@@ -93,7 +93,6 @@
 			for (let i = 0; i < files.length; i++) {
 				formData.append('images', files[i]);
 			}
-			
 			try {
 				const response = await axios.post('/productss/up', formData, {
 					headers: {
@@ -130,10 +129,6 @@
     }
   });
 
-  if(error.request.status === 401){
-          alert('로그인 하고 오세요');
-      window.location.href = 'http://localhost:3000/login';
-        }
 </script>
 
 <style>

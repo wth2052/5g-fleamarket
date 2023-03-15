@@ -71,7 +71,7 @@ export class ProductsController {
   //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
   @Get('up')
-  @Render('product/proiducts-upload.ejs')
+  @Render('product/products-upload.ejs')
   createProductForm() {
     return {};
   }
