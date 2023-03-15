@@ -31,11 +31,12 @@ export class UserService {
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
-
+    console.log('토큰 아이디는 잘 들어옴 ㅋ?ㅋ?ㅋ?', refreshToken, id);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
     );
+    console.log('토큰맞음?ㅋ?ㅋ?ㅋ?', isRefreshTokenMatching);
 
     if (isRefreshTokenMatching) {
       return user;

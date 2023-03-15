@@ -13,6 +13,7 @@ import {
   UploadedFile,
   UploadedFiles,
   Render,
+  PayloadTooLargeException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductImagesService } from './product-images.service';
@@ -44,6 +45,7 @@ export class ProductsController {
   //상품목록조회
   @Public()
   @Get('view')
+  // @Render('product/products-view.ejs')
   getProducts() {
     return this.productsService.getAllProducts();
   }
@@ -51,13 +53,14 @@ export class ProductsController {
   //상품 상세 보기
   @Public()
   @Get('view/:productId')
+  @Render('product/products-detail.ejs')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
   //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
   @Get('up')
-  @Render('product/products-upload.ejs')
+  @Render('product/proiducts-upload.ejs')
   createProductForm() {
     return {};
   }
@@ -76,7 +79,9 @@ export class ProductsController {
           // console.log('File upload filename:', `${uniqueSuffix}${extension}`);
           callback(null, `${uniqueSuffix}${extension}`);
         },
-      }),
+      }),limits: {
+        fileSize: 1024 * 1024 * 5, // 5MB
+      },
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
           // console.log('Invalid file type:', file.originalname);
@@ -85,10 +90,14 @@ export class ProductsController {
             false,
           );
         }
+        if (file.size > 1024 * 1024 * 5) {
+          // console.log('File size exceeds the limit:', file.originalname);
+          return callback(
+            new PayloadTooLargeException('File size exceeds the limit'),
+            false,
+          );
+        }
         callback(null, true);
-      },
-      limits: {
-        fileSize: 1024 * 1024 * 2, // 2MB
       },
     }),
   )
@@ -147,9 +156,19 @@ export class ProductsController {
     }
   }
 
+  //상품수정 렌더 및 수정하기 폼에서 기존 정보를 불러옴
+  @Get('edit/:id')
+  @Render('product/product-update.ejs')
+  async getEditProductPage(@Param('id') id: number) {
+    const product = await this.productsService.getProductById(id);
+    return { product };
+  }
+
+
+
   //상품수정
   @UseGuards(JwtAuthGuard)
-  @Put('/:productId')
+  @Put('edit/:productId')
   updateProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,

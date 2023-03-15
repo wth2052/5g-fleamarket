@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch, Query, Header} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -10,6 +10,8 @@ import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
+import { ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { CheckReportDto } from './dto/check-report.dto';
 
 @Catch(HttpException)
 @Controller()
@@ -27,14 +29,39 @@ export class AdminController {
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
-  async getProducts() {
-    try{
-      return {products : await this.adminService.getProducts()}
+  async getProducts(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) {
+    try{ 
+      const products = await this.adminService.getProducts(limit, offset)
+      const totalProducts = await this.adminService.getTotalProducts();
+      return {products, totalProducts}
+    
     }
     catch (error) {
        return { errorMessage: error.message };
     }
   }
+
+  @Get('/api/products')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getProducts2(
+    @Query('limit') limit: number ,
+    @Query('offset') offset: number ,
+  ) {
+    try{ 
+      const products = await this.adminService.getProducts(limit, offset)
+      const totalProducts = await this.adminService.getTotalProducts();
+      return {products, totalProducts}
+    
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+  
 
   //상품정보 상세보기 API
   @Get('/products/:productId')
@@ -62,8 +89,29 @@ export class AdminController {
   //회원정보 가져오기 API
   @Get('/users')
   @Render('admin/admin-users.ejs')
-  async getUsers() {try{
-    return {users: await this.adminService.getUsers()} 
+  async getUsers(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) {try{
+    const users = await this.adminService.getUsers(limit, offset)
+    const totalUsers = await this.adminService.getTotalUsers();
+    return {users, totalUsers} 
+  }
+  catch (error) {
+    return { errorMessage: error.message };
+  }
+  }
+
+  @Get('/api/users')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getUsers2(
+    @Query('limit') limit: number ,
+    @Query('offset') offset: number ,
+  ) {try{
+    const users = await this.adminService.getUsers(limit, offset)
+    const totalUsers = await this.adminService.getTotalUsers();
+    return {users, totalUsers} 
   }
   catch (error) {
     return { errorMessage: error.message };
@@ -92,9 +140,31 @@ export class AdminController {
   //카테고리 조회 API
   @Get('/category')
   @Render('admin/admin-category.ejs')
-  async getCategory() {
+  async getCategory(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) {
     try {
-    return {category: await this.adminService.getCategory()} 
+      const category = await this.adminService.getCategory(limit, offset)
+      const totalcategory= await this.adminService.getTotalcategory();
+    return {category, totalcategory} 
+  }
+  catch (error) {
+    return { errorMessage: error.message };
+  }
+  }
+
+  @Get('/api/category')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getCategory2(
+    @Query('limit') limit: number ,
+    @Query('offset') offset: number ,
+  ) {
+    try {
+      const category = await this.adminService.getCategory(limit, offset)
+      const totalcategory= await this.adminService.getTotalcategory();
+    return {category, totalcategory} 
   }
   catch (error) {
     return { errorMessage: error.message };
@@ -132,11 +202,33 @@ export class AdminController {
 
   @Get('/notice')
   @Render('admin/admin-notices.ejs')
- 
-  async getNotices() 
+  async getNotices(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) 
   {
    try {
-      return {notices: await this.adminService.getNotices()}
+    const notices = await this.adminService.getNotices(limit, offset)
+    const totalNotice = await this.adminService.getTotalNotice();
+      return {notices, totalNotice}
+    }
+  catch (error) {
+    return  {errorMessage: error.message} 
+  }
+  }
+
+  @Get('/api/notice')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getNotices2(
+    @Query('limit') limit: number =10,
+    @Query('offset') offset: number = 0,
+  ) 
+  {
+   try {
+    const notices = await this.adminService.getNotices(limit, offset)
+    const totalNotice = await this.adminService.getTotalNotice();
+      return {notices, totalNotice}
     }
   catch (error) {
     return  {errorMessage: error.message} 
@@ -192,4 +284,147 @@ export class AdminController {
   deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
+
+// 상품검색
+
+@Get('productSearch')
+async productSearch(@Query('search') search: string) {
+  const product = await this.adminService.productSearch(search);
+  return { data : product };
 }
+
+
+//회원검색
+
+@Get('userSearch')
+async userSearch(@Query('search') search: string) {
+  const user = await this.adminService.userSearch(search);
+  return { data : user };
+}
+
+//카테고리 검색
+
+
+@Get('categorySearch')
+async categorySearch(@Query('search') search: string) {
+  const category = await this.adminService.categorySearch(search);
+  return { data : category };
+}
+
+//공지 검색
+
+@Get('noticeSearch')
+async noticeSearch(@Query('search') search: string) {
+  const notice = await this.adminService.noticeSearch(search);
+  return { data : notice };
+}
+
+//신고 검색
+
+@Get('reportSearch')
+async reportSearch(@Query('search') search: string) {
+  const report = await this.adminService.reportSearch(search);
+  return { data : report };
+}
+
+// 블랙리스트 모아보기 
+@Get('ban/users')
+async getBanUsers(){
+  try {
+    return {banUsers: await this.adminService.getBanUsers()}
+  }
+catch (error) {
+  return  {errorMessage: error.message} 
+}
+}
+
+//신고 목록 보기 
+  @Get('/reports')
+  @Render('admin/admin-reports.ejs')
+  async getReports(
+  @Query('limit') limit: number = 10,
+  @Query('offset') offset: number = 0,) {
+    try{ 
+      const reports = await this.adminService.getReports(limit, offset)
+      // const reportsUnchecked = await this.adminService.getUncheckedReports(limit, offset)
+      // const reportsChecked = await this.adminService.getCheckedReports(limit, offset)
+      const totalReports = await this.adminService.getTotalReports();
+      return {reports, totalReports}
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+
+  @Get('/api/reports')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
+  async getReports2(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    try{ 
+      const reports = await this.adminService.getReports(limit, offset)
+      // const Uncheckedreports = await this.adminService.getUncheckedReports(limit, offset)
+      // const Checkedreports = await this.adminService.getCheckedReports(limit, offset)
+      const totalReports = await this.adminService.getTotalReports();
+      return {reports, totalReports}
+    }
+    catch (error) {
+       return { errorMessage: error.message };
+    }
+  }
+  
+
+  //신고 상세보기 API
+  @Get('/reports/:reportId')
+  @Render('admin/admin-reportById.ejs')
+  async getReportById(
+    @Param('reportId') reportId: number,
+  ) {
+  const result = await this.adminService.getReportById(reportId)
+  const report = result.report
+  const reporter = result.reporter
+    return {report, reporter}
+    }
+
+  //신고 수정 (확인하기)
+  @Put('/reports/:reportId')
+  async checkReport(@Param('reportId') reportId: number, @Body() data: CheckReportDto) {
+    return await this.adminService.checkReport(reportId, data.status);
+  } 
+
+  //확인된 신고 모아보기 
+@Get('checked/reports')
+async getCheckedreports(){
+  try {
+    const checkedReports = await this.adminService.getCheckedReports()
+    return {checkedReports}
+  }
+catch (error) {
+  return  {errorMessage: error.message} 
+}
+}
+
+
+  //확인이 되지 않은 신고 모아보기 
+  @Get('unchecked/reports')
+  async getUncheckedreports(){
+    try {
+      const uncheckedReports = await this.adminService.getUncheckedReports()
+      return {uncheckedReports}
+    }
+  catch (error) {
+    return  {errorMessage: error.message} 
+  }
+  }
+
+  //신고 삭제하기
+  @Delete('/reports/:reportId')
+  deleteReport(@Param('reportId') reportId: number) {
+    return this.adminService.deleteReport(reportId);
+  }
+
+}
+
+

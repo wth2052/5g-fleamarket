@@ -9,6 +9,7 @@ import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
+import { ReportsEntity } from '../global/entities/reports.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthModule } from '../auth/auth.module';
       CategoriesEntity,
       AdminsEntity,
       NoticesEntity,
+      ReportsEntity,
       AuthModule,
     ]),
   ],

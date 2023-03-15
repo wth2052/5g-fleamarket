@@ -27,4 +27,12 @@ export class AppController {
   @Get('user/mypage')
   @Render('mypage.ejs')
   async mypage() {}
+
+  @Get('product')
+  @Render('product-main.ejs')
+  async product() {}
+
+  @Get('product/create')
+  @Render('product-create.ejs')
+  async productCreate() {}
 }

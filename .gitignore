@@ -1,5 +1,6 @@
 .env
 .docker
+/src/public
 # compiled output
 /dist
 /node_modules
@@ -37,7 +38,8 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#이미지 업로드 실험용 이미지들
+#이미지 업로드용 폴더들, /uploads는 나중에 지울지도?
 
 /uploads
 /tmp
+/src/public/img

@@ -1,5 +1,6 @@
 import {
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,7 +10,8 @@ import { CategoriesEntity } from '../global/entities/categories.entity';
 import { NoticesEntity } from '../global/entities/notices.entity';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { UserEntity } from '../global/entities/users.entity';
-import { Repository } from 'typeorm';
+import { Repository, Like} from 'typeorm';
+import { ReportsEntity } from '../global/entities/reports.entity';
 
 @Injectable()
 export class AdminService {
@@ -24,16 +26,26 @@ export class AdminService {
     private adminRepository: Repository<AdminsEntity>,
     @InjectRepository(NoticesEntity)
     private noticeRepository: Repository<NoticesEntity>,
+    @InjectRepository(ReportsEntity)
+    private reportRepository: Repository<ReportsEntity>,
   ) {}
 
   // 상품정보 가져오기 API
-  async getProducts() {
-    const products = await this.productRepository.find();
+  async getProducts(limit: number, offset:number) {
+    const products = await this.productRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
     } else {
       return products;
     }
+  }
+  async getTotalProducts() {
+    return this.productRepository.count();
   }
 
   //상품정보 상세보기 API
@@ -62,13 +74,21 @@ export class AdminService {
   }
 
   //회원정보 가져오기 API
-  async getUsers() {
-    const users = await this.userRepository.find();
+  async getUsers(limit: number, offset:number) {
+    const users = await this.userRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (users.length === 0) {
       throw new NotFoundException('회원정보가 존재하지 않습니다.');
     } else {
       return users;
     }
+  }
+  async getTotalUsers() {
+    return this.userRepository.count();
   }
 
   //회원정보 상세보기 API
@@ -103,7 +123,6 @@ export class AdminService {
       return { message: `${nickname}님의 블랙리스트 처리가 취소되었습니다.` };
     }
   }
-    
   }
 
   //회원 삭제 API
@@ -119,13 +138,21 @@ export class AdminService {
   }
 
   //카테고리 조회 API
-  async getCategory() {
-    const categories = await this.categoryRepository.find();
+  async getCategory(limit: number, offset:number) {
+    const categories = await this.categoryRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (categories.length === 0) {
       throw new NotFoundException('카테고리가 없습니다.');
     } else {
       return categories;
     }
+  }
+  async getTotalcategory() {
+    return this.categoryRepository.count();
   }
 
   //카테고리 생성 API
@@ -156,13 +183,21 @@ export class AdminService {
 
   //공지사항 모두 조회
 
-  async getNotices() {
-    const notices = await this.noticeRepository.find();
+  async getNotices(limit: number, offset:number ) {
+    const notices = await this.noticeRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
     if (notices.length === 0) {
       throw new NotFoundException('공지사항이 없습니다.')
     } else {
       return notices;
     }
+  }
+  async getTotalNotice() {
+    return this.noticeRepository.count();
   }
 
   //공지사항 상세조회
@@ -213,4 +248,200 @@ export class AdminService {
     this.noticeRepository.delete(noticeId);
     return { message: '공지가 삭제되었습니다' };
   }
+
+  ///testcode 없음//// 
+
+  //상품검색
+  async productSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const products = await this.productRepository.find({
+        where: { title: Like(`%${search}%`) },
+      });
+      if (products.length === 0) {
+        throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
+      }
+      return products;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  //회원 검색
+
+  async userSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const users = await this.userRepository.find({
+        where: { nickname: Like(`%${search}%`) },
+      });
+      if (users.length === 0) {
+        throw new NotFoundException(`검색한 회원이 없습니다.'${search}'`);
+      }
+      return users;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  //카테고리 검색
+
+  async categorySearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const category = await this.categoryRepository.find({
+        where: { name : Like(`%${search}%`) },
+      });
+      if (category.length === 0) {
+        throw new NotFoundException(`검색한 카테고리가 없습니다.'${search}'`);
+      }
+      return category;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+
+  //공지 검색
+
+  async noticeSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const notice = await this.noticeRepository.find({
+        where: { title : Like(`%${search}%`) },
+      });
+      if (notice.length === 0) {
+        throw new NotFoundException(`검색한 공지사항이 없습니다.'${search}'`);
+      }
+      return notice;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  //신고 검색
+
+  async reportSearch(search: string) {
+    try {
+      if (!search) {
+        throw new NotFoundException('검색어를 입력해주세요.');
+      }
+      const report = await this.reportRepository.find({
+        where: { title : Like(`%${search}%`) },
+      });
+      if (report.length === 0) {
+        throw new NotFoundException(`검색한 공지사항이 없습니다.'${search}'`);
+      }
+      return report;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  // 블랙리스트 회원 목록 보기
+  async getBanUsers(){
+    const banUsers = await this.userRepository.find({where: {ban : 1}});
+    if (banUsers.length === 0) {
+      throw new NotFoundException('블랙리스트 회원이 없습니다.');
+    } else {
+      return banUsers;
+    }
+  }
+
+  //신고목록 확인
+  async getReports(limit: number, offset: number){
+    const reports = await this.reportRepository.find(
+      {
+        take: limit,
+        skip: offset,
+      }
+    );
+    if (reports.length === 0) {
+      throw new NotFoundException('접수된 신고가 없습니다.');
+    } else {
+      return reports;
+    }
+  }
+
+  //확인안된 신고
+  async getUncheckedReports(){
+    const Uncheckedreports = await this.reportRepository.find({
+     
+      where: {status : 0}});
+    if (Uncheckedreports.length === 0) {
+      throw new NotFoundException('모든 신고가 확인되었습니다.');
+    } else {
+      return Uncheckedreports;
+    }
+  }
+
+  //확인된 신고
+  async getCheckedReports(){
+    const Checkedreports = await this.reportRepository.find({
+      
+      where: {status : 1}});
+    if (Checkedreports.length === 0) {
+      throw new NotFoundException('확인된 신고가 없습니다..');
+    } else {
+      return Checkedreports;
+    }
+  }
+
+  async getTotalReports(){
+    return this.reportRepository.count();
+  }
+
+  //신고 상세 보기
+async getReportById(reportId: number) {
+  const report = await this.reportRepository.findOne({
+    where: { id: reportId }
+  });
+  const reporterId = report.reporterId
+  const reporter = await this.userRepository.findOne({where: {id : reporterId}})
+  if (!report) {
+    throw new NotFoundException('존재하지 않는 신고입니다.');
+  } else {
+    return {report, reporter};
+  }
 }
+
+ //신고 수정(확인하기) API
+ async checkReport(reportId: number, status:number){
+  const report = await this.reportRepository.findOne({ where: { id: reportId } });
+  if (!report){
+    throw new NotFoundException('존재하지 않는 신고입니다.');
+  }
+  else{
+    const reportStatus = report.status;
+
+    if (status === 1) {
+    if (reportStatus === 1) {
+      throw new UnauthorizedException('이미 확인된 신고입니다.');
+    } else {
+      await this.reportRepository.update(reportId, { status });
+      return { message: `신고가 확인되었습니다.` };
+    }
+  } else if (status === 0) {
+    await this.reportRepository.update(reportId, { status });
+    return { message: `신고 확인이 취소되었습니다.` };
+  }
+}
+}
+
+ //신고 삭제
+ async deleteReport(reportId: number) {
+  this.reportRepository.delete(reportId);
+  return { message: '신고가 삭제되었습니다' };
+}
+
+}
+
+

@@ -11,20 +11,21 @@
     height: 80px;  
     text-align: center; 
     line-height: 40px;
+    width: 20%
   }
 
   .col-md-3 > input {
     width: 70%; 
     height: 50%; 
     margin-top: 30px;
-    border: 1px solid red;
+    border: 1px solid #0597F2;
     background-color: white;
     border-radius: 6px;
   }
 
   .col-md-3 > input[type="button"]:hover{
   border-radius: 6px;
-  border: 2px solid red;
+  border: 2px solid #0597F2;
 
    
     }
@@ -43,10 +44,7 @@
     border: 1px black;
     box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
-  /* .logout-btn:hover {
-    background-color: red;
-    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  } */
+
 </style>
 <body>
     
@@ -54,17 +52,30 @@
 <div class="container-fluid" style="height: 40px; position: fixed; top:0; background: #fff; height: 40px;">
     <div class="container">
       <div class="row">
-        <div class="col-md-2" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">관리자</div>
-        <div class="col-md-8" style="background: #5CD7F2; height: 40px; text-align: center; line-height: 40px;">개굴상회</div>
-        <div class="col-md-2" style="background: #5CD7F2; height: 40px;"><input id="logout-btn"  type="button" onclick="logout()" value="로그아웃🚪"></div>
+        <div class="col-md-2"
+        style="background: #0597F2; height: 50px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       padding: 0">
+       <img src="https://velog.velcdn.com/images/ms_sh0728/post/d04aed63-939c-41d1-aaca-d220bb0b70f8/image.png"
+            alt="spcFuck" style="width: 100%; height: 100%; margin: 0" />
+
+   </div>
+        <div class="col-md-8" style="background: #0597F2; height: 50px; display: flex;">
+          <input id="search" type="text" placeholder="검색어를 입력해주세요!" style="flex: 1 1 auto; height: 100%; border: 0; padding: 0; border-radius: 10px;"
+                 onkeypress="handleKeyPress(event)">
+          <button onclick="search()" style="width: 40px; height: 100%; background: #0597F2; border: 1px;">🔍</button>
+        </div>
+        <div class="col-md-2" style="background: #0597F2; height: 50px;"><input id="logout-btn"  type="button" onclick="logout()" value="로그아웃🚪"></div>
       </div>
     </div>
   </div>
   <!--본 내용-->
   <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
-    <div class="container" style="background: #fff;padding: 0">
+    <div class="container" style="background: #fff;">
       <div id="headerMenu" style="padding: 0">
-        <div class="row">
+        <div class="row" style="padding-left: 0">
           <div class="col-md-3">
             <input type="button" id="product-btn" class="submit-btn" onclick="checkLogin('product')" value="상품">
           </div>
@@ -77,6 +88,9 @@
           <div class="col-md-3">
             <input type="button" id="notice-btn" class="submit-btn" onclick="checkLogin('notice')" value="공지사항">
           </div>
+          <div class="col-md-3">
+            <input type="button" id="reports-btn" class="submit-btn" onclick="checkLogin('reports')" value="신고">
+          </div>
         </div>
       </div>
     </div>
@@ -84,110 +98,7 @@
    
     
 </body>
-
 <script>
-  
-function logout() {
-    axios
-        .post('http://localhost:3000/admin/logout'
-        )
-        .then((res) => {
-            // 응답처리
-            alert(res.data)
-            window.location.replace("http://localhost:3000/admin-login")
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
-}
-
-
-
-function checkLogin(service) {
-
-    if(service === "product") {
-        axios
-            .get('http://localhost:3000/products')
-            .then((res) => {
-              window.location.href = '/products'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-              }
-    else if (service === 'user'){
-      axios
-            .get('http://localhost:3000/users')
-            .then((res) => {
-              window.location.replace('http://localhost:3000/users')
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-    else if(service === "category"){
-      axios
-            .get('http://localhost:3000/category')
-            .then((res) => {
-              window.location.href = '/category'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-    else if(service === "notice"){
-      axios
-            .get('http://localhost:3000/notice')
-            .then((res) => {
-              window.location.href = '/notice'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-              }
-
-
-
-        //         function checkLoginUsers() {
-        // axios
-        //     .get('http://localhost:3000/users')
-        //     .then((res) => {
-        //      console.log(111)
-        //         })
-        //     .catch((error) => {
-        //         // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-        //         console.log(error)
-        //         if (error.response.status === 401) {
-        //             alert('로그인하셔야 합니다.');
-        //             window.location.href = '/admin-login'
-        //         }})};
-     
-// window.onload = getCookie()
-//     function getCookie(){
-      
-//      const cookie = document.cookie
-//       if (!cookie){
-//         alert('로그인 해야됩니다!')
-//         window.location('/admin-login')
-//       }
-//     }
-
-</script>
+<%- include('js/admin-header.js') %>
+<%- include('js/admin-layout.js') %></script>
 </html>
