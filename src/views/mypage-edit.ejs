@@ -15,11 +15,7 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
-    <script>const autoHypen = (target) => {
-		    target.value = target.value
-			    .replace(/[^0-9]/g, '')
-			    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
-	    }</script>
+    <script><%- include('js/autohypen.js') %></script>
     <script><%- include('js/main-header.js') %></script>
 </head>
 
@@ -107,7 +103,7 @@ width: 100%; margin: 0">
 
 
 </body>
-<script><%- include('/js/get-user-information.js')%></script>
+<script><%- include('js/get-user-information.js')%></script>
 <script>
 	window.onload = function(){
 		getUserInformation()
