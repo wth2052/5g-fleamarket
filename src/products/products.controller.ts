@@ -102,7 +102,9 @@ export class ProductsController {
         callback(null, true);
       },
       limits: {
-        fileSize: 1024 * 1024 * 2, // 2MB
+        fieldNameSize: 200,
+        fieldSize: 10000 * 10000,
+        fileSize: 1024 * 1024 * 4, // 4MB
       },
     }),
   )

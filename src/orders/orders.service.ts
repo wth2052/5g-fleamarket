@@ -76,7 +76,7 @@ export class OrdersService {
   }
   async buyResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId, deleteAt: null },
+      where: { id: orderId, deletedAt: null },
     });
     if (!order) {
       throw new NotFoundException('해당되는 주문이 없습니다.');
@@ -102,7 +102,7 @@ export class OrdersService {
 
   async sellResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId, status: 'success', deleteAt: null },
+      where: { id: orderId, status: 'success', deletedAt: null },
     });
     if (!order) {
       throw new NotFoundException('선택하신 주문이 없습니다.');
@@ -122,7 +122,7 @@ export class OrdersService {
 
   async getBuyList(userId: number) {
     const buyList = await this.orderRepository.find({
-      where: { buyerId: userId, status: 'success', deleteAt: null },
+      where: { buyerId: userId, status: 'success', deletedAt: null },
       relations: ['product'],
     });
     return buyList;
@@ -149,7 +149,7 @@ export class OrdersService {
   }
   async putdealAccept(userId: number, orderId: number) {
     const selectOrder = await this.orderRepository.findOne({
-      where: { id: orderId, status: 'sale', deleteAt: null },
+      where: { id: orderId, status: 'sale', deletedAt: null },
     });
     console.log('selectOrder', selectOrder);
     if (!selectOrder) {
@@ -195,7 +195,7 @@ export class OrdersService {
       throw new ForbiddenException('자신의 상품에는 deal을 할 수 없습니다.');
     }
     const user = await this.orderRepository.findOne({
-      where: { productId: productId, buyerId: userId, deleteAt: null },
+      where: { productId: productId, buyerId: userId, deletedAt: null },
     });
     if (user) {
       throw new ForbiddenException(
@@ -259,7 +259,7 @@ export class OrdersService {
   async graph(productId: number) {
     const deals = await this.orderRepository.find({
       where: { productId: productId },
-      select: ['deal', 'updateAt'],
+      select: ['deal', 'updatedAt'],
     });
     let sum = 0;
     let maxDeal = 0;
