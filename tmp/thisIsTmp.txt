@@ -9,8 +9,6 @@ thisIstmpFolder
 #이미지 업로드 폴더, tmp:임시폴더, uploads:최종폴더 넣으세요
 
 /uploads
-<<<<<<< HEAD
+
 /tmp
-=======
-/tmp
->>>>>>> 98fb477221f43acfc142b084ee55e85366b3910d
+

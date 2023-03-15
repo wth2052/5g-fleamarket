@@ -35,9 +35,10 @@ import { AdminLoginController } from './views/admin/admin-login.controller';
 import { ProductsModule } from './products/products.module';
 import { ProductsEntity } from './global/entities/products.entity';
 import { ProductImagesEntity } from './global/entities/productimages.entity';
-import {OrdersEntity} from './global/entities/orders.entity';
+import { OrdersEntity } from './global/entities/orders.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { CategoriesEntity } from './global/entities/categories.entity';
 
 @Module({
   imports: [

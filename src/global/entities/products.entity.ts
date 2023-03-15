@@ -68,9 +68,6 @@ export class ProductsEntity {
   @Column({ default: null })
   pullUp: Date;
 
-  @Column({ default: null })
-  pullUp: Date;
-
   @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
     cascade: true,
   })
