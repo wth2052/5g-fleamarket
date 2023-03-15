@@ -13,6 +13,7 @@ import * as bcrypt from 'bcrypt';
 // import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtDecodeDto } from './dto';
+import { UpdateUserDto } from './dto/create-user.dto';
 @Injectable()
 export class UserService {
   constructor(
@@ -31,12 +32,10 @@ export class UserService {
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
-    console.log('토큰 아이디는 잘 들어옴 ㅋ?ㅋ?ㅋ?', refreshToken, id);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
     );
-    console.log('토큰맞음?ㅋ?ㅋ?ㅋ?', isRefreshTokenMatching);
 
     if (isRefreshTokenMatching) {
       return user;
@@ -48,6 +47,7 @@ export class UserService {
       currentHashedRefreshToken: null,
     });
   }
+  //TODO: 중간 발표 이후 클린 코드 리팩토링 대상 흑흑
   async getUserInformation(userId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
 
@@ -57,5 +57,8 @@ export class UserService {
       phone: user.phone,
       address: user.address,
     };
+  }
+  async updateUserInfomtaion(User: UpdateUserDto) {
+
   }
 }

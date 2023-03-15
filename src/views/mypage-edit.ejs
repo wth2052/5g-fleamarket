@@ -15,6 +15,11 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
+    <script>const autoHypen = (target) => {
+		    target.value = target.value
+			    .replace(/[^0-9]/g, '')
+			    .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+	    }</script>
     <script><%- include('js/main-header.js') %></script>
 </head>
 
@@ -59,23 +64,42 @@ width: 100%; margin: 0">
                         판매내역
                     </a>
                 </div>
+
             </div>
         </div>
     </div>
     <!-- 본문-->
 <!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
     <div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">[프로필사진] <%= data.nickname%>님, 환영합니다! </div>
-                <div class="col-6 col-md-4" onclick="location.href='/me/edit'">내 정보 관리</div>
+        <form>
+            <div class="form-group">
+                <label for="id" class="form-label mt-4" >아이디</label>
+                <h2><%= data.email%></h2>
             </div>
-            <div class="col">
-                한칸 공백
+            <div class="form-group">
+                <label class="form-label mt-4" for="password">비밀번호</label>
+                <input type="password" class="form-control" id="password">
+                <div class="valid-feedback"></div>
+                <label class="form-label mt-4" for="rptpassword">비밀번호 재확인</label>
+                <input type="password" class="form-control" id="repeatPassword">
+                <div class="valid-feedback"></div>
+                <label class="form-label mt-4" for="nickname">닉네임</label>
+                <input type="text" class="form-control" id="nickname" value="<%=data.nickname%>">
+                <div class="form-group">
+                    <label for="tel" class="form-label mt-4">휴대폰 번호</label>
+                    <input type="text" class="form-control" id="phoneNumber" oninput="autoHypen(this)" maxlength="13" aria-describedby="phoneNumber" value="<%= data.phone %>">
+                </div>
+                <button onclick="editUserInformation()">회원정보 수정하기</button>
             </div>
-            <div class="container"></div>
-            <div class="col" onclick="location.href='/report'" >🚨 불량 유저 신고하기</div>
-        </div>
+
+<!--            <div class="d-grid gap-2">-->
+<!--                <div class="btn btn-primary btn-lg" onclick="login()">로그인</div>-->
+<!--                아직 냐옹상회의 회원이 아니신가요?-->
+<!--                <a class="btn btn-primary btn-lg" href="view/signup"> 가입하러 가기</a>-->
+<!--                <a id="buttonDiv" class="btn btn-primary btn-lg" href="/google"> 구글 로그인</a>-->
+<!--            </div>-->
+
+        </form>
 </div>
 </div>
 <!--하단 메뉴바-->
@@ -97,5 +121,54 @@ width: 100%; margin: 0">
     }).catch(function (error) {
 	    console.log("에러",error)
     })
+    //TODO: 전에 썼던 비밀번호와 일치할 경우 비밀번호 변경 불가능하게 만들기
+    //현재 : 비밀번호 변경 가능
+    //정규식을 모아서 가져다 쓸수 있게 만들기
+    function editUserInformation() {
+	    let password = document.getElementById('password').value;
+	    let rptpassword = document.getElementById('repeatPassword').value;
+	    let usernickname = document.getElementById('nickname').value;
+	    let phonenumber = document.getElementById('phoneNumber').value; // 휴대폰번호
+	    const newPhoneNumber = phonenumber.replaceAll('-', '');
+
+	    if (password.value === '') {
+		    alert('비밀번호를 입력해주세요.');
+		    password.focus();
+		    return false;
+	    }
+	    if (rptpassword !== password) {
+		    alert('비밀번호가 일치하지 않습니다.');
+		    rptpassword.focus();
+		    return false;
+	    }
+	    const pwdCheck =
+		    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+	    if (!pwdCheck.test(password)) {
+		    alert(
+			    '비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.',
+		    );
+
+		    axios.put('/me/edit', {
+					    headers: {
+						    'Content-type': 'application/x-www-form-urlencoded',
+					    },
+					    nickname: usernickname.toString(),
+					    password: password.toString(),
+					    phone: .toString(),
+					    address: newAddress.toString(),})
+			    .then(function (res) {
+				    if (res.status === 401) {
+					    alert("로그인이 필요합니다.")
+					    window.location.href = "/login"
+				    }
+
+				    console.log("수정성공", data)
+				    return data
+			    }).catch(function (error) {
+			    console.log("에러", error)
+		    })
+	    }
+    }
+
 </script>
 </html>
