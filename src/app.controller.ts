@@ -32,7 +32,7 @@ export class AppController {
   @Render('product-main.ejs')
   async product() {}
 
-  @Get('product/create')
-  @Render('product-create.ejs')
-  async productCreate() {}
+  // @Get('product/create')
+  // @Render('product-create.ejs')
+  // async productCreate() {}
 }
