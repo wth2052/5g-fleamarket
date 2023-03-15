@@ -65,8 +65,23 @@ width: 100%; margin: 0">
         </div>
     </div>
     <!-- 본문-->
-    <div class="container" id="bb" style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
-    </div>
+<!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
+    <div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">프로필사진+ 닉네임</div>
+                <div class="col-6 col-md-4">내 정보 관리</div>
+            </div>
+            <div class="col">
+                한칸 공백
+            </div>
+            <div class="container"></div>
+            <div class="col-md-2">❤ 관심목록</div>
+            <div class="col">🛒 구매내역</div>
+            <div class="col">💰 판매내역</div>
+            <div class="col"> 내 지역</div>
+        </div>
+</div>
 </div>
 <!--하단 메뉴바-->
 <%- include('main-footer.ejs') %>

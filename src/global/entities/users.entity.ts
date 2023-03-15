@@ -53,7 +53,7 @@ export class UserEntity {
   @OneToMany(() => OrdersEntity, (orders) => orders.buyer, { cascade: true })
   orders: OrdersEntity[];
 
-  @OneToMany((type) => ProductsEntity, (products) => products.seller, {
+  @OneToMany(() => ProductsEntity, (products) => products.seller, {
     cascade: true,
   })
   products: ProductsEntity[];
