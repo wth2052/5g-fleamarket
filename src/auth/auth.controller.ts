@@ -30,7 +30,8 @@ import { Repository } from 'typeorm';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
-import {JwtAuthGuard} from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -56,6 +57,7 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('login')
   //이제 Nest 기본 응답 개체와 상호 작용할 수 있지만 (예: 특정 조건에 따라 쿠키 또는 헤더 설정) 나머지는 프레임워크에 맡김
+  //리프레시 토큰 재발급 잘됨
   async login(
     @Req() req,
     @Res({ passthrough: true }) res: Response,
@@ -66,7 +68,7 @@ export class AuthController {
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
-      this.authService.getCookieWithJwtRefreshToken(user.id);
+      this.authService.getCookieWithJwtRefreshToken(user);
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
@@ -98,8 +100,10 @@ export class AuthController {
   refresh(
     @Req() req,
     @Res({ passthrough: true }) res: Response,
+    @Cookies('refreshToken') jwt: JwtDecodeDto,
   ): Promise<void> {
     const user = req.user;
+    console.log(user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     res.cookie('Authentication', accessToken, accessOption);
