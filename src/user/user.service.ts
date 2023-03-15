@@ -1,6 +1,8 @@
 import {
+  CACHE_MANAGER,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -15,7 +17,7 @@ import { JwtDecodeDto } from './dto';
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private userRepository: Repository<UserEntity>, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create(user: UserEntity): Promise<UserEntity> {
@@ -23,9 +25,11 @@ export class UserService {
     return user;
   }
 
-  async setCurrentRefreshToken(refreshToken: string, id: number) {
+  async setCurrentRefreshToken(refreshToken: string, email: string) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    await this.userRepository.update(id, { currentHashedRefreshToken });
+    console.log('또끈 ', currentHashedRefreshToken);
+    // await this.cacheManager
+    await this.userRepository.update(email, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });

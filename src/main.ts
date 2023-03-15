@@ -11,7 +11,7 @@ import {
 
 } from 'nest-winston'
 
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // 커스텀 로거 활성화시 주석 해제

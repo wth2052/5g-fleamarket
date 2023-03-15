@@ -59,9 +59,9 @@ export class ProductsService {
       .getMany();
   
     return products;
-    //이미지 경로 하나만 반환하는 게 좋은데 대표이미지 컬럼추가나 리소스 잡아먹는거밖에 없어서
-    //일단 프론트에서 처리하죠, 0개 시 예외도 그렇고
+
   }
+
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
