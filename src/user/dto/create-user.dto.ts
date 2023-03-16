@@ -20,12 +20,13 @@ export class CreateUserDto {
   @Type(() => String)
   @IsString()
   readonly nickname: string;
+  //언제든지 hash로 바뀔수 있기에 readyonly 없앰 - 2023.03.16
   @IsNotEmpty()
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
     message:
       '비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.',
   })
-  readonly password: string;
+  password: string;
   @Type(() => String)
   readonly phone: string;
 
@@ -96,6 +97,7 @@ export class OAuthAddInformationDto extends PickType(CreateUserDto, [
 export class UpdateUserDto extends PickType(CreateUserDto, [
   'email',
   'nickname',
+  'password',
   'phone',
   'address',
 ]) {

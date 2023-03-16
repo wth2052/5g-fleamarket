@@ -48,7 +48,7 @@ export class SocialService {
     const newUser = this.userRepository.create();
     newUser.id = req.id;
     newUser.email = req.email;
-    newUser.nickname = '';
+    newUser.nickname = req.nickname;
     newUser.password = req.password;
     newUser.phone = '';
     newUser.address = '';

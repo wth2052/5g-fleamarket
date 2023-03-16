@@ -16,8 +16,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
-    <script><%- include('js/user-edit.js')%></script>
-    <script><%- include('js/get-edit-user-information.js')%></script>
+
     <script><%- include('js/autohypen.js') %></script>
     <script><%- include('js/main-header.js') %></script>
 </head>
@@ -25,6 +24,8 @@
 <body style="background-color: #F2F2F2">
 <!--상단 메뉴바-->
 <%- include('main-header.ejs') %>
+
+<!--상단 내비게이션-->
 <div class="container-fluid" style="width:45%; background: white; margin-top: 40px; margin-bottom: 40px; min-height:1000px; padding: 0">
     <div class="container" style="background: white; padding: 0">
         <div id="headerMenu" style="padding: 0">
@@ -65,7 +66,10 @@ width: 100%; margin: 0">
             </div>
         </div>
     </div>
+    <!-- 본문-->
+<!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
     <div id="temphere"></div>
+
     <div
             id="layer"
             style="
@@ -75,28 +79,16 @@ width: 100%; margin: 0">
                       z-index: 1;
                       -webkit-overflow-scrolling: touch;
                     "
-    ></div>
-    <!-- 본문-->
-
-    <!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
-
-            <!--            <div class="d-grid gap-2">-->
-            <!--                <div class="btn btn-primary btn-lg" onclick="login()">로그인</div>-->
-            <!--                아직 냐옹상회의 회원이 아니신가요?-->
-            <!--                <a class="btn btn-primary btn-lg" href="view/signup"> 가입하러 가기</a>-->
-            <!--                <a id="buttonDiv" class="btn btn-primary btn-lg" href="/google"> 구글 로그인</a>-->
-            <!--            </div>-->
+    >
 </div>
-
-
-
-<!--상단 내비게이션-->
-
+</div>
 <!--하단 메뉴바-->
 <%- include('main-footer.ejs') %>
 
-
 </body>
+
+<script><%- include('js/get-user-information.js')%></script>
 <script><%- include('js/address-api.js')%></script>
+<script><%- include('js/google-user-edit.js')%></script>
 
 </html>
