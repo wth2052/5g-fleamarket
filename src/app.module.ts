@@ -39,6 +39,7 @@ import { ProductImagesEntity } from './global/entities/productimages.entity';
 import { OrdersEntity } from './global/entities/orders.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { CategoriesEntity } from './global/entities/categories.entity';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       ProductsEntity,
       ProductImagesEntity,
       OrdersEntity,
+      CategoriesEntity,
     ]),
     ConfigModule.forRoot({
       isGlobal: true,

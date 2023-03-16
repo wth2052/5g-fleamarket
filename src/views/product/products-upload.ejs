@@ -83,67 +83,7 @@
   </body>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script>
-	// 	const form = document.querySelector('#upload-form');
-		
-	// 	form.addEventListener('submit', async (event) => {
-	// 		event.preventDefault();
 
-	// 		const formData = new FormData();
-	// 		formData.append('title', form.title.value);
-	// 		formData.append('description', form.description.value);
-	// 		formData.append('price', form.price.value);
-	// 		formData.append('categoryId', form.categoryId.value);
-			
-	// 		const files = document.querySelector('[type=file]').files;
-	// 		for (let i = 0; i < files.length; i++) {
-	// 			formData.append('images', files[i]);
-  //       const file = files[i];
-
-  //       // 이미지 크기가 5MB 이상일 경우 알림창 띄우기
-  //       if (file.size > 5 * 1024 * 1024) {
-  //         alert('File size exceeds the limit (5MB)');
-  //         return;
-  //       }
-
-  //   formData.append('images', file);
-	// 		}
-
-
-	// 		try {
-	// 			const response = await axios.post('/productss/up', formData, {
-	// 				headers: {
-	// 					'Content-Type': 'multipart/form-data'
-	// 				}
-	// 			});
-	// 			console.log(response.data);
-	// 			alert('Product uploaded successfully');
-	// 			form.reset();
-	// 		} catch (error) {
-	// 			console.error(error);
-	// 			alert('Failed to upload product. Please try again.');
-	// 		}
-	// 	});
-	// 	const imageInput = document.querySelector('#images');
-  // const imagePreview = document.querySelector('#image-preview');
-
-  // imageInput.addEventListener('change', () => {
-  //   const files = imageInput.files;
-  //   imagePreview.innerHTML = '';
-
-  //   for (let i = 0; i < files.length; i++) {
-  //     const file = files[i];
-  //     const imageType = /image.*/;
-
-  //     if (!file.type.match(imageType)) {
-  //       continue;
-  //     }
-
-  //     const image = document.createElement('img');
-  //     image.src = URL.createObjectURL(file);
-  //     image.classList.add('preview-image');
-  //     imagePreview.appendChild(image);
-  //   }
-  // });
   const form = document.querySelector('#upload-form');
 const imageInput = document.querySelector('#images');
 const imagePreview = document.querySelector('#image-preview');
@@ -179,6 +119,7 @@ form.addEventListener('submit', async (event) => {
     console.log(response.data);
     alert('Product uploaded successfully');
     form.reset();
+    window.location.href = '/'
   } catch (error) {
     console.error(error);
     alert('Failed to upload product. Please try again.');
@@ -260,6 +201,5 @@ imageInput.addEventListener('change', () => {
     margin-bottom: 10px;
     object-fit: cover;
   }
-	</script>
-</body>
+	</style>
 </html>

@@ -24,7 +24,6 @@ import { OrdersEntity } from '../global/entities/orders.entity';
   controllers: [SocialController],
   providers: [
     SocialService,
-    AppService,
     JwtService,
     JwtGoogleStrategy,
     UserService,
