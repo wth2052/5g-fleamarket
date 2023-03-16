@@ -29,13 +29,13 @@
           <div class="row" style="width: 100%; background-color: #79D0F2;margin: 0">
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"></div>
-            <% if (typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getCheckedReport()" value="확인✅신고"></div>  <%} 
+            <% if (typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getCheckedReport()" value="신고확인✅"></div>  <%} 
             else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
             %>
             <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNoticePage()" value="작성➕"></div>  <%} 
             else if(typeof category !== 'undefined' || typeof errorMessage !== 'undefined' ) {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategoryPage()" value="작성➕"></div> <%} 
             else if( typeof users !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getBan()" value=" 😡블랙리스트"></div> <%}
-            else if( typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getUncheckedReport()" value="확인❌신고"></div> <%}
+            else if( typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getUncheckedReport()" value="신고확인❌"></div> <%}
             else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
             %>
           </div>
