@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 // import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
@@ -19,6 +19,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private dataSource: DataSource,
   ) {}
 
   async create(user: UserEntity): Promise<UserEntity> {
@@ -58,7 +59,29 @@ export class UserService {
       address: user.address,
     };
   }
-  async updateUserInfomtaion(User: UpdateUserDto) {
+  async updateUserInfomtaion(User: UpdateUserDto, userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    console.log('유저', user);
+    User.password = await bcrypt.hash(User.password, 10);
+    const queryRunner = this.dataSource.createQueryRunner();
 
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await this.userRepository.update(
+        { id: user.id },
+        {
+          nickname: User.nickname,
+          password: User.password,
+          phone: User.phone,
+          address: User.address,
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

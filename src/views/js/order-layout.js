@@ -304,7 +304,7 @@ function dealUpdate(orderId) {
       price: newDeal,
     })
     .then((res) => {
-      alert('수정완료F');
+      alert('수정완료');
       window.location.reload();
     })
     .catch((error) => {

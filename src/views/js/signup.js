@@ -53,7 +53,7 @@ function signUp() {
   let address3 = document.getElementById('detailAddress').value; // 000동 000호
   let address4 = document.getElementById('postcode').value; // 우편번호
   let newAddress = address1 + ' ' + address2 + ' ' + address3 + ' ' + address4;
-  const newPhoneNumber = phonenumber.replaceAll('-', '');
+  // const newPhoneNumber = phonenumber.replaceAll('-', '');
 
   if (userid.value === '') {
     //해당 입력값이 없을 경우
@@ -109,14 +109,15 @@ function signUp() {
       email: userid.toString(),
       nickname: usernickname.toString(),
       password: password.toString(),
-      phone: newPhoneNumber.toString(),
+      phone: phonenumber.toString(),
       address: newAddress.toString(),
     })
     .then((result) => {
       alert('회원가입이 완료되었습니다.');
-      window.location.href = '/';
+      window.location.href = '/login';
     })
     .catch((error) => {
-      if (error.response.status === 400 || 401) alert(error);
+      if (error.response.status === 400) alert('이미 존재하는 이메일입니다. 다른 이메일 아이디를 입력해주세요.');
+      if (error.response.status === 401) alert(error);
     });
 }

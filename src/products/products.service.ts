@@ -24,7 +24,6 @@ import { ProductImagesService } from './product-images.service';
 import { LikesEntity } from '../global/entities/likes.entity';
 import { NumberExpression } from 'mongoose';
 
-
 @Injectable()
 export class ProductsService {
   constructor(
