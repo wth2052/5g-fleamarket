@@ -5,7 +5,7 @@ function logout(){
 		.then((res) => {
 			// 응답처리
 			alert("정상적으로 로그아웃 처리 되었습니다.")
-			window.location.href = "/"
+			window.location.href = "/login"
 
 		})
 		.catch((error) => {
