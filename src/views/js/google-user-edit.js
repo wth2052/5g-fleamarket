@@ -123,13 +123,13 @@ axios
                   </div>
                 </span>
                     </div>
-                </div>
-                <button onclick="editUserInformation()">회원정보 수정하기</button>
-            </div>
+                </div>`;
+
+    const temp2 = `</div>
         </form>
-</div>
-`;
+</div>`;
     document.getElementById('temphere').innerHTML = temp1;
+    document.getElementById('temphere2').innerHTML = temp2;
   })
   .catch((error) => {
     // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
