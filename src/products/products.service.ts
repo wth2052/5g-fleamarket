@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -53,10 +54,11 @@ export class ProductsService {
       return products;
     }
   }
-
   async getTotalProducts() {
     return this.productRepository.count();
   }
+
+
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
@@ -103,7 +105,6 @@ export class ProductsService {
       },
     };
   }
-
 
   async createProduct(
     title: string,
@@ -193,15 +194,36 @@ export class ProductsService {
     });
   }
 
-  async deleteProduct(id: number, sellerId: number) {
-    await this.verifySomething(id, sellerId);
 
-    this.productRepository.update(id, {
-      status: 'soldout',
+
+  async deleteProduct(id: number, sellerId: number) {
+    console.log("아이디",id)
+    console.log("셀러", sellerId)
+    await this.verifySomething(id, sellerId);
+   
+    await this.connection.transaction(async (manager) => {
+        //timeout 뜸,delete에서 임시로 put으로 바꿨습니다
+      // 이미지의 deletedAt을 업데이트합니다.
+      //d이미지는 softdelete product는 soldout
+      //product는 status값이 안 바뀌고. 이미지는 deletedAt값이 null인데 productid값이 null로 바뀜
+      await manager.getRepository(ProductImagesEntity).update(
+        { productId: id },// , deletedAt: null
+        { deletedAt: new Date() }
+        );
+      await this.productImagesRepository.update(
+        { productId: id },// , deletedAt: null
+        { deletedAt: "2023-03-16 15:40.37" }
+        );
+      // 상품의 status를 'soldout'으로 업데이트합니다.
+      await manager.getRepository(ProductsEntity,).update(id, { status: 'deleted' });
     });
   }
-
   async verifySomething(id: number, sellerId: number) {
+
+    if (sellerId === undefined) {
+      throw new BadRequestException('Invalid sellerId');
+    }
+
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
       select: ['sellerId'],
@@ -213,7 +235,7 @@ export class ProductsService {
       );
     }
     if (product.sellerId !== sellerId) {
-      throw new UnauthorizedException(
+      throw new ForbiddenException(
         `sellerId: ${sellerId}님의 판매글이 아닙니다`,
       );
     }

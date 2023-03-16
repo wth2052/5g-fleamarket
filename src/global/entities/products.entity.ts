@@ -19,7 +19,7 @@ import { LikesEntity } from "./likes.entity";
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
-  @OneToMany(() => ProductImagesEntity, (images) => images.productId)
+  @OneToMany(() => ProductImagesEntity, (images) => images.product)
   images: ProductImagesEntity;
 
   @PrimaryGeneratedColumn()
