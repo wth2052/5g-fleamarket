@@ -17,9 +17,11 @@ export class ProductImagesEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => ProductsEntity, (products) => products.images, {
+  @ManyToOne(() => ProductsEntity, (product) => product.images, {
     onDelete: 'CASCADE',
   })
+  product: ProductImagesEntity[];
+  @Column()
   productId: number;
 
   @Column()

@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -21,6 +22,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
 import { LikesEntity } from '../global/entities/likes.entity';
+import { NumberExpression } from 'mongoose';
 
 
 @Injectable()
@@ -58,29 +60,25 @@ export class ProductsService {
     return this.productRepository.count();
   }
 
+
+
   async getProductById(id: number) {
-    const product = await this.productRepository.createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoinAndSelect('product.seller', 'seller')
-      .leftJoinAndSelect('product.images', 'images', 'images.deletedAt IS NULL')
-      .where('product.id = :id', { id })
-      .andWhere('product.status = :status', { status: 'sale' })
-      .select([
-        'product.id',
-        'product.title',
-        'product.description',
-        'product.price',
-        'product.sellerId',
-        'product.categoryId',
-        'product.viewCount',
-        'product.likes',
-        'product.createdAt',
-        'category.name',
-        'seller.nickname',
-        'images.imagePath',
-      ])
-      .getOne();
-  
+    const product = await this.productRepository.findOne({
+      where: { id: id },
+      select: [
+        'id',
+        'title',
+        'description',
+        'price',
+        'sellerId',
+        'categoryId',
+        'viewCount',
+        'likes',
+        'createdAt',
+      ],
+      relations: ['category', 'seller', 'images', 'likesJoin'],
+    });
+    console.log('####################', product);
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
@@ -88,15 +86,24 @@ export class ProductsService {
     product.viewCount += 1;
     await this.productRepository.save(product);
 
+    // product.likesJoin.length
+
+    const {
+      category: { name },
+      seller: { nickname },
+      images: { imagePath },
+    } = product;
+
+    const images = product.images.map((image) => ({
+      imagePath: image.imagePath,
+    }));
 
     return {
       product: {
         ...product,
-        category: { name: product.category.name },
-        seller: { nickname: product.seller.nickname },
-        images: product.images.map((image) => ({
-          imagePath: image.imagePath,
-        })),
+        category: { name },
+        seller: { nickname },
+        images: images,
       },
     };
   }
@@ -192,20 +199,33 @@ export class ProductsService {
 
 
   async deleteProduct(id: number, sellerId: number) {
+    console.log("아이디",id)
+    console.log("셀러", sellerId)
+    await this.verifySomething(id, sellerId);
+   
     await this.connection.transaction(async (manager) => {
-      await this.verifySomething(id, sellerId);
-  
+        //timeout 뜸,delete에서 임시로 put으로 바꿨습니다
       // 이미지의 deletedAt을 업데이트합니다.
+      //d이미지는 softdelete product는 soldout
+      //product는 status값이 안 바뀌고. 이미지는 deletedAt값이 null인데 productid값이 null로 바뀜
       await manager.getRepository(ProductImagesEntity).update(
-        { productId: id },
+        { productId: id },// , deletedAt: null
         { deletedAt: new Date() }
-      );
-  
+        );
+      await this.productImagesRepository.update(
+        { productId: id },// , deletedAt: null
+        { deletedAt: "2023-03-16 15:40.37" }
+        );
       // 상품의 status를 'soldout'으로 업데이트합니다.
-      await manager.getRepository(ProductsEntity).update(id, { status: 'soldout' });
+      await manager.getRepository(ProductsEntity,).update(id, { status: 'deleted' });
     });
   }
   async verifySomething(id: number, sellerId: number) {
+
+    if (sellerId === undefined) {
+      throw new BadRequestException('Invalid sellerId');
+    }
+
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },
       select: ['sellerId'],
@@ -217,7 +237,7 @@ export class ProductsService {
       );
     }
     if (product.sellerId !== sellerId) {
-      throw new UnauthorizedException(
+      throw new ForbiddenException(
         `sellerId: ${sellerId}님의 판매글이 아닙니다`,
       );
     }
