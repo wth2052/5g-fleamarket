@@ -141,17 +141,9 @@ export class ProductsController {
         price,
         categoryId,
         userId,
+        images,
       );
-
-      for (const image of images) {
-        const { path, filename } = image;
-        await this.ProductImagesService.saveProductImage(
-          product.id,
-          path,
-          filename,
-        );
-      }
-
+      
       return product;
     } catch (error) {
       console.log('Error occurred in createProduct:', error);

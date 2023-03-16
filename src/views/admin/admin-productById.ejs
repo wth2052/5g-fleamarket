@@ -19,6 +19,13 @@
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>-->
   
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" /> -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 </head>
 <style>
     .product-wrapper{
@@ -38,7 +45,7 @@
 }
 
 #image-box {
-    padding: 0 100px;
+    padding: 0 0px;
 }
 
 .col-md-9 {
@@ -72,30 +79,94 @@
     border: 1px black;
     box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
+
+  /*  */
+  
+
+
+
+  .image-container {
+        width: 20vw;
+        margin-right: 20px;
+        /* max-height: 70vh; */
+        overflow: hidden;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* 이미지 최대 높이를 초과하는 경우 */
+      .image-container img[src$=".jpg"]:not(:last-child),
+      .image-container img[src$=".jpeg"]:not(:last-child),
+      .image-container img[src$=".png"]:not(:last-child),
+      .image-container img[src$=".gif"]:not(:last-child) {
+        width: 100%;
+        height: 70vh; /* 이미지 최대 높이로 설정 */
+        object-fit: contain; /* 이미지 비율 유지 */
+        object-position: center; /* 이미지 중앙 정렬 */
+      }
+
+  @media (max-width: 768px) {
+        #image-box {
+          flex-direction: column;
+          align-items: center;
+        }
+        .image-container {
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 20px;
+          max-height: none;
+          overflow: visible;
+        }
+      }
+
 </style>
 
 <body>
         <%- include('admin-header.ejs')%>
 
     
-    <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
-        <div class="container" style="background: #fff; margin-top: 20px;padding: 0;">
+    <div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px; ">
+        <div class="container" style="background: #fff; margin-top: 20px;padding: 0; display: flex;">
     
-            <div class="product-wrapper" style="border: 3px dotted #5cd7f2; margin-top: 20px; border-radius: 4px;" >
-                <div class="col-md-3-img" id="image-box">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
-                    style="width: 100%; height: 100%; margin: 0; border: 1px solid #05AFF2; border-radius: 4px;" />
+            <div class="product-wrapper" style="border: 3px dotted #5cd7f2; margin-top: 20px; border-radius: 4px; display: flex;" >
+                <div class="col-md-3-img" id="image-box" style="width: 100%; height: 100%; margin: 0;">
+                    <div class="image-container">
+                    <% if (images && images.length > 0) { %>
+                        <% if (images.length == 1) { %>
+                          <div><img src="/img/<%= images[0].imagePath %>" /></div>
+                        <% } else { %>
+                          <div class="slider">
+                            <% for (var i = 0; i < Math.min(images.length, 3); i++) { %>
+                              <div><img src="/img/<%= images[i].imagePath %>" /></div>
+                            <% } %>
+                          </div>
+                          <div class="image-nav">
+                            <% for (var i = 0; i < Math.min(images.length, 3); i++) { %>
+                              <div><img src="/img/<%= images[i].imagePath %>%>" style="height: 100px"/></div>
+                            <% } %>
+                          </div>
+                        <% } %>
+                      <% } else { %>
+                        <div><img src="/img/image-not-available.png" /></div>
+                      <% } %>
+                    </div>
                   </div><br>
                 <div class="row"> 
-            
                     <div class="col-md-9"> 
-                        <span style="float: right; margin-top: 10px;">판매자: <%= seller.nickname %> </span> 
                         <h3 ><%= product.price %>원 <br></h3>
                         <h3 ><%= product.title %> <br></h3>
                         <h3 id="description"><%= product.description %> <br></h3>
-                        <h3 >카테고리: <%= category.name %></h3> 
+                        <h4 style="display: inline-block">카테고리:</h4>
+                        <h3 style="display: inline-block"><%= category.name %></h3> 
                         <br>
-                        
+                        <h4 style="display: inline-block; margin-right: 3.5%">작성일: </h4>
+                        <h3 id="timeProduct" style="display: inline-block"><%= product.createdAt.getFullYear() %>년 <%= product.createdAt.getMonth()+ 1%>월 <%= product.createdAt.getDate() %>일 <%= product.createdAt.getHours() %>:<%= product.createdAt.getMinutes() %></h3> 
+                        <br>
+                        <span style="float: left; ">판매자: <%= seller.nickname %> </span> 
                         <span style="float: right;">👀 <%= product.viewCount %> 🎯<%= product.dealCount %> ❤ <%= product.likes %> </span>          
                         
                     </div>  
@@ -123,6 +194,43 @@
     
 </body>
 
-<script><%- include('js/admin-layout.js') %></script>
+<script>
+    $(document).ready(function() {
+      $('.slider').slick({
+        arrows: true,
+        dots: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        asNavFor: '.image-nav' // 다른 슬라이더와 연동하기 위해 사용
+      });
+      $('.image-nav').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider', // 다른 슬라이더와 연동하기 위해 사용
+        centerMode: true,
+        focusOnSelect: true
+      });
+    });
+  </script>
+<script>
+$(document).ready(function() {
+  $('.slider').slick({
+    arrows: true, // 좌우 화살표
+    dots: true, // 동그라미 버튼
+    slidesToShow: 1, // 한 번에 보여줄 슬라이드 개수
+    slidesToScroll: 1, // 한 번에 넘길 슬라이드 개수
+    asNavFor: '.image-nav' // 다른 슬라이더와 연동하기 위해 사용
+  });
+});
+</script>
+
+<script>
+
+
+
+<%- include('js/admin-layout.js') %>
+
+</script>
+
 
 </html>

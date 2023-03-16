@@ -13,6 +13,7 @@ import { Exclude } from 'class-transformer';
 import { LikesEntity } from './likes.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductsEntity } from './products.entity';
+import { ReportsEntity } from './reports.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -59,6 +60,11 @@ export class UserEntity {
   })
   products: ProductsEntity[];
 
+
   @OneToMany(() => LikesEntity, (like) => like.user)
   likes: LikesEntity[];
+
+  @OneToMany(() => ReportsEntity, (reports) => reports.reporter)
+  reports: ReportsEntity[];
 }
+
