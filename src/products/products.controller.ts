@@ -101,7 +101,6 @@ export class ProductsController {
       },
     }),
   )
-
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
@@ -142,7 +141,6 @@ export class ProductsController {
         images,
       );
       
-
       return product;
     } catch (error) {
       console.log('Error occurred in createProduct:', error);

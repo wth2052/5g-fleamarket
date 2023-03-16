@@ -9,6 +9,7 @@ import { OrdersEntity } from '../global/entities/orders.entity';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { UserEntity } from '../global/entities/users.entity';
+import { ReportsEntity } from '../global/entities/reports.entity';
 
 @Injectable()
 export class OrmConfig implements TypeOrmOptionsFactory {
@@ -35,6 +36,7 @@ export class OrmConfig implements TypeOrmOptionsFactory {
         ProductsEntity,
         ProductImagesEntity,
         UserEntity,
+        ReportsEntity
       ],
       migrations: [__dirname + '/../**/migrations/*.js'],
       migrationsTableName: 'migrations',

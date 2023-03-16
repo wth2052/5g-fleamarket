@@ -75,6 +75,8 @@
                 </div>
               </div>
             <% } %>
+            <input type="hidden" value="<%= users.length %>" id="usersLength">
+            <input type="hidden" value="<%= totalUsers %>" id="totalUsers">
 
             
           <% } %>
@@ -86,6 +88,9 @@
 <%- include('admin-footer.ejs')%>
 
 </body>
+
+
+
 <script><%- include('js/admin-layout.js') %></script>
 
 </html>

@@ -8,7 +8,7 @@ import { EmailController } from './email.controller';
 export const cacheModule = CacheModule.registerAsync({
   useFactory: async () => ({
     store: redisStore,
-    host: 'localhost',
+    host: '127.0.0.1',
     port: '6379',
   }),
 });
