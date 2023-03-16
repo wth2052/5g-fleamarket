@@ -9,14 +9,14 @@ axios
             <div class="row">`;
     let temp2 = `<i class="fa-solid fa-user-secret" style="font-size: 100px"></i><br><div class="col">${data.nickname} 님,<br> 냐옹상회에 오신것을 환영합니다!</div>`;
     let temp3 = `
-                <div class="col-6 col-md-4" onclick="location.href='/me/edit'">🛠정보 수정</div>
+                <div class="col-6 col-md-4" onclick="location.href='/me/edit'" style="font-size: 20px" >🛠정보 수정</div>
             </div>
             <div class="col">
                 한칸 공백
             </div>
             <div class="container"></div>
             <div class="col" onclick="location.href='/report'" style="font-size: 20px" >🚨 불량 유저 신고하기</div>
-            <div class="col" onclick="logout()" >💡 로그아웃</div>
+            <div class="col" onclick="logout()" style="font-size: 20px" >💡 로그아웃</div>
             <div class="col">
                 한칸 공백
             </div>
