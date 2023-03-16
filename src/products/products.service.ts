@@ -22,7 +22,6 @@ import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
 import { LikesEntity } from '../global/entities/likes.entity';
 
-
 @Injectable()
 export class ProductsService {
   constructor(
