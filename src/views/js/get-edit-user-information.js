@@ -4,6 +4,14 @@ function getEditUserInformation() {
     .get('/api/user/me/edit')
     .then((res) => {
       let data = res.data.data;
+      let addressdata = data.address.split(' ');
+      console.log(addressdata);
+      for (let i = 0; i < addressdata.length; i++) {
+        if (addressdata.length < 10) {
+          addressdata.push('');
+        }
+      }
+
       console.log('성공', data);
       let temp1 = `<div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
         <form>
@@ -38,7 +46,7 @@ function getEditUserInformation() {
                           class="form-control"
                           id="postcode"
                           placeholder="우편번호"
-                          value="${data.address.split(' ')[7]}"
+                          value="${addressdata[7]}"
                   />
                   <input
                           type="button"
@@ -51,13 +59,13 @@ function getEditUserInformation() {
                           id="address"
                           placeholder="주소"
                            value="${
-                             data.address.split(' ')[0] +
+                             addressdata[0] +
                              ' ' +
-                             data.address.split(' ')[1] +
+                             addressdata[1] +
                              ' ' +
-                             data.address.split(' ')[2] +
+                             addressdata[2] +
                              ' ' +
-                             data.address.split(' ')[3]
+                             addressdata[3]
                            }"
                   /><br/>
                   <input
@@ -65,14 +73,14 @@ function getEditUserInformation() {
                           class="form-control"
                           id="detailAddress"
                           placeholder="상세주소"
-                          value="${data.address.split(' ')[5]}"
+                          value="${addressdata[5]}"
                   />
                   <input
                           type="text"
                           class="form-control"
                           id="extraAddress"
                           placeholder="참고항목"
-                          value="${data.address.split(' ')[6]}"
+                          value="${addressdata[6]}"
                   />
                     <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
                   <div
@@ -102,13 +110,14 @@ function getEditUserInformation() {
                 </span>
                     </div>
                 </div>
-                <button onclick="editUserInformation()">회원정보 수정하기</button>
             </div>
         </form>
 </div>
 </div>
 `;
-
+      if (data.address.split === undefined) {
+        data.address = '';
+      }
       document.getElementById('temphere').innerHTML = temp1;
     })
     .catch((error) => {

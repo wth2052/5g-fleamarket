@@ -58,7 +58,4 @@ export class AppController {
   @Render('mypage-edit.ejs')
   async renderEditMyPage() {}
 
-  @Get('/googleuser/edit')
-  @Render('mypage-edit-google.ejs')
-  async getEditGoogleUserInformation() {}
 }
