@@ -66,47 +66,84 @@ export class ProductsService {
   }
 
 
-  async getProductById(id: number) {
-    const product = await this.productRepository.findOne({
-      where: { id: id, status: 'sale' },
-      select: [
-        'id',
-        'title',
-        'description',
-        'price',
-        'sellerId',
-        'categoryId',
-        'viewCount',
-        'likes',
-        'createdAt',
-      ],
-      relations: ['category', 'seller', 'images'],
-    });
+  // async getProductById(id: number) {
+  //   const product = await this.productRepository.findOne({
+  //     where: { id: id, status: 'sale' },
+  //     select: [
+  //       'id',
+  //       'title',
+  //       'description',
+  //       'price',
+  //       'sellerId',
+  //       'categoryId',
+  //       'viewCount',
+  //       'likes',
+  //       'createdAt',
+  //     ],
+  //     relations: ['category', 'seller', 'images'],
+  //   });
 
+  //   if (!product) {
+  //     throw new NotFoundException(`Product with ID ${id} not found`);
+  //   }
+
+  //   const {
+  //     category: { name },
+  //     seller: { nickname },
+  //     images: { imagePath },
+  //   } = product;
+
+  //   const images = product.images.map((image) => ({
+  //     imagePath: image.imagePath,
+  //   }));
+
+  //   return {
+  //     product: {
+  //       ...product,
+  //       category: { name },
+  //       seller: { nickname },
+  //       images: images,
+  //     },
+  //   };
+  // }
+  async getProductById(id: number) {
+    const product = await this.productRepository.createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller')
+      .leftJoinAndSelect('product.images', 'images', 'images.deletedAt IS NULL')
+      .where('product.id = :id', { id })
+      .andWhere('product.status = :status', { status: 'sale' })
+      .select([
+        'product.id',
+        'product.title',
+        'product.description',
+        'product.price',
+        'product.sellerId',
+        'product.categoryId',
+        'product.viewCount',
+        'product.likes',
+        'product.createdAt',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .getOne();
+  
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-
-    const {
-      category: { name },
-      seller: { nickname },
-      images: { imagePath },
-    } = product;
-
-    const images = product.images.map((image) => ({
-      imagePath: image.imagePath,
-    }));
-
+  
     return {
       product: {
         ...product,
-        category: { name },
-        seller: { nickname },
-        images: images,
+        category: { name: product.category.name },
+        seller: { nickname: product.seller.nickname },
+        images: product.images.map((image) => ({
+          imagePath: image.imagePath,
+        })),
       },
     };
   }
-
 
   async createProduct(
     title: string,
@@ -197,14 +234,29 @@ export class ProductsService {
     });
   }
 
-  async deleteProduct(id: number, sellerId: number) {
-    await this.verifySomething(id, sellerId);
+  // async deleteProduct(id: number, sellerId: number) {
+  //   await this.verifySomething(id, sellerId);
 
-    this.productRepository.update(id, {
-      status: 'soldout',
+  //   this.productRepository.update(id, {
+  //     status: 'soldout',
+  //   });
+  // }
+
+
+  async deleteProduct(id: number, sellerId: number) {
+    await this.connection.transaction(async (manager) => {
+      await this.verifySomething(id, sellerId);
+  
+      // 이미지의 deletedAt을 업데이트합니다.
+      await manager.getRepository(ProductImagesEntity).update(
+        { productId: id },
+        { deletedAt: new Date() }
+      );
+  
+      // 상품의 status를 'soldout'으로 업데이트합니다.
+      await manager.getRepository(ProductsEntity).update(id, { status: 'soldout' });
     });
   }
-
   async verifySomething(id: number, sellerId: number) {
     const product = await this.productRepository.findOne({
       where: { id: id, status: 'sale' },

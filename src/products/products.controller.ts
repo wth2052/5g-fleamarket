@@ -184,7 +184,7 @@ export class ProductsController {
 
   //상품삭제
   @UseGuards(JwtAuthGuard)
-  @Delete(':productId')
+  @Delete('delete/:productId')
   deleteProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
