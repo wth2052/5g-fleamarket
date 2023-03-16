@@ -23,26 +23,28 @@
 <h1>
     <button onclick="user()">Users</button>
 </h1>
+<!--<h1>-->
+<!--    <button onclick="cate()">Categories</button>-->
+<!--</h1>-->
 <h1>
     <button onclick="productPhone()">Product-Phone</button>
 </h1>
+<!--<h1>-->
+<!--    <button onclick="order()">Orders</button>-->
+<!--</h1>-->
+<!--<h1>-->
+<!--    <button onclick="seopLike()">Lkies</button>-->
+<!--</h1>-->
+<!--<h1>-->
+<!--    <button onclick="seopImg()">imgPath</button>-->
+<!--</h1>-->
 <h1>
-    <button onclick="order()">Orders</button>
-</h1>
-<h1>
-    <button onclick="seopLike()">Lkies</button>
-</h1>
-<h1>
-    <button onclick="seopImg()">imgPath</button>
-</h1>
-<h1>
-    <button>Null</button>
+    <button onclick="seopAdmin()">Admin</button>
 </h1>
 </body>
 <script>
 
   function user() {
-    const num = document.getElementById("input").value;
     axios
       .post(`/seop/user/`)
       .then(( res ) => {
@@ -50,11 +52,23 @@
         window.location.reload();
       })
       .catch(( error ) => {
+        alert(error)
+      });
+  }
+
+  function cate() {
+    axios
+      .post(`/seop/cate/`)
+      .then(( res ) => {
+        alert("cate END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+        alert(error)
       });
   }
 
   function productPhone() {
-    const num = document.getElementById("input").value;
     axios
       .post(`/seop/product`)
       .then(( res ) => {
@@ -62,12 +76,12 @@
         window.location.reload();
       })
       .catch(( error ) => {
+        alert(error)
       });
   }
 
 
   function order() {
-    const num = document.getElementById("input").value;
     axios
       .post(`/seop/order`)
       .then(( res ) => {
@@ -75,6 +89,7 @@
         window.location.reload();
       })
       .catch(( error ) => {
+        alert(error)
       });
   }
 
@@ -86,6 +101,7 @@
         window.location.reload();
       })
       .catch(( error ) => {
+        alert(error)
       });
   }
 
@@ -97,6 +113,19 @@
         window.location.reload();
       })
       .catch(( error ) => {
+        alert(error)
+      });
+  }
+
+    function seopAdmin() {
+    axios
+      .post(`/seop/admin`)
+      .then(( res ) => {
+        alert("img END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+        alert(error)
       });
   }
 

@@ -75,30 +75,62 @@ export class AppController {
   @Public()
   @Post('seop/user')
   async seopUser() {
-    return await this.appService.seopUser();
+    await this.appService.seopUser();
+    await this.appService.seopCate();
   }
+
+  // @Public()
+  // @Post('seop/cate')
+  // async seopCate() {
+  //   return await this.appService.seopCate();
+  // }
 
   @Public()
   @Post('seop/product')
   async seopProductPhone() {
-    return await this.appService.seopProductPhone();
+    await this.appService.seopProductPhone();
+    await this.appService.seopOrder();
+    await this.appService.seopLike();
+    await this.appService.seopimg();
   }
 
-  @Public()
-  @Post('seop/order')
-  async seopOrder() {
-    return await this.appService.seopOrder();
-  }
+  // @Public()
+  // @Post('seop/order')
+  // async seopOrder() {
+  //   await this.appService.seopOrder();
+  //   await this.appService.seopLike();
+  //   await this.appService.seopimg();
+  // }
+  //
+  // @Public()
+  // @Post('seop/like')
+  // async seopLike() {
+  //   return await this.appService.seopLike();
+  // }
+  //
+  // @Public()
+  // @Post('seop/img')
+  // async seopimg() {
+  //   return await this.appService.seopimg();
+  // }
 
   @Public()
-  @Post('seop/like')
-  async seopLike() {
-    return await this.appService.seopLike();
+  @Post('seop/admin')
+  async seopAdmin() {
+    await this.appService.seopAdmin();
+    await this.appService.seopNotice();
+    await this.appService.seoprepoter();
   }
 
-  @Public()
-  @Post('seop/img')
-  async seopimg() {
-    return await this.appService.seopimg();
-  }
+  // @Public()
+  // @Post('seop/noti')
+  // async seopNotice() {
+  //   return await this.appService.seopNotice();
+  // }
+  //
+  // @Public()
+  // @Post('seop/repo')
+  // async seoprepoter() {
+  //   return await this.appService.seoprepoter();
+  // }
 }
