@@ -38,7 +38,7 @@ axios
   .catch((error) => {
     console.log(error);
     if (error.request.status === 401) {
-      alert('로그인 하고 오세요');
+      alert('로그인하셔야 합니다.');
       window.location.href = 'http://localhost:3000/login';
     } else if (error.request.status === 404) {
       let temp = '';

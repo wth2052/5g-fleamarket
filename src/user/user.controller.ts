@@ -53,18 +53,4 @@ export class UserController {
 
     await this.userService.updateUserInfomtaion(updateUserDto, userId);
   }
-  @Get('/googleuser/edit')
-  @UseGuards(JwtAuthGuard)
-  async getGoogleInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
-    const userId = jwt.id;
-    const User = await this.userService.getUserInformation(userId);
-    const data = {
-      nickname: User.nickname,
-      // email: User.email,
-      phone: User.phone,
-      address: User.address,
-    };
-    console.log('결과적으론 데이터가 리턴중', data);
-    return { data: data };
-  }
 }
