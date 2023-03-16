@@ -78,7 +78,6 @@ export class AppController {
       phone: User.phone,
       address: User.address,
     };
-    console.log('결과적으론 데이터가 리턴중', data);
     return { data: data };
   }
   @Put('/me/edit')

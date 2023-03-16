@@ -16,6 +16,7 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script><%- include('js/get-user-information.js')%></script>
+    <script><%- include('js/logout.js') %></script>
     <script>
 	    window.onload = (event) => {
             getUserInformation()
@@ -24,6 +25,7 @@
     <!--    Js -->
 
     <script><%- include('js/main-header.js') %></script>
+
 </head>
 
 
@@ -85,6 +87,7 @@ width: 100%; margin: 0">
             </div>
             <div class="container"></div>
             <div class="col" onclick="location.href='/report'" >🚨 불량 유저 신고하기</div>
+            <div class="col" onclick="logout()" >💡 로그아웃</div>
         </div>
 </div>
 </div>
