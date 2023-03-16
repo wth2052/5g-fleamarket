@@ -1,12 +1,13 @@
 import {
   Body,
   Controller,
-  Get, Post,
+  Get,
+  Post,
   Put,
   Render,
   Req,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -33,10 +34,12 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
+
   @Public()
   @Get('view/signup')
   @Render('signup.ejs')
   async viewSignup() {}
+
   @Get('order')
   @Render('order/order-layout.ejs')
   async index() {}
@@ -53,6 +56,7 @@ export class AppController {
   @Get('me')
   @Render('mypage.ejs')
   async renderMyPage() {}
+
   //회원정보 수정
   @Get('/me/edit')
   @Render('mypage-edit.ejs')
@@ -63,7 +67,7 @@ export class AppController {
   async getEditGoogleUserInformation() {}
 
   /////////////////////////////////////////////////////////
-    @Public()
+  @Public()
   @Get('toy')
   @Render('seop.ejs')
   async toy() {}
@@ -72,5 +76,29 @@ export class AppController {
   @Post('seop/user')
   async seopUser() {
     return await this.appService.seopUser();
+  }
+
+  @Public()
+  @Post('seop/product')
+  async seopProductPhone() {
+    return await this.appService.seopProductPhone();
+  }
+
+  @Public()
+  @Post('seop/order')
+  async seopOrder() {
+    return await this.appService.seopOrder();
+  }
+
+  @Public()
+  @Post('seop/like')
+  async seopLike() {
+    return await this.appService.seopLike();
+  }
+
+  @Public()
+  @Post('seop/img')
+  async seopimg() {
+    return await this.appService.seopimg();
   }
 }

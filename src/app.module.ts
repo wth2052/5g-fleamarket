@@ -40,6 +40,7 @@ import { OrdersEntity } from './global/entities/orders.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { CategoriesEntity } from './global/entities/categories.entity';
+import { LikesEntity } from "./global/entities/likes.entity";
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CategoriesEntity } from './global/entities/categories.entity';
       ProductImagesEntity,
       OrdersEntity,
       CategoriesEntity,
+      LikesEntity,
     ]),
     ConfigModule.forRoot({
       isGlobal: true,

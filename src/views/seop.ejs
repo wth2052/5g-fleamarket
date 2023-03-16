@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>SQL작업장</title>
+
+</head>
+<body style="padding-left: 10%">
+
+<h1>
+    <textarea style="width: 250px; height: 80px">
+    더미데이터 실행기입니다.
+    Users 부터 순서대로 눌러주세요.
+    현재 셋팅 갯수는 100개 입니다.
+    감사합니다.
+    </textarea>
+</h1>
+
+<h1>
+    <button onclick="user()">Users</button>
+</h1>
+<h1>
+    <button onclick="productPhone()">Product-Phone</button>
+</h1>
+<h1>
+    <button onclick="order()">Orders</button>
+</h1>
+<h1>
+    <button onclick="seopLike()">Lkies</button>
+</h1>
+<h1>
+    <button onclick="seopImg()">imgPath</button>
+</h1>
+<h1>
+    <button>Null</button>
+</h1>
+</body>
+<script>
+
+  function user() {
+    const num = document.getElementById("input").value;
+    axios
+      .post(`/seop/user/`)
+      .then(( res ) => {
+        alert("user END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+      });
+  }
+
+  function productPhone() {
+    const num = document.getElementById("input").value;
+    axios
+      .post(`/seop/product`)
+      .then(( res ) => {
+        alert("productPhone END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+      });
+  }
+
+
+  function order() {
+    const num = document.getElementById("input").value;
+    axios
+      .post(`/seop/order`)
+      .then(( res ) => {
+        alert("order END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+      });
+  }
+
+  function seopLike() {
+    axios
+      .post(`/seop/like`)
+      .then(( res ) => {
+        alert("like END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+      });
+  }
+
+  function seopImg() {
+    axios
+      .post(`/seop/img`)
+      .then(( res ) => {
+        alert("img END");
+        window.location.reload();
+      })
+      .catch(( error ) => {
+      });
+  }
+
+</script>
+</html>
