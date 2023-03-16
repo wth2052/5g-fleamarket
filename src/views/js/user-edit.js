@@ -51,4 +51,5 @@ function editUserInformation() {
         console.log('에러', error);
       });
   }
+
 }

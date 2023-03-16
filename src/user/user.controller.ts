@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-@Controller('user')
+@Controller('/api/user')
 export class UserController {
   constructor(
     @InjectRepository(UserEntity)
@@ -15,7 +15,7 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  @Get('/api/me')
+  @Get('me')
   @UseGuards(JwtAuthGuard)
   async getInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
@@ -29,7 +29,8 @@ export class UserController {
     };
     return { data: data };
   }
-  @Get('api/me/edit')
+  @UseGuards(JwtAuthGuard)
+  @Get('me/edit')
   async geteditInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const User = await this.userService.getUserInformation(userId);
@@ -52,7 +53,7 @@ export class UserController {
 
     await this.userService.updateUserInfomtaion(updateUserDto, userId);
   }
-  @Get('/api/googleuser/edit')
+  @Get('/googleuser/edit')
   @UseGuards(JwtAuthGuard)
   async getGoogleInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;

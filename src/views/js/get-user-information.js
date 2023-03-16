@@ -1,6 +1,6 @@
 //TODO: Restful API
 axios
-  .get('user/api/me')
+  .get('/api/user/me')
   .then((res) => {
     const data = res.data.data;
     console.log('성공', data);
