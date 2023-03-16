@@ -1,12 +1,12 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, Post,
   Put,
   Render,
   Req,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { AppService } from './app.service';
 import { Public } from './global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -61,4 +61,16 @@ export class AppController {
   @Get('/googleuser/edit')
   @Render('mypage-edit-google.ejs')
   async getEditGoogleUserInformation() {}
+
+  /////////////////////////////////////////////////////////
+    @Public()
+  @Get('toy')
+  @Render('seop.ejs')
+  async toy() {}
+
+  @Public()
+  @Post('seop/user')
+  async seopUser() {
+    return await this.appService.seopUser();
+  }
 }
