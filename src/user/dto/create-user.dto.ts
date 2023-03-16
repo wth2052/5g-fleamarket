@@ -92,3 +92,13 @@ export class OAuthAddInformationDto extends PickType(CreateUserDto, [
   'phone',
   'address',
 ]) {}
+
+export class UpdateUserDto extends PickType(CreateUserDto, [
+  'email',
+  'nickname',
+  'phone',
+  'address',
+]) {
+  @IsNumber()
+  readonly id: number;
+}

@@ -66,7 +66,6 @@ export class OrdersController {
   @Get('me/pick')
   async findMyPick(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    console.log('유저아디', userId);
     const data = await this.ordersService.findMyPick(userId);
     return { data: data };
   }

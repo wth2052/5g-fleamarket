@@ -44,11 +44,11 @@ import { CategoriesEntity } from './global/entities/categories.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      CategoriesEntity,
       UserEntity,
-      OrdersEntity,
       ProductsEntity,
       ProductImagesEntity,
+      OrdersEntity,
+      CategoriesEntity,
     ]),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -69,6 +69,7 @@ import { CategoriesEntity } from './global/entities/categories.entity';
     EmailModule,
     AdminAuthModule,
     ProductsModule,
+    UserModule,
     ReportModule,
   ],
   controllers: [

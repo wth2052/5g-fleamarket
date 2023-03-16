@@ -28,7 +28,7 @@ function productSearch() {
          <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" 
+                        <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
               <div class="col-md-9">
