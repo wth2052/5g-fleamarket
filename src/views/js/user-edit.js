@@ -29,7 +29,7 @@ function editUserInformation() {
     );
 
     axios
-      .put('user/api/me/edit', {
+      .put('http://localhost:3000/user/api/me/edit', {
         headers: {
           'Content-type': 'application/x-www-form-urlencoded',
         },
@@ -51,5 +51,4 @@ function editUserInformation() {
         console.log('에러', error);
       });
   }
-
 }

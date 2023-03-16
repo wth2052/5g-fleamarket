@@ -1,12 +1,10 @@
-
 function getEditUserInformation() {
   //TODO: Restful API
   axios
     .get('/api/user/me/edit')
     .then((res) => {
-      const data = res.data.data;
+      let data = res.data.data;
       console.log('성공', data);
-
       let temp1 = `<div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
         <form>
             <div class="form-group">
