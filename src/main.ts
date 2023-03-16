@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './global/util/swagger/swagger-mainpage';
 import * as cookieParser from 'cookie-parser';
@@ -9,6 +9,7 @@ import {
   utilities as nestWinstonModuleUtilities,
   WinstonModule,
 } from 'nest-winston';
+import { HttpExceptionFilter } from './global/filter/http-exception-filter';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function bootstrap() {
@@ -38,6 +39,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
   });
+  // app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 void bootstrap();

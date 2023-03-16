@@ -17,11 +17,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script><%- include('js/get-user-information.js')%></script>
     <script><%- include('js/logout.js') %></script>
-    <script>
-	    window.onload = (event) => {
-            getUserInformation()
-	    };
-    </script>
     <!--    Js -->
 
     <script><%- include('js/main-header.js') %></script>
@@ -76,19 +71,9 @@ width: 100%; margin: 0">
     </div>
     <!-- 본문-->
 <!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
-    <div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8">[프로필사진] <%= data.nickname%>님, 환영합니다! </div>
-                <div class="col-6 col-md-4" onclick="location.href='/me/edit'">내 정보 관리</div>
-            </div>
-            <div class="col">
-                한칸 공백
-            </div>
-            <div class="container"></div>
-            <div class="col" onclick="location.href='/report'" >🚨 불량 유저 신고하기</div>
-            <div class="col" onclick="logout()" >💡 로그아웃</div>
-        </div>
+    <div id="temp1"></div>
+    <div class="col-md-8" id="temp2"></div>
+    <div id="temp3"></div>
 </div>
 </div>
 <!--하단 메뉴바-->
