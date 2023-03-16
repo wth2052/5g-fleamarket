@@ -31,10 +31,6 @@ export class AppController {
   @Render('index.ejs')
   async test() {}
 
-  @Get('user/mypage')
-  @Render('mypage.ejs')
-  async mypage() {}
-
   @Get('product')
   @Render('product-main.ejs')
   async product() {}
