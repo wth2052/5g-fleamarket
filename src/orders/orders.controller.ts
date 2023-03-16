@@ -72,7 +72,6 @@ export class OrdersController {
   }
   //(구매자 입장에서)성사된 거래 판매자 정보보기
   @Get('buy/result/:orderId')
-  @Render('order-buyResult.ejs')
   async buyResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -83,7 +82,6 @@ export class OrdersController {
   }
   //성사된 거래 구매자 정보보기
   @Get('sell/result/:orderId')
-  @Render('order/order-sellResult.ejs')
   async sellResult(
     @Param('orderId') orderId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -103,9 +101,6 @@ export class OrdersController {
   async getBuyList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const buyList = await this.ordersService.getBuyList(userId);
-    if (!buyList.length) {
-      throw new NotFoundException(`${userId}는 구매한 상품이 없습니다.`);
-    }
     return { data: buyList };
   }
   // 내가 판매가 완료된 목록
@@ -157,18 +152,24 @@ export class OrdersController {
   // -------------------------
   // test용 productList
   @Public()
-  @Render('test-product.ejs')
-  @Get('product')
-  async productList() {
-    const product = await this.ordersService.pl();
-    return { data: product };
+  @Get('product/detail/graph/:productId')
+  async productList(@Param('productId') productId: number) {
+    const product = await this.ordersService.graph(productId);
+    return product;
   }
 
   // 상품검색
   @Public()
   @Get('productSearch')
+  // http://localhost:3000/orders/productSearch?search=피카츄
   async productSearch(@Query('search') search: string) {
     const product = await this.ordersService.productSearch(search);
     return { data: product };
+  }
+
+  // 끌어올리기
+  @Post('pullUp/:productId')
+  pullUpProduct(@Param('productId') productId: number) {
+    return this.ordersService.pullUpProduct(productId);
   }
 }

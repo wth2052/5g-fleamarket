@@ -14,7 +14,6 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
-    <script><%- include('../js/order-layout.js') %></script>
     <script><%- include('../js/main-header.js') %></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" />
@@ -36,8 +35,54 @@
           centerMode: true,
           focusOnSelect: true
         });
-      });
+      })
     </script>
+        <script>
+          function deal(productId){
+          let deal = prompt('판매자가 제시한 가격보다 높게 제시해주세요!');
+          while (isNaN(deal) || deal === '') {
+            deal = prompt('올바르게 입력해주세요')}
+          if (deal === null) {
+              window.location.reload();
+              }
+          axios.post(`http://localhost:3000/orders/deal/price/${productId}`,{
+            price: deal
+          })
+          .then((response) => {
+            alert('가격제시 완료')
+            window.location.href = '/order'
+          }).catch((error) => {
+            console.log(error)
+            if(error.response.status === 401){
+              alert('로그인해야 주문이 가능합니다.')
+              window.location.href = '/login'
+            }else if(error.response.status === 403){
+              alert('이미 주문하셨습니다. 구매진행에서 수정해주세요')
+            window.location.href = '/order'
+            }
+          });
+        }
+
+        // 찜하기
+        function like(productId) {
+            axios
+              .post(`http://localhost:3000/productss/like/${productId}`)
+             .then((response) => {
+                alert('찜하기 완료!')
+                window.location.reload();
+              }).catch((error) => {
+                console.log(error)
+                if(error.response.status === 401){
+                  alert('로그인해야 주문이 가능합니다.')
+                  window.location.href = '/login'
+                }else if(error.response.status === 403){
+                  alert('이미 주문하셨습니다. 구매진행에서 수정해주세요')
+                window.location.href = '/order'
+                }
+              });
+            }
+    </script>
+        
 <script>
   $(document).ready(function() {
     $('.slider').slick({
@@ -170,6 +215,8 @@
           <div class="views">Views: <%= product.viewCount %></div>
           <div class="likes">Likes: <%= product.likes %></div>
           <div class="price">Price: <%= product.price %></div>
+          <div class="deal"><button id='deal11' onclick="deal(<%= product.id %>)">딜하기</button> </div>
+          <div class="deal"><button id='deal11' onclick="like(<%= product.id %>)">찜하기</button> </div>
         </div>
       </div>
     </div>

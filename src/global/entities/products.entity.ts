@@ -15,11 +15,13 @@ import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductImagesEntity } from './productimages.entity';
+import { LikesEntity } from "./likes.entity";
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
   @OneToMany(() => ProductImagesEntity, (images) => images.productId)
   images: ProductImagesEntity;
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -49,6 +51,9 @@ export class ProductsEntity {
   @Column({ default: 0 })
   viewCount: number;
 
+  @OneToMany(() => LikesEntity, (like) => like.product)
+  likesJoin: LikesEntity[];
+
   @Column({ default: 0 })
   likes: number;
 
@@ -63,6 +68,9 @@ export class ProductsEntity {
 
   @UpdateDateColumn({ default: null })
   updatedAt?: Date;
+
+  @Column({ default: null })
+  pullUp: Date;
 
   @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
     cascade: true,

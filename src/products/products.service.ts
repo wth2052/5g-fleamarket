@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import {
+  ForbiddenException,
   Injectable,
+  NotAcceptableException,
   InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
@@ -18,6 +20,7 @@ import { ProductImagesEntity } from 'src/global/entities/productimages.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ProductImagesService } from './product-images.service';
+import { LikesEntity } from '../global/entities/likes.entity';
 
 
 @Injectable()
@@ -33,42 +36,32 @@ export class ProductsService {
     private userEntity: Repository<UserEntity>,
     @InjectRepository(ProductImagesEntity)
     private productImagesRepository: Repository<ProductImagesEntity>,
+    @InjectRepository(LikesEntity)
+    private likeRepository: Repository<LikesEntity>,
+    private dataSource: DataSource,
   ) {}
 
-
-  async getAllProducts() {
-    const queryBuilder = this.productRepository.createQueryBuilder('product');
-  
-    const products = await queryBuilder
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
-      .leftJoinAndSelect('product.images', 'images')
-      .where('product.status = :status', { status: 'sale' })
-      .select([
-        'product.id',
-        'product.title',
-        'product.price',
-        'product.viewCount',
-        'product.likes',
-        'product.dealCount',
-        'product.createdAt',
-        'product.updatedAt',
-        'category.id',
-        'category.name',
-        'seller.nickname',
-        'images.imagePath',
-      ])
-      .orderBy('product.updatedAt', 'DESC')
-      .getMany();
-  
-    return products;
-
+  async getAllProducts(limit: number, offset: number) {
+    const products = await this.productRepository.find({
+      take: limit,
+      skip: offset,
+      relations: ['category', 'images'],
+      order: { updatedAt: 'DESC' },
+    });
+    if (products.length === 0) {
+      throw new NotFoundException('상품이 존재하지 않습니다.');
+    } else {
+      return products;
+    }
   }
 
+  async getTotalProducts() {
+    return this.productRepository.count();
+  }
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
-      where: { id: id, status: 'sale' },
+      where: { id: id },
       select: [
         'id',
         'title',
@@ -80,12 +73,17 @@ export class ProductsService {
         'likes',
         'createdAt',
       ],
-      relations: ['category', 'seller', 'images'],
+      relations: ['category', 'seller', 'images', 'likesJoin'],
     });
-
+    console.log('####################', product);
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
+
+    product.viewCount += 1;
+    await this.productRepository.save(product);
+
+    // product.likesJoin.length
 
     const {
       category: { name },
@@ -176,7 +174,6 @@ export class ProductsService {
       await queryRunner.release();
     }
   }
-  
 
   //얘도 이미지
   async updateProduct(
@@ -220,6 +217,55 @@ export class ProductsService {
       throw new UnauthorizedException(
         `sellerId: ${sellerId}님의 판매글이 아닙니다`,
       );
+    }
+  }
+
+  // 찜하기 ?? if 문으로 써도 되지않을까?
+  async likeProduct(productId: number, userId: number) {
+    // 찜했는지 확인
+    const like = await this.likeRepository.findOne({
+      where: {
+        productId: productId,
+        userId: userId,
+      },
+    });
+
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      if (!like) {
+        // 찜 안했으면 찜하기
+        await this.likeRepository.save({
+          productId: productId,
+          userId: userId,
+        });
+        // 찜하기 +1
+        await this.productRepository.update(
+          { id: productId },
+          { likes: () => 'likes + 1' },
+        );
+      } else {
+        // 찜 했으면 찜 취소(삭제)
+        const product = await this.productRepository.findOne({
+          where: { id: productId },
+        });
+        await this.likeRepository.delete({
+          productId: productId,
+          userId: userId,
+        });
+        await this.productRepository.update(
+          { id: productId },
+          { likes: () => 'likes - 1' },
+        );
+      }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
     }
   }
 }

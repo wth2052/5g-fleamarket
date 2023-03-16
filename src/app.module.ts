@@ -36,13 +36,20 @@ import { ProductsModule } from './products/products.module';
 import { ReportModule } from './report/report.module';
 import { ProductsEntity } from './global/entities/products.entity';
 import { ProductImagesEntity } from './global/entities/productimages.entity';
-import {OrdersEntity} from './global/entities/orders.entity';
+import { OrdersEntity } from './global/entities/orders.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { CategoriesEntity } from './global/entities/categories.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity, ProductsEntity, ProductImagesEntity, OrdersEntity]),
+    TypeOrmModule.forFeature([
+      CategoriesEntity,
+      UserEntity,
+      OrdersEntity,
+      ProductsEntity,
+      ProductImagesEntity,
+    ]),
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema,

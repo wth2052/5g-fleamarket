@@ -1,4 +1,22 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, Req, Render, Res, NotFoundException, UnauthorizedException, HttpException, Catch, Query, Header} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+  Render,
+  Res,
+  NotFoundException,
+  UnauthorizedException,
+  HttpException,
+  Catch,
+  Query,
+  Header,
+} from '@nestjs/common';
 import { AdminAuthGuard } from '../admin-auth/guards/admin-auth.guards';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { AdminService } from './admin.service';
@@ -17,60 +35,53 @@ import { CheckReportDto } from './dto/check-report.dto';
 @Controller()
 @Public()
 @UseGuards(AdminAuthGuard)
-
-
 export class AdminController {
   constructor(
     private readonly adminService: AdminService,
     private jwtService: JwtService,
   ) {}
 
-
   // 상품정보 가져오기 API
   @Get('/products')
   @Render('admin/admin-products.ejs')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
+
   async getProducts(
-    @Query('limit') limit: number =10,
+    @Query('limit') limit: number = 10,
     @Query('offset') offset: number = 0,
   ) {
-    try{ 
-      const products = await this.adminService.getProducts(limit, offset)
+    try {
+      const products = await this.adminService.getProducts(limit, offset);
       const totalProducts = await this.adminService.getTotalProducts();
-      return {products, totalProducts}
-    
-    }
-    catch (error) {
-       return { errorMessage: error.message };
+      return { products, totalProducts };
+    } catch (error) {
+      return { errorMessage: error.message };
     }
   }
-
   @Get('/api/products')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
-  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false})
-  async getProducts2(
-    @Query('limit') limit: number ,
-    @Query('offset') offset: number ,
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
+  async getProducts2(r
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+
   ) {
-    try{ 
-      const products = await this.adminService.getProducts(limit, offset)
+    try {
+      const products = await this.adminService.getProducts(limit, offset);
       const totalProducts = await this.adminService.getTotalProducts();
-      return {products, totalProducts}
-    
-    }
-    catch (error) {
-       return { errorMessage: error.message };
+      return { products, totalProducts };
+    } catch (error) {
+      return { errorMessage: error.message };
     }
   }
-  
 
   //상품정보 상세보기 API
   @Get('/products/:productId')
   @Render('admin/admin-productById.ejs')
   async getProductById(
     @Param('productId') productId: number,
-    
   ) {
-
        // 원래: return await this.adminService.getProductById(productId)
   const result = await this.adminService.getProductById(productId)
   const product = result.product
@@ -79,8 +90,6 @@ export class AdminController {
   const images = result.images
     return {product, seller, category, images}
     }
-
-
   //상품 삭제 API
   @Delete('/products/:productId')
   deleteProduct(@Param('productId') productId: number) {
@@ -90,6 +99,7 @@ export class AdminController {
   //회원정보 가져오기 API
   @Get('/users')
   @Render('admin/admin-users.ejs')
+
   async getUsers(
     @Query('limit') limit: number =10,
     @Query('offset') offset: number = 0,
@@ -170,13 +180,14 @@ export class AdminController {
   catch (error) {
     return { errorMessage: error.message };
   }
+
   }
 
   //카테고리 생성 API
   @Get('/post/category')
   @Render('admin/admin-categoryPost.ejs')
-  async viewCategory(){
-    return {message: "카테고리 작성 페이지"}
+  async viewCategory() {
+    return { message: '카테고리 작성 페이지' };
   }
 
   @Post('/category')
@@ -203,6 +214,7 @@ export class AdminController {
 
   @Get('/notice')
   @Render('admin/admin-notices.ejs')
+
   async getNotices(
     @Query('limit') limit: number =10,
     @Query('offset') offset: number = 0,
@@ -231,9 +243,6 @@ export class AdminController {
     const totalNotice = await this.adminService.getTotalNotice();
       return {notices, totalNotice}
     }
-  catch (error) {
-    return  {errorMessage: error.message} 
-  }
   }
 
   //공지사항 상세조회
@@ -247,8 +256,8 @@ export class AdminController {
   //공지사항 작성
   @Get('/post/notice')
   @Render('admin/admin-noticePost.ejs')
-  async viewNotice(){
-    return {message: "공지작성 페이지"}
+  async viewNotice() {
+    return { message: '공지작성 페이지' };
   }
   @Post('/notice')
   async createNotice(
@@ -286,39 +295,37 @@ export class AdminController {
     return this.adminService.deleteNotice(noticeId);
   }
 
-// 상품검색
+  // 상품검색
 
-@Get('productSearch')
-async productSearch(@Query('search') search: string) {
-  const product = await this.adminService.productSearch(search);
-  return { data : product };
-}
+  @Get('productSearch')
+  async productSearch(@Query('search') search: string) {
+    const product = await this.adminService.productSearch(search);
+    return { data: product };
+  }
+
+  //회원검색
+
+  @Get('userSearch')
+  async userSearch(@Query('search') search: string) {
+    const user = await this.adminService.userSearch(search);
+    return { data: user };
+  }
+
+  //카테고리 검색
+
+  @Get('categorySearch')
+  async categorySearch(@Query('search') search: string) {
+    const category = await this.adminService.categorySearch(search);
+    return { data: category };
+  }
+
+  //공지 검색
 
 
-//회원검색
-
-@Get('userSearch')
-async userSearch(@Query('search') search: string) {
-  const user = await this.adminService.userSearch(search);
-  return { data : user };
-}
-
-//카테고리 검색
-
-
-@Get('categorySearch')
-async categorySearch(@Query('search') search: string) {
-  const category = await this.adminService.categorySearch(search);
-  return { data : category };
-}
-
-//공지 검색
-
-@Get('noticeSearch')
-async noticeSearch(@Query('search') search: string) {
-  const notice = await this.adminService.noticeSearch(search);
-  return { data : notice };
-}
+  @Get('noticeSearch')
+  async noticeSearch(@Query('search') search: string) {
+    const notice = await this.adminService.noticeSearch(search);
+    return { data: notice };
 
 //신고 검색
 
@@ -328,17 +335,15 @@ async reportSearch(@Query('search') search: string) {
   return { data : report };
 }
 
-// 블랙리스트 모아보기 
-@Get('ban/users')
-async getBanUsers(){
-  try {
-    return {banUsers: await this.adminService.getBanUsers()}
+  // 블랙리스트 모아보기
+  @Get('ban/users')
+  async getBanUsers() {
+    try {
+      return { banUsers: await this.adminService.getBanUsers() };
+    } catch (error) {
+      return { errorMessage: error.message };
+    }
   }
-catch (error) {
-  return  {errorMessage: error.message} 
-}
-}
-
 //신고 목록 보기 
   @Get('/reports')
   @Render('admin/admin-reports.ejs')
@@ -425,7 +430,4 @@ catch (error) {
   deleteReport(@Param('reportId') reportId: number) {
     return this.adminService.deleteReport(reportId);
   }
-
 }
-
-

@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Injectable,
   InternalServerErrorException,
+  NotAcceptableException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -30,10 +31,13 @@ export class OrdersService {
   }
 
   async findMyPick(id: number) {
-    const pick = await this.orderRepository.find({
-      where: { buyerId: id, status: 'sale' },
-      relations: ['product'],
-    });
+    const pick = await this.orderRepository
+      .createQueryBuilder('orders')
+      .leftJoinAndSelect('orders.product', 'product')
+      .leftJoinAndSelect('product.images', 'images')
+      .where(`buyerId = :id`, { id })
+      .andWhere('orders.status = :status', { status: 'sale' })
+      .getMany(); //getRawMany 변경예정
     if (!pick.length) {
       throw new NotFoundException(
         `딜한 주문이 없거나 진행중인 상품이 없습니다.`,
@@ -45,6 +49,8 @@ export class OrdersService {
   async findMySell(userId: number) {
     const products = await this.productRepository.find({
       where: { sellerId: userId, status: 'sale' },
+      order: { updatedAt: 'DESC' },
+      relations: ['category', 'images'],
     });
     return products;
   }
@@ -72,7 +78,7 @@ export class OrdersService {
   }
   async buyResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId, deleteAt: null },
+      where: { id: orderId, deletedAt: null },
     });
     if (!order) {
       throw new NotFoundException('해당되는 주문이 없습니다.');
@@ -98,13 +104,14 @@ export class OrdersService {
 
   async sellResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
-      where: { id: orderId, status: 'success', deleteAt: null },
+      where: { id: orderId, status: 'success', deletedAt: null },
     });
     if (!order) {
       throw new NotFoundException('선택하신 주문이 없습니다.');
     }
     const sellUser = await this.productRepository.find({
       where: { id: order.productId, sellerId: userId, status: 'success' },
+      order: { updatedAt: 'DESC' },
     });
     if (!sellUser) {
       throw new ForbiddenException('내가 판매하는 물품이 아닙니다.');
@@ -118,15 +125,26 @@ export class OrdersService {
 
   async getBuyList(userId: number) {
     const buyList = await this.orderRepository.find({
-      where: { buyerId: userId, status: 'success', deleteAt: null },
-      relations: ['product'],
+      where: { buyerId: userId, status: 'success', deletedAt: null },
+      order: { updatedAt: 'DESC' },
     });
-    return buyList;
+    if (!buyList.length) {
+      throw new NotFoundException();
+    }
+    for (let i = 0; i < buyList.length; i++) {
+      const product = await this.productRepository.find({
+        where: { id: buyList[i].productId, status: 'success' },
+        relations: ['images'],
+        order: { updatedAt: 'DESC' },
+      });
+      return { buyList, product };
+    }
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
       where: { sellerId: userId, status: 'success' },
-      select: ['id'],
+      relations: ['category', 'images'],
+      order: { updatedAt: 'DESC' },
     });
     if (!myProduct.length) {
       throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
@@ -135,17 +153,18 @@ export class OrdersService {
       const real = await this.orderRepository.find({
         where: { productId: myProduct[i].id, status: 'success' },
         relations: ['product'],
+        order: { updatedAt: 'DESC' },
       });
       console.log('판매 성공', real);
       if (!real.length) {
         throw new NotFoundException('판매를 성공한 상품이 없습니다.');
       }
-      return real;
+      return { real, myProduct };
     }
   }
   async putdealAccept(userId: number, orderId: number) {
     const selectOrder = await this.orderRepository.findOne({
-      where: { id: orderId, status: 'sale', deleteAt: null },
+      where: { id: orderId, status: 'sale', deletedAt: null },
     });
     console.log('selectOrder', selectOrder);
     if (!selectOrder) {
@@ -191,7 +210,7 @@ export class OrdersService {
       throw new ForbiddenException('자신의 상품에는 deal을 할 수 없습니다.');
     }
     const user = await this.orderRepository.findOne({
-      where: { productId: productId, buyerId: userId, deleteAt: null },
+      where: { productId: productId, buyerId: userId, deletedAt: null },
     });
     if (user) {
       throw new ForbiddenException(
@@ -251,12 +270,31 @@ export class OrdersService {
     await this.orderRepository.softDelete({ id: orderId });
   }
 
-  // -----------------------------
-  // test
-  async pl() {
-    return await this.productRepository.find({
-      relations: ['seller'],
+  //시세 그래프 ?
+  async graph(productId: number) {
+    const deals = await this.orderRepository.find({
+      where: { productId: productId },
+      select: ['deal', 'updatedAt'],
+      order: { updatedAt: 'DESC' },
     });
+    let sum = 0;
+    let maxDeal = 0;
+    let minDeal = deals[0].deal;
+    deals.map((deal) => {
+      console.log(deal);
+      console.log(deal.deal);
+      if (deal.deal > maxDeal) {
+        maxDeal = deal.deal;
+      }
+      if (minDeal > deal.deal) {
+        minDeal = deal.deal;
+      }
+      sum += deal.deal;
+    });
+    const avg = sum / deals.length;
+    console.log('%^&(', avg);
+    const result = { avg, maxDeal, minDeal };
+    return { deals, result };
   }
 
   // 상품검색
@@ -274,6 +312,60 @@ export class OrdersService {
       return products;
     } catch (error) {
       throw new InternalServerErrorException(error);
+    }
+  }
+
+  //끌어올리기
+  async pullUpProduct(productId: number) {
+    const product = await this.productRepository.findOne({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Product with ID ${productId} not found`);
+    }
+
+    const now = new Date();
+
+    // 마지막 끌올 시간 체크
+    // 일수 * 시간 * 분 * 초 * 밀리초
+    if (
+      product.pullUp !== null &&
+      now.getTime() - product.pullUp.getTime() < 2 * 24 * 60 * 60 * 1000
+    ) {
+      const nextPullUpTime =
+        product.pullUp.getTime() + 2 * 24 * 60 * 60 * 1000 - now.getTime();
+      const days = Math.floor(nextPullUpTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((nextPullUpTime / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((nextPullUpTime / (1000 * 60)) % 60);
+      let message = '';
+      if (days > 0) {
+        message += `${days}일 `;
+      }
+      if (hours > 0) {
+        message += `${hours}시간 `;
+      }
+      message += `${minutes}분 뒤에 끌어올릴 수 있어요`;
+      throw new NotAcceptableException(message);
+    }
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      // 끌올 현재시간 넣기
+      await this.productRepository.update(productId, {
+        pullUp: now,
+      });
+
+      // 상품 updateAt 업데이트
+      await this.productRepository.update(productId, {
+        updatedAt: now,
+      });
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
     }
   }
 }
