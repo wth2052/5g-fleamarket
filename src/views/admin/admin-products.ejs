@@ -28,7 +28,7 @@
   }
 
   #image{
-    width: 100%; height: 100%; 
+    width: 250px; height: 165px; 
     margin: 0;  
  
     border: 3px dotted #5cd7f2; border-radius: 3px;
@@ -73,12 +73,15 @@
               <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct('<%= products[i].id %>')">
                 <div class="row" style="cursor: pointer; "  >
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
-                    <img src="https://news.koreadaily.com/data/photo/2023/03/10/202303040941779270_6404a4b927e18.jpg" alt="spcFuck" id="image"/>
+
+                    <img src="/img/<%= products[i].images[0].imagePath %>" alt="image" id="image"/>
+
                   </div>
                   <div class="col-md-8" id="products-column" >
                       <h3 > <%= products[i].title %></h3>
                       <h3><%= products[i].price %> 원</h3>
                       <br>
+                      <span>작성자: <%= products[i].seller.nickname %></span>
                       <span style="float: right;">❤ <%= products[i].likes %></span>
                       <span style="float: right;">🎯<%= products[i].dealCount %>  &nbsp </span>
                       <span style="float: right;">👀:<%= products[i].viewCount %>회 &nbsp</span>
@@ -87,14 +90,9 @@
                 </div>
               </div>
             <% } %>
-            <div id="ss"></div>
+            <input type="hidden" value="<%= products.length %>" id="productsLength">
+            <input type="hidden" value="<%= totalProducts%>" id="totalProducts">
 
-            
-            <!-- <% if (products.length < totalProducts) { %>
-              <div class="text-center mt-3">
-                <button onclick="pageProduct(<%= products.length %>, <%= totalProducts%> )" id="load-more-btn" class="btn btn-primary load-more" data-limit="<%= products.length %>" data-offset="<%= products.length %>">더 보기</button>
-              </div>
-            <% } %> -->
             
           <% } %>
   </div>
@@ -109,9 +107,6 @@
 
 </body>
 <script>
-let limit = <%= products.length %>
-let offset = <%= products.length %>
-let TotalProducts = <%= totalProducts%>
 <%- include('js/admin-layout.js') %>
 </script>
 

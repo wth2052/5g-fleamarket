@@ -17,12 +17,12 @@ export class OrdersEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ProductsEntity)
+  @ManyToOne(() => ProductsEntity, { onDelete: 'CASCADE' })
   product: ProductsEntity;
   @Column()
   productId: number;
 
-  @ManyToOne(() => UserEntity, (buyer) => buyer.orders)
+  @ManyToOne(() => UserEntity, (buyer) => buyer.orders, { onDelete: 'CASCADE' })
   buyer: UserEntity;
   @Column()
   buyerId: number;
@@ -34,11 +34,11 @@ export class OrdersEntity {
   status: string;
 
   @CreateDateColumn()
-  createAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ default: null })
-  updateAt?: Date;
+  updatedAt?: Date;
 
   @DeleteDateColumn({ default: null })
-  deleteAt?: Date;
+  deletedAt?: Date;
 }

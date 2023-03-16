@@ -55,7 +55,6 @@ services:
     command: redis-server --appendonly yes --protected-mode no
 
   mysql:
-
     #.env 파일의 위치 지정
     env_file:
       - "./.env"
@@ -79,5 +78,4 @@ services:
     #컨테이너의 데이터를 호스트의 폴더에 저장할 수 있도록 해줌.
     volumes:
       - ./.docker/mysql:/var/lib/mysql
-      - ./.docker/mysql/conf.d:/etc/mysql/conf.d
-      - ./.docker/mysql/logs:/var/log/mysql
+    

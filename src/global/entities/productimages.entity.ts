@@ -11,13 +11,15 @@ import { ProductsEntity } from './products.entity';
 @Entity({ name: 'productimages' })
 export class ProductImagesEntity {
   length: number;
-  map(arg0: (image: any) => { imagePath: any; }) {
+  map(arg0: (image: any) => { imagePath: any }) {
     throw new Error('Method not implemented.');
   }
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => ProductsEntity, (products) => products.images)
+  @ManyToOne(() => ProductsEntity, (products) => products.images, {
+    onDelete: 'CASCADE',
+  })
   productId: number;
 
   @Column()
@@ -28,5 +30,4 @@ export class ProductImagesEntity {
 
   @DeleteDateColumn({ default: null })
   deletedAt?: Date;
-
 }

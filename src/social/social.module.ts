@@ -8,13 +8,22 @@ import { AuthService } from '../auth/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { JwtService } from '@nestjs/jwt';
+import { ProductsEntity } from '../global/entities/products.entity';
+import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { OrdersEntity } from '../global/entities/orders.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      ProductsEntity,
+      ProductImagesEntity,
+      OrdersEntity,
+    ]),
+  ],
   controllers: [SocialController],
   providers: [
     SocialService,
-    AppService,
     JwtService,
     JwtGoogleStrategy,
     UserService,

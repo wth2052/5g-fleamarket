@@ -1,3 +1,6 @@
+<!--    Js -->
+<script><%- include('js/main-footer.js') %></script>
+
 <div class="container-fluid" style="
         height: 50px;
         position: fixed;
@@ -16,27 +19,27 @@
             >
                 🏠
             </div>
-            <div class="col" onclick="location.href='/product/create'"
+            <div class="col" onclick="productUpload()"
                  style="border: 1px solid black;height: 50px; width: 25%;
                 display: flex;
                 align-items: center;
                 justify-content: center;font-size: 35px; padding: 0">
                 ➕
             </div>
-            <div id='deal' class="col" onclick="location.href='/orders/index'"
+            <div id='deal' class="col" onclick="location.href='/order'"
                  style="border: 1px solid black; height: 50px; width: 25%;
                 display: flex;
                 align-items: center;
                 justify-content: center;font-size: 35px; padding: 0">
                 <a onclick='deal()'>🚀</a>
             </div>
-            <div class="col" onclick="location.href='/mypage'"
+            <div class="col" onclick="location.href='/me'"
                  style="
                     border: 1px solid black; height: 50px; width: 25%;
                     display: flex;
                     align-items: center;
                     justify-content: center;  padding: 0;">
-                <img src="https://cdn.icon-icons.com/icons2/3066/PNG/512/user_person_profile_avatar_icon_190943.png" style="width: 50px; height: 50px; border-radius: 50%;"/>
+                <img src="https://cdn.icon-icons.com/icons2/3066/PNG/512/user_person_profile_avatar_icon_190943.png" style="width: 50px; height: 50px; border-radius: 50%;" alt="image"/>
             </div>
         </div>
     </div>
