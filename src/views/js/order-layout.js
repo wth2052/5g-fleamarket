@@ -332,10 +332,10 @@ function productDealCheck(productId) {
                         <img src="img/1296285.jpg" alt="image" style="width: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>구매 진행 상품이 없네용</h3>
-                <h4>아직 꾸미기 전입니다.</h4>
-                <p>asdfasdfasf</p>
-                <span>asdfasdfasf</span>
+                <h3>아직 아무도 딜을 하지 않았네요!</h3>
+                <h4>현재 테스트 버전입니다.</h4>
+                <p>테스트 하나둘셋</p>
+                <span>테스트 하나둘셋</span>
                 <span></span>
             </div>
         </div>
@@ -352,7 +352,7 @@ function dealAccept(orderId) {
     .then((res) => {
       // 응답처리
       alert('거래가 완료되었습니다.');
-      window.location.replace('http://localhost:3000/orders');
+      window.location.replace('http://localhost:3000/order');
     })
     .catch((error) => {
       // 예외처리

@@ -40,10 +40,10 @@ function editUserInformation() {
         alert('로그인이 필요합니다.');
         window.location.href = '/login';
       }
-      if (password || rptpassword === '') {
-        alert('패스워드를 입력해주세요.');
-      }
+      alert('회원정보가 성공적으로 수정되었습니다.');
+      window.location.reload();
     })
+
     .catch(function (error) {
       console.log('에러', error);
     });
