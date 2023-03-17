@@ -27,29 +27,24 @@ function editUserInformation() {
     alert(
       '비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.',
     );
-
-    axios
-      .put('user/api/me/edit', {
-        headers: {
-          'Content-type': 'application/x-www-form-urlencoded',
-        },
-        nickname: usernickname.toString(),
-        password: password.toString(),
-        phone: phonenumber.toString(),
-        address: newAddress.toString(),
-      })
-      .then(function (res) {
-        if (res.status === 401) {
-          alert('로그인이 필요합니다.');
-          window.location.href = '/login';
-        }
-
-        console.log('수정성공', data);
-        return data;
-      })
-      .catch(function (error) {
-        console.log('에러', error);
-      });
   }
-
+  axios
+    .put('http://localhost:3000/api/user/me/edit', {
+      nickname: usernickname.toString(),
+      password: password.toString(),
+      phone: phonenumber.toString(),
+      address: newAddress.toString(),
+    })
+    .then(function (res) {
+      if (res.status === 401) {
+        alert('로그인이 필요합니다.');
+        window.location.href = '/login';
+      }
+      if (password || rptpassword === '') {
+        alert('패스워드를 입력해주세요.');
+      }
+    })
+    .catch(function (error) {
+      console.log('에러', error);
+    });
 }

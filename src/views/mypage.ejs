@@ -14,9 +14,9 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     <!--    Axios-->
+    <script src="https://kit.fontawesome.com/d000ef5f22.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script><%- include('js/get-user-information.js')%></script>
-    <script><%- include('js/logout.js') %></script>
+
     <!--    Js -->
 
     <script><%- include('js/main-header.js') %></script>
@@ -73,11 +73,15 @@ width: 100%; margin: 0">
 <!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
     <div id="temp1"></div>
     <div class="col-md-8" id="temp2"></div>
+
     <div id="temp3"></div>
 </div>
 <!--하단 메뉴바-->
 <%- include('main-footer.ejs') %>
-
+<script><%- include('js/get-user-information.js')%></script>
+<script><%- include('js/withdrawal-service.js')%></script>
+<script><%- include('js/get-edit-user-information.js')%></script>
+<script><%- include('js/logout.js') %></script>
 
 </body>
 

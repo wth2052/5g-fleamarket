@@ -12,21 +12,21 @@ import {
   Render,
   UploadedFiles,
   UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
-import { ProductsService } from "./products.service";
-import { ProductImagesService } from "./product-images.service";
-import { UpdateProductDto } from "./dto/update-product.dto";
-import { DeleteProductDto } from "./dto/delete-product.dto";
-import { Public } from "src/global/common/decorator/skip-auth.decorator";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth.guard";
-import { Cookies } from "src/global/common/decorator/find-cookie.decorator";
-import { JwtDecodeDto } from "../user/dto";
-import { FileFieldsInterceptor } from "@nestjs/platform-express/multer";
-import { diskStorage } from "multer";
-import { extname } from "path";
-import { v4 as uuidv4 } from "uuid";
-import { ApiQuery } from "@nestjs/swagger";
+  UseInterceptors,
+} from '@nestjs/common';
+import { ProductsService } from './products.service';
+import { ProductImagesService } from './product-images.service';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { DeleteProductDto } from './dto/delete-product.dto';
+import { Public } from 'src/global/common/decorator/skip-auth.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Cookies } from 'src/global/common/decorator/find-cookie.decorator';
+import { JwtDecodeDto } from '../user/dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express/multer';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('productss')
 export class ProductsController {
@@ -143,7 +143,7 @@ export class ProductsController {
         userId,
         images,
       );
-      
+
       return product;
     } catch (error) {
       console.log('Error occurred in createProduct:', error);

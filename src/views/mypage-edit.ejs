@@ -16,9 +16,10 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--    Js -->
+    <script>window.onload = (event) => {
+        getEditUserInformation()
+      };</script>
     <script><%- include('js/user-edit.js')%></script>
-    <script><%- include('js/get-edit-user-information.js')%></script>
-    <script><%- include('js/autohypen.js') %></script>
     <script><%- include('js/main-header.js') %></script>
 </head>
 
@@ -66,6 +67,8 @@ width: 100%; margin: 0">
         </div>
     </div>
     <div id="temphere"></div>
+    <button onclick="editUserInformation()">회원정보 수정하기</button>
+    <div id="temphere2"></div>
     <div
             id="layer"
             style="
@@ -97,6 +100,8 @@ width: 100%; margin: 0">
 
 
 </body>
-<script><%- include('js/address-api.js')%></script>
 
+<script><%- include('js/address-api.js')%></script>
+<script><%- include('js/get-edit-user-information.js')%></script>
+<script><%- include('js/autohypen.js') %></script>
 </html>

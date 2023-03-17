@@ -66,7 +66,6 @@ export class AppController {
   @Render('mypage-edit-google.ejs')
   async getEditGoogleUserInformation() {}
 
-  /////////////////////////////////////////////////////////
   @Public()
   @Get('data')
   @Render('DummyData.ejs')
