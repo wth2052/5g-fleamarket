@@ -34,8 +34,12 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
     private readonly jwtService: JwtService,
   ) {}
-  // 내가 파는 상품 목록보기
+  /////////////////////////////////////////
 
+
+  /////////////////////////////
+
+  // 내가 파는 상품 목록보기
   @Get('me/sell/product')
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
