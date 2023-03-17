@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Post,
   Put,
   Render,
   Req,
@@ -33,10 +34,12 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
+
   @Public()
   @Get('view/signup')
   @Render('signup.ejs')
   async viewSignup() {}
+
   @Get('order')
   @Render('order/order-layout.ejs')
   async index() {}
@@ -53,9 +56,80 @@ export class AppController {
   @Get('me')
   @Render('mypage.ejs')
   async renderMyPage() {}
+
   //회원정보 수정
   @Get('/me/edit')
   @Render('mypage-edit.ejs')
   async renderEditMyPage() {}
 
+  @Get('/googleuser/edit')
+  @Render('mypage-edit-google.ejs')
+  async getEditGoogleUserInformation() {}
+
+  @Public()
+  @Get('data')
+  @Render('DummyData.ejs')
+  async toy() {}
+
+  @Public()
+  @Post('seop/user')
+  async seopUser() {
+    await this.appService.seopUser();
+    await this.appService.seopCate();
+  }
+
+  // @Public()
+  // @Post('seop/cate')
+  // async seopCate() {
+  //   return await this.appService.seopCate();
+  // }
+
+  @Public()
+  @Post('seop/product')
+  async seopProductPhone() {
+    await this.appService.seopProductPhone();
+    await this.appService.seopOrder();
+    await this.appService.seopLike();
+    await this.appService.seopimg();
+  }
+
+  // @Public()
+  // @Post('seop/order')
+  // async seopOrder() {
+  //   await this.appService.seopOrder();
+  //   await this.appService.seopLike();
+  //   await this.appService.seopimg();
+  // }
+  //
+  // @Public()
+  // @Post('seop/like')
+  // async seopLike() {
+  //   return await this.appService.seopLike();
+  // }
+  //
+  // @Public()
+  // @Post('seop/img')
+  // async seopimg() {
+  //   return await this.appService.seopimg();
+  // }
+
+  @Public()
+  @Post('seop/admin')
+  async seopAdmin() {
+    await this.appService.seopAdmin();
+    await this.appService.seopNotice();
+    await this.appService.seoprepoter();
+  }
+
+  // @Public()
+  // @Post('seop/noti')
+  // async seopNotice() {
+  //   return await this.appService.seopNotice();
+  // }
+  //
+  // @Public()
+  // @Post('seop/repo')
+  // async seoprepoter() {
+  //   return await this.appService.seoprepoter();
+  // }
 }
