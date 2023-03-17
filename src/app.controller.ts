@@ -68,8 +68,8 @@ export class AppController {
 
   /////////////////////////////////////////////////////////
   @Public()
-  @Get('toy')
-  @Render('seop.ejs')
+  @Get('data')
+  @Render('DummyData.ejs')
   async toy() {}
 
   @Public()
