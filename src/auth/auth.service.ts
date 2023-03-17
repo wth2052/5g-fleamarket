@@ -104,7 +104,6 @@ export class AuthService {
     const user = await this.userRepository.findOneOrFail({
       where: { id: userId },
     });
-    console.log('유저아디', userId);
     await this.userRepository.remove(user);
   }
 

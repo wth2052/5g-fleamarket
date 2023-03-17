@@ -1,5 +1,5 @@
-import {Body, Controller, Get, Put, Render, UseGuards} from '@nestjs/common';
-import {CreateUserDto, JwtDecodeDto, UpdateUserDto} from './dto';
+import { Body, Controller, Get, Put, Render, UseGuards } from '@nestjs/common';
+import { CreateUserDto, JwtDecodeDto, UpdateUserDto } from './dto';
 import { UserService } from './user.service';
 import { UserEntity } from '../global/entities/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,7 +42,7 @@ export class UserController {
     };
     return { data: data };
   }
-  @Put('api/me/edit')
+  @Put('me/edit')
   @UseGuards(JwtAuthGuard)
   async editInformation(
     @Cookies('Authentication') jwt: JwtDecodeDto,
@@ -53,20 +53,4 @@ export class UserController {
 
     await this.userService.updateUserInfomtaion(updateUserDto, userId);
   }
-  @Get('/googleuser/edit')
-  @UseGuards(JwtAuthGuard)
-  async getGoogleInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
-    const userId = jwt.id;
-    const User = await this.userService.getUserInformation(userId);
-    const data = {
-      nickname: User.nickname,
-      // email: User.email,
-      phone: User.phone,
-      address: User.address,
-    };
-    console.log('결과적으론 데이터가 리턴중', data);
-    return { data: data };
-  }
-
-
 }

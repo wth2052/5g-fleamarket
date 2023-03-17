@@ -13,7 +13,6 @@ export class HttpExceptionFilter implements ExceptionFilter<HttpException> {
     const request = ctx.getRequest();
     const statusCode = exception.getStatus();
     if (statusCode === 401) {
-
       response.redirect('/login');
       return;
     }

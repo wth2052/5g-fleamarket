@@ -1,6 +1,6 @@
 function logout(){
 	axios
-		.post('http://localhost:3000/auth/logout',
+		.post('/auth/logout',
 		)
 		.then((res) => {
 			// 응답처리
