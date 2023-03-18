@@ -4,19 +4,14 @@ import * as redisStore from 'cache-manager-redis-store';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '../global/entities/users.entity';
 import { EmailController } from './email.controller';
+import { cacheModule } from 'src/user/user.module';
 
-export const cacheModule = CacheModule.registerAsync({
-  useFactory: async () => ({
-    store: redisStore,
-    host: '127.0.0.1',
-    port: '6379',
-  }),
-});
+
 
 @Module({
   imports: [cacheModule, TypeOrmModule.forFeature([UserEntity])],
   providers: [EmailService],
   controllers: [EmailController],
-  exports: [cacheModule],
+
 })
 export class EmailModule {}

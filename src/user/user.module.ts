@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
+import * as redisStore from 'cache-manager-redis-store';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,13 +9,20 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthService } from '../auth/auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
-import { cacheModule } from '../email/email.module';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
 
+export const cacheModule = CacheModule.registerAsync({
+  useFactory: async () => ({
+    store: redisStore,
+    host: '127.0.0.1',
+    port: '6379',
+  }),
+});
 @Module({
   imports: [
+    cacheModule,
     TypeOrmModule.forFeature([
       UserEntity,
       ProductsEntity,
@@ -26,7 +34,7 @@ import { OrdersEntity } from '../global/entities/orders.entity';
       defaultStrategy: 'jwt-access-token',
       session: false,
     }),
-    cacheModule,
+
     //registerAsync? ConfigService를 주입해두면, .env를 읽어올 때까지 secret을 등록하는 작업을 유예시킴.
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
@@ -41,5 +49,6 @@ import { OrdersEntity } from '../global/entities/orders.entity';
   //SmsService,
   providers: [UserService, AuthService],
   controllers: [UserController],
+  exports: [cacheModule],
 })
 export class UserModule {}

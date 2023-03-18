@@ -14,12 +14,15 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { JwtDecodeDto } from './dto';
 import { UpdateUserDto } from './dto/create-user.dto';
+import { Cache } from 'cache-manager';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     private dataSource: DataSource,
+    private readonly configService: ConfigService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create(user: UserEntity): Promise<UserEntity> {
@@ -29,7 +32,11 @@ export class UserService {
 
   async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-    await this.userRepository.update(id, { currentHashedRefreshToken });
+    await this.cacheManager.set(`${id}`, currentHashedRefreshToken, {
+      ttl: this.configService.get('MAIL_TTL'),
+    });
+    console.log(currentHashedRefreshToken);
+    // await this.userRepository.update(id, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
