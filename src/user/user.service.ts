@@ -41,11 +41,8 @@ export class UserService {
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.cacheManager.get(`${id}`);
-    console.log(user);
-    const isRefreshTokenMatching = await bcrypt.compare(
-      refreshToken,
-      user.currentHashedRefreshToken,
-    );
+    console.log('유져', user);
+    const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user);
 
     if (isRefreshTokenMatching) {
       return user;
@@ -53,7 +50,7 @@ export class UserService {
   }
 
   async removeRefreshToken(id: number) {
-    return this.cacheManager.del(`${id}`)
+    await this.cacheManager.del(`${id}`);
   }
   //TODO: 중간 발표 이후 클린 코드 리팩토링 대상 흑흑
   async getUserInformation(userId: number) {
