@@ -35,11 +35,13 @@ export class UserService {
     await this.cacheManager.set(`${id}`, currentHashedRefreshToken, {
       ttl: this.configService.get('MAIL_TTL'),
     });
-    console.log(currentHashedRefreshToken);
+    // console.log('담긴 값', currentHashedRefreshToken);
+    // console.log('redis 값', await this.cacheManager.get(`${id}`));
     // await this.userRepository.update(id, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.cacheManager.get(`${id}`);
+    console.log(user);
     const isRefreshTokenMatching = await bcrypt.compare(
       refreshToken,
       user.currentHashedRefreshToken,
