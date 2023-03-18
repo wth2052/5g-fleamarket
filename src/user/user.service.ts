@@ -33,7 +33,7 @@ export class UserService {
   async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.cacheManager.set(`${id}`, currentHashedRefreshToken, {
-      ttl: this.configService.get('MAIL_TTL'),
+      ttl: this.configService.get('REDIS_REFRESH_EXPIRE'),
     });
     // console.log('담긴 값', currentHashedRefreshToken);
     // console.log('redis 값', await this.cacheManager.get(`${id}`));
