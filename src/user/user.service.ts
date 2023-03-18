@@ -53,9 +53,7 @@ export class UserService {
   }
 
   async removeRefreshToken(id: number) {
-    return this.userRepository.update(id, {
-      currentHashedRefreshToken: null,
-    });
+    return this.cacheManager.del(`${id}`)
   }
   //TODO: 중간 발표 이후 클린 코드 리팩토링 대상 흑흑
   async getUserInformation(userId: number) {
