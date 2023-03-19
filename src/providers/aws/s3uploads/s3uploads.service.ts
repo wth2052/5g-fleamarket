@@ -8,7 +8,7 @@ export class S3uploadsService {
 
   constructor(private readonly configService: ConfigService) {
     AWS.config.update({
-        region: this.configService.get('AWS_REGION'),
+      region: this.configService.get('AWS_REGION'),
       credentials: {
         accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
         secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),

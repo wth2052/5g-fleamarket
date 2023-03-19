@@ -40,7 +40,7 @@ export class S3uploadsController {
         data: { url: imgurl },
       });
     } catch (error) {
-      console.log(error);
+      console.log('에러가 발생했습니다.', error);
     }
   }
 }
