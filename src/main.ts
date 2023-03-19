@@ -11,7 +11,7 @@ import {
 } from 'nest-winston';
 import { HttpExceptionFilter } from './global/filter/http-exception-filter';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // 커스텀 로거 활성화시 주석 해제

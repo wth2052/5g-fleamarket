@@ -44,6 +44,7 @@ import { LikesEntity } from './global/entities/likes.entity';
 import { AdminsEntity } from './global/entities/admins.entity';
 import { NoticesEntity } from './global/entities/notices.entity';
 import { ReportsEntity } from './global/entities/reports.entity';
+import { S3uploadsModule } from "./providers/aws/s3uploads/s3uploads.module";
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { ReportsEntity } from './global/entities/reports.entity';
     ProductsModule,
     UserModule,
     ReportModule,
+    S3uploadsModule,
   ],
   controllers: [
     AppController,

@@ -25,6 +25,7 @@ export class S3uploadsService {
       '.' +
       file.originalname.split('.')[1]
     }`;
+    // console.log("타입",file.mimetype);
     const params = {
       Bucket: this.configService.get('AWS_BUCKET_NAME'),
       ACL: 'private',
