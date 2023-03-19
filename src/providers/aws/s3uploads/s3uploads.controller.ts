@@ -18,7 +18,7 @@ export class S3uploadsController {
     private readonly s3UploadsService: S3uploadsService,
   ) {}
   @Post('')
-  @UseInterceptors(FilesInterceptor('files', 10)) // 10은 최대파일개수
+  @UseInterceptors(FilesInterceptor('files', 3)) //최대 파일 갯수
   async uploadFile(@UploadedFiles() files) {
     console.log(files);
     const imgurl: string[] = [];
