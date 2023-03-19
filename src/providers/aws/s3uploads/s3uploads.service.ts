@@ -18,7 +18,13 @@ export class S3uploadsService {
   }
 
   async uploadImage(file: Express.Multer.File) {
-    const key = `${Date.now() + file.originalname}`;
+    const key = `${
+      file.originalname.split('.')[0] +
+      '_' +
+      Date.now() +
+      '.' +
+      file.originalname.split('.')[1]
+    }`;
     const params = {
       Bucket: this.configService.get('AWS_BUCKET_NAME'),
       ACL: 'private',

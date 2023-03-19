@@ -25,6 +25,7 @@ export class S3uploadsController {
     await Promise.all(
       files.map(async (file: Express.Multer.File) => {
         const key = await this.s3UploadsService.uploadImage(file);
+        console.log('키가 어떻게 들어오길래 이모양 이꼴이니', key);
         imgurl.push(this.configService.get('AWS_CLOUDFRONT') + key);
       }),
     );
