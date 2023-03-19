@@ -2,45 +2,37 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
+import { S3uploadsService } from './s3uploads.service';
 
 @Controller('uploads')
 export class S3uploadsController {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly s3UploadsService: S3uploadsService,
+  ) {}
   @Post('')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    AWS.config.update({
-      region: this.configService.get('AWS_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
-        secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
-      },
-    });
-    try {
-      const key = `${Date.now() + file.originalname}`;
-      // AWS 객체 생성
-      const upload = await new AWS.S3()
-        .putObject({
-          Key: key,
-          Body: file.buffer,
-          Bucket: this.configService.get('AWS_BUCKET_NAME'),
-        })
-        .promise();
+  @UseInterceptors(FilesInterceptor('files', 10)) // 10은 최대파일개수
+  async uploadFile(@UploadedFiles() files) {
+    console.log(files);
+    const imgurl: string[] = [];
+    await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const key = await this.s3UploadsService.uploadImage(file);
+        imgurl.push(this.configService.get('AWS_CLOUDFRONT') + key);
+      }),
+    );
 
-      const imgurl = this.configService.get('AWS_CLOUDFRONT') + key;
-      return Object.assign({
-        statusCode: 201,
-        message: `이미지 등록 성공`,
-        data: { url: imgurl },
-      });
-    } catch (error) {
-      console.log('에러가 발생했습니다.', error);
-    }
+    return {
+      statusCode: 201,
+      message: `이미지 등록 성공`,
+      data: imgurl,
+    };
   }
 }
