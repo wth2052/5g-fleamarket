@@ -82,4 +82,31 @@ export class EmailService {
       });
     }
   }
+
+  ///블랙리스트 처리 이메일 
+
+  async sendBanEmail(user): Promise<void> {
+    
+    const transport = nodemailer.createTransport({
+      service: this.configService.get('NODEMAILER_SERVICE'),
+      secure: true,
+      auth: {
+        user: this.configService.get('NODEMAILER_EMAIL'),
+        pass: this.configService.get('NODEMAILER_PASSWORD'),
+        expires: this.configService.get('NODEMAILER_EXPIRES'),
+      },
+    });
+    await this.cacheManager.set(`${user.email}`, {
+      ttl: this.configService.get('MAIL_TTL'),
+    });
+    return await transport.sendMail({
+      from: {
+        name: '5지는 플리마켓 운영자',
+        address: this.configService.get('NODEMAILER_EMAIL'),
+      },
+      subject: '블랙리스트 처리 이메일',
+      to: [user.email],
+      text: `${user.nickname}님은 냐옹상회에서 5번 이상 경고 누적이 쌓이셔서 블랙리스트 처리 당하셨습니다.`,
+    });
+  }
 }

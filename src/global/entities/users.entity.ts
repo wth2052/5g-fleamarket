@@ -38,6 +38,9 @@ export class UserEntity {
   @Column({ default: 0 })
   ban: number;
 
+  @Column({ default: 0 })
+  warning: number;
+
   // refresh token 저장
   @Column({
     nullable: true,

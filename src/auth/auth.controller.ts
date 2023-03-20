@@ -13,6 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
   Delete,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { UserEntity } from '../global/entities/users.entity';
@@ -63,7 +64,14 @@ export class AuthController {
   ): Promise<void> {
     const user = req.user;
     console.log('유저', user);
-    const { accessToken, ...accessOption } =
+    if(user.ban === 1){
+          
+      throw new UnauthorizedException(
+        '블랙리스트 유저입니다. 로그인 하실 수 없습니다.',
+      );
+    } 
+    else{
+      const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     // console.log(accessOption);
     const { refreshToken, ...refreshOption } =
@@ -71,6 +79,9 @@ export class AuthController {
     await this.userService.setCurrentRefreshToken(refreshToken, user.id);
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
+  
+  }
+    
   }
 
   // @Public()

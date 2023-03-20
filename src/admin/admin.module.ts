@@ -11,6 +11,9 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthModule } from '../auth/auth.module';
 import { ReportsEntity } from '../global/entities/reports.entity';
 
+import { EmailModule } from '../email/email.module';
+import { EmailService } from '../email/email.service';
+import { cacheModule } from '../user/user.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -21,11 +24,13 @@ import { ReportsEntity } from '../global/entities/reports.entity';
       NoticesEntity,
       ReportsEntity,
       AuthModule,
+      EmailModule,
     ]),
+    cacheModule
   ],
   controllers: [AdminController],
 
-  providers: [AdminService, JwtService]
+  providers: [AdminService, JwtService, EmailService]
 
 })
 export class AdminModule {}
