@@ -20,9 +20,9 @@ function checkLogin(service) {
 
     if(service === "product") {
         axios
-            .get('http://localhost:3000/products')
+            .get('http://localhost:3000/admin/products')
             .then((res) => {
-              window.location.href = '/products'
+              window.location.href = '/admin/products'
                 })
             .catch((error) => {
                 // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때

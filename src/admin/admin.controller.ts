@@ -42,7 +42,7 @@ export class AdminController {
   ) {}
 
   // 상품정보 가져오기 API
-  @Get('/products')
+  @Get('/admin/products')
   @Render('admin/admin-products.ejs')
   async getProducts(
     @Query('limit') limit: number = 10,
@@ -73,7 +73,7 @@ export class AdminController {
   }
 
   //상품정보 상세보기 API
-  @Get('/products/:productId')
+  @Get('/admin/products/:productId')
   @Render('admin/admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
     // 원래: return await this.adminService.getProductById(productId)
@@ -85,7 +85,7 @@ export class AdminController {
     return { product, seller, category, images };
   }
   //상품 삭제 API
-  @Delete('/products/:productId')
+  @Delete('/admin/products/:productId')
   deleteProduct(@Param('productId') productId: number) {
     return this.adminService.deleteProduct(productId);
   }
@@ -285,7 +285,7 @@ export class AdminController {
 
   // 상품검색
 
-  @Get('productSearch')
+  @Get('/admin/productSearch')
   async productSearch(@Query('search') search: string) {
     const product = await this.adminService.productSearch(search);
     return { data: product };
