@@ -353,6 +353,8 @@ function productDealCheck(productId) {
         window.location.href = '/';
         return;
       }
+      alert('아무도 딜을 제시하지 않았습니다.')
+      window.location.reload()
       let temp = '';
       temp += `
                     <div class="container-fluid" style="border: 1px solid red; margin-top: 20px">

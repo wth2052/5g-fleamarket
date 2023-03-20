@@ -59,6 +59,10 @@
             }else if(error.response.status === 403){
               alert('이미 주문하셨습니다. 구매진행에서 수정해주세요')
             window.location.href = '/order'
+            }else if(error.response.status === 400){
+              alert('자신의 상품에는 딜을 할 수 없습니다.')
+              window.location.href = '/'
+              
             }
           });
         }
