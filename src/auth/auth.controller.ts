@@ -74,7 +74,8 @@ export class AuthController {
   }
 
   // @Public()
-  @UseGuards(JwtRefreshGuard)
+  // @Public()
+  @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logOut(
     @Req() req,
@@ -102,7 +103,7 @@ export class AuthController {
     @Cookies('refreshToken') jwt: JwtDecodeDto,
   ): Promise<void> {
     const user = req.user;
-    console.log(user);
+    console.log('유저 있니?', user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     res.cookie('Authentication', accessToken, accessOption);

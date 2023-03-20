@@ -42,9 +42,6 @@ export class UserEntity {
   @Column({
     nullable: true,
   })
-  @Column({ nullable: true })
-  @Exclude()
-  currentHashedRefreshToken?: string;
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn({ default: null })
