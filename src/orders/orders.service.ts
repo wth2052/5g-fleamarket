@@ -203,7 +203,9 @@ export class OrdersService {
       .where(`orders.buyerId = :userId`, { userId })
       .andWhere('orders.status = :status', { status: 'success' })
       .getMany();
-
+    if (!buyList.length) {
+      throw new NotFoundException('구매한 상품 내역이 없습니다.');
+    }
     return buyList;
   }
   async getSellList(userId: number) {
