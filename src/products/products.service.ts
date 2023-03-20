@@ -73,6 +73,7 @@ export class ProductsService {
         'viewCount',
         'likes',
         'createdAt',
+        'pullUp'
       ],
       relations: ['category', 'seller', 'images', 'likesJoin'],
     });

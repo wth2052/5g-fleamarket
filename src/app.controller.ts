@@ -40,8 +40,8 @@ export class AppController {
   @Render('signup.ejs')
   async viewSignup() {}
 
-  @Get('order')
-  @Render('order/order-layout.ejs')
+  @Get('order/mydeal')
+  @Render('order/order-mydeal.ejs')
   async index() {}
 
   @Get('product')

@@ -117,7 +117,8 @@ function signUp() {
       window.location.href = '/login';
     })
     .catch((error) => {
-      if (error.response.status === 400) alert('이미 존재하는 이메일입니다. 다른 이메일 아이디를 입력해주세요.');
+      if (error.response.status === 400)
+        alert('이미 존재하는 이메일입니다. 다른 이메일 아이디를 입력해주세요.');
       if (error.response.status === 401) alert(error);
     });
 }
