@@ -2,76 +2,299 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>상품목록</title>
-    <!--    BootStrap Library-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
-          rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <!--    Axios-->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <!--    Js -->
-    <script><%- include('js/product-main.js') %></script>
-    <script><%- include('js/main-header.js') %></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>탭에 들어가는 이름</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+
 </head>
 
-<body style="background-color: #F2F2F2">
-<!--상단 메뉴바-->
+<body>
 <%- include('main-header.ejs') %>
 
-<!--상단 내비게이션-->
-<div class="container-fluid" style="width:45%; background: white; margin-top: 40px; margin-bottom: 40px; min-height:1000px; padding: 0">
-    <div class="container" style="background: white; padding: 0">
-        <div id="headerMenu" style="padding: 0">
-            <div class="row" style="padding-top: 30px; background-color: white; display: flex;
-  align-items: center;
-  justify-content: left;
-width: 100%; margin: 0">
-                <div class="col-md-3"
-                     style="height: 50px;  text-align: center; line-height: 50px; background-color: #05aff2; border-radius: 25px;">
-                    <a onclick="window.location.reload()"
-                       style="color: white; font-weight: bold; font-size: 18px; text-decoration: none;">
-                        관심목록
-                    </a>
+<!--**********************************
+    Content body start
+***********************************-->
+<div class="content-body">
+
+<!--    <div class="row page-titles mx-0">-->
+<!--        <div class="col p-md-0">-->
+<!--            <ol class="breadcrumb">-->
+<!--                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>-->
+<!--                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>-->
+<!--            </ol>-->
+<!--        </div>-->
+<!--    </div>-->
+    <!-- row -->
+
+    <div class="container-fluid">
+        <!-- End Row -->
+        <div class="row">
+            <div class="col-12 m-b-30">
+<!--                <h4 class="d-inline">Cards With Images</h4>-->
+<!--                <p class="text-muted">This is 3 column contents</p>-->
+                <div class="row" id="product-list">
+                    <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="https://cdn.manzlab.com/news/photo/202212/23875_53960_5555.jpg" style="min-height: 250px; max-height: 250px" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" style="min-height: 250px; max-height: 250px" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>                    <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="col-md-6 col-lg-3" style="max-width: 25%; max-height: 25%">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img1.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title" >NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍NestJS로 배우는 백엔드 프로그래밍</h5>
+                                <h6 class="card-title">123123123 원</h6>
+                                <p class="card-text">
+                                      <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="6%">
+                                    <small class="text-muted">11　</small>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
+                                    <small class="text-muted">3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- End Col -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img2.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Col -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img3.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Col -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <img class="img-fluid" src="images/big/img4.jpg" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">This is a wider card with supporting text and below as a natural
+                                    lead-in to the additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- End Col -->
                 </div>
-
-<!--                <div class="col-md-3"-->
-<!--                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2;border-radius: 25px;">-->
-<!--                    <a onclick="mySellProduct()"-->
-<!--                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">-->
-<!--                        판매진행</a>-->
-<!--                </div>-->
-
-<!--                <div class="col-md-3"-->
-<!--                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2;border-radius: 25px;">-->
-<!--                    <a onclick="myBuyList()"-->
-<!--                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">-->
-<!--                        구매내역</a>-->
-<!--                </div>-->
-
-<!--                <div class="col-md-3"-->
-<!--                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2; border-radius: 25px;">-->
-<!--                    <a onclick="mySellList()"-->
-<!--                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">-->
-<!--                        판매내역-->
-<!--                    </a>-->
-<!--                </div>-->
-
             </div>
         </div>
     </div>
-    <!-- 본문-->
-    <div class="container" id="bb" style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
+</div>
+<!-- #/ container -->
+<!--**********************************
+    Content body end
+***********************************-->
+
+
+<!--**********************************
+    Footer start
+***********************************-->
+<div class="footer">
+    <div class="copyright">
+        <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
     </div>
 </div>
+<!--**********************************
+    Footer end
+***********************************-->
+</div>
+<!--**********************************
+    Main wrapper end
+***********************************-->
 
-<!--하단 메뉴바-->
-<%- include('main-footer.ejs') %>
-
+<!--**********************************
+    Scripts
+***********************************-->
+<script src="plugins/common/common.min.js"></script>
+<script src="js/custom.min.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/gleek.js"></script>
+<script src="js/styleSwitcher.js"></script>
+<script src="js/product/product-list.js"></script>
 
 </body>
 

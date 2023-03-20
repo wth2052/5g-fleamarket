@@ -1,13 +1,13 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, Param,
   Post,
   Put,
   Render,
   Req,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { AppService } from './app.service';
 import { Public } from './global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
