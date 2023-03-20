@@ -1,4 +1,6 @@
 import {
+  CACHE_MANAGER,
+  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -13,6 +15,9 @@ import { UserEntity } from '../global/entities/users.entity';
 import { Repository, Like} from 'typeorm';
 import { ReportsEntity } from '../global/entities/reports.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
+import { EmailService } from '../email/email.service';
+import { Cache } from 'cache-manager';
+
 
 @Injectable()
 export class AdminService {
@@ -29,6 +34,8 @@ export class AdminService {
     private noticeRepository: Repository<NoticesEntity>,
     @InjectRepository(ReportsEntity)
     private reportRepository: Repository<ReportsEntity>,
+    private readonly emailService: EmailService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   // 상품정보 가져오기 API
@@ -148,10 +155,12 @@ export class AdminService {
           throw new UnauthorizedException('이미 블랙리스트 처리된 유저입니다.');
         } else {
           await this.userRepository.update(userId, { ban });
+          await this.cacheManager.del(`${userId}`);
           return { message: `${nickname}님이 블랙리스트 처리되었습니다.` };
         }
       } else if (ban === 0) {
         await this.userRepository.update(userId, { ban });
+        await this.userRepository.update(userId, { warning: 0 });
         return { message: `${nickname}님의 블랙리스트 처리가 취소되었습니다.` };
       }
     }
@@ -470,11 +479,8 @@ async getReportById(reportId: number) {
  //신고 수정(확인하기) API
  async checkReport(reportId: number, status:number, reported: string){
   const report = await this.reportRepository.findOne({ where: { id: reportId } });
-  console.log(10101, reported)
   const user = await this.userRepository.findOne( {where: {email: reported}})
-  console.log(12312312312312, user)
-  console.log(9999999, user.id)
-  console.log(77777777, user.email)
+ 
   if (!report){
     throw new NotFoundException('존재하지 않는 신고입니다.');
   }
@@ -490,8 +496,18 @@ async getReportById(reportId: number) {
       }
       else{
       await this.reportRepository.update(reportId, { status});
-      await this.userRepository.update(user.id, {ban: 1})
-      return { message: `신고가 확인되었습니다.` };
+      if(user.warning < 5){
+        await this.userRepository.update(user.id, {warning: () => 'warning + 1'})
+
+        return { message: `신고가 확인되었습니다. 경고가 누적되었습니다.` };
+      }
+      else if (user.warning >= 5){
+        await this.emailService.sendBanEmail(user);
+        await this.userRepository.update(user.id, {ban: 1});
+        await this.cacheManager.del(`${user.id}`);
+        return { message: `신고가 확인되었습니다. 블랙리스트 처리 되었습니다.` };
+      }
+      
     }
       
     }
