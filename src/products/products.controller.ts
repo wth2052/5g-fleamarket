@@ -29,9 +29,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ApiQuery } from '@nestjs/swagger';
 import * as fs from 'fs';
 import axios from 'axios';
-
-
-
+import { Response } from 'express';
+import { Redirect, Res } from '@nestjs/common/decorators';
 
 @Controller('productss')
 export class ProductsController {
@@ -52,7 +51,10 @@ export class ProductsController {
     try {
       const products = await this.productsService.getAllProducts(limit, offset);
       const totalProducts = await this.productsService.getTotalProducts();
-      console.log("huck",`Fetched ${products.length} products from offset ${offset} with limit ${limit}. Total products: ${totalProducts}`);
+      console.log(
+        'huck',
+        `Fetched ${products.length} products from offset ${offset} with limit ${limit}. Total products: ${totalProducts}`,
+      );
       return { products, totalProducts };
     } catch (error) {
       return error;
@@ -70,7 +72,7 @@ export class ProductsController {
   @Get('category')
   async getCategories() {
     const categories = await this.categoriesRepository.find();
-    console.log("카테고리", categories)
+    console.log('카테고리', categories);
     return categories;
   }
 
@@ -200,20 +202,21 @@ export class ProductsController {
 
   //상품삭제
   @UseGuards(JwtAuthGuard)
-  @Delete(':productId')  
+  @Delete(':productId')
   async deleteProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
     @Body() data: DeleteProductDto,
   ) {
-    console.log("jwt", jwt.id)
+    console.log('jwt', jwt.id);
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
     }
 
-    console.log("kill",productId, jwt.id)
+    console.log('kill', productId, jwt.id);
 
     return this.productsService.deleteProduct(+productId, jwt.id);
+
   }
   //상품 좋아요
   @UseGuards(JwtAuthGuard)
@@ -225,5 +228,4 @@ export class ProductsController {
     const userId = jwt.id;
     return this.productsService.likeProduct(productId, userId);
   }
-
 }

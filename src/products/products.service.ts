@@ -71,21 +71,20 @@ export class ProductsService {
         'categoryId',
         'viewCount',
         'likes',
-        'createdAt'
+        'createdAt',
       ],
-      relations: ['category', 'seller', 'images', 'likesJoin']
+      relations: ['category', 'seller', 'images', 'likesJoin'],
     });
-  
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
-  
+
     product.viewCount += 1;
     await this.productRepository.save(product);
-    console.log('####################', product,"###########");
+    console.log('####################', product, '###########');
     return { product };
   }
-  
 
   async createProduct(
     title: string,
@@ -183,25 +182,39 @@ export class ProductsService {
     });
   }
 
-  async deleteProduct(id: number, sellerId: number) {
-    console.log('deleteProduct called');
-    console.log('id', id);
-    console.log('sellerId', sellerId);
-    await this.verifySomething(id, sellerId);
+  // async deleteProduct(id: number, sellerId: number) {
+  //   await this.verifySomething(id, sellerId);
+  //   const queryRunner = this.connection.createQueryRunner();
+  //   await queryRunner.connect();
+  //   await queryRunner.startTransaction();
+  //   try {
+  //     await queryRunner.manager.update(
+  //       ProductImagesEntity,
+  //       { productId: id },
+  //       { deletedAt: new Date() },
+  //     );
+  //     await queryRunner.manager.update(ProductsEntity, id, { status: 'deleted' });
+  //     await queryRunner.commitTransaction();
+  //   } catch (err) {
+  //     await queryRunner.rollbackTransaction();
+  //   } finally {
+  //     await queryRunner.release();
+  //   }
+  // }
 
+
+  async deleteProduct(id: number, sellerId: number) {
+    await this.verifySomething(id, sellerId);
     await this.connection.transaction(async (manager) => {
-      console.log('transaction started');
-      await this.productImagesRepository.update(
+      await manager.update(
+        ProductImagesEntity,
         { productId: id },
         { deletedAt: new Date() },
       );
-      console.log('product images updated');
-      await this.productRepository.update(id, { status: 'deleted' });
-      console.log('products updated');
+      await manager.update(ProductsEntity, id, { status: 'deleted' });
     });
-    console.log('deleteProduct finished');
   }
-
+  
   async verifySomething(id: number, sellerId: number) {
     if (sellerId === undefined) {
       throw new BadRequestException('Invalid sellerId');
