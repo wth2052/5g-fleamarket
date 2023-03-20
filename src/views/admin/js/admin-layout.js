@@ -1368,10 +1368,10 @@ function deleteReport(reportId){
 
 
 //신고 확인하기 
-function checkReport(reportId, status){
+function checkReport(reportId, status, reported){
   axios
   .put(`/reports/${reportId}`, 
-  { reportId: reportId, status: status}
+  { reportId: reportId, status: status, reported: reported}
   )
   .then((res) => {
       alert(JSON.stringify(res.data))

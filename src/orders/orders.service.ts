@@ -375,9 +375,32 @@ export class OrdersService {
       if (!search) {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
-      const products = await this.productRepository.find({
-        where: { title: Like(`%${search}%`) },
-      });
+      // const products = await this.productRepository.find({
+      //   where: { title: Like(`%${search}%`) },
+      // });
+      const queryBuilder = this.productRepository.createQueryBuilder('product');
+
+      const products = await queryBuilder
+      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect('product.images', 'images')
+      .where({title: Like(`%${search}%`) })
+      .select([
+        'product.id',
+        'product.title',
+        'product.price',
+        'product.viewCount',
+        'product.likes',
+        'product.dealCount',
+        'product.createdAt',
+        'product.updatedAt',
+        'category.id',
+        'category.name',
+        'seller.nickname',
+        'images.imagePath',
+      ])
+      .getMany();
+      
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }

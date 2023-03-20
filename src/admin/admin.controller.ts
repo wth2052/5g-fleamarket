@@ -383,7 +383,7 @@ export class AdminController {
     @Param('reportId') reportId: number,
     @Body() data: CheckReportDto,
   ) {
-    return await this.adminService.checkReport(reportId, data.status);
+    return await this.adminService.checkReport(reportId, data.status, data.reported);
   }
 
   //확인된 신고 모아보기

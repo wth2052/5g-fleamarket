@@ -78,7 +78,7 @@
         <div class="container" style="height: 40px; padding: 0">
           <div class="row" id="noticeFooter"style="width: 100%; background-color: #79D0F2;margin: 0">
             <div class="col" style="height: 40px; width: 20%"></div>
-            <div class="col" style="height: 40px; width: 20%"> <% if (report.status === 0) {%> <button class="footer-btn" onclick = "checkReport(`<%= report.id %>`, 1)">확인하기</button> <%}
+            <div class="col" style="height: 40px; width: 20%"> <% if (report.status === 0) {%> <button class="footer-btn" onclick = "checkReport(`<%= report.id %>`, 1, `<%= report.reported %>`)">확인하기</button> <%}
                 else if (report.status === 1) {%> <button class="footer-btn" onclick = "checkReport(`<%= report.id %>`, 0)">확인 취소</button> <%} %><br></div>
             <div class="col" style="height: 40px; width: 20%"></div>
             <div class="col" style="height: 40px; width: 20%"><button class="footer-btn" onclick ="deleteReport(`<%= report.id %>`)">삭제하기</button><br></div>
