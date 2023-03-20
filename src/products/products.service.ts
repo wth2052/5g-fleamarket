@@ -181,40 +181,25 @@ export class ProductsService {
       categoryId,
     });
   }
-
-  // async deleteProduct(id: number, sellerId: number) {
-  //   await this.verifySomething(id, sellerId);
-  //   const queryRunner = this.connection.createQueryRunner();
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
-  //   try {
-  //     await queryRunner.manager.update(
-  //       ProductImagesEntity,
-  //       { productId: id },
-  //       { deletedAt: new Date() },
-  //     );
-  //     await queryRunner.manager.update(ProductsEntity, id, { status: 'deleted' });
-  //     await queryRunner.commitTransaction();
-  //   } catch (err) {
-  //     await queryRunner.rollbackTransaction();
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
-
-
   async deleteProduct(id: number, sellerId: number) {
-    await this.verifySomething(id, sellerId);
-    await this.connection.transaction(async (manager) => {
-      await manager.update(
-        ProductImagesEntity,
-        { productId: id },
-        { deletedAt: new Date() },
-      );
-      await manager.update(ProductsEntity, id, { status: 'deleted' });
-    });
-  }
+    try {
+      await this.verifySomething(id, sellerId);
   
+      await this.connection.transaction(async (manager) => {
+        await manager.update(
+          ProductImagesEntity,
+          { productId: id },
+          { deletedAt: new Date() },
+        );
+        await manager.update(ProductsEntity, id, { status: 'deleted' });
+      });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('Product not found');
+      }
+    }
+  }
+
   async verifySomething(id: number, sellerId: number) {
     if (sellerId === undefined) {
       throw new BadRequestException('Invalid sellerId');
@@ -235,6 +220,7 @@ export class ProductsService {
         `sellerId: ${sellerId}님의 판매글이 아닙니다`,
       );
     }
+    
   }
 
   // 찜하기 ?? if 문으로 써도 되지않을까?
