@@ -42,7 +42,15 @@ export class AppController {
 
   @Get('order/mydeal')
   @Render('order/order-mydeal.ejs')
-  async index() {}
+  async mydeal() {}
+
+  @Get('order/dealcheck')
+  @Render('order/order-dealCheck.ejs')
+  async dealcheck() {}
+
+  @Get('order/dealAccept')
+  @Render('order/order-dealAccept.ejs')
+  async dealAccept() {}
 
   @Get('product')
   @Render('main.ejs')
