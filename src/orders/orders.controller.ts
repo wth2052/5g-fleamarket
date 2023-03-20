@@ -36,7 +36,6 @@ export class OrdersController {
   ) {}
   /////////////////////////////////////////
 
-
   /////////////////////////////
 
   // 내가 파는 상품 목록보기
@@ -110,6 +109,7 @@ export class OrdersController {
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.getSellList(userId);
+    console.log('!@#$%', data);
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
@@ -153,19 +153,27 @@ export class OrdersController {
   }
   // -------------------------
   // test용 productList
-  @Public()
-  @Get('product/detail/graph/:productId')
-  async productList(@Param('productId') productId: number) {
-    const product = await this.ordersService.graph(productId);
-    return product;
-  }
+  // @Public()
+  // @Get('product/detail/graph/:productId')
+  // async productList(@Param('productId') productId: number) {
+  //   const product = await this.ordersService.graph(productId);
+  //   return product;
+  // }
 
   // 상품검색
   @Public()
   @Get('productSearch')
   // http://localhost:3000/orders/productSearch?search=피카츄
-  async productSearch(@Query('search') search: string) {
-    const product = await this.ordersService.productSearch(search);
+  async productSearch(
+    @Query('search') search: string,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    const product = await this.ordersService.productSearch(
+      search,
+      limit,
+      offset,
+    );
     return { data: product };
   }
 

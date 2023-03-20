@@ -59,54 +59,6 @@ export class ProductsService {
     return this.productRepository.count();
   }
 
-  // async getProductById(id: number) {
-  //   const product = await this.productRepository.findOne({
-  //     where: { id: id },
-  //     select: [
-  //       'id',
-  //       'title',
-  //       'description',
-  //       'price',
-  //       'sellerId',
-  //       'categoryId',
-  //       'viewCount',
-  //       'likes',
-  //       'createdAt',
-  //     ],
-  //     relations:  ['category', 'seller', 'images', 'likesJoin']
-  //   });
-
-    
-  //   console.log('####################', product);
-  //   if (!product) {
-  //     throw new NotFoundException(`Product with ID ${id} not found`);
-  //   }
-
-  //   product.viewCount += 1;
-  //   await this.productRepository.save(product);
-
-  //   // product.likesJoin.length
-  //   //없어도 됨
-  //   const {
-  //     category: { name },
-  //     seller: { nickname },
-  //     images: { imagePath },
-  //   } = product;
-
-  //   const images = product.images.map((image) => ({
-  //     imagePath: image.imagePath,
-  //   }));
-  //   // console.log('####################', product,"###########");
-
-  //   return {
-  //     product: {
-  //       ...product,
-  //       category: { name },
-  //       seller: { nickname },
-  //       images: images,
-  //     },
-  //   };
-  // }
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id: id },

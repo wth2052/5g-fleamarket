@@ -39,18 +39,19 @@ export class AuthService {
   ) {}
   //로그인시 비밀번호와 아이디를 확인하여 일치하지 않을시 400 에러를 반환합니다.
   async vaildateUser(email: string, plainTextPassword: string): Promise<any> {
-    try {
-      const user = await this.userRepository.findOne({ where: { email } });
-      await this.verifyPassword(plainTextPassword, user.password);
+    const user = await this.userRepository.findOne({ where: { email } });
+      try {
+            await this.verifyPassword(plainTextPassword, user.password);
       const { password, ...result } = user;
-      return result;
+      return result;   
     } catch (error) {
-      throw new HttpException(
+        throw new HttpException(
         '아이디나 비밀번호가 일치하지 않습니다.',
         HttpStatus.BAD_REQUEST,
       );
     }
-  }
+    }
+    
 
   //패스워드를 검증하여 일치하지 않을시 400에러를 반환합니다.
   private async verifyPassword(
