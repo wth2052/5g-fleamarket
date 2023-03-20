@@ -16,6 +16,7 @@
     <!--    Js -->
     <script><%- include('../js/order-layout.js') %></script>
     <script><%- include('../js/main-header.js') %></script>
+
     <style>
       html,
       body {
@@ -56,15 +57,15 @@
 						<input type="number" id="price" name="price" min="0" required>
 					</div>
 		
-					<div class="form-group">
-						<label for="category">Category:</label>
-						<select id="category" name="categoryId" required>
-							<option value="">-- Select a category --</option>
-							<option value="1">Category 1</option>
-							<option value="2">Category 2</option>
-							<option value="3">Category 3</option>
-						</select>
-					</div>
+          <div class="form-group">
+            <label for="category">Category:</label>
+            <select id="category" name="categoryId" required>
+              <option value="">-- Select a category --</option>
+              <% for (let category of categories) { %>
+              <option value="<%= category.id %>"><%= category.name %></option>
+              <% } %>
+            </select>
+        </div>
 		
 					<div class="form-group">
 						<label for="images">Images:</label>
@@ -152,8 +153,26 @@ imageInput.addEventListener('change', () => {
   }
 });
 
-	
 </script>
+<script>
+  const categorySelect = document.getElementById('category');
+
+  async function loadCategories() {
+    try {
+      const categories = (await axios.get('/products/categories')).data;
+      categories.forEach(function(category) {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+loadCategories();
+  </script>
 
 <style>
   body {
