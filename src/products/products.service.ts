@@ -47,6 +47,7 @@ export class ProductsService {
       skip: offset,
       relations: ['category', 'images'],
       order: { updatedAt: 'DESC' },
+      where: { status: 'sale' },
     });
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
