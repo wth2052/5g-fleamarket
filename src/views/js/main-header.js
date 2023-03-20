@@ -1,4 +1,4 @@
-window.handleKeyPress = function (e) {
+function handleKeyPress(e) {
   if (e.keyCode === 13) {
     // 엔터 키를 누르면 검색 함수 호출
     productSearch();
