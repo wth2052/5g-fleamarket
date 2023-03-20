@@ -182,26 +182,24 @@ export class ProductsService {
     });
   }
   async deleteProduct(id: number, sellerId: number) {
-    try {
-      await this.verifySomething(id, sellerId);
-  
-      await this.connection.transaction(async (manager) => {
-        await manager.update(
-          ProductImagesEntity,
-          { productId: id },
-          { deletedAt: new Date() },
-        );
-        await manager.update(ProductsEntity, id, { status: 'deleted' });
-      });
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException('Product not found');
-      }
-    }
+    await this.verifySomething(id, sellerId);
+
+    await this.connection.transaction(async (manager) => {
+      await manager.update(
+        ProductImagesEntity,
+        { productId: id },
+        { deletedAt: new Date() },
+      );
+      await manager.update(ProductsEntity, id, { status: 'deleted' });
+    });
+
+    // if (error instanceof NotFoundException) {
+    // throw new NotFoundException('Product not found');
+    // }
   }
 
   async verifySomething(id: number, sellerId: number) {
-    if (sellerId === undefined) {
+    if (!sellerId) {
       throw new BadRequestException('Invalid sellerId');
     }
 
@@ -220,7 +218,6 @@ export class ProductsService {
         `sellerId: ${sellerId}님의 판매글이 아닙니다`,
       );
     }
-    
   }
 
   // 찜하기 ?? if 문으로 써도 되지않을까?

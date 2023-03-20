@@ -202,26 +202,22 @@ export class ProductsController {
 
   //상품삭제
   @UseGuards(JwtAuthGuard)
-@Delete(':productId')
-async deleteProduct(
-  @Cookies('Authentication') jwt: JwtDecodeDto,
-  @Param('productId') productId: number,
-  @Body() data: DeleteProductDto,
-) {
-  console.log('jwt', jwt.id);
-  if (!jwt || !jwt.id) {
-    throw new BadRequestException('Invalid JWT');
-  }
+  @Delete(':productId')
+  async deleteProduct(
+    @Cookies('Authentication') jwt: JwtDecodeDto,
+    @Param('productId') productId: number,
+    @Body() data: DeleteProductDto,
+  ) {
+    console.log('jwt', jwt.id);
+    if (!jwt || !jwt.id) {
+      throw new BadRequestException('Invalid JWT');
+    }
 
-  console.log('kill', productId, jwt.id);
+    console.log('kill', productId, jwt.id);
 
-  try {
     await this.productsService.deleteProduct(+productId, jwt.id);
     return { success: true };
-  } catch (error) {
-    throw new BadRequestException(error.message);
   }
-}
   //상품 좋아요
   @UseGuards(JwtAuthGuard)
   @Post('like/:productId')
