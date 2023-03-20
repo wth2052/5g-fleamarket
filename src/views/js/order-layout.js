@@ -8,7 +8,7 @@ axios
       for (let i = 0; i < data.length; i++) {
         const timeAgo = getTimeAgo(data[i].product.createdAt);
         temp += `
-                   <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                   <div class="container-fluid" onclick="/productss/view/${data[i].product.id}" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="img/${data[i].product.images[0].imagePath}" alt="spcFuck" 
@@ -39,7 +39,7 @@ axios
     } else if (error.request.status === 404) {
       let temp = '';
       temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" style="margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                         <img src="https://velog.velcdn.com/images/ms_sh0728/post/89456085-9198-4865-9392-bbc7245fee0c/image.png" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
@@ -91,7 +91,7 @@ function mySellProduct() {
       } else if (error.response.status === 404) {
         let temp = '';
         temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" style="margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                         <img src="https://velog.velcdn.com/images/ms_sh0728/post/89456085-9198-4865-9392-bbc7245fee0c/image.png" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
@@ -109,21 +109,21 @@ function myBuyList() {
     .get('http://localhost:3000/orders/me/buy/list')
     .then((res) => {
       let data = res.data.data;
-      console.log(data);
+      console.log('!@#$', data);
       let temp = '';
-      for (let i = 0; i < data.buyList.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         temp += `
-      <div class="container-fluid" onclick="location.href='/productss/view/${data.product[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+      <div class="container-fluid" onclick="buyResult(${data[i].orders[0].id})" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="img/${data.product[i].images[0].imagePath}" alt="spcFuck" 
+                        <img src="img/${data[i].images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${data.product[i].title}</h3></br>
-                <h6>구매날짜 : ${data.buyList[i].updatedAt}</h6>
-                <h4>구매완료 : ${data.buyList[i].deal}원</h4>
-                <span style="float: right;">❤${data.product[i].likes}</span>
+                <h3>${data[i].title}</h3></br>
+                <h6>구매날짜 : ${data[i].updatedAt}</h6>
+                <h4>구매완료 : ${data[i].orders[0].deal}원</h4>
+                <span style="float: right;">❤${data[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -132,7 +132,7 @@ function myBuyList() {
     })
     .catch((error) => {
       // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-      console.log(error);
+      console.log('!%^#(&(', error);
       if (error.response.status === 401) {
         alert('로그인하셔야 합니다.');
         window.location.href = '/';
@@ -140,7 +140,7 @@ function myBuyList() {
       } else if (error.response.status === 404) {
         let temp = '';
         temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" style="margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                         <img src="https://velog.velcdn.com/images/ms_sh0728/post/89456085-9198-4865-9392-bbc7245fee0c/image.png" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
@@ -151,29 +151,43 @@ function myBuyList() {
       }
     });
 }
+// 판매자 정보 확인
+function buyResult(orderId) {
+  axios
+    .get(`/orders/buy/result/${orderId}`)
+    .then((res) => {
+      const data = res.data.data;
+      console.log(data);
+      alert(`email : ${data.email}
+      nickname: ${data.nickname}
+      phone : ${data.phone}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 // 판매내역
 function mySellList() {
   axios
     .get('http://localhost:3000/orders/me/sell/list')
     .then((res) => {
-      let order = res.data.data.real;
-      let product = res.data.data.myProduct;
-      console.log(res);
+      const data = res.data.data.myProduct;
+      console.log(data);
       let temp = '';
-      for (let i = 0; i < order.length; i++) {
+      for (let i = 0; i < data.length; i++) {
         temp += `
-       <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+       <div class="container-fluid" onclick="sellResult(${data[i].orders[0].id})" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="img/${product[i].images[0].imagePath}" alt="spcFuck" 
+                        <img src="img/${data[i].images[0].imagePath}" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
-                <h3>${product[i].title}</h3></br>
-                <h6>거래일 : ${order[i].updatedAt}</h6>
-                <h4>거래완료 : ${order[i].deal}원</h4>
-                <span style="float: right;">❤${product[i].likes}</span>
+                <h3>제목 : ${data[i].title}</h3></br>
+                <h6>거래일 : ${data[i].updatedAt}</h6>
+                <h4>거래완료 : ${data[i].orders[0].deal}원</h4>
+                <span style="float: right;">❤${data[i].likes}</span>
             </div>
         </div>
       </div>`;
@@ -189,7 +203,7 @@ function mySellList() {
       } else if (error.response.status === 404) {
         let temp = '';
         temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" style="margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                         <img src="https://velog.velcdn.com/images/ms_sh0728/post/89456085-9198-4865-9392-bbc7245fee0c/image.png" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
@@ -199,6 +213,23 @@ function mySellList() {
         document.getElementById('bb').innerHTML = temp;
       }
     });
+}
+// 구매자 정보보기
+function sellResult(orderId) {
+  axios
+    .get(`/orders/sell/result/${orderId}`)
+    .then((res) => {
+      const data = res.data.data
+      console.log('!^*$', data)
+      alert(`
+      구매자 닉네임 : ${data.nickname}
+      구매자 email : ${data.email}
+      구매자 핸드폰 : ${data.phone}`)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+
 }
 
 function deal() {
@@ -213,9 +244,8 @@ function deal() {
                                        <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
-                        <img src="img/${
-                          data[i].product.images[0].imagePath
-                        }" alt="spcFuck" 
+                        <img src="img/${data[i].product.images[0].imagePath
+            }" alt="spcFuck" 
                         style="width: 100%; height: 100%; margin: 0" />
                        </div>
                     <div class="col-md-9">
@@ -224,9 +254,8 @@ function deal() {
                 <h4>${res.data.data[i].deal}원</h4>
                 <p>날짜: ${res.data.data[i].product.createdAt}회</p>
                 <span>조회: ${res.data.data[i].product.viewCount}회</span>
-                <span style="float: right;">🎯 ${0} ❤ ${
-            res.data.data[i].product.likes
-          }</span>
+                <span style="float: right;">🎯 ${0} ❤ ${res.data.data[i].product.likes
+            }</span>
             </div>
         </div>
       </div>`;
@@ -237,7 +266,7 @@ function deal() {
     .catch((error) => {
       let temp = '';
       temp += `
-                    <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" style="margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                         <img src="https://velog.velcdn.com/images/ms_sh0728/post/89456085-9198-4865-9392-bbc7245fee0c/image.png" alt="image" 
                         style="width: 100%; height: 100%; margin: 0" />
@@ -358,7 +387,7 @@ function dealAccept(orderId) {
       // 예외처리
       alert(
         error.response?.data?.message ||
-          error.response.data.errorMessage.details[0].message,
+        error.response.data.errorMessage.details[0].message,
       );
     });
 }
@@ -405,7 +434,7 @@ function pullUp(productId) {
     .catch((error) => {
       alert(
         error.response?.data?.message ||
-          error.response.data.errorMessage.details[0].message,
+        error.response.data.errorMessage.details[0].message,
       );
     });
 }

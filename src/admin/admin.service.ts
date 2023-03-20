@@ -12,7 +12,7 @@ import { CategoriesEntity } from '../global/entities/categories.entity';
 import { NoticesEntity } from '../global/entities/notices.entity';
 import { ProductsEntity } from '../global/entities/products.entity';
 import { UserEntity } from '../global/entities/users.entity';
-import { Repository, Like} from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { ReportsEntity } from '../global/entities/reports.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { EmailService } from '../email/email.service';
@@ -39,7 +39,7 @@ export class AdminService {
   ) {}
 
   // 상품정보 가져오기 API
-  async getProducts(limit: number, offset:number) {
+  async getProducts(limit: number, offset: number) {
     // const products = await this.productRepository.find(
     //   {
     //     take: limit,
@@ -48,10 +48,14 @@ export class AdminService {
     // );
 
     const queryBuilder = this.productRepository.createQueryBuilder('product');
-  
+
     const products = await queryBuilder
       .leftJoinAndSelect('product.category', 'category')
-      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
+      .leftJoinAndSelect(
+        'product.seller',
+        'seller',
+        'seller.id = product.sellerId',
+      )
       .leftJoinAndSelect('product.images', 'images')
       .take(limit)
       .skip(offset)
@@ -85,13 +89,17 @@ export class AdminService {
   async getProductById(productId: number) {
     const product = await this.productRepository.findOne({
       where: { id: productId },
-      relations: ['images']
+      relations: ['images'],
     });
     //리팩토링 필요
-    const sellerId = product.sellerId
-    const seller = await this.userRepository.findOne({where: {id : sellerId}})
-    const categoryId = product.categoryId
-    const category = await this.categoryRepository.findOne({where: {id : categoryId}})
+    const sellerId = product.sellerId;
+    const seller = await this.userRepository.findOne({
+      where: { id: sellerId },
+    });
+    const categoryId = product.categoryId;
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
     // const images = await this.imageRepository.find({where: {productId: productId}})
     //
 
@@ -103,7 +111,7 @@ export class AdminService {
     } else {
       //return product ==> return {product, seller}
 
-      return {product, seller, category, images};
+      return { product, seller, category, images };
     }
   }
 
@@ -114,13 +122,11 @@ export class AdminService {
   }
 
   //회원정보 가져오기 API
-  async getUsers(limit: number, offset:number) {
-    const users = await this.userRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+  async getUsers(limit: number, offset: number) {
+    const users = await this.userRepository.find({
+      take: limit,
+      skip: offset,
+    });
     if (users.length === 0) {
       throw new NotFoundException('회원정보가 존재하지 않습니다.');
     } else {
@@ -179,13 +185,11 @@ export class AdminService {
   }
 
   //카테고리 조회 API
-  async getCategory(limit: number, offset:number) {
-    const categories = await this.categoryRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+  async getCategory(limit: number, offset: number) {
+    const categories = await this.categoryRepository.find({
+      take: limit,
+      skip: offset,
+    });
     if (categories.length === 0) {
       throw new NotFoundException('카테고리가 없습니다.');
     } else {
@@ -224,13 +228,11 @@ export class AdminService {
 
   //공지사항 모두 조회
 
-  async getNotices(limit: number, offset:number ) {
-    const notices = await this.noticeRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+  async getNotices(limit: number, offset: number) {
+    const notices = await this.noticeRepository.find({
+      take: limit,
+      skip: offset,
+    });
     if (notices.length === 0) {
       throw new NotFoundException('공지사항이 없습니다.');
     } else {
@@ -301,25 +303,29 @@ export class AdminService {
       const queryBuilder = this.productRepository.createQueryBuilder('product');
 
       const products = await queryBuilder
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
-      .leftJoinAndSelect('product.images', 'images')
-      .where({title: Like(`%${search}%`) })
-      .select([
-        'product.id',
-        'product.title',
-        'product.price',
-        'product.viewCount',
-        'product.likes',
-        'product.dealCount',
-        'product.createdAt',
-        'product.updatedAt',
-        'category.id',
-        'category.name',
-        'seller.nickname',
-        'images.imagePath',
-      ])
-      .getMany();
+        .leftJoinAndSelect('product.category', 'category')
+        .leftJoinAndSelect(
+          'product.seller',
+          'seller',
+          'seller.id = product.sellerId',
+        )
+        .leftJoinAndSelect('product.images', 'images')
+        .where({ title: Like(`%${search}%`) })
+        .select([
+          'product.id',
+          'product.title',
+          'product.price',
+          'product.viewCount',
+          'product.likes',
+          'product.dealCount',
+          'product.createdAt',
+          'product.updatedAt',
+          'category.id',
+          'category.name',
+          'seller.nickname',
+          'images.imagePath',
+        ])
+        .getMany();
 
       // const products = await this.productRepository.find({
       //   where: { title: Like(`%${search}%`) },
@@ -398,7 +404,7 @@ export class AdminService {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
       const report = await this.reportRepository.find({
-        where: { title : Like(`%${search}%`) },
+        where: { title: Like(`%${search}%`) },
       });
       if (report.length === 0) {
         throw new NotFoundException(`검색한 공지사항이 없습니다.'${search}'`);
@@ -420,13 +426,11 @@ export class AdminService {
   }
 
   //신고목록 확인
-  async getReports(limit: number, offset: number){
-    const reports = await this.reportRepository.find(
-      {
-        take: limit,
-        skip: offset,
-      }
-    );
+  async getReports(limit: number, offset: number) {
+    const reports = await this.reportRepository.find({
+      take: limit,
+      skip: offset,
+    });
     if (reports.length === 0) {
       throw new NotFoundException('접수된 신고가 없습니다.');
     } else {
@@ -435,10 +439,10 @@ export class AdminService {
   }
 
   //확인안된 신고
-  async getUncheckedReports(){
+  async getUncheckedReports() {
     const Uncheckedreports = await this.reportRepository.find({
-     
-      where: {status : 0}});
+      where: { status: 0 },
+    });
     if (Uncheckedreports.length === 0) {
       throw new NotFoundException('모든 신고가 확인되었습니다.');
     } else {
@@ -447,10 +451,10 @@ export class AdminService {
   }
 
   //확인된 신고
-  async getCheckedReports(){
+  async getCheckedReports() {
     const Checkedreports = await this.reportRepository.find({
-      
-      where: {status : 1}});
+      where: { status: 1 },
+    });
     if (Checkedreports.length === 0) {
       throw new NotFoundException('확인된 신고가 없습니다..');
     } else {
@@ -458,23 +462,26 @@ export class AdminService {
     }
   }
 
-  async getTotalReports(){
+  async getTotalReports() {
     return this.reportRepository.count();
   }
 
   //신고 상세 보기
-async getReportById(reportId: number) {
-  const report = await this.reportRepository.findOne({
-    where: { id: reportId }
-  });
-  const reporterId = report.reporterId
-  const reporter = await this.userRepository.findOne({where: {id : reporterId}})
-  if (!report) {
-    throw new NotFoundException('존재하지 않는 신고입니다.');
-  } else {
-    return {report, reporter};
+  async getReportById(reportId: number) {
+    const report = await this.reportRepository.findOne({
+      where: { id: reportId },
+    });
+    const reporterId = report.reporterId;
+    const reporter = await this.userRepository.findOne({
+      where: { id: reporterId },
+    });
+    if (!report) {
+      throw new NotFoundException('존재하지 않는 신고입니다.');
+    } else {
+      return { report, reporter };
+    }
   }
-}
+
 
  //신고 수정(확인하기) API
  async checkReport(reportId: number, status:number, reported: string){
@@ -518,10 +525,10 @@ async getReportById(reportId: number) {
 }
 }
 
- //신고 삭제
- async deleteReport(reportId: number) {
-  this.reportRepository.delete(reportId);
-  return { message: '신고가 삭제되었습니다' };
-}
 
+  //신고 삭제
+  async deleteReport(reportId: number) {
+    this.reportRepository.delete(reportId);
+    return { message: '신고가 삭제되었습니다' };
+  }
 }
