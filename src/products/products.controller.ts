@@ -27,9 +27,14 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { ApiQuery } from '@nestjs/swagger';
+import * as fs from 'fs';
+import axios from 'axios';
+import { Response } from 'express';
+import { Redirect, Res } from '@nestjs/common/decorators';
 
 @Controller('productss')
 export class ProductsController {
+  categoriesRepository: any;
   constructor(
     private readonly productsService: ProductsService,
     private readonly ProductImagesService: ProductImagesService,
@@ -46,6 +51,10 @@ export class ProductsController {
     try {
       const products = await this.productsService.getAllProducts(limit, offset);
       const totalProducts = await this.productsService.getTotalProducts();
+      console.log(
+        'huck',
+        `Fetched ${products.length} products from offset ${offset} with limit ${limit}. Total products: ${totalProducts}`,
+      );
       return { products, totalProducts };
     } catch (error) {
       return error;
@@ -59,12 +68,21 @@ export class ProductsController {
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }
+
+  @Get('category')
+  async getCategories() {
+    const categories = await this.categoriesRepository.find();
+    console.log('카테고리', categories);
+    return categories;
+  }
+
   //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
   @Get('up')
   @Render('product/products-upload.ejs')
-  createProductForm() {
-    return {};
+  async createProductForm() {
+    const categories = await this.productsService.getCategories();
+    return { categories };
   }
 
   // 상품등록/
@@ -72,13 +90,16 @@ export class ProductsController {
     FileFieldsInterceptor([{ name: 'images', maxCount: 3 }], {
       storage: diskStorage({
         destination: (req, file, callback) => {
-          // console.log('File upload destination:', './tmp');
-          callback(null, './tmp');
+          const tmpFolder = './tmp';
+          //tmp없으면 생성
+          if (!fs.existsSync(tmpFolder)) {
+            fs.mkdirSync(tmpFolder, { recursive: true });
+          }
+          callback(null, tmpFolder);
         },
         filename: (req, file, callback) => {
           const uniqueSuffix = uuidv4();
           const extension = extname(file.originalname);
-          // console.log('File upload filename:', `${uniqueSuffix}${extension}`);
           callback(null, `${uniqueSuffix}${extension}`);
         },
       }),
@@ -87,14 +108,12 @@ export class ProductsController {
       },
       fileFilter: (req, file, callback) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-          // console.log('Invalid file type:', file.originalname);
           return callback(
             new BadRequestException('Only image files are allowed'),
             false,
           );
         }
         if (file.size > 1024 * 1024 * 5) {
-          // console.log('File size exceeds the limit:', file.originalname);
           return callback(
             new PayloadTooLargeException('File size exceeds the limit'),
             false,
@@ -183,20 +202,21 @@ export class ProductsController {
 
   //상품삭제
   @UseGuards(JwtAuthGuard)
-  @Put(':productId')  
+  @Delete(':productId')
   async deleteProduct(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Param('productId') productId: number,
     @Body() data: DeleteProductDto,
   ) {
-    console.log("jwt", jwt.id)
+    console.log('jwt', jwt.id);
     if (!jwt || !jwt.id) {
       throw new BadRequestException('Invalid JWT');
     }
 
-    console.log("kill",productId, jwt.id)
+    console.log('kill', productId, jwt.id);
 
-    return this.productsService.deleteProduct(+productId, jwt.id);
+    await this.productsService.deleteProduct(+productId, jwt.id);
+    return { success: true };
   }
   //상품 좋아요
   @UseGuards(JwtAuthGuard)

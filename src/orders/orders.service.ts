@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   HttpException,
   HttpStatus,
@@ -265,7 +266,7 @@ export class OrdersService {
       throw new NotFoundException('상품 정보가 없습니다.');
     }
     if (product.sellerId === Number(userId)) {
-      throw new ForbiddenException('자신의 상품에는 deal을 할 수 없습니다.');
+      throw new BadRequestException('자신의 상품에는 deal을 할 수 없습니다.');
     }
     const user = await this.orderRepository.findOne({
       where: { productId: productId, buyerId: userId, deletedAt: null },
@@ -389,13 +390,14 @@ export class OrdersService {
         ])
         .getMany();
 
-        const totalProducts = await queryBuilder.where({ title: Like(`%${search}%`) }).getCount()
+      const totalProducts = await queryBuilder
+        .where({ title: Like(`%${search}%`) })
+        .getCount();
 
-        
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }
-      return {products, totalProducts}
+      return { products, totalProducts };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

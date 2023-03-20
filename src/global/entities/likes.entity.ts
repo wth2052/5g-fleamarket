@@ -3,16 +3,18 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn, ManyToMany, ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
   OneToOne,
-  PrimaryColumn
-} from "typeorm";
+  PrimaryColumn,
+} from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
 
 @Entity({ name: 'likes' })
 export class LikesEntity {
-  @ManyToMany(() => UserEntity, (users) => users.likes)
+  @ManyToOne(() => UserEntity, (users) => users.likes)
   user: UserEntity;
   @PrimaryColumn()
   userId: number;
