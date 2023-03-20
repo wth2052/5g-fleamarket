@@ -388,10 +388,13 @@ export class OrdersService {
         ])
         .getMany();
 
+        const totalProducts = await queryBuilder.where({ title: Like(`%${search}%`) }).getCount()
+
+        
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }
-      return products;
+      return {products, totalProducts}
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

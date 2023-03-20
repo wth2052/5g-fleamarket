@@ -26,6 +26,7 @@ import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { number } from 'joi';
+import { ApiQuery } from '@nestjs/swagger';
 @Catch(HttpException)
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -163,6 +164,8 @@ export class OrdersController {
   // 상품검색
   @Public()
   @Get('productSearch')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   // http://localhost:3000/orders/productSearch?search=피카츄
   async productSearch(
     @Query('search') search: string,
@@ -174,7 +177,7 @@ export class OrdersController {
       limit,
       offset,
     );
-    return { data: product };
+    return { data: product.products, totalProducts: product.totalProducts };
   }
 
   // 끌어올리기

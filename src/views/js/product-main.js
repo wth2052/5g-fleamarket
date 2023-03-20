@@ -31,7 +31,7 @@ axios
       }
       document.getElementById('bb').innerHTML = temp;
 
-      //상품 페이지네이션//////////////////////////////////
+      // 상품 페이지네이션//////////////////////////////////
       console.log('productslenght', products.length)
       console.log('total', totalProducts)
       function debounce(func, wait = 5, immediate = false) {
@@ -67,13 +67,15 @@ axios
       // let offset = Number(document.getElementById('productsLength').value)
       // let TotalProducts = Number(document.getElementById('totalProducts').value)
       // A delay of 50ms between calls.
-      // const debouncedPageProduct = debounce(pageProduct, 50);
+      window.debouncedPageProduct = debounce(pageProduct, 50);
 
-      window.addEventListener('scroll', debounce(pageProduct, 50));
-
+      
+window.addEventListener('scroll', debouncedPageProduct);
+      
       function pageProduct() {
         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
         if (scrollTop + clientHeight >= scrollHeight - 5) {
+
 
           const totalProducts = TotalProducts
           const productsLength = limit
@@ -114,13 +116,17 @@ axios
 
                 limit += products.length
 
+                // limit += 10
+                // offset += 10
+
                 offset += products.length
               }
+              
             })
             .catch(error => {
               if (productsLength === totalProducts) {
                 alert('끝 페이지입니다.')
-                window.removeEventListener('scroll', debounce(pageProduct, 50));
+                window.removeEventListener('scroll', debouncedPageProduct);
               }
               else {
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
@@ -128,11 +134,11 @@ axios
             });
         }
       };
-      window.removeEventListener('scroll', debounce(pageProduct, 50));
-      /////상품 페이지네이션 끝////////
+      ///상품 페이지네이션 끝////////
 
-      /////상품 검색////////
-      /////상품검색 끝/////
+      ///상품 검색////////
+     
+      ///상품검색 끝/////
     }
   })
   .catch((error) => {
@@ -158,7 +164,7 @@ axios
       `;
     document.getElementById('bb').innerHTML = temp;
   });
-
+  
 
 
 
