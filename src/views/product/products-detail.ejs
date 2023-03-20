@@ -130,6 +130,17 @@
         justify-content: center;
         align-items: center;
       }
+      .col-md-3-img{
+        height: 30%;
+        width: 80%;
+        margin-left: 70px;
+        
+      }
+
+      
+      #image-box {
+          padding: 0 0px;
+      }
 
       #product-detail {
         max-width: 100vw;
@@ -144,14 +155,17 @@
       }
 
       .image-container {
-        width: 100%;
-        height: 400px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 20vw;
+        margin-right: 20px;
+        /* max-height: 70vh; */
         overflow: hidden;
       }
 
+      .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
       .slider-nav-container {
         display: flex;
         align-items: center;
@@ -205,10 +219,28 @@
       .image-nav img.active {
         border: 2px solid #0095ff;
       }
+      .views-likes {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .views, .likes {
+        margin-right: 10px;
+      }
 
-/* 
+      /* 이미지 최대 높이를 초과하는 경우 */
+      .image-container img[src$=".jpg"]:not(:last-child),
+      .image-container img[src$=".jpeg"]:not(:last-child),
+      .image-container img[src$=".png"]:not(:last-child),
+      .image-container img[src$=".gif"]:not(:last-child) {
+        width: 100%;
+        height: 70vh; /* 이미지 최대 높이로 설정 */
+        object-fit: contain; /* 이미지 비율 유지 */
+        object-position: center; /* 이미지 중앙 정렬 */
+      }
+
       @media (max-width: 768px) {
-        #product-detail {
+        #image-box {
           flex-direction: column;
           align-items: center;
         }
@@ -219,7 +251,7 @@
           max-height: none;
           overflow: visible;
         }
-      }  */
+      }
 
       .category,
       .category,
@@ -241,39 +273,49 @@
   <body>
     <header><%- include('../main-header.ejs') %></header>
     <div id="wrap">
-      <div id="product-detail">
-        <div class="image-container">
-          <% if (product.images && product.images.length > 0) { %>
-            <div class="slider-nav-container">
-              <div class="slider-container">
+      <div class="product-detail">
+        <div class="col-md-3-img" id="image-box" style="width: 100%; height: 100%; margin: 0;">
+          <div class="image-container">
+            <% if (product.images && product.images.length > 0) { %>
+              <% if (product.images.length == 1) { %>
+                <div><img src="/img/<%= product.images[0].imagePath %>" /></div>
+              <% } else { %>
                 <div class="slider">
                   <% for (var i = 0; i < Math.min(product.images.length, 3); i++) { %>
                     <div><img src="/img/<%= product.images[i].imagePath %>" /></div>
                   <% } %>
                 </div>
-              </div>
-              <div class="image-nav-container">
                 <div class="image-nav">
                   <% for (var i = 0; i < Math.min(product.images.length, 3); i++) { %>
-                    <div><img src="/img/<%= product.images[i].imagePath %>%>" /></div>
+                    <div><img src="/img/<%= product.images[i].imagePath %>%>" style="height: 100px"/></div>
                   <% } %>
                 </div>
-              </div>
-            </div>
-          <% } else { %>
-            <div><img src="/img/image-not-available.png" /></div>
-          <% } %>
+              <% } %>
+            <% } else { %>
+              <div><img src="/img/image-not-available.png" /></div>
+            <% } %>
+          </div>
+        </div><br>
         </div>
         <div class="info-container">
           <h1><%= product.title %></h1>    
           <div class="category"><u><%= product.category.name %></u></div>
           <div class="createdAt"><%= product.createdAt.getFullYear() %>/<%= product.createdAt.getMonth() + 1 %>/<%= product.createdAt.getDate() %> <%= product.createdAt.getHours() %>:<%= product.createdAt.getMinutes() %></div>
           <div class="script"> 판매자: <%= product.seller.nickname %></div>
+          <div class="price">Price: <%= product.price %>원 </div>
         </br>
-          <div class="description"> <%= product.description %></div>
-          <div class="views">Views: <%= product.viewCount %></div>
-          <div class="likes">Likes: <%= product.likes %></div>
-          <div class="price">Price: <%= product.price %></div>
+          <div class="description"> 
+            <% if (product.description.length > 20) { %>
+            <% for (let i = 0; i < product.description.length; i += 20) { %>
+              <%= product.description.slice(i, i+20) %><br>
+            <% } %>
+          <% } else { %>
+            <%= product.description %>
+          <% } %></div>
+          <div class="views-likes">
+            <div class="views">Views: <%= product.viewCount %></div>
+            <div class="likes">Likes: <%= product.likes %></div>
+          </div>          
           <div class="deal"><button id='deal11' onclick="deal(<%= product.id %>)">딜하기</button> </div>
           <div class="deal"><button id='deal11' onclick="like(<%= product.id %>)">찜하기</button> </div>
           <div class="delete"><button id='delete' onclick="kill(<%= product.id %>)">삭제하기</button> </div>
