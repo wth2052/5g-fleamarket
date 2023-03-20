@@ -1,6 +1,5 @@
 .env
 .docker
-/src/public
 # compiled output
 /dist
 /node_modules
