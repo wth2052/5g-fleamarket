@@ -48,7 +48,7 @@ export class AppController {
   @Render('order/order-dealCheck.ejs')
   async dealcheck() {}
 
-  @Get('order/dealAccept')
+  @Get('order/dealAccept/:orderId')
   @Render('order/order-dealAccept.ejs')
   async dealAccept() {}
 

@@ -147,7 +147,7 @@ export class OrdersService {
         '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
       );
     }
-    return deal;
+    return { deal, product: checkUser };
   }
   async buyResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
@@ -381,26 +381,30 @@ export class OrdersService {
       const queryBuilder = this.productRepository.createQueryBuilder('product');
 
       const products = await queryBuilder
-      .leftJoinAndSelect('product.category', 'category')
-      .leftJoinAndSelect('product.seller', 'seller', 'seller.id = product.sellerId')
-      .leftJoinAndSelect('product.images', 'images')
-      .where({title: Like(`%${search}%`) })
-      .select([
-        'product.id',
-        'product.title',
-        'product.price',
-        'product.viewCount',
-        'product.likes',
-        'product.dealCount',
-        'product.createdAt',
-        'product.updatedAt',
-        'category.id',
-        'category.name',
-        'seller.nickname',
-        'images.imagePath',
-      ])
-      .getMany();
-      
+        .leftJoinAndSelect('product.category', 'category')
+        .leftJoinAndSelect(
+          'product.seller',
+          'seller',
+          'seller.id = product.sellerId',
+        )
+        .leftJoinAndSelect('product.images', 'images')
+        .where({ title: Like(`%${search}%`) })
+        .select([
+          'product.id',
+          'product.title',
+          'product.price',
+          'product.viewCount',
+          'product.likes',
+          'product.dealCount',
+          'product.createdAt',
+          'product.updatedAt',
+          'category.id',
+          'category.name',
+          'seller.nickname',
+          'images.imagePath',
+        ])
+        .getMany();
+
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }
