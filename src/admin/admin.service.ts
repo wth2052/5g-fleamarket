@@ -487,7 +487,6 @@ export class AdminService {
  async checkReport(reportId: number, status:number, reported: string){
   const report = await this.reportRepository.findOne({ where: { id: reportId } });
   const user = await this.userRepository.findOne( {where: {email: reported}})
- 
   if (!report){
     throw new NotFoundException('존재하지 않는 신고입니다.');
   }

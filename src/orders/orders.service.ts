@@ -147,7 +147,7 @@ export class OrdersService {
         '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
       );
     }
-    return deal;
+    return { deal, product: checkUser };
   }
   async buyResult(userId: number, orderId: number) {
     const order = await this.orderRepository.findOne({
