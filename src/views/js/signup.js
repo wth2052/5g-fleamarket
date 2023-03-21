@@ -43,6 +43,7 @@ function startTimer() {
       clearInterval(x);
     }
   }, 1000);
+
 }
 
 function signUp() {
