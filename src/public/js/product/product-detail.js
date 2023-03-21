@@ -83,7 +83,8 @@ axios
     if (data.status === 'sale') {
       temp += `
                                 <h2 class="card-title">${data.title}</h2>
-                                <h6 class="card-title" id="price">${data.price} 원</h6>
+                                <h6 class="card-title">${data.price} 원</h6>
+                                <h4 class="card-title">카테고리: ${data.category.name}</h4>
                                 <p class="card-text">
                                     <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
                                     <small class="text-muted">${data.likes}　</small>
@@ -131,16 +132,25 @@ axios
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
+                                    <small class="text-muted">
+                                        <button type="button" class="btn btn-danger m-b-10 m-l-5"
+                                                id="toastr-success-bottom-right"
+                                                onclick="remove(${num})">삭제하기
+                                        </button>
+                                    </small>
+                                    
                                <h6 class="card-text">${data.description}</h6>
                             </div>
                         </div>
                     </div>
+
 `;
     } else {
       temp += `
                                 <h2 class="card-title">${data.title}</h2>
                                 <h6 class="card-title">${data.price} 원</h6>
+                                <h4 class="card-title">카테고리: ${data.category.name}</h4>
+
                                 <p class="card-text">
                                     <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
                                     <small class="text-muted">${data.likes}　</small>
@@ -232,6 +242,24 @@ function deal(productId) {
     });
 }
 
+//삭제하기
+function remove(productId) {
+  axios
+    .delete(`http://localhost:3000/products/${productId}`)
+    .then((response) => {
+      window.location.href = 'http://localhost:3000/';
+    })
+    .catch((error) => {
+      console.log(error);
+      if (error.response.status === 401) {
+        alert('로그인 후 이용 가능합니다.');
+        window.location.href = '/login';
+      } else if (error.response.status === 403) {
+        alert('본인이 올린 상품만 삭제할 수 있습니다.');
+      }
+    });
+}
+
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
   const now = new Date();
@@ -261,3 +289,4 @@ function getTimeAgo(dateString) {
       return `${years}년 전`;
   }
 }
+
