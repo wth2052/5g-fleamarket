@@ -5,6 +5,7 @@ axios
     console.log(data);
     if (data !== 0) {
       let temp = '';
+      buyResult();
       for (let i = 0; i < data.length; i++) {
         let productP = data[i].price;
         let orderD = data[i].orders[0].deal;
@@ -30,7 +31,8 @@ axios
                                         <div class="dropdown-menu"><a class="dropdown-item">✅ 구매가격</a>
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
-                                        <button type="button" id="dealUpdate" onclick="buyResult(${data[i].id})" class="btn mb-1 btn-rounded btn-primary">판매자 연락처</button>
+                                        <button type="button" class="btn btn-primary" onclick="buyResult(${data[i].id})" data-toggle="modal" data-target="#modalPush">판매자 정보</button>
+
                                         </div>
                                     </div>
                                 <p class="card-text">
@@ -41,6 +43,33 @@ axios
                                     <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="6%">
                                      <small class="text-muted">${timeAgo} </small>
                                 </p>
+
+<!--Modal: modalPush-->
+<div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-info" role="document">
+    <!--Content-->
+    <div class="modal-content text-center">
+      <!--Header-->
+      <div class="modal-header d-flex justify-content-center">
+        <p class="heading">판매자 정보</p>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+        <p>판매자 : </p>
+        <p>핸드폰 : </p>
+        <p>주소 : </p>
+      </div>
+
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: modalPush-->
+
 
                             </div>
                         </div>
@@ -56,10 +85,17 @@ axios
 
 // 판매자 정보
 function buyResult(orderId) {
-
+  axios
+    .get(`http://localhost:3000/orders/buy/result/${orderId}`)
+    .then((res) => {
+      let result = res.data.data;
+      console.log(result);
+      return result;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
-
-
 
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
