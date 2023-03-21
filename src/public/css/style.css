@@ -9405,7 +9405,6 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
         position: absolute;
         top: 0;
         left: 0;
-        right: 200px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap; }

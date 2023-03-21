@@ -142,6 +142,7 @@ export class OrdersService {
     }
     const deal = await this.orderRepository.find({
       where: { productId, status: 'sale' },
+      order: { deal: 'DESC' },
     });
     if (!deal.length) {
       throw new NotFoundException(
