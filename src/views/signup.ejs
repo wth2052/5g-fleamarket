@@ -19,9 +19,20 @@
 				if(e.value.length > 6){
 					e.value = e.value.slice(0, 6)
 				}
-			}</script>
-    <script><%- include('js/autohypen.js') %></script>
+			}
+      function emailModifiedChecker(obj) {
+
+	      obj.addEventListener("input", cancelVerify)
+	      function cancelVerify()  {
+		      isverifyed = false;
+            alert('이메일이 변경되었습니다. 재 인증을 진행해주세요.')
+	      }
+      }
+
+    </script>
     <script><%- include('js/signup.js') %></script>
+    <script><%- include('js/autohypen.js') %></script>
+
 </head>
 
 <body class="h-100">
@@ -49,7 +60,7 @@
                     <div class="card login-form mb-0">
                         <div class="card-body pt-5">
 
-                            <a class="text-center" href="index.html"><h4>냐옹상회</h4></a>
+                            <a class="text-center" href="index.html"><h4><b style="color: #0597F2">냐옹 상회</b></h4></a>
 
                             <form onsubmit="return false;">
                                 <div class="form-group">
@@ -59,6 +70,7 @@
                                             class="form-control"
                                             aria-describedby="emailHelp"
                                             id="email"
+                                            oninput="emailModifiedChecker(this)"
                                             placeholder="이메일 입력"
                                     />
                                     <button type="submit" class="btn mb-1 btn-skype"  id="emailButton"

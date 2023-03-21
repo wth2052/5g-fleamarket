@@ -15,63 +15,74 @@
     <!--    Axios-->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="/plugins/jquery-steps/css/jquery.steps.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
     <!--    Js -->
     <script>window.onload = (event) => {
         getEditUserInformation()
       };</script>
+
     <script><%- include('js/user-edit.js')%></script>
-    <script><%- include('js/main-header.js') %></script>
 </head>
 
 <body style="background-color: #F2F2F2">
 <!--상단 메뉴바-->
 <%- include('main-header.ejs') %>
-<div class="container-fluid" style="width:45%; background: white; margin-top: 40px; margin-bottom: 40px; min-height:1000px; padding: 0">
-    <div class="container" style="background: white; padding: 0">
-        <div id="headerMenu" style="padding: 0">
-            <div class="row" style="padding-top: 30px; background-color: white; display: flex;
-  align-items: center;
-  justify-content: center;
-width: 100%; margin: 0">
-                <div class="col-md-3"
-                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2; border-radius: 25px;">
-                    <a onclick="window.location.reload()"
-                       style="color: white; font-weight: bold; font-size: 18px; text-decoration: none;">
-                        관심목록
-                    </a>
-                </div>
 
-                <div class="col-md-3"
-                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2;border-radius: 25px;">
-                    <a onclick="mySellProduct()"
-                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">
-                        판매진행</a>
-                </div>
 
-                <div class="col-md-3"
-                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2;border-radius: 25px;">
-                    <a onclick="myBuyList()"
-                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">
-                        구매내역</a>
-                </div>
 
-                <div class="col-md-3"
-                     style="height: 50px; text-align: center; line-height: 50px; background-color: #05aff2; border-radius: 25px;">
-                    <a onclick="mySellList()"
-                       style="color: #ffffff; font-weight: bold; font-size: 18px; text-decoration: none;">
-                        판매내역
-                    </a>
-                </div>
-
+    <!--**********************************
+        Content body start
+    ***********************************-->
+    <div class="content-body">
+        <div class="row page-titles mx-0">
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                </ol>
             </div>
         </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="#" id="step-form-horizontal" class="step-form-horizontal">
+                        <div>
+                            <h4>아이디 & 비밀번호 확인</h4>
+                            <section>
+                        <div id="temphere"></div>
+                            </section>
+                            <h4>닉네임 & 주소 수정</h4>
+                            <section>
+                            <div id="temphere2"></div>
+                            </section>
+                            <h4>제출</h4>
+                            <section>
+                                <div class="row h-100">
+                                    <div class="col-12 h-100 d-flex flex-column justify-content-center align-items-center">
+                                        <h2>수정이 완료되었다면 확인 버튼을 눌러주세요.</h2>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- #/ container -->
     </div>
+
+    <!--**********************************
+        Content body end
+    ***********************************-->
     <div id="temphere"></div>
     <button onclick="editUserInformation()">회원정보 수정하기</button>
     <div id="temphere2"></div>
     <div
             id="layer"
             style="
+
                       display: none;
                       position: fixed;
                       overflow: hidden;
@@ -79,29 +90,38 @@ width: 100%; margin: 0">
                       -webkit-overflow-scrolling: touch;
                     "
     ></div>
+<img
+        src="//t1.daumcdn.net/postcode/resource/images/close.png"
+        id="btnCloseLayer"
+        style="
+                        cursor: pointer;
+                        position: absolute;
+                        right: -3px;
+                        top: -3px;
+                        z-index: 1;
+                      "
+        onclick="closeDaumPostcode()"
+        alt="닫기 버튼"
+/>
+
+
     <!-- 본문-->
 
-    <!--    추후 모바일 버전으로 수정한다하면 md -> sm 으로 수정해야함-->
-
-            <!--            <div class="d-grid gap-2">-->
-            <!--                <div class="btn btn-primary btn-lg" onclick="login()">로그인</div>-->
-            <!--                아직 냐옹상회의 회원이 아니신가요?-->
-            <!--                <a class="btn btn-primary btn-lg" href="view/signup"> 가입하러 가기</a>-->
-            <!--                <a id="buttonDiv" class="btn btn-primary btn-lg" href="/google"> 구글 로그인</a>-->
-            <!--            </div>-->
-</div>
-
-
-
 <!--상단 내비게이션-->
-
 <!--하단 메뉴바-->
-<%- include('main-footer.ejs') %>
-
-
-</body>
-
+<script src="/plugins/common/common.min.js"></script>
+<script src="/js/custom.min.js"></script>
+<script src="/js/settings.js"></script>
+<script src="/js/gleek.js"></script>
+<script src="/js/styleSwitcher.js"></script>
+<script src="/js/header.js"></script>
+<!--JQuery-->
+<script src="/plugins/jquery-steps/build/jquery.steps.min.js"></script>
+<script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/js/plugins-init/jquery-steps-init.js"></script>
 <script><%- include('js/address-api.js')%></script>
 <script><%- include('js/get-edit-user-information.js')%></script>
 <script><%- include('js/autohypen.js') %></script>
+</body>
+
 </html>
