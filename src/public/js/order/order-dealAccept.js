@@ -81,4 +81,3 @@ function getTimeAgo(dateString) {
   const months = Math.floor(diff / 2592000000);
   const years = Math.floor(diff / 31536000000);
 }
-

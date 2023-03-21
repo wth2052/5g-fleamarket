@@ -69,9 +69,9 @@ axios
       // A delay of 50ms between calls.
       window.debouncedPageProduct = debounce(pageProduct, 50);
 
-      
-window.addEventListener('scroll', debouncedPageProduct);
-      
+
+      window.addEventListener('scroll', debouncedPageProduct);
+
       function pageProduct() {
         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
         if (scrollTop + clientHeight >= scrollHeight - 5) {
@@ -91,7 +91,7 @@ window.addEventListener('scroll', debouncedPageProduct);
               for (let i = 0; i < products.length; i++) {
                 const timeAgo = getTimeAgo(products[i].updatedAt);
                 let productP = products[i].price;
-        const productPrice = productP
+                const productPrice = productP
                 temp += `
                 <div class="col-md-6 col-lg-3">
                         <div class="card">
@@ -126,7 +126,7 @@ window.addEventListener('scroll', debouncedPageProduct);
 
                 offset += products.length
               }
-              
+
             })
             .catch(error => {
               if (productsLength === totalProducts) {

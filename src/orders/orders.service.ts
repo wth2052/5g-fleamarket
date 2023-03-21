@@ -160,7 +160,7 @@ export class OrdersService {
       throw new NotFoundException('해당되는 주문이 없습니다.');
     }
     if (order.buyerId !== Number(userId)) {
-      throw new ForbiddenException('내가 구매한 상품이 아닙니다.');
+      throw new BadRequestException('내가 구매한 상품이 아닙니다.');
     }
     if (order.status === 'sale') {
       throw new ForbiddenException('아직 선택되지 않았습니다.');
@@ -315,7 +315,7 @@ export class OrdersService {
       throw new ForbiddenException('해당 상품이 없습니다.');
     }
     if (data > 1000000000) {
-      throw new ForbiddenException('너무 큰 가격입니다. 다시 확인해주세요');
+      throw new BadRequestException('너무 큰 가격입니다. 다시 확인해주세요');
     }
     console.log('@@@@@@@@@@@@@@', order.product.price);
     if (order.product.price > data) {
