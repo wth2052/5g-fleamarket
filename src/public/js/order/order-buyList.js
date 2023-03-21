@@ -30,7 +30,7 @@ axios
                                         <div class="dropdown-menu"><a class="dropdown-item">✅ 구매가격</a>
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
-                                        <button type="button" id="alertStart"  onclick="buyResult(${data[i].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
+                                        <button type="button" id="alertStart"  onclick="buyResult(${data[i].orders[0].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
 
                                         </div>
                                     </div>
