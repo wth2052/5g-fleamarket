@@ -25,6 +25,11 @@
     <script><%- include('js/signup.js')%></script>
     <script><%- include('js/main-header.js') %></script>
     <title>Document</title>
+    <script>    function lengthLimit6(e){
+        if(e.value.length > 6){
+          e.value = e.value.slice(0, 6)
+        }
+      }</script>
   </head>
 
   <body>
@@ -66,6 +71,24 @@
                 onclick="sendMail(); startTimer();"
               >
                 인증번호 전송
+              </button>
+              <br>
+              <label for="emailNumber" class="form-label mt-4">이메일 인증번호 입력</label>
+              <input
+              type="number" minlength="6" maxlength="6"
+              class="form-control"
+              aria-describedby="emailHelp"
+              id="verifyNumber"
+              oninput="lengthLimit6(this)"
+              placeholder="인증번호 6자리">
+              <button
+                      type="submit"
+                      style="visibility: visible"
+                      class="w-btn w-btn-gra1"
+                      id="emailNumberButton"
+                      onclick="emailNumberVerify()"
+              >
+                인증번호 확인
               </button>
               <div id="mailTimer"></div>
             </div>

@@ -2,7 +2,7 @@ let regEmail =
   /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/; // 이메일 주소 길이까지 확실한 검증
 let regNickname = /^[가-힣]+$/; // 한글만
 // 우편번호 찾기 화면을 넣을 element
-
+let isverifyed = false;
 //   메일 전송
 function sendMail(event) {
   const email = document.getElementById('email').value;
@@ -100,7 +100,10 @@ function signUp() {
     userid.focus();
     return false;
   }
-
+  if (isverifyed === false) {
+    alert('이메일 인증을 진행해주세요.');
+    return;
+  }
   axios
     .post('/auth/signup', {
       headers: {
@@ -117,7 +120,27 @@ function signUp() {
       window.location.href = '/login';
     })
     .catch((error) => {
-      if (error.response.status === 400) alert('이미 존재하는 이메일입니다. 다른 이메일 아이디를 입력해주세요.');
+      if (error.response.status === 400)
+        alert('이미 존재하는 이메일입니다. 다른 이메일 아이디를 입력해주세요.');
       if (error.response.status === 401) alert(error);
+    });
+}
+function emailNumberVerify() {
+  const verifyNumber = document.getElementById('verifyNumber').value;
+  const email = document.getElementById('email').value;
+
+  axios
+    .post('/email-verify/verify-number', {
+      verifyNumber: parseInt(verifyNumber),
+      email,
+    })
+    .then((result) => {
+      alert('이메일 인증에 성공하였습니다.');
+      isverifyed = true;
+      return isverifyed;
+    })
+    .catch((error) => {
+      alert('인증번호가 올바르지 않거나, 서버 에러입니다.' + error);
+      return isverifyed;
     });
 }
