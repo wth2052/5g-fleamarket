@@ -44,6 +44,10 @@ axios
   })
   .catch((error) => {
     console.log(error);
+    if (error.response.status === 401) {
+      alert('로그인 후 사용이 가능합니다.');
+      window.location.href = '/';
+    }
   });
 
 // 헤더로 뺴야됌 ( 임시 테스트용 )

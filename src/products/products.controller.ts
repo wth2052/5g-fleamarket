@@ -32,7 +32,7 @@ import axios from 'axios';
 import { Response } from 'express';
 import { Redirect, Res } from '@nestjs/common/decorators';
 
-@Controller('productss')
+@Controller('products')
 export class ProductsController {
   categoriesRepository: any;
   constructor(
@@ -60,12 +60,10 @@ export class ProductsController {
       return error;
     }
   }
-
   @Public()
   @Get('asdf/:1')
   @Render('product/products-detail.ejs')
   asdf() {}
-
   //상품 상세 보기
   @Public()
   @Get('view/:productId')

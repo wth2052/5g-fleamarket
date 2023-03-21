@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   ForbiddenException,
   HttpException,
   HttpStatus,
@@ -275,6 +276,9 @@ export class OrdersService {
         '이미 제시했습니다. 수정하기 버튼을 눌러주세요.',
       );
     }
+    if (product.price > data) {
+      throw new ConflictException();
+    }
     await this.orderRepository.insert({
       productId: productId,
       buyerId: userId,
@@ -325,33 +329,6 @@ export class OrdersService {
       throw new NotFoundException('해당되는 주문이 없습니다.');
     }
     await this.orderRepository.softDelete({ id: orderId });
-  }
-
-  //시세 그래프 ?
-  async graph(productId: number) {
-    const deals = await this.orderRepository.find({
-      where: { productId: productId },
-      select: ['deal', 'updatedAt'],
-      order: { updatedAt: 'DESC' },
-    });
-    let sum = 0;
-    let maxDeal = 0;
-    let minDeal = deals[0].deal;
-    deals.map((deal) => {
-      console.log(deal);
-      console.log(deal.deal);
-      if (deal.deal > maxDeal) {
-        maxDeal = deal.deal;
-      }
-      if (minDeal > deal.deal) {
-        minDeal = deal.deal;
-      }
-      sum += deal.deal;
-    });
-    const avg = sum / deals.length;
-    console.log('%^&(', avg);
-    const result = { avg, maxDeal, minDeal };
-    return { deals, result };
   }
 
   // 상품검색
