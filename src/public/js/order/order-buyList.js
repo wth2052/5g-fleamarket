@@ -56,7 +56,7 @@ axios
   .catch((error) => {
     console.log(error);
     if (error.response.status === 401) {
-      alert('로그인 후 사용이 가능합니다.');
+      alert('로그인 후 사용 가능한 기능 입니다.');
       window.location.href = '/';
     } else if (error.response.status === 404) {
       let temp = '';
@@ -82,6 +82,19 @@ function sellResult(orderId) {
     })
     .catch((error) => {
       console.log(error);
+      console.log(error.response.data.message);
+      if (error.response.status === 401) {
+        alert('로그인 후 이용이 가능합니다.');
+        window.location.href = '/';
+      }
+      if (error.response.status === 404) {
+        temp = `<img src="/images/제목을 입력해주세요_-001 (5).png">`;
+        document.getElementById('product-list').innerHTML = temp;
+      }
+      if (error.response.status === 403) {
+        alert(error.response.data.message);
+        window.location.href = '/';
+      }
     });
 }
 
