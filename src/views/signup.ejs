@@ -13,7 +13,12 @@
     <link href="/css/style.css" rel="stylesheet">
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>    function lengthLimit6(e){
+				if(e.value.length > 6){
+					e.value = e.value.slice(0, 6)
+				}
+			}</script>
     <script><%- include('js/autohypen.js') %></script>
     <script><%- include('js/signup.js') %></script>
 </head>
@@ -182,7 +187,7 @@
 </div>
 </div>
 
-
+<script><%- include('js/address-api.js')%></script>
 <!--**********************************
     Scripts
 ***********************************-->
@@ -192,7 +197,7 @@
 <script src="/js/gleek.js"></script>
 <script src="/js/styleSwitcher.js"></script>
 
-<script><%- include('js/address-api.js')%></script>
+
 </body>
 </html>
 
