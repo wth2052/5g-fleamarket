@@ -14,7 +14,8 @@
     <!--    Axios-->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>    function lengthLimit6(e){
+    <script>
+      function lengthLimit6(e){
 				if(e.value.length > 6){
 					e.value = e.value.slice(0, 6)
 				}
@@ -60,9 +61,29 @@
                                             id="email"
                                             placeholder="이메일 입력"
                                     />
-                                    <button type="submit" id="emailButton" class="btn mb-1 btn-success">인증메일 전송 <span class="btn-icon-right"><i class="fa fa-envelope"></i></span>
+                                    <button type="submit" class="btn mb-1 btn-skype"  id="emailButton"
+                                            onclick="sendMail(); startTimer();">인증메일 전송 <span class="btn-icon-right"><i class="fa fa-envelope"></i></span>
                                     </button>
+                                    <br>
+                                    <label for="emailNumber" class="form-label mt-4">이메일 인증번호 입력</label>
+                                    <input
+                                            type="number" minlength="6" maxlength="6"
+                                            class="form-control"
+                                            aria-describedby="emailHelp"
+                                            id="verifyNumber"
+                                            oninput="lengthLimit6(this)"
+                                            placeholder="인증번호 6자리">
                                     <div id="mailTimer"></div>
+                                    <button
+                                            type="submit"
+                                            style="visibility: visible"
+                                            class="btn mb-1 btn-skype"
+                                            id="emailNumberButton"
+                                            onclick="emailNumberVerify()"
+                                    >
+                                        인증번호 확인<span class="btn-icon-right"><i class="fa fa-reply"></i></span>
+                                    </button>
+
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label mt-4" for="password">비밀번호</label>

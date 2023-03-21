@@ -11330,11 +11330,9 @@ table.dataTable thead .sorting::after {
     background: transparent; }
     .card-header:first-child {
       border-radius: 0; }
+/*  없앤 이유 : 로그인창이 깨집니다...*/
   .card .card-body {
-      padding-right: 0.5rem;
-  padding-left: 1.81rem;
-  padding-top: 1.88rem;
-  padding-bottom: 1.88rem;
+
   }
   .card-action a {
     display: inline-block;

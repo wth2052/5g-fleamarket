@@ -39,6 +39,9 @@ function startTimer() {
       document.getElementById('mailTimer').innerHTML =
         '시간이 초과되었습니다. 다시 인증을 진행해주세요.';
     }
+    if (isverifyed === true) {
+      clearInterval(x);
+    }
   }, 1000);
 }
 
@@ -105,7 +108,7 @@ function signUp() {
     return;
   }
   axios
-    .post('/auth/signup', {
+    .post('http://localhost:3000/auth/signup', {
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
       },
@@ -128,9 +131,14 @@ function signUp() {
 function emailNumberVerify() {
   const verifyNumber = document.getElementById('verifyNumber').value;
   const email = document.getElementById('email').value;
-
+  if (verifyNumber === '') {
+    //해당 입력값이 없을 경우
+    alert('인증번호를 입력해주세요.');
+    verifyNumber.focus();
+    return;
+  }
   axios
-    .post('/email-verify/verify-number', {
+    .post('http://localhost:3000/email-verify/verify-number', {
       verifyNumber: parseInt(verifyNumber),
       email,
     })
