@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/productss/view')
+  .get('http://localhost:3000/products/view')
   .then((res) => {
     let data = res.data;
     let products = data.products;
@@ -18,7 +18,7 @@ axios
                             <img class="img-fluid" 
                               src="/img/${products[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/productss/asdf/${products[i].id}'" alt="">
+                               onclick="window.location='/products/asdf/${products[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${products[i].title}</h5>
                                 <h6 class="card-title">${productPrice} 원</h6>

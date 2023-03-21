@@ -35,7 +35,6 @@ export class AppController {
   async view() {
     return { name: 'peter', age: 28, job: 'software engineer' };
   }
-
   @Public()
   @Get('view/signup')
   @Render('signup.ejs')
@@ -95,12 +94,6 @@ export class AppController {
     await this.appService.seopCate();
   }
 
-  // @Public()
-  // @Post('seop/cate')
-  // async seopCate() {
-  //   return await this.appService.seopCate();
-  // }
-
   @Public()
   @Post('seop/product')
   async seopProductPhone() {
@@ -110,26 +103,6 @@ export class AppController {
     await this.appService.seopimg();
   }
 
-  // @Public()
-  // @Post('seop/order')
-  // async seopOrder() {
-  //   await this.appService.seopOrder();
-  //   await this.appService.seopLike();
-  //   await this.appService.seopimg();
-  // }
-  //
-  // @Public()
-  // @Post('seop/like')
-  // async seopLike() {
-  //   return await this.appService.seopLike();
-  // }
-  //
-  // @Public()
-  // @Post('seop/img')
-  // async seopimg() {
-  //   return await this.appService.seopimg();
-  // }
-
   @Public()
   @Post('seop/admin')
   async seopAdmin() {
@@ -137,16 +110,4 @@ export class AppController {
     await this.appService.seopNotice();
     await this.appService.seoprepoter();
   }
-
-  // @Public()
-  // @Post('seop/noti')
-  // async seopNotice() {
-  //   return await this.appService.seopNotice();
-  // }
-  //
-  // @Public()
-  // @Post('seop/repo')
-  // async seoprepoter() {
-  //   return await this.appService.seoprepoter();
-  // }
 }

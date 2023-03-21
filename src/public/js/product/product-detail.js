@@ -6,7 +6,7 @@ const num = linkSplit[linkSplit.length - 1];
 console.log(num);
 
 axios
-  .get(`http://localhost:3000/productss/view/${num}`)
+  .get(`http://localhost:3000/products/view/${num}`)
   .then((res) => {
     let data = res.data.product;
     console.log(data);
@@ -83,7 +83,7 @@ axios
     if (data.status === 'sale') {
       temp += `
                                 <h2 class="card-title">${data.title}</h2>
-                                <h6 class="card-title">${data.price} 원</h6>
+                                <h6 class="card-title" id="price">${data.price} 원</h6>
                                 <p class="card-text">
                                     <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
                                     <small class="text-muted">${data.likes}　</small>
@@ -116,6 +116,9 @@ axios
                                                 <div class="modal-body">
                                                     <form>
                                                         <div class="form-group">
+                                                            <div>최저가보다 높은 가격을 제시해야 합니다</div>
+                                                            <div>지금 가격을 제시하셔도 판매자가 제시된 해당 가격을 선택하지 않을 수 있습니다.</div>
+                                                            <div>저희 플랫폼은 매칭하는 역활만 제공합니다. 거래 및 결제는 판매자와 직접 결정하셔야 합니다.</div>
                                                             <label for="recipient-name" class="col-form-label">제시가격</label>
                                                             <input type="number" class="form-control" id="recipient-name">
                                                         </div>
@@ -177,12 +180,16 @@ axios
   })
   .catch((error) => {
     console.log(error);
+    if (error.response.status === 404) {
+      alert('해당 상품을 찾을 수 없습니다.');
+      window.location.href = '/';
+    }
   });
 
 // 찜하기
 function like(productId) {
   axios
-    .post(`http://localhost:3000/productss/like/${productId}`)
+    .post(`http://localhost:3000/products/like/${productId}`)
     .then((response) => {
       window.location.reload();
     })
@@ -212,9 +219,15 @@ function deal(productId) {
       if (error.response.status === 401) {
         alert('로그인해야 주문이 가능합니다.');
         window.location.href = '/login';
+      } else if (error.response.status === 400) {
+        alert('자신의 상품에는 딜할 수 없습니다.');
+        window.location.reload();
       } else if (error.response.status === 403) {
         alert('이미 주문하셨습니다. 구매진행에서 수정해주세요');
-        window.location.href = '/order';
+        window.location.reload();
+      } else if (error.response.status === 409) {
+        alert('최저가보다 낮게 제시하셨습니다.');
+        window.location.reload();
       }
     });
 }
