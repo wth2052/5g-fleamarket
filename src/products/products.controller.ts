@@ -61,10 +61,15 @@ export class ProductsController {
     }
   }
 
+  @Public()
+  @Get('asdf/:1')
+  @Render('product/products-detail.ejs')
+  asdf() {}
+
   //상품 상세 보기
   @Public()
   @Get('view/:productId')
-  @Render('product/products-detail.ejs')
+  // @Render('product/products-detail.ejs')
   findProduct(@Param('productId') productId: number) {
     return this.productsService.getProductById(productId);
   }

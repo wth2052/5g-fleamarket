@@ -10,7 +10,7 @@ Team 5
 - [성민섭](https://github.com/Seop0728)
 - [이한결](https://github.com/LeeHan098)
 - [조봉진](https://github.com/burno28)
-- [이혜](https://github.com/dadaqq1009)
+- [이혜원](https://github.com/dadaqq1009)
 
 
 

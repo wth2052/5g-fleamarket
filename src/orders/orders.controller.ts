@@ -56,12 +56,10 @@ export class OrdersController {
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;
-    console.log('11111', userId);
     const data = await this.ordersService.findMyProductsDealCheck(
       userId,
       productId,
     );
-    console.log('22222', data);
     return { data: data };
   }
   // 내가 가격제시한 상품 목록보기
