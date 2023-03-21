@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/productss/up')
+  .get('http://localhost:3000/products/up')
   .then((res)   )
 
 
@@ -8,7 +8,7 @@ axios
 
   function like() {
     axios
-      .post(`http://localhost:3000/productss/up`)
+      .post(`http://localhost:3000/products/up`)
       .then((response) => {
         window.location.href = 'http://localhost:3000/';
       })
