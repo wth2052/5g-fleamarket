@@ -55,6 +55,14 @@ axios
   })
   .catch((error) => {
     console.log(error);
+    if (error.response.status === 401) {
+      alert('로그인 후 사용이 가능합니다.');
+      window.location.href = '/';
+    } else if (error.response.status === 404) {
+      let temp = '';
+      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
+      document.getElementById('product-list').innerHTML = temp;
+    }
   });
 
 // 구매자 정보
