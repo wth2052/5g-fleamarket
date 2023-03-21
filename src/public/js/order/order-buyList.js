@@ -5,7 +5,6 @@ axios
     console.log(data);
     if (data !== 0) {
       let temp = '';
-      buyResult();
       for (let i = 0; i < data.length; i++) {
         let productP = data[i].price;
         let orderD = data[i].orders[0].deal;
@@ -31,7 +30,7 @@ axios
                                         <div class="dropdown-menu"><a class="dropdown-item">✅ 구매가격</a>
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
-                                        <button type="button" class="btn btn-primary" onclick="buyResult(${data[i].id})" data-toggle="modal" data-target="#modalPush">판매자 정보</button>
+                                        <button type="button" id="alertStart"  onclick="buyResult(${data[i].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
 
                                         </div>
                                     </div>
@@ -44,31 +43,6 @@ axios
                                      <small class="text-muted">${timeAgo} </small>
                                 </p>
 
-<!--Modal: modalPush-->
-<div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-notify modal-info" role="document">
-    <!--Content-->
-    <div class="modal-content text-center">
-      <!--Header-->
-      <div class="modal-header d-flex justify-content-center">
-        <p class="heading">판매자 정보</p>
-      </div>
-
-      <!--Body-->
-      <div class="modal-body">
-        <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
-        <p>판매자 : </p>
-        <p>핸드폰 : </p>
-        <p>주소 : </p>
-      </div>
-
-      <!--Footer-->
-    </div>
-    <!--/.Content-->
-  </div>
-</div>
-<!--Modal: modalPush-->
 
 
                             </div>
@@ -97,9 +71,19 @@ function buyResult(orderId) {
   axios
     .get(`http://localhost:3000/orders/buy/result/${orderId}`)
     .then((res) => {
-      let result = res.data.data;
-      console.log(result);
-      return result;
+      let data = res.data.data;
+      const addressSplit = data.address.split(' ');
+      $().ready(function () {
+        $('#alertStart').click(function () {
+          Swal.fire({
+            icon: 'success',
+            title: '판매자 정보',
+            html: `판매자 :  <span style="color: #1FA8F9">${data.nickname}</span><br>
+                연락처 : <span style="color: #1FA8F9">${data.phone}</span><br>
+                주소 : <span style="color: #1FA8F9">${addressSplit[2]}</span>`,
+          });
+        });
+      });
     })
     .catch((error) => {
       console.log(error);
