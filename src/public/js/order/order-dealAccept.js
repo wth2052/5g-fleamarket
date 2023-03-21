@@ -44,6 +44,10 @@ axios
   })
   .catch((error) => {
     console.log(error);
+    if (error.response.status === 401) {
+      alert('로그인 후 사용이 가능합니다.');
+      window.location.href = '/';
+    }
   });
 
 // 판매자가 거래를 수락해서 거래종료
@@ -76,21 +80,5 @@ function getTimeAgo(dateString) {
   const weeks = Math.floor(diff / 604800000);
   const months = Math.floor(diff / 2592000000);
   const years = Math.floor(diff / 31536000000);
-
-  switch (true) {
-    case minutes < 5:
-      return `방금 전`;
-    case hours < 1:
-      return `${minutes}분 전`;
-    case days < 1:
-      return `${hours}시간 전`;
-    case weeks < 1:
-      return `${days}일 전`;
-    case months < 1:
-      return `${weeks}주 전`;
-    case years < 1:
-      return `${months}달 전`;
-    default:
-      return `${years}년 전`;
-  }
 }
+
