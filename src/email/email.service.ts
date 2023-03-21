@@ -96,9 +96,9 @@ export class EmailService {
         expires: this.configService.get('NODEMAILER_EXPIRES'),
       },
     });
-    await this.cacheManager.set(`${user.email}`, {
-      ttl: this.configService.get('MAIL_TTL'),
-    });
+    // await this.cacheManager.set(`${user.email}`, {
+    //   ttl: this.configService.get('MAIL_TTL'),
+    // });
     return await transport.sendMail({
       from: {
         name: '5지는 플리마켓 운영자',
