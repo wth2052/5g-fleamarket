@@ -11,35 +11,22 @@ import {
 } from 'nest-winston';
 import { HttpExceptionFilter } from './global/filter/http-exception-filter';
 
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    // 커스텀 로거 활성화시 주석 해제
-    // logger: WinstonModule.createLogger({
-    //   transports: [
-    //     new winston.transports.Console({
-    //       level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
-    //       format: winston.format.combine(
-    //         winston.format.timestamp(),
-    //         nestWinstonModuleUtilities.format.nestLike('5gnunFleaMarket', {
-    //           prettyPrint: true,
-    //         }),
-    //       ),
-    //     }),
-    //   ],
-    // }),
-  });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
 
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
   app.setViewEngine('ejs');
+
+  // 특정 디렉터리를 제외하도록 기본 URL 수정
+  app.setGlobalPrefix('');
+
   setupSwagger(app);
 
   app.enableCors({
     credentials: true,
   });
-  // app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 void bootstrap();
