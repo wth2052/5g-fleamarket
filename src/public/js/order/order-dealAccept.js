@@ -32,7 +32,7 @@ axios
                         <a>
                             <div class="col-mail col-mail-2">
                                 <div class="subject">${dealPrice}</div>
-                                <div class="date"><button type="button" onclick="" class="btn mb-1 btn-rounded btn-success">수락하기</button></div>
+                                <div class="date"><button type="button" onclick="dealAccept(${data.deal[i].id})" class="btn mb-1 btn-rounded btn-success">수락하기</button></div>
                             </div>
                         </a>
                     </div>       
@@ -50,6 +50,25 @@ axios
     }
   });
 
+// 판매자가 거래를 수락해서 거래종료
+function dealAccept(orderId) {
+  console.log(orderId);
+  axios
+    .put(`http://localhost:3000/orders/deal/accept/${orderId}`)
+    .then((res) => {
+      // 응답처리
+      alert('거래가 완료되었습니다. (메세지수정+랜더페이지 수정');
+      // window.location.replace('http://localhost:3000/order');
+    })
+    .catch((error) => {
+      // 예외처리
+      alert(
+        error.response?.data?.message ||
+          error.response.data.errorMessage.details[0].message,
+      );
+    });
+}
+
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
   const now = new Date();
@@ -61,21 +80,5 @@ function getTimeAgo(dateString) {
   const weeks = Math.floor(diff / 604800000);
   const months = Math.floor(diff / 2592000000);
   const years = Math.floor(diff / 31536000000);
-
-  switch (true) {
-    case minutes < 5:
-      return `방금 전`;
-    case hours < 1:
-      return `${minutes}분 전`;
-    case days < 1:
-      return `${hours}시간 전`;
-    case weeks < 1:
-      return `${days}일 전`;
-    case months < 1:
-      return `${weeks}주 전`;
-    case years < 1:
-      return `${months}달 전`;
-    default:
-      return `${years}년 전`;
-  }
 }
+
