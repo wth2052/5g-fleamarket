@@ -11,7 +11,7 @@ function login() {
         .then((res) => {
             // 응답처리
             alert(res.data)
-            window.location.replace("http://localhost:3000/products")
+            window.location.replace("http://localhost:3000/admin/products")
         })
         .catch((error) => {
             // 예외처리
@@ -23,9 +23,9 @@ function login() {
 //상품 상세 보기
 function getProduct (productId) {
     axios
-            .get('http://localhost:3000/products')
+            .get('http://localhost:3000/admin/products')
             .then((res) => {
-               window.location.replace(`http://localhost:3000/products/${productId}`)
+               window.location.replace(`http://localhost:3000/admin/products/${productId}`)
                 })
             .catch((error) => {
                 // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -43,11 +43,11 @@ function deleteProduct(productId){
     if(confirm('정말 삭제하시겠습니까?')){ 
 
     axios
-    .delete(`/products/${productId}`)
+    .delete(`/admin/products/${productId}`)
     .then((res) => {
         // 응답처리
         alert(JSON.stringify(res.data.message))
-        window.location.replace("http://localhost:3000/products")
+        window.location.replace("http://localhost:3000/admin/products")
     })
     .catch((error) => {
         if (error.response.status === 401) {
@@ -522,7 +522,7 @@ function debounce(func, wait = 5, immediate = false) {
     };
   }
 
-if (window.location.href === 'http://localhost:3000/products'){
+if (window.location.href === 'http://localhost:3000/admin/products'){
 //상품 무한 스크롤 
 
 let limit = Number(document.getElementById('productsLength').value)
@@ -597,7 +597,7 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
   function search() {
     const search = document.getElementById('search').value;
     axios
-    .get(`http://localhost:3000/productSearch?search=${search}`)
+    .get(`http://localhost:3000/admin/productSearch?search=${search}`)
     .then((res) => {
       window.removeEventListener('scroll', debouncedPageProduct);
       let data = res.data.data;

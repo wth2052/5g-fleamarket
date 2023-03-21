@@ -26,6 +26,7 @@ import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { number } from 'joi';
+import { ApiQuery } from '@nestjs/swagger';
 @Catch(HttpException)
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -107,6 +108,7 @@ export class OrdersController {
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.getSellList(userId);
+    console.log('!@#$%', data);
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료
@@ -150,20 +152,30 @@ export class OrdersController {
   }
   // -------------------------
   // test용 productList
-  @Public()
-  @Get('product/detail/graph/:productId')
-  async productList(@Param('productId') productId: number) {
-    const product = await this.ordersService.graph(productId);
-    return product;
-  }
+  // @Public()
+  // @Get('product/detail/graph/:productId')
+  // async productList(@Param('productId') productId: number) {
+  //   const product = await this.ordersService.graph(productId);
+  //   return product;
+  // }
 
   // 상품검색
   @Public()
   @Get('productSearch')
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   // http://localhost:3000/orders/productSearch?search=피카츄
-  async productSearch(@Query('search') search: string) {
-    const product = await this.ordersService.productSearch(search);
-    return { data: product };
+  async productSearch(
+    @Query('search') search: string,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    const product = await this.ordersService.productSearch(
+      search,
+      limit,
+      offset,
+    );
+    return { data: product.products, totalProducts: product.totalProducts };
   }
 
   // 끌어올리기

@@ -4,52 +4,146 @@ function handleKeyPress(e) {
     productSearch();
   }
 }
-// 상품 검색
-    function productSearch() {
-      const search = document.getElementById('search').value;
-      console.log(search);
-    
-      axios
-        .get(`http://localhost:3000/orders/productSearch?search=${search}`)
-        .then((res) => {
-         
-          let data = res.data.data;
+
+ // 상품 검색
+ function productSearch() {
+  const search = document.getElementById('search').value;
+  console.log(search);
+
+  axios
+    .get(`http://localhost:3000/orders/productSearch?search=${search}`)
+    .then((res) => {
+     
+      let data = res.data.data;
+      let totalProducts = res.data.totalProducts
+      let temp = '';
+      for (let i = 0; i < data.length; i++) {
+        const timeAgo = getTimeAgo(data[i].createdAt);
+
+        // 검색어 배경색 적용
+        const title = data[i].title.replace(
+          new RegExp(`(${search})`, 'gi'),
+          '<span style="background-color: yellow">$1</span>',
+        );
+        temp += `
+         <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                     <div class="row">
+                      <div class="col-md-3" style=" padding: 0">
+                        <img src="/img/${data[i].images[0].imagePath}" alt="image" 
+                        style="width: 100%; height: 100%; margin: 0" />
+                       </div>
+              <div class="col-md-9">
+                <h3>${title}</h3></br>
+                <h4>${data[i].price}원</h4>  
+                <h6>${timeAgo}</h6>
+                <span>조회: ${data[i].viewCount}회</span>
+                <span style="float: right;">🎯 ${data[i].dealCount} ❤${data[i].likes}</span>
+              </div>
+            </div>
+          </div>
+          
+          <input type="hidden" value="${data.length}" id="productsSearchLength">
+          <input type="hidden" value="${totalProducts}" id="totalProductsSearch">
+  `;
+      }
+      document.getElementById('bb').innerHTML = temp;
+
+      //검색 페이지네이션
+      function debounce(func, wait = 5, immediate = false) {
+        let timeout;
+        return function () {
+          const context = this
+          const args = arguments
+
+          const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          const callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      }
+
+      let limit = Number(document.getElementById('productsSearchLength').value)
+      let offset = Number(document.getElementById('productsSearchLength').value)
+      let TotalProducts = Number(document.getElementById('totalProductsSearch').value)
+
+      window.removeEventListener('scroll', debouncedPageProduct);
+      const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
+      window.addEventListener('scroll', debouncedPageSearchProduct);
+
+  function pageSearchProduct() {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+
+      const totalProducts = TotalProducts
+      const productsLength = limit
+      console.log(33, productsLength)
+      console.log(44, totalProducts)
+
+      axios.get(`http://localhost:3000/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
+        .then(res => {
+          
+          const products = res.data.data;
+          console.log(55, products)
           let temp = '';
-          for (let i = 0; i < data.length; i++) {
-            const timeAgo = getTimeAgo(data[i].createdAt);
-    
-            // 검색어 배경색 적용
-            const title = data[i].title.replace(
+
+          for (let i = 0; i < products.length; i++) {
+            const timeAgo = getTimeAgo(products[i].updatedAt);
+
+            const title = products[i].title.replace(
               new RegExp(`(${search})`, 'gi'),
               '<span style="background-color: yellow">$1</span>',
             );
-    
-            
+
             temp += `
-             <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
-                         <div class="row">
-                          <div class="col-md-3" style=" padding: 0">
-                            <img src="/img/${data[i].images[0].imagePath}" alt="image" 
-                            style="width: 100%; height: 100%; margin: 0" />
-                           </div>
-                  <div class="col-md-9">
-                    <h3>${title}</h3></br>
-                    <h4>${data[i].price}원</h4>  
-                    <h6>${timeAgo}</h6>
-                    <span>조회: ${data[i].viewCount}회</span>
-                    <span style="float: right;">🎯 ${data[i].dealCount} ❤${data[i].likes}</span>
-                  </div>
-                </div>
-              </div>`;
+            <div class="container-fluid" onclick="location.href='/productss/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+            <div class="row">
+             <div class="col-md-3" style=" padding: 0">
+               <img src="img/${products[i].images[0].imagePath}" alt="image" 
+               style="width: 100%; height: 150px; margin: 0" />
+              </div>
+           <div class="col-md-9">
+       <h3>${title}</h3>
+       <h4>${products[i].price}원</h4>
+       <h6>${timeAgo}</h6>
+       <span>조회: ${products[i].viewCount}회</span>
+       <br>
+       <span style="float: right;">🎯 ${products[i].dealCount} ❤ ${products[i].likes}</span>
+   </div>
+</div>
+</div>
+            `;
           }
-          document.getElementById('bb').innerHTML = temp;
+          $('#bb').append(temp);
+
+          if (products.length < res.data.totalProducts) {
+
+            limit += products.length
+
+            offset += products.length
+          }
         })
-        .catch((error) => {
-          alert(error.response.data.message);
-          window.location.reload();
+        .catch(error => {
+          if (productsLength === totalProducts) {
+            alert('끝 페이지입니다.')
+            window.removeEventListener('scroll', debouncedPageSearchProduct);
+          }
+          else {
+            alert('데이터를 불러오는 중 오류가 발생했습니다.');
+          }
         });
     }
-
+  };
+//   window.removeEventListener('scroll', debounce(pageSearchProduct, 50));
+    })
+    .catch((error) => {
+      alert(error.response.data.message);
+      window.location.reload();
+    });
+}
 
 
 

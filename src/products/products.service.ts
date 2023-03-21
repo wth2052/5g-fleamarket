@@ -43,6 +43,7 @@ export class ProductsService {
 
   async getAllProducts(limit: number, offset: number) {
     const products = await this.productRepository.find({
+      where: { status: 'sale' },
       take: limit,
       skip: offset,
       relations: ['category', 'images'],
@@ -57,8 +58,6 @@ export class ProductsService {
   async getTotalProducts() {
     return this.productRepository.count();
   }
-
-
 
   async getProductById(id: number) {
     const product = await this.productRepository.findOne({
@@ -77,34 +76,15 @@ export class ProductsService {
       ],
       relations: ['category', 'seller', 'images', 'likesJoin'],
     });
-    console.log('####################', product);
+
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
     product.viewCount += 1;
     await this.productRepository.save(product);
-
-    // product.likesJoin.length
-
-    const {
-      category: { name },
-      seller: { nickname },
-      images: { imagePath },
-    } = product;
-
-    const images = product.images.map((image) => ({
-      imagePath: image.imagePath,
-    }));
-
-    return {
-      product: {
-        ...product,
-        category: { name },
-        seller: { nickname },
-        images: images,
-      },
-    };
+    console.log('####################', product, '###########');
+    return { product };
   }
 
   async createProduct(
@@ -122,25 +102,29 @@ export class ProductsService {
     product.price = price;
     product.categoryId = categoryId;
     product.sellerId = sellerId;
-  
+
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-  
+
     try {
-      const user = await queryRunner.manager.findOne(UserEntity, { where:{ id: sellerId }});
+      const user = await queryRunner.manager.findOne(UserEntity, {
+        where: { id: sellerId },
+      });
       if (!user) {
         throw new NotFoundException('User not found');
       }
-  
-      const category = await queryRunner.manager.findOne(CategoriesEntity, { where: { id: categoryId } });
+
+      const category = await queryRunner.manager.findOne(CategoriesEntity, {
+        where: { id: categoryId },
+      });
       if (!category) {
         throw new NotFoundException('Category not found');
       }
-  
+
       // 글 저장
       const savedProduct = await queryRunner.manager.save(product);
-  
+
       // 이미지 처리
       for (const image of images) {
         const imageFilename = image.filename;
@@ -151,22 +135,26 @@ export class ProductsService {
           'img',
           imageFilename,
         );
-  
+        // 경로가 없으면 생성
+        if (!fs.existsSync(path.dirname(finalImagePath))) {
+          fs.mkdirSync(path.dirname(finalImagePath), { recursive: true });
+        }
+        //
         const fileStream = fs.createReadStream(image.path);
         const writeStream = fs.createWriteStream(finalImagePath);
         fileStream.pipe(writeStream);
-  
+
         // ProductImagesEntity 인스턴스 생성
         const productImage = new ProductImagesEntity();
         productImage.productId = savedProduct.id;
         productImage.imagePath = imageFilename;
-  
+
         // ProductImagesEntity 인스턴스 저장
         await queryRunner.manager.save(productImage);
       }
-  
+
       await queryRunner.commitTransaction();
-  
+
       return savedProduct;
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -194,34 +182,25 @@ export class ProductsService {
       categoryId,
     });
   }
-
-
-
   async deleteProduct(id: number, sellerId: number) {
-    console.log("아이디",id)
-    console.log("셀러", sellerId)
     await this.verifySomething(id, sellerId);
-   
-    await this.connection.transaction(async (manager) => {
-        //timeout 뜸,delete에서 임시로 put으로 바꿨습니다
-      // 이미지의 deletedAt을 업데이트합니다.
-      //d이미지는 softdelete product는 soldout
-      //product는 status값이 안 바뀌고. 이미지는 deletedAt값이 null인데 productid값이 null로 바뀜
-      await manager.getRepository(ProductImagesEntity).update(
-        { productId: id },// , deletedAt: null
-        { deletedAt: new Date() }
-        );
-      await this.productImagesRepository.update(
-        { productId: id },// , deletedAt: null
-        { deletedAt: "2023-03-16 15:40.37" }
-        );
-      // 상품의 status를 'soldout'으로 업데이트합니다.
-      await manager.getRepository(ProductsEntity,).update(id, { status: 'deleted' });
-    });
-  }
-  async verifySomething(id: number, sellerId: number) {
 
-    if (sellerId === undefined) {
+    await this.connection.transaction(async (manager) => {
+      await manager.update(
+        ProductImagesEntity,
+        { productId: id },
+        { deletedAt: new Date() },
+      );
+      await manager.update(ProductsEntity, id, { status: 'deleted' });
+    });
+
+    // if (error instanceof NotFoundException) {
+    // throw new NotFoundException('Product not found');
+    // }
+  }
+
+  async verifySomething(id: number, sellerId: number) {
+    if (!sellerId) {
       throw new BadRequestException('Invalid sellerId');
     }
 
@@ -289,5 +268,10 @@ export class ProductsService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  //등록창 카테고리 불러오기용
+  async getCategories(): Promise<CategoriesEntity[]> {
+    return await this.categoriesRepository.find();
   }
 }

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   HttpException,
   HttpStatus,
@@ -30,7 +31,6 @@ export class OrdersService {
     @InjectRepository(ProductsEntity)
     private productRepository: Repository<ProductsEntity>,
     private dataSource: DataSource,
-    /////////////////////////////////////
     private readonly config: ConfigService,
   ) {}
   create(createOrderDto: CreateOrderDto) {
@@ -170,7 +170,7 @@ export class OrdersService {
     });
     const sellerUser = await this.userRepository.findOne({
       where: { id: sellerInfo.id },
-      select: ['id', 'email', 'nickname'],
+      select: ['id', 'email', 'nickname', 'phone'],
     });
     return sellerUser;
   }
@@ -191,49 +191,34 @@ export class OrdersService {
     }
     const buyerInfo = await this.userRepository.findOne({
       where: { id: order.buyerId },
-      select: ['id', 'email', 'nickname'],
+      select: ['id', 'email', 'nickname', 'phone'],
     });
     return buyerInfo;
   }
 
   async getBuyList(userId: number) {
-    const buyList = await this.orderRepository.find({
-      where: { buyerId: userId, status: 'success', deletedAt: null },
-      order: { updatedAt: 'DESC' },
-    });
+    const buyList = await this.productRepository
+      .createQueryBuilder('products')
+      .leftJoinAndSelect('products.orders', 'orders')
+      .leftJoinAndSelect('products.images', 'images')
+      .where(`orders.buyerId = :userId`, { userId })
+      .andWhere('orders.status = :status', { status: 'success' })
+      .getMany();
     if (!buyList.length) {
-      throw new NotFoundException();
+      throw new NotFoundException('구매한 상품 내역이 없습니다.');
     }
-    for (let i = 0; i < buyList.length; i++) {
-      const product = await this.productRepository.find({
-        where: { id: buyList[i].productId, status: 'success' },
-        relations: ['images'],
-        order: { updatedAt: 'DESC' },
-      });
-      return { buyList, product };
-    }
+    return buyList;
   }
   async getSellList(userId: number) {
     const myProduct = await this.productRepository.find({
       where: { sellerId: userId, status: 'success' },
-      relations: ['category', 'images'],
+      relations: ['category', 'images', 'orders'],
       order: { updatedAt: 'DESC' },
     });
     if (!myProduct.length) {
       throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
     }
-    for (let i = 0; i < myProduct.length; i++) {
-      const real = await this.orderRepository.find({
-        where: { productId: myProduct[i].id, status: 'success' },
-        relations: ['product'],
-        order: { updatedAt: 'DESC' },
-      });
-      console.log('판매 성공', real);
-      if (!real.length) {
-        throw new NotFoundException('판매를 성공한 상품이 없습니다.');
-      }
-      return { real, myProduct };
-    }
+    return { myProduct };
   }
   async putdealAccept(userId: number, orderId: number) {
     const selectOrder = await this.orderRepository.findOne({
@@ -280,7 +265,7 @@ export class OrdersService {
       throw new NotFoundException('상품 정보가 없습니다.');
     }
     if (product.sellerId === Number(userId)) {
-      throw new ForbiddenException('자신의 상품에는 deal을 할 수 없습니다.');
+      throw new BadRequestException('자신의 상품에는 deal을 할 수 없습니다.');
     }
     const user = await this.orderRepository.findOne({
       where: { productId: productId, buyerId: userId, deletedAt: null },
@@ -370,14 +355,11 @@ export class OrdersService {
   }
 
   // 상품검색
-  async productSearch(search: string) {
+  async productSearch(search: string, limit: number, offset: number) {
     try {
       if (!search) {
         throw new NotFoundException('검색어를 입력해주세요.');
       }
-      // const products = await this.productRepository.find({
-      //   where: { title: Like(`%${search}%`) },
-      // });
       const queryBuilder = this.productRepository.createQueryBuilder('product');
 
       const products = await queryBuilder
@@ -388,6 +370,8 @@ export class OrdersService {
           'seller.id = product.sellerId',
         )
         .leftJoinAndSelect('product.images', 'images')
+        .take(limit)
+        .skip(offset)
         .where({ title: Like(`%${search}%`) })
         .select([
           'product.id',
@@ -405,10 +389,14 @@ export class OrdersService {
         ])
         .getMany();
 
+      const totalProducts = await queryBuilder
+        .where({ title: Like(`%${search}%`) })
+        .getCount();
+
       if (products.length === 0) {
         throw new NotFoundException(`검색한 상품이 없습니다.'${search}'`);
       }
-      return products;
+      return { products, totalProducts };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
