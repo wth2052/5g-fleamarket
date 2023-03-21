@@ -245,7 +245,7 @@ function deal(productId) {
 //삭제하기
 function remove(productId) {
   axios
-    .delete(`http://localhost:3000/productss/${productId}`)
+    .delete(`http://localhost:3000/products/${productId}`)
     .then((response) => {
       window.location.href = 'http://localhost:3000/';
     })
