@@ -82,7 +82,7 @@ window.addEventListener('scroll', debouncedPageProduct);
           console.log(33, productsLength)
           console.log(44, totalProducts)
 
-          axios.get(`http://localhost:3000/productss/view?limit=${limit}&offset=${offset}`)
+          axios.get(`http://localhost:3000/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
               const products = res.data.products;
               console.log(55, products)
@@ -98,7 +98,7 @@ window.addEventListener('scroll', debouncedPageProduct);
                             <img class="img-fluid" 
                               src="/img/${products[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/productss/asdf/${products[i].id}'" alt="">
+                               onclick="window.location='/products/asdf/${products[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${products[i].title}</h5>
                                 <h6 class="card-title">${productPrice} 원</h6>

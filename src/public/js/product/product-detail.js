@@ -100,11 +100,18 @@ axios
                                                 onclick="like(${num})">찜하기
                                         </button>
                                     </small>
+                               
                                     <!-- 모달 버튼 -->
                                     <small class="text-muted">
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#exampleModal" data-whatever="@mdo">가격 제시하기
                                         </button>
+                                             <small class="text-muted">
+                                        <button type="button" class="btn btn-danger m-b-10 m-l-5"
+                                                id="toastr-success-bottom-right"
+                                                onclick="remove(${num})">삭제하기
+                                        </button>
+                                    </small>
                                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <!-- 모달 내용 -->
@@ -132,12 +139,7 @@ axios
                                             </div>
                                         </div>
                                     </div>
-                                    <small class="text-muted">
-                                        <button type="button" class="btn btn-danger m-b-10 m-l-5"
-                                                id="toastr-success-bottom-right"
-                                                onclick="remove(${num})">삭제하기
-                                        </button>
-                                    </small>
+                                    
                                     
                                <h6 class="card-text">${data.description}</h6>
                             </div>
@@ -260,6 +262,7 @@ function remove(productId) {
     });
 }
 
+
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
   const now = new Date();
@@ -289,4 +292,3 @@ function getTimeAgo(dateString) {
       return `${years}년 전`;
   }
 }
-

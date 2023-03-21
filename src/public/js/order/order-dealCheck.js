@@ -55,15 +55,13 @@ function pullUp(productId) {
       window.location.href = '/order/dealcheck';
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
       if (error.response.status === 401) {
         alert('로그인 후 사용이 가능합니다.');
         window.location.href = '/';
-      } else if(error.response.status === 406){
-        alert(error.response.data.message)
+      } else if (error.response.status === 406) {
+        alert(error.response.data.message);
         window.location.href = '/order/dealcheck';
       }
     });
 }
-
-

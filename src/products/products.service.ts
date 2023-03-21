@@ -47,7 +47,7 @@ export class ProductsService {
       take: limit,
       skip: offset,
       relations: ['category', 'images'],
-      order: { updatedAt: 'DESC' },
+      order: { pullUp: 'DESC' },
     });
     if (products.length === 0) {
       throw new NotFoundException('상품이 존재하지 않습니다.');
@@ -73,9 +73,10 @@ export class ProductsService {
         'likes',
         'createdAt',
         'pullUp',
-        'status'
+        'status',
       ],
       relations: ['category', 'seller', 'images', 'likesJoin'],
+      order: { pullUp: 'DESC' },
     });
 
     if (!product) {
