@@ -171,7 +171,7 @@ export class OrdersService {
     });
     const sellerUser = await this.userRepository.findOne({
       where: { id: sellerInfo.id },
-      select: ['id', 'email', 'nickname', 'phone'],
+      select: ['id', 'email', 'nickname', 'phone', 'address'],
     });
     return sellerUser;
   }
