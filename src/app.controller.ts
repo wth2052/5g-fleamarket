@@ -1,13 +1,14 @@
 import {
   Body,
   Controller,
-  Get, Param,
+  Get,
+  Param,
   Post,
   Put,
   Render,
   Req,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Public } from './global/common/decorator/skip-auth.decorator';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -51,6 +52,14 @@ export class AppController {
   @Get('order/dealAccept/:orderId')
   @Render('order/order-dealAccept.ejs')
   async dealAccept() {}
+
+  @Get('order/me/buy/list')
+  @Render('order/order-buyList.ejs')
+  async buyList() {}
+
+  @Get('order/me/sell/list')
+  @Render('order/order-sellList.ejs')
+  async sellList() {}
 
   @Get('product')
   @Render('main.ejs')

@@ -32,7 +32,7 @@ axios
                         <a>
                             <div class="col-mail col-mail-2">
                                 <div class="subject">${dealPrice}</div>
-                                <div class="date"><button type="button" onclick="" class="btn mb-1 btn-rounded btn-success">수락하기</button></div>
+                                <div class="date"><button type="button" onclick="dealAccept(${data.deal[i].id})" class="btn mb-1 btn-rounded btn-success">수락하기</button></div>
                             </div>
                         </a>
                     </div>       
@@ -45,6 +45,25 @@ axios
   .catch((error) => {
     console.log(error);
   });
+
+// 판매자가 거래를 수락해서 거래종료
+function dealAccept(orderId) {
+  console.log(orderId);
+  axios
+    .put(`http://localhost:3000/orders/deal/accept/${orderId}`)
+    .then((res) => {
+      // 응답처리
+      alert('거래가 완료되었습니다. (메세지수정+랜더페이지 수정');
+      // window.location.replace('http://localhost:3000/order');
+    })
+    .catch((error) => {
+      // 예외처리
+      alert(
+        error.response?.data?.message ||
+          error.response.data.errorMessage.details[0].message,
+      );
+    });
+}
 
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
