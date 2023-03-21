@@ -217,6 +217,7 @@ export class AdminController {
     }
   }
 
+
   @Get('/api/notice')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })

@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>신고하기</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="/image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+<%- include('main-header.ejs') %>
+
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <!-- row -->
+            <div class="row" id="product-list">
+            <div class="container-fluid">
+                
+                    <!-- 붙여넣기 -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="active-member">
+                                        <div class="table-responsive">
+                                            <table class="table table-xs mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>공지</th>
+                                                        
+                                                        <th>공지 날짜</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="notice-box">
+                                                    <tr>
+                                                        <td>이건 테스트 공지입니다.</td>
+                                                        <td>
+                                                            
+                                                            <span >10 sec ago</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>이건 테스트입니다만 문제 있나요? </td>
+                                                        <td>
+                                                            
+                                                            <span >10 sec ago</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                
+                                                <!-- <div class="pagination-wrapper clearfix">
+                                                    <ul class="pagination float--right" id="pages">
+
+
+                                                    </ul>
+                                                </div> -->
+                                            </table>
+                                            <!-- <button class="page-link" id="prev-button" >Prev</button> -->
+                                            <div id="pagination-box">
+
+                                            
+                                            </div>
+                                            <!-- <button class="page-link" id="next-button">Next</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                    
+                    <!-- 붙여넣기 끝 -->
+                
+            </div>
+            <!-- #/ container -->
+        </div>
+    </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="/plugins/common/common.min.js"></script>
+    <script src="/js/custom.min.js"></script>
+    <script src="/js/settings.js"></script>
+    <script src="/js/gleek.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+    <script src="/js/notice/notice.js"></script>
+    <script src="/js/header.js"></script>
+
+    <script src="/plugins/validation/jquery.validate.min.js"></script>
+    <script src="/plugins/validation/jquery.validate-init.js"></script>
+
+</body>
+
+</html>
