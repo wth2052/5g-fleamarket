@@ -30,7 +30,7 @@ axios
                                         <div class="dropdown-menu"><a class="dropdown-item">✅ 구매가격</a>
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
-                                        <button type="button" id="alertStart"  onclick="buyResult(${data[i].orders[0].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
+                                        <button type="button" id="alertStart"  onclick="sellResult(${data[i].orders[0].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
 
                                         </div>
                                     </div>
@@ -58,32 +58,27 @@ axios
     if (error.response.status === 401) {
       alert('로그인 후 사용 가능한 기능 입니다.');
       window.location.href = '/';
-    }
-    if (error.response.status === 404) {
+    } else if (error.response.status === 404) {
       let temp = '';
-      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png">`;
+      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
       document.getElementById('product-list').innerHTML = temp;
     }
   });
 
 // 판매자 정보
-function buyResult(orderId) {
+function sellResult(orderId) {
   axios
     .get(`http://localhost:3000/orders/buy/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
       const addressSplit = data.address.split(' ');
-      $().ready(function () {
-        $('#alertStart').click(function () {
-          Swal.fire({
-            icon: 'success',
-            title: '판매자 정보',
-            html: `판매자 :  <span style="color: #1FA8F9">${data.nickname}</span><br>
-                연락처 : <span style="color: #1FA8F9">${data.phone}</span><br>
-                주소 : <span style="color: #1FA8F9">${addressSplit[2]}</span>`,
-          });
-        });
-      });
+      swal(
+        '판매자 정보',
+        `판매자 : ${data.nickname}
+                연락처 : ${data.phone}
+                주소 : ${addressSplit[2]}`,
+        'success',
+      );
     })
     .catch((error) => {
       console.log(error);
