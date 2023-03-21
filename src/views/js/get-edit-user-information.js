@@ -13,112 +13,86 @@ function getEditUserInformation() {
       }
 
       console.log('성공', data);
-      let temp1 = `<div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
-        <form>
-            <div class="form-group">
-                <label for="id" class="form-label mt-4" >아이디</label>
-                <h2>
-                    ${data.email}
-                </h2>
-            </div>
-            <div class="form-group">
-                <label class="form-label mt-4" for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password">
-                <div class="valid-feedback"></div>
-                <label class="form-label mt-4" for="rptpassword">비밀번호 재확인</label>
-                <input type="password" class="form-control" id="repeatPassword">
-                <label class="form-label mt-4" for="nickname">닉네임</label>
-                <input type="text" class="form-control" id="nickname" maxLength="13" aria-describedby="phonenumber" value="${
-                  data.nickname
-                }">
-                <div class="form-group">
-                <label class="form-label mt-4" for="phoneNumber">휴대폰 번호</label>
-                 <input type="tel" class="form-control" id="phoneNumber" onInput="autoHypen(this)" maxLength="13" aria-describedby="phonenumber" value="${
-                   data.phone
-                 }">
-                </div>
-                <div class="form-group">
-                    <label class="form-label mt-4">주소</label>
-                    <div class="form-group">
-                <span class="ps_box">
-                  <input
-                          type="text"
-                          class="form-control"
-                          id="postcode"
-                          placeholder="우편번호"
-                          value="${addressdata[7]}"
-                  />
-                  <input
-                          type="button"
-                          onclick="execDaumPostcode()"
-                          value="우편번호 찾기"
-                  /><br />
-                  <input
-                          type="text"
-                          class="form-control"
-                          id="address"
-                          placeholder="주소"
-                           value="${
-                             addressdata[0] +
-                             ' ' +
-                             addressdata[1] +
-                             ' ' +
-                             addressdata[2] +
-                             ' ' +
-                             addressdata[3]
-                           }"
-                  /><br/>
-                  <input
-                          type="text"
-                          class="form-control"
-                          id="detailAddress"
-                          placeholder="상세주소"
-                          value="${addressdata[5]}"
-                  />
-                  <input
-                          type="text"
-                          class="form-control"
-                          id="extraAddress"
-                          placeholder="참고항목"
-                          value="${addressdata[6]}"
-                  />
-                    <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
-                  <div
-                          id="layer"
-                          style="
-                      display: none;
-                      position: fixed;
-                      overflow: hidden;
-                      z-index: 1;
-                      -webkit-overflow-scrolling: touch;
-                    "
-                  >
-                    <img
-                            src="//t1.daumcdn.net/postcode/resource/images/close.png"
-                            id="btnCloseLayer"
-                            style="
-                        cursor: pointer;
-                        position: absolute;
-                        right: -3px;
-                        top: -3px;
-                        z-index: 1;
-                      "
-                            onclick="closeDaumPostcode()"
-                            alt="닫기 버튼"
-                    />
-                  </div>
-                </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-</div>
-</div>
+      let section1 = `      
+        <!-- row -->
+                           
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <h2>  ${data.email} </h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                           <input type="password" id="password" name="Password" class="form-control" placeholder="비밀번호" required>
+                                            </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                    <div class="form-group"> 
+                                    <input type="password" id="repeatPassword" name="confirmPassword" class="form-control" placeholder="비밀번호 확인" required>
+                                         </div>
+                                           
+                                    </div>
+                                </div>                 
 `;
+      let section2 = `
+                        
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <input type="text" name="nickname" class="form-control" placeholder="닉네임" value="${
+        data.nickname
+      }" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    id="postcode"
+                                                    placeholder="우편번호"
+                                                    value="${addressdata[7]}"
+                                                    required
+                                            />
+                                                                                       <input
+                                          type="button"
+                                          class="btn"
+                                          style="background-color: #0597F2; color: #FFFFFF"
+                                          onclick="execDaumPostcode()"
+                                          value="우편번호 찾기"
+                                  />
+                                            <input type="text" name="address" id="address" class="form-control" placeholder="주소"                           value="${
+                                                    addressdata[0] +
+                                                    ' ' +
+                                                    addressdata[1] +
+                                                    ' ' +
+                                                    addressdata[2] +
+                                                    ' ' +
+                                                    addressdata[3]
+                                                  }" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                         <input type="text" id="detailAddress"name="detailAddress" class="form-control" value="${addressdata[5]}" placeholder="상세 주소" required>
+                                         <input type="text" id="extraAddress" class="form-control" placeholder="참고 항목" value="${addressdata[6]}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+
+                                        </div>
+                                    </div>
+                                </div>
+                           `
+
       if (data.address.split === undefined) {
         data.address = '';
       }
-      document.getElementById('temphere').innerHTML = temp1;
+      document.getElementById('temphere').innerHTML = section1;
+      document.getElementById('temphere2').innerHTML = section2;
     })
     .catch((error) => {
       // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때

@@ -3,6 +3,7 @@ let regEmail =
 let regNickname = /^[가-힣]+$/; // 한글만
 // 우편번호 찾기 화면을 넣을 element
 let isverifyed = false;
+
 //   메일 전송
 function sendMail(event) {
   const email = document.getElementById('email').value;
@@ -39,6 +40,9 @@ function startTimer() {
       document.getElementById('mailTimer').innerHTML =
         '시간이 초과되었습니다. 다시 인증을 진행해주세요.';
     }
+    if (isverifyed === true) {
+      clearInterval(x);
+    }
   }, 1000);
 }
 
@@ -54,7 +58,7 @@ function signUp() {
   let address4 = document.getElementById('postcode').value; // 우편번호
   let newAddress = address1 + ' ' + address2 + ' ' + address3 + ' ' + address4;
   // const newPhoneNumber = phonenumber.replaceAll('-', '');
-
+  const email = document.getElementById('email').value;
   if (userid.value === '') {
     //해당 입력값이 없을 경우
     alert('아이디를 입력해주세요.');
@@ -103,9 +107,10 @@ function signUp() {
   if (isverifyed === false) {
     alert('이메일 인증을 진행해주세요.');
     return;
+
   }
   axios
-    .post('/auth/signup', {
+    .post('http://localhost:3000/auth/signup', {
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
       },
@@ -128,19 +133,26 @@ function signUp() {
 function emailNumberVerify() {
   const verifyNumber = document.getElementById('verifyNumber').value;
   const email = document.getElementById('email').value;
+  if (verifyNumber === '') {
+    //해당 입력값이 없을 경우
+    alert('인증번호를 입력해주세요.');
+    verifyNumber.focus();
+    return;
+  }
 
   axios
-    .post('/email-verify/verify-number', {
+    .post('http://localhost:3000/email-verify/verify-number', {
       verifyNumber: parseInt(verifyNumber),
       email,
     })
     .then((result) => {
       alert('이메일 인증에 성공하였습니다.');
-      isverifyed = true;
-      return isverifyed;
+      return isverifyed = true;
     })
     .catch((error) => {
-      alert('인증번호가 올바르지 않거나, 서버 에러입니다.' + error);
-      return isverifyed;
+      alert('인증번호가 올바르지 않거나, 서버 에러입니다.');
+      return isverifyed = false;
     });
 }
+
+
