@@ -72,8 +72,12 @@ export class EmailService {
     //Redis 내 : number userInput : String
     const fromRedisCacheCode = await this.cacheManager.get(`${user.email}`);
     const userInputCode = user.verifyNumber;
+    console.log(fromRedisCacheCode);
+    console.log(userInputCode);
+    console.log(typeof fromRedisCacheCode);
+    console.log(typeof userInputCode);
     //레디스에 있는 코드 = number
-    if (fromRedisCacheCode.toString() === userInputCode) {
+    if (fromRedisCacheCode === userInputCode) {
       return;
     } else {
       throw new BadRequestException({
@@ -83,9 +87,9 @@ export class EmailService {
     }
   }
 
-  ///블랙리스트 처리 이메일 
+  ///블랙리스트 처리 이메일
+
   async sendBanEmail(user): Promise<void> {
-    
     const transport = nodemailer.createTransport({
       service: this.configService.get('NODEMAILER_SERVICE'),
       secure: true,
