@@ -195,3 +195,27 @@ function getTimeAgo(dateString) {
         // window.location.reload();
       });
   }
+
+
+  function logout(){
+	axios
+		.post('http://localhost:3000/auth/logout',
+		)
+		.then((res) => {
+			// 응답처리
+			alert("정상적으로 로그아웃 처리 되었습니다.")
+			window.location.href = "/"
+			
+
+		})
+		.catch((error) => {
+			// 예외처리
+            if (error.response.status === 401) {
+                alert('로그인하셔야 합니다.');
+                window.location.href = '/login';}
+            else{
+                alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+            }
+			
+		});
+}
