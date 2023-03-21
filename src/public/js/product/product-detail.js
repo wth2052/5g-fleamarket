@@ -262,7 +262,6 @@ function remove(productId) {
     });
 }
 
-
 // 헤더로 뺴야됌 ( 임시 테스트용 )
 function getTimeAgo(dateString) {
   const now = new Date();
