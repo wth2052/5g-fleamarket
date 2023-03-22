@@ -51,6 +51,6 @@ export class SocialController {
     res.cookie('refreshToken', refreshToken, refreshOption);
     res.setHeader('Authentication', accessToken);
     res.setHeader('refreshToken', refreshToken);
-    res.redirect('/me/edit');
+    res.redirect('/googleuser/edit');
   }
 }
