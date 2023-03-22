@@ -274,7 +274,7 @@ export class ProductsService {
   }
 
   //등록창 카테고리 불러오기용
-  async getCategories(): Promise<CategoriesEntity[]> {
+  async getCategories() {
     return await this.categoriesRepository.find();
   }
 }
