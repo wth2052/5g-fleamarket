@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/orders/me/pick')
+  .get('/orders/me/pick')
   .then((res) => {
     let data = res.data.data;
     console.log(data);
@@ -74,7 +74,7 @@ function dealUpdate(orderId) {
     window.location.reload();
   }
   axios
-    .put(`http://localhost:3000/orders/deal/change/${orderId}`, {
+    .put(`/orders/deal/change/${orderId}`, {
       price: newDeal,
     })
     .then((res) => {
@@ -86,12 +86,12 @@ function dealUpdate(orderId) {
         alert('로그인 후 이용이 가능합니다.');
         window.location.href = '/';
       }
-      if (error.response.status === 403) {
-        alert('사용자가 가격을 제시한 상품이 아닙니다.');
-        window.location.href = '/';
-      }
       if (error.response.status === 400) {
         alert(error.response.data.message);
+        window.location.href = '/';
+      }
+      if (error.response.status === 403) {
+        alert('사용자가 가격을 제시한 상품이 아닙니다.');
         window.location.href = '/';
       }
     });
@@ -101,7 +101,7 @@ function dealUpdate(orderId) {
 function dealDelete(orderId) {
   event.stopPropagation();
   axios
-    .delete(`http://localhost:3000/orders/deal/cancel/${orderId}`)
+    .delete(`/orders/deal/cancel/${orderId}`)
     .then((res) => {
       alert('딜 취소하기 완료!.');
       window.location.reload();

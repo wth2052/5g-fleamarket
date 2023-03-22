@@ -224,7 +224,7 @@ function deal(productId) {
     })
     .then((response) => {
       alert('가격제시 완료');
-      window.location.href = '/order';
+      window.location.href = '/';
     })
     .catch((error) => {
       console.log(error);
