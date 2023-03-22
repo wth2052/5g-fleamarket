@@ -55,10 +55,12 @@ describe('AdminService', () => {
   //상품 
   describe('getProducts', () => {
     it('should return an array of products', async () => {
+      let limit = 2
+      let offset = 0
       const mockProducts = [new ProductsEntity(), new ProductsEntity()];
-      jest.spyOn(productRepository, 'find').mockResolvedValueOnce(mockProducts);
+      jest.spyOn(productRepository, 'createQueryBuilder').mockResolvedValueOnce(mockProducts);
 
-      const result = await adminService.getProducts();
+      const result = await adminService.getProducts(limit, offset);
       expect(productRepository.find).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockProducts);
     });
