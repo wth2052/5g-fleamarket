@@ -3,7 +3,7 @@ let regEmail =
 let regNickname = /^[가-힣]+$/; // 한글만
 // 우편번호 찾기 화면을 넣을 element
 let isverifyed = false;
-
+let isTimerRunning  = false;
 //   메일 전송
 function sendMail(event) {
   const email = document.getElementById('email').value;
@@ -20,7 +20,11 @@ function startTimer() {
   let time = 600; //기준시간 작성
   let min = ''; //분
   let sec = ''; //초
+
   let currentTimer = null;
+  if ((isTimerRunning === false)) {
+    return;
+  }
   //setInterval(함수, 시간) : 초마다 실행
   let x = setInterval(function () {
     //parseInt() : 정수를 반환
@@ -107,7 +111,6 @@ function signUp() {
   if (isverifyed === false) {
     alert('이메일 인증을 진행해주세요.');
     return;
-
   }
   axios
     .post('http://localhost:3000/auth/signup', {
@@ -147,12 +150,10 @@ function emailNumberVerify() {
     })
     .then((result) => {
       alert('이메일 인증에 성공하였습니다.');
-      return isverifyed = true;
+      return (isverifyed = true);
     })
     .catch((error) => {
       alert('인증번호가 올바르지 않거나, 서버 에러입니다.');
-      return isverifyed = false;
+      return (isverifyed = false);
     });
 }
-
-
