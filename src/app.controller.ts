@@ -119,4 +119,7 @@ export class AppController {
   @Render('report-create.ejs')
   async reportCreate() {}
 
+  @Get('me/likes')
+  @Render('like.ejs')
+  async likes() {}
 }

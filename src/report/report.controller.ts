@@ -28,9 +28,7 @@ export class ReportController {
     private jwtService: JwtService,
   ) {}
 
-  // @Get('/report')
-  // @Render('report-create.ejs')
-  // async reportCreate() {}
+  
 
   @Post('/report')
   createReport(
@@ -64,6 +62,14 @@ export class ReportController {
   @Get('/notices/:noticeId')
   async getNoticeById(@Param('noticeId') noticeId: number) {
     return { notice: await this.reportService.getNoticeById(noticeId) };
+  }
+
+  @Get('/likes')
+  async findMyLike(@Cookies('Authentication') jwt: JwtDecodeDto,) {
+    const userId = jwt.id;
+    const product = await this.reportService.findMyLike(userId)
+
+    return { product };
   }
 
 

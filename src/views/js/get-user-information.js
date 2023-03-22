@@ -22,7 +22,7 @@ axios
                 <button type="button" class="btn" onclick="location.href='/me/edit'" style="font-size: 20px; background: #79D0F2" >⚙️ 정보 수정 ⚙️</button>
             
             <div class="container"></div>
-            <button type="button" class="btn" onclick="location.href='/report'" style="font-size: 20px; background: #79D0F2; color: #FFFFFF" >🤬 불량 유저 신고하기 🤬</button>
+            <button type="button" class="btn" onclick="location.href='/me/report'" style="font-size: 20px; background: #79D0F2; color: #FFFFFF" >🤬 불량 유저 신고하기 🤬</button>
             <div class="col">
                
             </div>

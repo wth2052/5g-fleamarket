@@ -106,7 +106,7 @@ function getTimeAgo(dateString) {
         let offset = Number(document.getElementById('productsSearchLength').value)
         let TotalProducts = Number(document.getElementById('totalProductsSearch').value)
         
-        if(window.location.href === '/order/dealcheck' || '/order/mydeal' || '/order/me/buy/list' || '/order/me/sell/list'){
+        if(window.location.href === '/order/dealcheck' || '/order/mydeal' || '/order/me/buy/list' || '/order/me/sell/list' || 'me/report' || 'me/notices' || 'me/likes'){
             const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
             window.addEventListener('scroll', debouncedPageSearchProduct);
         }

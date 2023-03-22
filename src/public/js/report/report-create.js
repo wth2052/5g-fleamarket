@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/report')
+  .get('http://localhost:3000/me/report')
   .then((res) => {
   })
   .catch((error) => {
@@ -33,7 +33,7 @@ function report(){
         .catch((error) => {
           if (error.response.status === 401) {
                     alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
+                    window.location.href = '/'
                 }
             else{alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);}
         });
