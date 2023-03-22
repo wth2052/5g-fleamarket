@@ -110,4 +110,13 @@ export class AppController {
     await this.appService.seopNotice();
     await this.appService.seoprepoter();
   }
+
+  @Get('me/notices')
+  @Render('notices.ejs')
+  async notices() {}
+
+  @Get('me/report')
+  @Render('report-create.ejs')
+  async reportCreate() {}
+
 }

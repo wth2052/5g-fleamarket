@@ -4,7 +4,9 @@ import {
   Controller,
   Get,
   HttpException,
+  Param,
   Post,
+  Query,
   Render,
   UseGuards,
 } from '@nestjs/common';
@@ -26,9 +28,9 @@ export class ReportController {
     private jwtService: JwtService,
   ) {}
 
-  @Get('/report')
-  @Render('report-create.ejs')
-  async reportCreate() {}
+  // @Get('/report')
+  // @Render('report-create.ejs')
+  // async reportCreate() {}
 
   @Post('/report')
   createReport(
@@ -44,4 +46,25 @@ export class ReportController {
       data.description,
     );
   }
+
+  @Get('/notices')
+  async getNotices(
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
+  ) {
+    try {
+      const notices = await this.reportService.getNotices(limit, offset);
+      const totalNotice = await this.reportService.getTotalNotice();
+      return { notices, totalNotice };
+    } catch (error) {
+      return { errorMessage: error.message };
+    }
+  }
+
+  @Get('/notices/:noticeId')
+  async getNoticeById(@Param('noticeId') noticeId: number) {
+    return { notice: await this.reportService.getNoticeById(noticeId) };
+  }
+
+
 }

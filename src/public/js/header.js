@@ -62,7 +62,7 @@ function getTimeAgo(dateString) {
                               <img class="img-fluid" 
                                 src="/img/${data[i].images[0].imagePath}"
                                 style="min-height: 250px; max-height: 250px"
-                                 onclick="window.location='/productss/asdf/${data[i].id}'" alt="">
+                                 onclick="window.location='/products/asdf/${data[i].id}'" alt="">
                               <div class="card-body">
                                   <h5 class="card-title">${title}</h5>
                                   <h6 class="card-title">${data[i].price} 원</h6>
@@ -106,7 +106,7 @@ function getTimeAgo(dateString) {
         let offset = Number(document.getElementById('productsSearchLength').value)
         let TotalProducts = Number(document.getElementById('totalProductsSearch').value)
         
-        if(window.location.href === 'localhost:3000/order/dealcheck' || 'localhost:3000/order/mydeal'){
+        if(window.location.href === '/order/dealcheck' || '/order/mydeal' || '/order/me/buy/list' || '/order/me/sell/list'){
             const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
             window.addEventListener('scroll', debouncedPageSearchProduct);
         }
@@ -151,7 +151,7 @@ function getTimeAgo(dateString) {
                               <img class="img-fluid" 
                                 src="/img/${products[i].images[0].imagePath}"
                                 style="min-height: 250px; max-height: 250px"
-                                 onclick="window.location='/productss/asdf/${products[i].id}'" alt="">
+                                 onclick="window.location='/products/asdf/${products[i].id}'" alt="">
                               <div class="card-body">
                                   <h5 class="card-title">${title}</h5>
                                   <h6 class="card-title">${productPrice} 원</h6>
