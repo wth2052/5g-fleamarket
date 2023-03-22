@@ -1,15 +1,12 @@
 link = document.location.href;
-console.log(link);
 
 const linkSplit = link.split('/');
 const num = linkSplit[linkSplit.length - 1];
-console.log(num);
 
 axios
   .get(`http://localhost:3000/products/view/${num}`)
   .then((res) => {
     let data = res.data.product;
-    console.log(data);
     let img1 = '';
     let img2 = '';
     let img3 = '';
@@ -175,23 +172,19 @@ axios
     }
 
     if (data.images.length === 1) {
-      console.log('1번입니다');
       document.getElementById('carouselExampleIndicators').innerHTML = img1;
       document.getElementById('product-img-row').innerHTML = temp;
     }
     if (data.images.length === 2) {
-      console.log('2번입니다');
       document.getElementById('carouselExampleIndicators').innerHTML = img2;
       document.getElementById('product-img-row').innerHTML = temp;
     }
     if (data.images.length === 3) {
-      console.log('3번입니다');
       document.getElementById('carouselExampleIndicators').innerHTML = img3;
       document.getElementById('product-img-row').innerHTML = temp;
     }
   })
   .catch((error) => {
-    console.log(error);
     if (error.response.status === 404) {
       alert('해당 상품을 찾을 수 없습니다.');
       window.location.href = '/';
@@ -206,7 +199,6 @@ function like(productId) {
       window.location.reload();
     })
     .catch((error) => {
-      console.log(error);
       if (error.response.status === 401) {
         alert('로그인 후 이용 가능합니다.');
         window.location.href = '/login';
@@ -217,7 +209,6 @@ function like(productId) {
 // 가격 제시하기
 function deal(productId) {
   const dealPrice = document.getElementById('recipient-name').value;
-  console.log(dealPrice);
   axios
     .post(`http://localhost:3000/orders/deal/price/${productId}`, {
       price: dealPrice,
@@ -227,7 +218,6 @@ function deal(productId) {
       window.location.href = '/';
     })
     .catch((error) => {
-      console.log(error);
       if (error.response.status === 401) {
         alert('로그인해야 주문이 가능합니다.');
         window.location.href = '/login';
@@ -252,7 +242,6 @@ function remove(productId) {
       window.location.href = 'http://localhost:3000/';
     })
     .catch((error) => {
-      console.log(error);
       if (error.response.status === 401) {
         alert('로그인 후 이용 가능합니다.');
         window.location.href = '/login';

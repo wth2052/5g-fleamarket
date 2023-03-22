@@ -2,7 +2,6 @@ axios
   .get('/orders/me/sell/list')
   .then((res) => {
     let data = res.data.data.myProduct;
-    console.log(data);
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < data.length; i++) {
@@ -54,7 +53,6 @@ axios
     }
   })
   .catch((error) => {
-    console.log(error);
     if (error.response.status === 401) {
       alert('로그인 후 사용이 가능합니다.');
       window.location.href = '/';
@@ -67,7 +65,6 @@ axios
 
 // 구매자 정보
 function buyResult(orderId) {
-  console.log(orderId);
   axios
     .get(`/orders/sell/result/${orderId}`)
     .then((res) => {
@@ -82,7 +79,6 @@ function buyResult(orderId) {
       );
     })
     .catch((error) => {
-      console.log(error);
     });
 }
 

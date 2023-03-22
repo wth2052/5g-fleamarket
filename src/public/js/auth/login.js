@@ -12,7 +12,6 @@ function login() {
     .catch((error) => {
       // 예외처리
       //TODO: 500 서버에러시 에러 처리
-      // console.log(error );
       alert('아이디나 비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
     });
 }

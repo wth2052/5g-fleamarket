@@ -35,13 +35,10 @@ export class UserService {
     await this.cacheManager.set(`${id}`, currentHashedRefreshToken, {
       ttl: this.configService.get('REDIS_REFRESH_EXPIRE'),
     });
-    // console.log('담긴 값', currentHashedRefreshToken);
-    // console.log('redis 값', await this.cacheManager.get(`${id}`));
     // await this.userRepository.update(id, { currentHashedRefreshToken });
   }
   async getUserIfRefreshTokenMatches(refreshToken: string, id: number) {
     const user = await this.cacheManager.get(`${id}`);
-    console.log('유져', user);
     const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user);
 
     if (isRefreshTokenMatching) {
@@ -65,7 +62,6 @@ export class UserService {
   }
   async updateUserInformation(User: UpdateUserDto, userId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    console.log('유저', user);
     User.password = await bcrypt.hash(User.password, 10);
     const queryRunner = this.dataSource.createQueryRunner();
 
@@ -82,7 +78,6 @@ export class UserService {
         },
       );
     } catch (err) {
-      console.log(err);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
@@ -94,7 +89,6 @@ export class UserService {
     userId: number,
   ) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
-    console.log('유저', user);
 
     const queryRunner = this.dataSource.createQueryRunner();
 

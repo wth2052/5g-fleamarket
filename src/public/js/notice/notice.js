@@ -1,7 +1,6 @@
 axios
   .get('/notices')
   .then((res) => {
-    console.log(res)
     let notices = res.data.notices
     let totalNotice = res.data.totalNotice;
     if (notices !== 0) {
@@ -112,7 +111,6 @@ axios
               updatePagination(); // update pagination buttons
             })
             .catch((error) => {
-              console.log(error);
               if (error.response.status === 401) {
                 alert('로그인 후 사용이 가능합니다.');
                 window.location.href = '/';
@@ -200,7 +198,6 @@ axios
                 updatePagination(); // update pagination buttons
               })
               .catch((error) => {
-                console.log(error);
                 if (error.response.status === 401) {
                   alert('로그인 후 사용이 가능합니다.');
                   window.location.href = '/';
@@ -218,7 +215,6 @@ axios
   })
 
   .catch((error) => {
-    console.log(error);
     if (error.response.status === 401) {
       alert('로그인 후 사용이 가능합니다.');
       window.location.href = '/';
@@ -234,7 +230,6 @@ function getNoticeById(noticeId) {
     .get(`/notices/${noticeId}`)
     .then((res) => {
       let notice = res.data.notice;
-      console.log(res);
       let temp = '';
       let body = '';
       // const timeAgo = getTimeAgo(notice.createdAt);
@@ -254,7 +249,6 @@ function getNoticeById(noticeId) {
     })
     .catch((error) => {
       // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-      console.log(error);
       if (error.response.status === 401) {
         alert('로그인 후 사용이 가능합니다.');
         window.location.href = '/';
