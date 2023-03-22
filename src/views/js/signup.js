@@ -128,7 +128,9 @@ function signUp() {
 }
 function emailNumberVerify() {
   const verifyNumber = document.getElementById('verifyNumber').value;
+  const verifyNumber2 = document.getElementById('verifyNumber');
   const email = document.getElementById('email').value;
+  const email2 = document.getElementById('email');
   const mailButton = document.getElementById('emailButton');
   const mailVerifyButton = document.getElementById('emailNumberButton');
   const mailTimer = document.getElementById('mailTimer');
@@ -146,7 +148,13 @@ function emailNumberVerify() {
     })
     .then((result) => {
       alert('이메일 인증에 성공하였습니다.');
+      email2.readOnly = true;
+      email2.disabled = true;
+      mailVerifyButton.disabled = true;
+      verifyNumber2.readOnly = true;
+      verifyNumber2.disabled = true;
       mailButton.style.display = 'none';
+
       mailVerifyButton.style.display = 'none';
       mailTimer.style.display = 'none';
       return (isverifyed = true);
