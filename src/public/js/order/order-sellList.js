@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/orders/me/sell/list')
+  .get('/orders/me/sell/list')
   .then((res) => {
     let data = res.data.data.myProduct;
     console.log(data);
@@ -69,7 +69,7 @@ axios
 function buyResult(orderId) {
   console.log(orderId);
   axios
-    .get(`http://localhost:3000/orders/sell/result/${orderId}`)
+    .get(`/orders/sell/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
       const addressSplit = data.address.split(' ');

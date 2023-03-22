@@ -1,13 +1,13 @@
 axios
   .get('http://localhost:3000/likes')
   .then((res) => {
-    console.log(res)
+    console.log(res);
     let data = res.data;
     let products = data.product;
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < products.length; i++) {
-        console.log(products[i].product.images)
+        console.log(products[i].product.images);
         let productP = products[i].product.price;
         const productPrice = productP
           .toString()
@@ -37,18 +37,16 @@ axios
 `;
       }
       document.getElementById('product-list').innerHTML = temp;
-
     }
   })
   .catch((error) => {
-    console.log(error)
+    console.log(error);
     if (error.response.status === 401) {
-        alert('로그인 후 사용이 가능합니다.');
-        window.location.href = '/';
-      } else if (error.response.status === 404) {
-        let temp = '';
-        temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
-        document.getElementById('product-list').innerHTML = temp;
-      }
-    
+      alert('로그인 후 사용이 가능합니다.');
+      window.location.href = '/';
+    } else if (error.response.status === 404) {
+      let temp = '';
+      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
+      document.getElementById('product-list').innerHTML = temp;
+    }
   });

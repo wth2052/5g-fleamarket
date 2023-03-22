@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/orders/me/sell/product')
+  .get('/orders/me/sell/product')
   .then((res) => {
     let data = res.data.data;
     console.log(res);

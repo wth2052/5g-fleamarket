@@ -4,7 +4,7 @@ const linkSplit = link.split('/');
 const num = linkSplit[linkSplit.length - 1];
 
 axios
-  .get(`http://localhost:3000/orders/products/${num}`)
+  .get(`/orders/products/${num}`)
   .then((res) => {
     let data = res.data.data;
     console.log(data);
@@ -58,7 +58,7 @@ axios
 function dealAccept(orderId) {
   console.log(orderId);
   axios
-    .put(`http://localhost:3000/orders/deal/accept/${orderId}`)
+    .put(`/orders/deal/accept/${orderId}`)
     .then((res) => {
       // 응답처리
       alert('거래가 완료되었습니다. (메세지수정+랜더페이지 수정');
