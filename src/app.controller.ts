@@ -64,8 +64,8 @@ export class AppController {
   @Render('main.ejs')
   async product() {}
 
-  @Get('product/create')
-  @Render('product-create.ejs')
+  @Get('products/create')
+  @Render('product/product-create.ejs')
   async productCreate() {}
 
   //TODO: 마이페이지에서 한번, 정보 수정에서 똑같은 로직이 한번씩 더 들어가는데 줄일 방법이 없을까?
