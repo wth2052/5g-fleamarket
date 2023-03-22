@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/products/view')
+  .get('/products/view')
   .then((res) => {
     let data = res.data;
     let products = data.products;
