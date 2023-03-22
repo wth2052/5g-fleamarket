@@ -46,42 +46,16 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="#" id="step-form-horizontal" class="step-form-horizontal">
-                        <div>
-                            <h4>아이디 & 비밀번호 확인</h4>
-                            <section>
+                    <form class="form-group" onsubmit="return false;">
                         <div id="temphere"></div>
-                            </section>
-                            <h4>닉네임 & 주소 수정</h4>
-                            <section>
-                            <div id="temphere2"></div>
-                            </section>
-                            <h4>제출</h4>
-                            <section>
-                                <div class="row h-100">
-                                    <div class="col-12 h-100 d-flex flex-column justify-content-center align-items-center">
-                                        <h2>수정이 완료되었다면 확인 버튼을 눌러주세요.</h2>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
+                        <div id="temphere2"></div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <!-- #/ container -->
-    </div>
-
-    <!--**********************************
-        Content body end
-    ***********************************-->
-    <div id="temphere"></div>
-    <button onclick="editUserInformation()">회원정보 수정하기</button>
-    <div id="temphere2"></div>
-    <div
-            id="layer"
-            style="
+        <div
+                id="layer"
+                style="
 
                       display: none;
                       position: fixed;
@@ -89,20 +63,27 @@
                       z-index: 1;
                       -webkit-overflow-scrolling: touch;
                     "
-    ></div>
-<img
-        src="//t1.daumcdn.net/postcode/resource/images/close.png"
-        id="btnCloseLayer"
-        style="
+        >        <img
+                    src="//t1.daumcdn.net/postcode/resource/images/close.png"
+                    id="btnCloseLayer"
+                    style="
                         cursor: pointer;
                         position: absolute;
                         right: -3px;
                         top: -3px;
                         z-index: 1;
                       "
-        onclick="closeDaumPostcode()"
-        alt="닫기 버튼"
-/>
+                    onclick="closeDaumPostcode()"
+                    alt="닫기 버튼"
+            /></div>
+
+        <!-- #/ container -->
+    </div>
+
+    <!--**********************************
+        Content body end
+    ***********************************-->
+
 
 
     <!-- 본문-->
