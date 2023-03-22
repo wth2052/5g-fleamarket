@@ -12,13 +12,13 @@ function withdrawalService() {
         )
       ) {
         alert('탈퇴는 한번 생각해보세요~');
+        return;
       } else {
         alert(
           '회원 탈퇴가 정상적으로 완료되었습니다. 이용을 원하시는 분은 재가입 부탁드립니다.',
         );
       }
-
-      window.location.href = '/';
+      window.location.href = '/login';
     })
     .catch(function (error) {
       console.log('에러', error);

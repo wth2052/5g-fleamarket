@@ -34,12 +34,12 @@ export class UserController {
   @Get('me/edit')
   async geteditInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
-    const User = await this.userService.getUserInformation(userId);
+    const user = await this.userService.getUserInformation(userId);
     const data = {
-      nickname: User.nickname,
-      email: User.email,
-      phone: User.phone,
-      address: User.address,
+      nickname: user.nickname,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
     };
     return { data: data };
   }

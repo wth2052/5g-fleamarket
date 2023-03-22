@@ -19,7 +19,7 @@ axios
                 <div class="d-grid gap-2">
                  <br>
                 <div class="alert alert-primary" role="alert" style="font-size: 23px;"><b>${data.nickname}</b> 님,<br> 냐옹상회에 오신것을 환영합니다!<br> 오늘도 좋은하루 되세요.</div>
-                <button type="button" class="btn" onclick="location.href='/me/edit'" style="font-size: 20px; background: #79D0F2" >⚙️ 정보 수정 ⚙️</button>
+                <button type="button" class="btn" onclick="location.href='/me/edit'" style="font-size: 20px; background: #79D0F2"; color: #FFFFFF" >⚙️ 정보 수정 ⚙️</button>
             
             <div class="container"></div>
             <button type="button" class="btn" onclick="location.href='/me/report'" style="font-size: 20px; background: #79D0F2; color: #FFFFFF" >🤬 불량 유저 신고하기 🤬</button>
