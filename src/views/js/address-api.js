@@ -63,8 +63,8 @@ function execDaumPostcode() {
 // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
 function initLayerPosition() {
   let width = 700; //우편번호서비스가 들어갈 element의 width
-  let height = 700; //우편번호서비스가 들어갈 element의 height
-  let borderWidth = 5; //샘플에서 사용하는 border의 두께
+  let height = 650; //우편번호서비스가 들어갈 element의 height
+  let borderWidth = 3; //샘플에서 사용하는 border의 두께
   // 위에서 선언한 값들을 실제 element에 넣는다.
   element_layer.style.width = width + 'px';
   element_layer.style.height = height + 'px';
