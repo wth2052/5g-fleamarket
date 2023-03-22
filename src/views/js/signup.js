@@ -22,9 +22,6 @@ function startTimer() {
   let sec = ''; //초
 
   let currentTimer = null;
-  if ((isTimerRunning === false)) {
-    return;
-  }
   //setInterval(함수, 시간) : 초마다 실행
   let x = setInterval(function () {
     //parseInt() : 정수를 반환
@@ -97,12 +94,6 @@ function signUp() {
     usernickname.focus();
     return false;
   }
-  // let reg = /^\d{3}-\d{3,4}-\d{4}$/;
-  // if (!reg.test(newPhoneNumber.value)) {
-  //   alert("전화번호는 숫자만 입력할 수 있습니다.");
-  //   newPhoneNumber.focus();
-  //   return false;
-  // }
   if (userid.value === '') {
     alert('이메일 주소를 입력하세요.');
     userid.focus();

@@ -21,12 +21,13 @@
 				}
 			}
       function emailModifiedChecker(obj) {
-
+            if(isverifyed === true) {
 	      obj.addEventListener("input", cancelVerify)
 	      function cancelVerify()  {
 		      isverifyed = false;
             alert('이메일이 변경되었습니다. 재 인증을 진행해주세요.')
 	      }
+      }
       }
 
     </script>

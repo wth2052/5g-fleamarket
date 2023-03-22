@@ -68,7 +68,7 @@
 
 <footer class="footer">
     <div class="text-center">
-        <p>Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2023</p>
+
     </div>
 </footer>
 </div>
@@ -81,28 +81,5 @@
 <script src="/plugins/sweetalert/js/sweetalert.init.js"></script>
 
 <script src="/js/product/product-create.js"></script>
-<!-- <script>
-    function loadCategories() {
-    axios.get('http://localhost:3000/products/create')
-        .then(response => {
-        const categories = response.data.categories;
-        const categorySelect = document.getElementById('categorySelect');
-        for (const category of categories) {
-            const option = document.createElement('option');
-            option.value = category.id;
-            option.textContent = category.name;
-            categorySelect.appendChild(option);
-        }
-        })
-        .catch(error => {
-        console.log(error);
-        if (error.response.status === 401) {
-            alert('로그인하셔야 합니다.');
-            window.location.href = '/login';
-        }
-        });
-}
-loadCategories();
-  </script> -->
 </body>
 </html>
