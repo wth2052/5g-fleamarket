@@ -95,7 +95,6 @@ export class OAuthAddInformationDto extends PickType(CreateUserDto, [
 ]) {}
 
 export class UpdateUserDto extends PickType(CreateUserDto, [
-  'email',
   'nickname',
   'password',
   'phone',

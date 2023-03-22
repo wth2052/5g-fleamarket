@@ -3,9 +3,10 @@ let regEmail =
 let regNickname = /^[가-힣]+$/; // 한글만
 // 우편번호 찾기 화면을 넣을 element
 let isverifyed = false;
-let isTimerRunning  = false;
+let isTimerRunning = false;
 //   메일 전송
 function sendMail(event) {
+  const mailTimer = document.getElementById('mailTimer');
   const email = document.getElementById('email').value;
   // 검증에 사용할 정규식
   if (email.match(regEmail) != null) {
@@ -22,9 +23,7 @@ function startTimer() {
   let sec = ''; //초
 
   let currentTimer = null;
-  if ((isTimerRunning === false)) {
-    return;
-  }
+  isTimerRunning = true;
   //setInterval(함수, 시간) : 초마다 실행
   let x = setInterval(function () {
     //parseInt() : 정수를 반환
@@ -97,12 +96,6 @@ function signUp() {
     usernickname.focus();
     return false;
   }
-  // let reg = /^\d{3}-\d{3,4}-\d{4}$/;
-  // if (!reg.test(newPhoneNumber.value)) {
-  //   alert("전화번호는 숫자만 입력할 수 있습니다.");
-  //   newPhoneNumber.focus();
-  //   return false;
-  // }
   if (userid.value === '') {
     alert('이메일 주소를 입력하세요.');
     userid.focus();
@@ -136,6 +129,9 @@ function signUp() {
 function emailNumberVerify() {
   const verifyNumber = document.getElementById('verifyNumber').value;
   const email = document.getElementById('email').value;
+  const mailButton = document.getElementById('emailButton');
+  const mailVerifyButton = document.getElementById('emailNumberButton');
+  const mailTimer = document.getElementById('mailTimer');
   if (verifyNumber === '') {
     //해당 입력값이 없을 경우
     alert('인증번호를 입력해주세요.');
@@ -150,9 +146,13 @@ function emailNumberVerify() {
     })
     .then((result) => {
       alert('이메일 인증에 성공하였습니다.');
+      mailButton.style.display = 'none';
+      mailVerifyButton.style.display = 'none';
+      mailTimer.style.display = 'none';
       return (isverifyed = true);
     })
     .catch((error) => {
+      console.log(error);
       alert('인증번호가 올바르지 않거나, 서버 에러입니다.');
       return (isverifyed = false);
     });
