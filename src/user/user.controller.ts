@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OAuthAddInformationDto } from './dto/create-user.dto';
 @Controller('/api/user')
 export class UserController {
   constructor(
@@ -51,6 +52,17 @@ export class UserController {
     const userId = jwt.id;
     // TODO 2023.03.16 작업 할일
 
-    await this.userService.updateUserInfomtaion(updateUserDto, userId);
+    await this.userService.updateUserInformation(updateUserDto, userId);
+  }
+  @Put('google/edit')
+  @UseGuards(JwtAuthGuard)
+  async editGoogleInformation(
+    @Cookies('Authentication') jwt: JwtDecodeDto,
+    @Body() updateUserDto: OAuthAddInformationDto,
+  ) {
+    const userId = jwt.id;
+    // TODO 2023.03.16 작업 할일
+
+    await this.userService.updateGoogleUserInformation(updateUserDto, userId);
   }
 }

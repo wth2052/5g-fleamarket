@@ -5,7 +5,6 @@ function getEditUserInformation() {
     .then((res) => {
       let data = res.data.data;
       let addressdata = data.address.split(' ');
-      console.log(addressdata);
       for (let i = 0; i < addressdata.length; i++) {
         if (addressdata.length < 10) {
           addressdata.push('');
@@ -22,13 +21,13 @@ function getEditUserInformation() {
             <div class="form-group">
                 <label class="form-label mt-4" for="nickname" style="font-size: 20px;"><b>닉네임</b></label>
                 <input type="text" class="form-control" id="nickname" maxLength="13" aria-describedby="phonenumber" value="${
-        data.nickname
-      }">
+                  data.nickname
+                }">
                 <div class="form-group">
                 <label class="form-label mt-4" for="phoneNumber" style="font-size: 20px;"><b>휴대폰 번호</b></label>
                  <input type="tel" class="form-control" id="phoneNumber" onInput="autoHypen(this)" maxLength="13" aria-describedby="phonenumber" value="${
-        data.phone
-      }">
+                   data.phone
+                 }">
                 </div>
                 <div class="form-group">
                     <label class="form-label mt-4" style="font-size: 20px;"><b>주소</b></label>
@@ -54,14 +53,14 @@ function getEditUserInformation() {
                           id="address"
                           placeholder="주소"
                            value="${
-        addressdata[0] +
-        ' ' +
-        addressdata[1] +
-        ' ' +
-        addressdata[2] +
-        ' ' +
-        addressdata[3]
-      }"
+                             addressdata[0] +
+                             ' ' +
+                             addressdata[1] +
+                             ' ' +
+                             addressdata[2] +
+                             ' ' +
+                             addressdata[3]
+                           }"
                   /><br/>
                   <input
                           type="text"
@@ -85,7 +84,7 @@ function getEditUserInformation() {
         </form>
 </div>
 </div>
-<button class="btn" style="background: #79D0F2; color: #FFFFFF; font-weight: bold" onclick="editUserInformation()">회원정보 수정하기</button>
+<button class="btn" style="background: #79D0F2; color: #FFFFFF; font-weight: bold" onclick="editGoogleUserInformation()">회원정보 수정하기</button>
 `;
       if (data.address.split === undefined) {
         data.address = '';

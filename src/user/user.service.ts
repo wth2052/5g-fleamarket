@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 // import { SmsService } from 'src/sms/sms.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtDecodeDto } from './dto';
-import { UpdateUserDto } from './dto/create-user.dto';
+import { OAuthAddInformationDto, UpdateUserDto } from './dto/create-user.dto';
 import { Cache } from 'cache-manager';
 @Injectable()
 export class UserService {
@@ -63,7 +63,7 @@ export class UserService {
       address: user.address,
     };
   }
-  async updateUserInfomtaion(User: UpdateUserDto, userId: number) {
+  async updateUserInformation(User: UpdateUserDto, userId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     console.log('유저', user);
     User.password = await bcrypt.hash(User.password, 10);
@@ -77,6 +77,34 @@ export class UserService {
         {
           nickname: User.nickname,
           password: User.password,
+          phone: User.phone,
+          address: User.address,
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async updateGoogleUserInformation(
+    User: OAuthAddInformationDto,
+    userId: number,
+  ) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    console.log('유저', user);
+
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      await this.userRepository.update(
+        { id: user.id },
+        {
+          nickname: User.nickname,
           phone: User.phone,
           address: User.address,
         },
