@@ -8,9 +8,9 @@ function report(){
     const title = document.getElementById('val-title').value;
     const description = document.getElementById('val-description').value;
 
-    console.log(title)
+    
     let emailCheck = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}');
-    console.log(emailCheck.test(`${reported}`))
+    
 
     if(emailCheck.test(`${reported}`) === false){
       alert('이메일 형식이 잘못되었습니다.')
@@ -20,7 +20,7 @@ function report(){
     }
     else{
       axios
-        .post('http://localhost:3000/report',
+        .post('/report',
             {
             reported: reported,
             title: title,
@@ -30,7 +30,7 @@ function report(){
         .then((res) => {
             // 응답처리
             alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/me/report")
+            window.location.replace("/me/report")
         })
         .catch((error) => {
           console.log(error)

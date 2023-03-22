@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/likes')
+  .get('/likes')
   .then((res) => {
     console.log(res);
     let data = res.data;

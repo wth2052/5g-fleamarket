@@ -42,7 +42,7 @@ function getTimeAgo(dateString) {
     console.log(search);
   
     axios
-      .get(`http://localhost:3000/orders/productSearch?search=${search}`)
+      .get(`/orders/productSearch?search=${search}`)
       .then((res) => {
        
         let data = res.data.data;
@@ -105,16 +105,23 @@ function getTimeAgo(dateString) {
         let limit = Number(document.getElementById('productsSearchLength').value)
         let offset = Number(document.getElementById('productsSearchLength').value)
         let TotalProducts = Number(document.getElementById('totalProductsSearch').value)
-        
-        if(window.location.href === '/order/dealcheck' || '/order/mydeal' || '/order/me/buy/list' || '/order/me/sell/list' || 'me/report' || 'me/notices' || 'me/likes'){
-            const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
+        link = document.location.href
+        const linkSplit = link.split('/')
+        const pageURL = linkSplit[linkSplit.length -1];
+
+        if(pageURL !== ''){
+         
+          
+          const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
             window.addEventListener('scroll', debouncedPageSearchProduct);
         }
 
-        else{ 
+        else  { 
+          
         window.removeEventListener('scroll', debouncedPageProduct);
         const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
-        window.addEventListener('scroll', debouncedPageSearchProduct);}
+        window.addEventListener('scroll', debouncedPageSearchProduct);
+      }
             
         
        
@@ -128,7 +135,7 @@ function getTimeAgo(dateString) {
         console.log(33, productsLength)
         console.log(44, totalProducts)
   
-        axios.get(`http://localhost:3000/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
+        axios.get(`/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
           .then(res => {
             
             const products = res.data.data;
@@ -199,7 +206,7 @@ function getTimeAgo(dateString) {
 
   function logout(){
 	axios
-		.post('http://localhost:3000/auth/logout',
+		.post('/auth/logout',
 		)
 		.then((res) => {
 			// 응답처리

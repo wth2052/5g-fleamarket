@@ -82,10 +82,10 @@ axios
           console.log(33, productsLength)
           console.log(44, totalProducts)
 
-          axios.get(`http://localhost:3000/products/view?limit=${limit}&offset=${offset}`)
+          axios.get(`/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
               const products = res.data.products;
-              console.log(55, products)
+              
               let temp = '';
 
               for (let i = 0; i < products.length; i++) {
