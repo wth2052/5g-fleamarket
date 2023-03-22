@@ -5,17 +5,16 @@ function handleKeyPress(e) {
   }
 }
 
- // 상품 검색
- function productSearch() {
+// 상품 검색
+function productSearch() {
   const search = document.getElementById('search').value;
   console.log(search);
 
   axios
     .get(`http://localhost:3000/orders/productSearch?search=${search}`)
     .then((res) => {
-     
       let data = res.data.data;
-      let totalProducts = res.data.totalProducts
+      let totalProducts = res.data.totalProducts;
       let temp = '';
       for (let i = 0; i < data.length; i++) {
         const timeAgo = getTimeAgo(data[i].createdAt);
@@ -52,8 +51,8 @@ function handleKeyPress(e) {
       function debounce(func, wait = 5, immediate = false) {
         let timeout;
         return function () {
-          const context = this
-          const args = arguments
+          const context = this;
+          const args = arguments;
 
           const later = function () {
             timeout = null;
@@ -66,40 +65,46 @@ function handleKeyPress(e) {
         };
       }
 
-      let limit = Number(document.getElementById('productsSearchLength').value)
-      let offset = Number(document.getElementById('productsSearchLength').value)
-      let TotalProducts = Number(document.getElementById('totalProductsSearch').value)
+      let limit = Number(document.getElementById('productsSearchLength').value);
+      let offset = Number(
+        document.getElementById('productsSearchLength').value,
+      );
+      let TotalProducts = Number(
+        document.getElementById('totalProductsSearch').value,
+      );
 
       window.removeEventListener('scroll', debouncedPageProduct);
-      const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
+      const debouncedPageSearchProduct = debounce(pageSearchProduct, 50);
       window.addEventListener('scroll', debouncedPageSearchProduct);
 
-  function pageSearchProduct() {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 5) {
+      function pageSearchProduct() {
+        const { scrollTop, scrollHeight, clientHeight } =
+          document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 5) {
+          const totalProducts = TotalProducts;
+          const productsLength = limit;
+          console.log(33, productsLength);
+          console.log(44, totalProducts);
 
-      const totalProducts = TotalProducts
-      const productsLength = limit
-      console.log(33, productsLength)
-      console.log(44, totalProducts)
+          axios
+            .get(
+              `http://localhost:3000/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`,
+            )
+            .then((res) => {
+              const products = res.data.data;
+              console.log(55, products);
+              let temp = '';
 
-      axios.get(`http://localhost:3000/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
-        .then(res => {
-          
-          const products = res.data.data;
-          console.log(55, products)
-          let temp = '';
+              for (let i = 0; i < products.length; i++) {
+                const timeAgo = getTimeAgo(products[i].updatedAt);
 
-          for (let i = 0; i < products.length; i++) {
-            const timeAgo = getTimeAgo(products[i].updatedAt);
+                const title = products[i].title.replace(
+                  new RegExp(`(${search})`, 'gi'),
+                  '<span style="background-color: yellow">$1</span>',
+                );
 
-            const title = products[i].title.replace(
-              new RegExp(`(${search})`, 'gi'),
-              '<span style="background-color: yellow">$1</span>',
-            );
-
-            temp += `
-            <div class="container-fluid" onclick="location.href='/productss/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                temp += `
+            <div class="container-fluid" onclick="location.href='/products/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
             <div class="row">
              <div class="col-md-3" style=" padding: 0">
                <img src="img/${products[i].images[0].imagePath}" alt="image" 
@@ -116,36 +121,35 @@ function handleKeyPress(e) {
 </div>
 </div>
             `;
-          }
-          $('#bb').append(temp);
+              }
+              $('#bb').append(temp);
 
-          if (products.length < res.data.totalProducts) {
+              if (products.length < res.data.totalProducts) {
+                limit += products.length;
 
-            limit += products.length
-
-            offset += products.length
-          }
-        })
-        .catch(error => {
-          if (productsLength === totalProducts) {
-            alert('끝 페이지입니다.')
-            window.removeEventListener('scroll', debouncedPageSearchProduct);
-          }
-          else {
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
-          }
-        });
-    }
-  };
-//   window.removeEventListener('scroll', debounce(pageSearchProduct, 50));
+                offset += products.length;
+              }
+            })
+            .catch((error) => {
+              if (productsLength === totalProducts) {
+                alert('끝 페이지입니다.');
+                window.removeEventListener(
+                  'scroll',
+                  debouncedPageSearchProduct,
+                );
+              } else {
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
+              }
+            });
+        }
+      }
+      //   window.removeEventListener('scroll', debounce(pageSearchProduct, 50));
     })
     .catch((error) => {
       alert(error.response.data.message);
       window.location.reload();
     });
 }
-
-
 
 // Date 객체를 사용하여 일정 기간 전인지 계산하는 함수
 function getTimeAgo(dateString) {

@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/productss/view')
+  .get('http://localhost:3000/products/view')
   .then((res) => {
     console.log(111, res);
     let data = res.data;
@@ -10,7 +10,7 @@ axios
       for (let i = 0; i < products.length; i++) {
         const timeAgo = getTimeAgo(products[i].updatedAt);
         temp += `
-                    <div class="container-fluid" onclick="location.href='/productss/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                    <div class="container-fluid" onclick="location.href='/products/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                      <div class="row">
                       <div class="col-md-3" style=" padding: 0">
                         <img src="img/${products[i].images[0].imagePath}" alt="image" 
@@ -82,7 +82,7 @@ window.addEventListener('scroll', debouncedPageProduct);
           console.log(33, productsLength)
           console.log(44, totalProducts)
 
-          axios.get(`http://localhost:3000/productss/view?limit=${limit}&offset=${offset}`)
+          axios.get(`http://localhost:3000/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
               const products = res.data.products;
               console.log(55, products)
@@ -92,7 +92,7 @@ window.addEventListener('scroll', debouncedPageProduct);
                 const timeAgo = getTimeAgo(products[i].updatedAt);
 
                 temp += `
-                <div class="container-fluid" onclick="location.href='/productss/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
+                <div class="container-fluid" onclick="location.href='/products/view/${products[i].id}'" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">
                 <div class="row">
                  <div class="col-md-3" style=" padding: 0">
                    <img src="img/${products[i].images[0].imagePath}" alt="image" 
