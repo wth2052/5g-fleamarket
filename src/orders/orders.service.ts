@@ -160,7 +160,7 @@ export class OrdersService {
       throw new NotFoundException('해당되는 주문이 없습니다.');
     }
     if (order.buyerId !== Number(userId)) {
-      throw new ForbiddenException('내가 구매한 상품이 아닙니다.');
+      throw new BadRequestException('내가 구매한 상품이 아닙니다.');
     }
     if (order.status === 'sale') {
       throw new ForbiddenException('아직 선택되지 않았습니다.');
@@ -187,14 +187,14 @@ export class OrdersService {
     }
     const sellUser = await this.productRepository.find({
       where: { id: order.productId, sellerId: userId, status: 'success' },
-      order: { updatedAt: 'DESC' },
+      order: { pullUp: 'DESC' },
     });
     if (!sellUser) {
       throw new ForbiddenException('내가 판매하는 물품이 아닙니다.');
     }
     const buyerInfo = await this.userRepository.findOne({
       where: { id: order.buyerId },
-      select: ['id', 'email', 'nickname', 'phone'],
+      select: ['id', 'email', 'nickname', 'phone', 'address'],
     });
     return buyerInfo;
   }
@@ -213,11 +213,14 @@ export class OrdersService {
     return buyList;
   }
   async getSellList(userId: number) {
-    const myProduct = await this.productRepository.find({
-      where: { sellerId: userId, status: 'success' },
-      relations: ['category', 'images', 'orders'],
-      order: { updatedAt: 'DESC' },
-    });
+    const myProduct = await this.productRepository
+      .createQueryBuilder('products')
+      .leftJoinAndSelect('products.orders', 'orders')
+      .leftJoinAndSelect('products.images', 'images')
+      .where(`sellerId = :userId`, { userId })
+      .andWhere('orders.status = :status', { status: 'success' })
+      .getMany();
+
     if (!myProduct.length) {
       throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
     }
@@ -315,7 +318,7 @@ export class OrdersService {
       throw new ForbiddenException('해당 상품이 없습니다.');
     }
     if (data > 1000000000) {
-      throw new ForbiddenException('너무 큰 가격입니다. 다시 확인해주세요');
+      throw new BadRequestException('너무 큰 가격입니다. 다시 확인해주세요');
     }
     console.log('@@@@@@@@@@@@@@', order.product.price);
     if (order.product.price > data) {

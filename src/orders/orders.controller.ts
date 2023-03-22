@@ -108,7 +108,6 @@ export class OrdersController {
   async getSellList(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.getSellList(userId);
-    console.log('!@#$%', data);
     return { data: data };
   }
   //판매자가 거래를 수락해서 거래종료

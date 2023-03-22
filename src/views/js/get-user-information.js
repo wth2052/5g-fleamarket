@@ -1,31 +1,35 @@
 //TODO: Restful API
 axios
-  .get('/api/user/me')
+  .get('http://localhost:3000/api/user/me')
   .then((res) => {
     const data = res.data.data;
     console.log('성공', data);
     let temp1 = `<div class="container-fluid"  style="width: 100%;background: #fff; margin-top: 20px; padding: 0">
         <div class="container">
             <div class="row">`;
-    let temp2 = `<i class="fa-solid fa-user-secret" style="font-size: 100px"></i><br><div class="col">${data.nickname} 님,<br> 냐옹상회에 오신것을 환영합니다!</div>`;
+
+    let temp2 = `  
+<div class="d-flex justify-content-between">
+<div></div>
+<i  class="fa-solid fa-cat" style="font-size: 150px; border: 2px solid black;" ></i>
+<div></div>
+</div>
+`;
     let temp3 = `
-                <div class="col-6 col-md-4" onclick="location.href='/me/edit'" style="font-size: 20px" >🛠정보 수정</div>
-            </div>
-            <div class="col">
-                한칸 공백
-            </div>
-            <div class="container"></div>
-            <div class="col" onclick="location.href='/report'" style="font-size: 20px" >🚨 불량 유저 신고하기</div>
-            <div class="col" onclick="logout()" style="font-size: 20px" >💡 로그아웃</div>
-            <div class="col">
-                한칸 공백
-            </div>
-            <div class="col">
-                
-            </div>
+                <div class="d-grid gap-2">
+                 <br>
+                <div class="alert alert-primary" role="alert" style="font-size: 23px;"><b>${data.nickname}</b> 님,<br> 냐옹상회에 오신것을 환영합니다!<br> 오늘도 좋은하루 되세요.</div>
+                <button type="button" class="btn" onclick="location.href='/me/edit'" style="font-size: 20px; background: #79D0F2" >⚙️ 정보 수정 ⚙️</button>
             
-            <div class="col" id="withdrawal" onclick="withdrawalService()" style="color: red; font-size: 25px">🎭회원 탈퇴 * 주의 되돌릴수 없음 *</div>
-        </div>`;
+            <div class="container"></div>
+            <button type="button" class="btn" onclick="location.href='/report'" style="font-size: 20px; background: #79D0F2; color: #FFFFFF" >🤬 불량 유저 신고하기 🤬</button>
+            <div class="col">
+               
+            </div>
+         <button type="button" class="btn btn-danger" id="withdrawal" onclick="withdrawalService()" style=" font-size: 20px">🚨 회원 탈퇴 🚨</button>
+        </div>
+        </div>
+</div>`;
     document.getElementById('temp1').innerHTML = temp1;
     document.getElementById('temp2').innerHTML = temp2;
     document.getElementById('temp3').innerHTML = temp3;
@@ -42,7 +46,7 @@ axios
   });
 function logout(){
   axios
-    .post('/auth/logout',
+    .post('http://localhost:3000/auth/logout',
     )
     .then((res) => {
       // 응답처리

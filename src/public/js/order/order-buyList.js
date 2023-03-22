@@ -5,7 +5,6 @@ axios
     console.log(data);
     if (data !== 0) {
       let temp = '';
-      buyResult();
       for (let i = 0; i < data.length; i++) {
         let productP = data[i].price;
         let orderD = data[i].orders[0].deal;
@@ -22,7 +21,7 @@ axios
                             <img class="img-fluid"
                               src="/img/${data[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/productss/asdf/${data[i].id}'" alt="">
+                               onclick="window.location='/products/asdf/${data[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${data[i].title}</h5>
                                 <div class="btn-group mb-1">
@@ -31,7 +30,7 @@ axios
                                         <div class="dropdown-menu"><a class="dropdown-item">✅ 구매가격</a>
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
-                                        <button type="button" class="btn btn-primary" onclick="buyResult(${data[i].id})" data-toggle="modal" data-target="#modalPush">판매자 정보</button>
+                                        <button type="button" id="alertStart"  onclick="sellResult(${data[i].orders[0].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
 
                                         </div>
                                     </div>
@@ -44,31 +43,6 @@ axios
                                      <small class="text-muted">${timeAgo} </small>
                                 </p>
 
-<!--Modal: modalPush-->
-<div class="modal fade" id="modalPush" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-notify modal-info" role="document">
-    <!--Content-->
-    <div class="modal-content text-center">
-      <!--Header-->
-      <div class="modal-header d-flex justify-content-center">
-        <p class="heading">판매자 정보</p>
-      </div>
-
-      <!--Body-->
-      <div class="modal-body">
-        <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
-        <p>판매자 : </p>
-        <p>핸드폰 : </p>
-        <p>주소 : </p>
-      </div>
-
-      <!--Footer-->
-    </div>
-    <!--/.Content-->
-  </div>
-</div>
-<!--Modal: modalPush-->
 
 
                             </div>
@@ -81,19 +55,46 @@ axios
   })
   .catch((error) => {
     console.log(error);
+    if (error.response.status === 401) {
+      alert('로그인 후 사용 가능한 기능 입니다.');
+      window.location.href = '/';
+    } else if (error.response.status === 404) {
+      let temp = '';
+      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
+      document.getElementById('product-list').innerHTML = temp;
+    }
   });
 
 // 판매자 정보
-function buyResult(orderId) {
+function sellResult(orderId) {
   axios
     .get(`http://localhost:3000/orders/buy/result/${orderId}`)
     .then((res) => {
-      let result = res.data.data;
-      console.log(result);
-      return result;
+      let data = res.data.data;
+      const addressSplit = data.address.split(' ');
+      swal(
+        '판매자 정보',
+        `판매자 : ${data.nickname}
+                연락처 : ${data.phone}
+                주소 : ${addressSplit[2]}`,
+        'success',
+      );
     })
     .catch((error) => {
       console.log(error);
+      console.log(error.response.data.message);
+      if (error.response.status === 401) {
+        alert('로그인 후 이용이 가능합니다.');
+        window.location.href = '/';
+      }
+      if (error.response.status === 404) {
+        temp = `<img src="/images/제목을 입력해주세요_-001 (5).png">`;
+        document.getElementById('product-list').innerHTML = temp;
+      }
+      if (error.response.status === 403) {
+        alert(error.response.data.message);
+        window.location.href = '/';
+      }
     });
 }
 
