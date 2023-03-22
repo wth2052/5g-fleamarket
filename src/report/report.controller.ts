@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpException,
+  Param,
   Post,
   Query,
   Render,
@@ -59,4 +60,11 @@ export class ReportController {
       return { errorMessage: error.message };
     }
   }
+
+  @Get('/notices/:noticeId')
+  async getNoticeById(@Param('noticeId') noticeId: number) {
+    return { notice: await this.reportService.getNoticeById(noticeId) };
+  }
+
+
 }

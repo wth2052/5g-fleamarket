@@ -43,4 +43,16 @@ async getTotalNotice() {
   return this.noticeRepository.count();
 }
 
+//공지사항 상세조회
+async getNoticeById(noticeId: number) {
+  const notice = await this.noticeRepository.findOne({
+    where: { id: noticeId },
+  });
+  if (!notice) {
+    throw new NotFoundException('존재하지 않는 공지사항입니다.');
+  } else {
+    return notice;
+  }
+}
+
 }
