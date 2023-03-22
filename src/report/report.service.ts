@@ -4,6 +4,7 @@ import { ReportsEntity } from '../global/entities/reports.entity';
 import { UserEntity } from '../global/entities/users.entity';
 import { Repository } from 'typeorm';
 import { NoticesEntity } from '../global/entities/notices.entity';
+import { LikesEntity } from '../global/entities/likes.entity';
 
 @Injectable()
 export class ReportService {
@@ -13,6 +14,8 @@ export class ReportService {
         private noticeRepository: Repository<NoticesEntity>,
         @InjectRepository(ReportsEntity)
         private reportRepository: Repository<ReportsEntity>,
+        @InjectRepository(LikesEntity)
+        private likeRepository: Repository<LikesEntity>,
       ) {}
 
 async createReport(userId: number, reported: string, title: string, description: string){
@@ -53,6 +56,18 @@ async getNoticeById(noticeId: number) {
   } else {
     return notice;
   }
+}
+
+//찜 목록 보기 
+async findMyLike(userId: number) {
+  const products = await this.likeRepository
+  .createQueryBuilder('likes')
+      .leftJoinAndSelect('likes.product', 'product')
+      .leftJoinAndSelect('product.images', 'images')
+      .where({userId: userId})
+      .getMany(); //getRawMany 변경예정
+  console.log(111, products)
+  return products;
 }
 
 }
