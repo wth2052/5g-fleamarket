@@ -1,0 +1,39 @@
+name: development CI // 1
+
+on: // 2
+  push:
+    branches-ignore:
+      - "release"
+  pull_request:
+    branches-ignore:
+      - "release"
+
+defaults: // 3
+  run:
+    working-directory: ./hello-typeorm
+
+jobs:
+  node_CI:
+    runs-on: ubuntu-latest // 4
+
+    strategy: // 5
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3 // 6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3 // 7
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn install // 8
+
+#       - name: Test unit
+#         run: yarn test // 9
+
+      - name: build
+        run: yarn build // 10
