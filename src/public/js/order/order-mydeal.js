@@ -56,6 +56,10 @@ axios
     if (error.response.status === 401) {
       alert('로그인 후 사용이 가능합니다.');
       window.location.href = '/';
+    } else if (error.response.status === 404) {
+      let temp = '';
+      temp = `<img src="/images/제목을 입력해주세요_-001 (5).png" width="100%">`;
+      document.getElementById('product-list').innerHTML = temp;
     }
   });
 
@@ -78,7 +82,18 @@ function dealUpdate(orderId) {
       window.location.reload();
     })
     .catch((error) => {
-      alert(error.response.data.message);
+      if (error.response.status === 401) {
+        alert('로그인 후 이용이 가능합니다.');
+        window.location.href = '/';
+      }
+      if (error.response.status === 403) {
+        alert('사용자가 가격을 제시한 상품이 아닙니다.');
+        window.location.href = '/';
+      }
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
+        window.location.href = '/';
+      }
     });
 }
 
