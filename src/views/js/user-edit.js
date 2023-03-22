@@ -27,6 +27,7 @@ function editUserInformation() {
     alert(
       '비밀번호는 한개의 영문, 한개의 숫자, 한개의 특수문자를 포함한 8자 이상이 되어야 합니다.',
     );
+    return false;
   }
   axios
     .put('http://localhost:3000/api/user/me/edit', {

@@ -11,88 +11,91 @@ function getEditUserInformation() {
           addressdata.push('');
         }
       }
-
-      console.log('성공', data);
-      let section1 = `      
-        <!-- row -->
-                           
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <h2>  ${data.email} </h2>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                           <input type="password" id="password" name="Password" class="form-control" placeholder="비밀번호" required>
-                                            </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                    <div class="form-group"> 
-                                    <input type="password" id="repeatPassword" name="confirmPassword" class="form-control" placeholder="비밀번호 확인" required>
-                                         </div>
-                                           
-                                    </div>
-                                </div>                 
-`;
-      let section2 = `
-                        
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <input type="text" name="nickname" class="form-control" placeholder="닉네임" value="${
+      let temp1 = `<div class="container-fluid"  style="width: 100%;margin-top: 10px; padding: 0">
+        <form onsubmit="return false;">
+            <div class="form-group">
+                <label for="id" class="form-label mt-4" style="font-size: 20px;">아이디</label>
+                <h2>
+                    ${data.email}
+                </h2>
+            </div>
+            <div class="form-group">
+                <label class="form-label mt-4" for="password" style="font-size: 20px;"><b>비밀번호</b></label>
+                <input type="password" class="form-control" id="password">
+                <div class="valid-feedback"></div>
+                <label class="form-label mt-4" for="rptpassword" style="font-size: 20px;"><b>비밀번호 재확인</b></label>
+                <input type="password" class="form-control" id="repeatPassword">
+                <label class="form-label mt-4" for="nickname" style="font-size: 20px;"><b>닉네임</b></label>
+                <input type="text" class="form-control" id="nickname" maxLength="13" aria-describedby="phonenumber" value="${
         data.nickname
-      }" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    id="postcode"
-                                                    placeholder="우편번호"
-                                                    value="${addressdata[7]}"
-                                                    required
-                                            />
-                                                                                       <input
-                                          type="button"
-                                          class="btn"
-                                          style="background-color: #0597F2; color: #FFFFFF"
-                                          onclick="execDaumPostcode()"
-                                          value="우편번호 찾기"
-                                  />
-                                            <input type="text" name="address" id="address" class="form-control" placeholder="주소"                           value="${
-                                                    addressdata[0] +
-                                                    ' ' +
-                                                    addressdata[1] +
-                                                    ' ' +
-                                                    addressdata[2] +
-                                                    ' ' +
-                                                    addressdata[3]
-                                                  }" required>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                         <input type="text" id="detailAddress"name="detailAddress" class="form-control" value="${addressdata[5]}" placeholder="상세 주소" required>
-                                         <input type="text" id="extraAddress" class="form-control" placeholder="참고 항목" value="${addressdata[6]}" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <div class="form-group">
-
-                                        </div>
-                                    </div>
-                                </div>
-                           `
-
+      }">
+                <div class="form-group">
+                <label class="form-label mt-4" for="phoneNumber" style="font-size: 20px;"><b>휴대폰 번호</b></label>
+                 <input type="tel" class="form-control" id="phoneNumber" onInput="autoHypen(this)" maxLength="13" aria-describedby="phonenumber" value="${
+        data.phone
+      }">
+                </div>
+                <div class="form-group">
+                    <label class="form-label mt-4" style="font-size: 20px;"><b>주소</b></label>
+                    <div class="form-group">
+                <span class="ps_box">
+                  <input
+                          type="text"
+                          class="form-control"
+                          id="postcode"
+                          placeholder="우편번호"
+                          value="${addressdata[7]}"
+                  />
+                  <input
+                          type="button"
+                          class="btn"
+                          style="background: #79D0F2; color: #FFFFFF; font-weight: bold"
+                          onclick="execDaumPostcode()"
+                          value="우편번호 찾기"
+                  /><br />
+                  <input
+                          type="text"
+                          class="form-control"
+                          id="address"
+                          placeholder="주소"
+                           value="${
+        addressdata[0] +
+        ' ' +
+        addressdata[1] +
+        ' ' +
+        addressdata[2] +
+        ' ' +
+        addressdata[3]
+      }"
+                  /><br/>
+                  <input
+                          type="text"
+                          class="form-control"
+                          id="detailAddress"
+                          placeholder="상세주소"
+                          value="${addressdata[5]}"
+                  />
+                             <input
+                          type="text"
+                          class="form-control"
+                          id="extraAddress"
+                          placeholder="참고항목"
+                          value="${addressdata[6]}"
+                  />
+                  </div>
+                </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+</div>
+</div>
+<button class="btn" style="background: #79D0F2; color: #FFFFFF; font-weight: bold" onclick="editUserInformation()">회원정보 수정하기</button>
+`;
       if (data.address.split === undefined) {
         data.address = '';
       }
-      document.getElementById('temphere').innerHTML = section1;
-      document.getElementById('temphere2').innerHTML = section2;
+      document.getElementById('temphere').innerHTML = temp1;
     })
     .catch((error) => {
       // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
