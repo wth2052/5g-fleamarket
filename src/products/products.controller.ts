@@ -72,17 +72,9 @@ export class ProductsController {
     return this.productsService.getProductById(productId);
   }
 
-  @Get('category')
-  async getCategories() {
-    const categories = await this.categoriesRepository.find();
-    console.log('카테고리', categories);
-    return categories;
-  }
-
-  //상품등록페이지 렌더용
   @UseGuards(JwtAuthGuard)
-  @Get('up')
-  @Render('product/products-upload.ejs')
+  @Get('category')
+  // @Render('product/product-create.ejs')
   async createProductForm() {
     const categories = await this.productsService.getCategories();
     return { categories };

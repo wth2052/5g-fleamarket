@@ -104,6 +104,7 @@ export class ProductsService {
     product.price = price;
     product.categoryId = categoryId;
     product.sellerId = sellerId;
+    product.pullUp = new Date();
 
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();

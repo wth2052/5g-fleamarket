@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/notices')
+  .get('/notices')
   .then((res) => {
     console.log(res)
     let notices = res.data.notices
@@ -76,7 +76,7 @@ axios
           const page = Number(event.target.dataset.page);
           offset = (page - 1) * limit;
           axios
-            .get(`http://localhost:3000/notices?offset=${offset}&limit=${limit}`)
+            .get(`/notices?offset=${offset}&limit=${limit}`)
             .then((res) => {
               let notices = res.data.notices;
               let temp = '';
@@ -164,7 +164,7 @@ axios
             const page = Number(event.target.dataset.page);
             offset = (page - 1) * limit;
             axios
-              .get(`http://localhost:3000/notices?offset=${offset}&limit=${limit}`)
+              .get(`/notices?offset=${offset}&limit=${limit}`)
               .then((res) => {
                 let notices = res.data.notices;
                 let temp = '';
@@ -231,7 +231,7 @@ axios
 
 function getNoticeById(noticeId) {
   axios
-    .get(`http://localhost:3000/notices/${noticeId}`)
+    .get(`/notices/${noticeId}`)
     .then((res) => {
       let notice = res.data.notice;
       console.log(res);
