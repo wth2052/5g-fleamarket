@@ -8,7 +8,6 @@ function handleKeyPress(e) {
 // 상품 검색
 function productSearch() {
   const search = document.getElementById('search').value;
-  console.log(search);
 
   axios
     .get(`https://5gnunfleamarket.shop/orders/productSearch?search=${search}`)
@@ -83,8 +82,6 @@ function productSearch() {
         if (scrollTop + clientHeight >= scrollHeight - 5) {
           const totalProducts = TotalProducts;
           const productsLength = limit;
-          console.log(33, productsLength);
-          console.log(44, totalProducts);
 
           axios
             .get(
@@ -92,7 +89,6 @@ function productSearch() {
             )
             .then((res) => {
               const products = res.data.data;
-              console.log(55, products);
               let temp = '';
 
               for (let i = 0; i < products.length; i++) {

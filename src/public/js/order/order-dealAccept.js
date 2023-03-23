@@ -7,7 +7,6 @@ axios
   .get(`/orders/products/${num}`)
   .then((res) => {
     let data = res.data.data;
-    console.log(data);
     if (data !== 0) {
       const productPrice = data.product.price
         .toString()
@@ -43,7 +42,6 @@ axios
     }
   })
   .catch((error) => {
-    console.log(error);
     if (error.response.status === 401) {
       alert('로그인 후 사용이 가능합니다.');
       window.location.href = '/';
@@ -56,7 +54,6 @@ axios
 
 // 판매자가 거래를 수락해서 거래종료
 function dealAccept(orderId) {
-  console.log(orderId);
   axios
     .put(`/orders/deal/accept/${orderId}`)
     .then((res) => {

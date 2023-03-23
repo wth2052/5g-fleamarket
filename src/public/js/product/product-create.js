@@ -1,9 +1,7 @@
 axios
   .get('https://5gnunfleamarket.shop/products/category')
   .then((res) => {
-    console.log('result', res);
     let data = res.data.categories;
-    console.log(data);
     let temp = '';
     for (let i = 0; i < data.length; i++) {
       // const option = document.createElement('option');
@@ -52,13 +50,11 @@ form.addEventListener('submit', (event) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
       alert('상품 등록에 성공하였습니다.');
       form.reset();
       window.location.href = '/';
     })
     .catch((error) => {
-      console.error(error);
       alert('상품 등록에 실패하였습니다.');
     });
 });

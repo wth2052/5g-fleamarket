@@ -39,8 +39,7 @@ function getTimeAgo(dateString) {
   // 상품 검색
   function productSearch() {
     const search = document.getElementById('search').value;
-    console.log(search);
-  
+
     axios
       .get(`/orders/productSearch?search=${search}`)
       .then((res) => {
@@ -132,14 +131,11 @@ function getTimeAgo(dateString) {
   
         const totalProducts = TotalProducts
         const productsLength = limit
-        console.log(33, productsLength)
-        console.log(44, totalProducts)
-  
+
         axios.get(`/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
           .then(res => {
             
             const products = res.data.data;
-            console.log(55, products)
             let temp = '';
   
             for (let i = 0; i < products.length; i++) {
@@ -198,7 +194,6 @@ function getTimeAgo(dateString) {
   
       })
       .catch((error) => {
-        console.log(error);
         // window.location.reload();
       });
   }

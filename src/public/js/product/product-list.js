@@ -39,8 +39,6 @@ axios
       }
       document.getElementById('product-list').innerHTML = temp;
       // 상품 페이지네이션//////////////////////////////////
-      console.log('productslenght', products.length)
-      console.log('total', totalProducts)
       function debounce(func, wait = 5, immediate = false) {
         let timeout;
         return function () {
@@ -79,8 +77,6 @@ axios
 
           const totalProducts = TotalProducts
           const productsLength = limit
-          console.log(33, productsLength)
-          console.log(44, totalProducts)
 
           axios.get(`/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
@@ -143,7 +139,6 @@ axios
     }
   })
   .catch((error) => {
-    console.log(error);
-    
+
   });
 

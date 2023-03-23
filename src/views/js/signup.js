@@ -160,7 +160,6 @@ function emailNumberVerify() {
       return (isverifyed = true);
     })
     .catch((error) => {
-      console.log(error);
       alert('인증번호가 올바르지 않거나, 서버 에러입니다.');
       return (isverifyed = false);
     });
