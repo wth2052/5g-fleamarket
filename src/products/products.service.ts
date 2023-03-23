@@ -56,7 +56,7 @@ export class ProductsService {
     }
   }
   async getTotalProducts() {
-    return this.productRepository.count();
+    return this.productRepository.count({ where: { status: 'sale' } });
   }
 
   async getProductById(id: number) {
