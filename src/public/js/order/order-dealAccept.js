@@ -59,7 +59,7 @@ function dealAccept(orderId) {
     .then((res) => {
       // 응답처리
       alert('거래가 완료되었습니다. (메세지수정+랜더페이지 수정');
-      // window.location.replace('http://localhost:3000/order');
+      // window.location.replace('https://5gnunfleamarket.shop/order');
     })
     .catch((error) => {
       // 예외처리

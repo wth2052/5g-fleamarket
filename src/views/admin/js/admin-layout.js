@@ -5,13 +5,13 @@ function login() {
     const loginPw = document.getElementById('password').value;
 
     axios
-        .post('http://localhost:3000/admin/login',
+        .post('https://5gnunfleamarket.shop/admin/login',
             { loginId: loginId, loginPw: loginPw }
         )
         .then((res) => {
             // 응답처리
             alert(res.data)
-            window.location.replace("http://localhost:3000/admin/products")
+            window.location.replace("https://5gnunfleamarket.shop/admin/products")
         })
         .catch((error) => {
             // 예외처리
@@ -23,9 +23,9 @@ function login() {
 //상품 상세 보기
 function getProduct (productId) {
     axios
-            .get('http://localhost:3000/admin/products')
+            .get('https://5gnunfleamarket.shop/admin/products')
             .then((res) => {
-               window.location.replace(`http://localhost:3000/admin/products/${productId}`)
+               window.location.replace(`https://5gnunfleamarket.shop/admin/products/${productId}`)
                 })
             .catch((error) => {
                 // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -47,7 +47,7 @@ function deleteProduct(productId){
     .then((res) => {
         // 응답처리
         alert(JSON.stringify(res.data.message))
-        window.location.replace("http://localhost:3000/admin/products")
+        window.location.replace("https://5gnunfleamarket.shop/admin/products")
     })
     .catch((error) => {
         if (error.response.status === 401) {
@@ -68,9 +68,9 @@ function deleteProduct(productId){
 
 function getUser (userId) {
     axios
-          .get('http://localhost:3000/users')
+          .get('https://5gnunfleamarket.shop/users')
           .then((res) => {
-            window.location.replace(`http://localhost:3000/users/${userId}`)
+            window.location.replace(`https://5gnunfleamarket.shop/users/${userId}`)
               })
           .catch((error) => {
               // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -113,7 +113,7 @@ function deleteUser(userId){
     .then((res) => {
         // 응답처리
         alert(JSON.stringify(res.data.message))
-        window.location.replace("http://localhost:3000/users")
+        window.location.replace("https://5gnunfleamarket.shop/users")
     })
     .catch((error) => {
         if (error.response.status === 401) {
@@ -156,14 +156,14 @@ function updateCategory (categoryId, name) {
   function completeUpdate(categoryId){
       const name =  document.getElementById('tq').value;
       axios
-      .put(`http://localhost:3000/category/${categoryId}`,
+      .put(`https://5gnunfleamarket.shop/category/${categoryId}`,
           { name: name}
       )
       .then((res) => {
           // 응답처리
           
           alert(JSON.stringify(res.data))
-          window.location.replace("http://localhost:3000/category")
+          window.location.replace("https://5gnunfleamarket.shop/category")
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -179,7 +179,7 @@ function updateCategory (categoryId, name) {
   // 카테고리 수정 취소
   function cancleUpdate(){
     axios
-    .get('http://localhost:3000/category')
+    .get('https://5gnunfleamarket.shop/category')
     .then((res)=> window.location.reload())
     .catch((error) => { if (error.response.status === 401) {
                   alert('로그인하셔야 합니다.');
@@ -197,7 +197,7 @@ function updateCategory (categoryId, name) {
       .then((res) => {
           // 응답처리
           alert(JSON.stringify(res.data.message))
-          window.location.replace("http://localhost:3000/category")
+          window.location.replace("https://5gnunfleamarket.shop/category")
       })
       .catch((error) => {
           // 예외처리
@@ -213,9 +213,9 @@ function updateCategory (categoryId, name) {
   //카테고리 작성 페이지 가기
   function createCategoryPage(){
     axios
-          .get('http://localhost:3000/category')
+          .get('https://5gnunfleamarket.shop/category')
           .then((res) => {
-            window.location.replace("http://localhost:3000/post/category")
+            window.location.replace("https://5gnunfleamarket.shop/post/category")
               })
           .catch((error) => {
               // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -230,13 +230,13 @@ function updateCategory (categoryId, name) {
   function createCategory() {
     const name = document.getElementById('name').value;
     axios
-        .post('http://localhost:3000/category',
+        .post('https://5gnunfleamarket.shop/category',
             { name: name}
         )
         .then((res) => {
             // 응답처리
             alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/category")
+            window.location.replace("https://5gnunfleamarket.shop/category")
         })
         .catch((error) => {
           if (error.response.status === 401) {
@@ -251,9 +251,9 @@ function updateCategory (categoryId, name) {
 
 function cancleCategory() {
     axios
-              .get('http://localhost:3000/post/category')
+              .get('https://5gnunfleamarket.shop/post/category')
               .then((res) => {
-                window.location.replace("http://localhost:3000/category")
+                window.location.replace("https://5gnunfleamarket.shop/category")
                   })
               .catch((error) => {
                   // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -267,9 +267,9 @@ function cancleCategory() {
 // 공지 상세 보기 
     function getNotice (noticeId) {
         axios
-                    .get('http://localhost:3000/notice')
+                    .get('https://5gnunfleamarket.shop/notice')
                     .then((res) => {
-                    window.location.replace(`http://localhost:3000/notice/${noticeId}`)
+                    window.location.replace(`https://5gnunfleamarket.shop/notice/${noticeId}`)
                         })
                     .catch((error) => {
                         // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -284,9 +284,9 @@ function cancleCategory() {
     // 공지사항 작성 페이지로 가기 
             function createNoticePage(){
             axios
-                    .get('http://localhost:3000/notice')
+                    .get('https://5gnunfleamarket.shop/notice')
                     .then((res) => {
-                    window.location.replace("http://localhost:3000/post/notice")
+                    window.location.replace("https://5gnunfleamarket.shop/post/notice")
                         })
                     .catch((error) => {
                         // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -304,13 +304,13 @@ function cancleCategory() {
     const description = document.getElementById('description').value;
 
     axios
-        .post('http://localhost:3000/notice',
+        .post('https://5gnunfleamarket.shop/notice',
             { title: title, description: description}
         )
         .then((res) => {
             // 응답처리
             alert(JSON.stringify(res.data))
-            window.location.replace("http://localhost:3000/notice")
+            window.location.replace("https://5gnunfleamarket.shop/notice")
         })
         .catch((error) => {
             if (error.response.status === 401) {
@@ -327,9 +327,9 @@ function cancleCategory() {
 // 공지 작성 취소
     function cancleNotice() {
     axios
-            .get('http://localhost:3000/users')
+            .get('https://5gnunfleamarket.shop/users')
             .then((res) => {
-                window.location.replace("http://localhost:3000/notice")
+                window.location.replace("https://5gnunfleamarket.shop/notice")
                 })
             .catch((error) => {
                 // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -374,13 +374,13 @@ function cancleCategory() {
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         axios
-        .put(`http://localhost:3000/notice/${noticeId}`,
+        .put(`https://5gnunfleamarket.shop/notice/${noticeId}`,
         { title: title, description: description}
         )
         .then((res) => {
             // 응답처리
             alert(JSON.stringify(res.data))
-            window.location.replace(`http://localhost:3000/notice/${noticeId}`)
+            window.location.replace(`https://5gnunfleamarket.shop/notice/${noticeId}`)
         })
         .catch((error) => {
             if (error.response.status === 401) {
@@ -397,7 +397,7 @@ function cancleCategory() {
 
 function cancleUpdate(){
     axios
-    .get('http://localhost:3000/notice')
+    .get('https://5gnunfleamarket.shop/notice')
     .then((res)=> window.location.reload())
     .catch((error) => { if (error.response.status === 401) {
                   alert('로그인하셔야 합니다.');
@@ -414,7 +414,7 @@ function cancleUpdate(){
         .then((res) => {
             // 응답처리
             alert(JSON.stringify(res.data.message))
-            window.location.replace("http://localhost:3000/notice")
+            window.location.replace("https://5gnunfleamarket.shop/notice")
         })
         .catch((error) => {
             if (error.response.status === 401) {
@@ -522,7 +522,7 @@ function debounce(func, wait = 5, immediate = false) {
     };
   }
 
-if (window.location.href === 'http://localhost:3000/admin/products'){
+if (window.location.href === 'https://5gnunfleamarket.shop/admin/products'){
 //상품 무한 스크롤 
 
 let limit = Number(document.getElementById('productsLength').value)
@@ -597,7 +597,7 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
   function search() {
     const search = document.getElementById('search').value;
     axios
-    .get(`http://localhost:3000/admin/productSearch?search=${search}`)
+    .get(`https://5gnunfleamarket.shop/admin/productSearch?search=${search}`)
     .then((res) => {
       window.removeEventListener('scroll', debouncedPageProduct);
       let data = res.data.data;
@@ -653,7 +653,7 @@ let TotalProducts = Number(document.getElementById('totalProducts').value)
   }
 }
 
-else if (window.location.href === 'http://localhost:3000/users'){
+else if (window.location.href === 'https://5gnunfleamarket.shop/users'){
   let limit = Number(document.getElementById('usersLength').value)
   let offset = Number(document.getElementById('usersLength').value)
   let TotalUsers = Number(document.getElementById('totalUsers').value)
@@ -753,7 +753,7 @@ else if (window.location.href === 'http://localhost:3000/users'){
   //블랙리스트 목록 불러오기
 function getBan() {
     axios
-  .get('http://localhost:3000/ban/users')
+  .get('https://5gnunfleamarket.shop/ban/users')
   .then((res) => {
     window.removeEventListener('scroll', debouncedPageUser);
     console.log(res.data.banUsers)
@@ -801,7 +801,7 @@ function search() {
   const search = document.getElementById('search').value;
 
   axios
-  .get(`http://localhost:3000/userSearch?search=${search}`)
+  .get(`https://5gnunfleamarket.shop/userSearch?search=${search}`)
   .then((res) => {
     window.removeEventListener('scroll', debouncedPageUser);
     let data = res.data.data;
@@ -874,7 +874,7 @@ function search() {
 }
 }
 
-else if (window.location.href === 'http://localhost:3000/category'){
+else if (window.location.href === 'https://5gnunfleamarket.shop/category'){
 //카테고리 페이지네이션 
 let limit = Number(document.getElementById('categoryLength').value)
 let offset = Number(document.getElementById('categoryLength').value)
@@ -948,7 +948,7 @@ function search() {
   const search = document.getElementById('search').value;
 
   axios
-  .get(`http://localhost:3000/categorySearch?search=${search}`)
+  .get(`https://5gnunfleamarket.shop/categorySearch?search=${search}`)
   .then((res) => {
     window.removeEventListener('scroll', debouncedPageCategory)
     let data = res.data.data;
@@ -994,7 +994,7 @@ function search() {
 }
 
 
-else if (window.location.href === 'http://localhost:3000/notice'){
+else if (window.location.href === 'https://5gnunfleamarket.shop/notice'){
 //공지 페이지네이션 
 let limit = Number(document.getElementById('noticeLength').value)
 let offset = Number(document.getElementById('noticeLength').value)
@@ -1063,7 +1063,7 @@ function search() {
   const search = document.getElementById('search').value;
 
   axios
-    .get(`http://localhost:3000/noticeSearch?search=${search}`)
+    .get(`https://5gnunfleamarket.shop/noticeSearch?search=${search}`)
     .then((res) => {
       window.removeEventListener('scroll', debouncedPageNotice)
       let data = res.data.data;
@@ -1102,7 +1102,7 @@ function search() {
     });
 }
 }
-else if (window.location.href === 'http://localhost:3000/reports'){
+else if (window.location.href === 'https://5gnunfleamarket.shop/reports'){
 //신고 페이지네이션
 let limit = Number(document.getElementById('reportsLength').value)
 let offset = Number(document.getElementById('reportsLength').value)
@@ -1182,7 +1182,7 @@ let TotalReports = Number(document.getElementById('totalReports').value)
   //확인안된 신고목록 불러오기
 function getUncheckedReport() {
   axios
-.get('http://localhost:3000/unchecked/reports')
+.get('https://5gnunfleamarket.shop/unchecked/reports')
 .then((res) => {
   window.removeEventListener('scroll', debouncedPageReport);
   console.log(res.data.uncheckedReports)
@@ -1222,7 +1222,7 @@ function getUncheckedReport() {
  //확인된 신고목록 불러오기
  function getCheckedReport() {
   axios
-.get('http://localhost:3000/checked/reports')
+.get('https://5gnunfleamarket.shop/checked/reports')
 .then((res) => {
   window.removeEventListener('scroll', debouncedPageReport);
   console.log(res.data.checkedReports)
@@ -1263,7 +1263,7 @@ function getUncheckedReport() {
 function search() {
   const search = document.getElementById('search').value;
 axios
-.get(`http://localhost:3000/reportSearch?search=${search}`)
+.get(`https://5gnunfleamarket.shop/reportSearch?search=${search}`)
 .then((res) => {
   window.removeEventListener('scroll', debouncedPageReport);
   let data = res.data.data;
@@ -1331,9 +1331,9 @@ axios
 //신고 상세 보기
 function getReport(reportId){
   axios
-                  .get('http://localhost:3000/reports')
+                  .get('https://5gnunfleamarket.shop/reports')
                   .then((res) => {
-                  window.location.replace(`http://localhost:3000/reports/${reportId}`)
+                  window.location.replace(`https://5gnunfleamarket.shop/reports/${reportId}`)
                       })
                   .catch((error) => {
                       // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -1352,7 +1352,7 @@ function deleteReport(reportId){
   .then((res) => {
       // 응답처리
       alert(JSON.stringify(res.data.message))
-      window.location.replace("http://localhost:3000/reports")
+      window.location.replace("https://5gnunfleamarket.shop/reports")
   })
   .catch((error) => {
       if (error.response.status === 401) {

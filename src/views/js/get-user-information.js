@@ -1,6 +1,6 @@
 //TODO: Restful API
 axios
-  .get('http://localhost:3000/api/user/me')
+  .get('https://5gnunfleamarket.shop/api/user/me')
   .then((res) => {
     const data = res.data.data;
     console.log('성공', data);
@@ -46,7 +46,7 @@ axios
   });
 function logout(){
   axios
-    .post('http://localhost:3000/auth/logout',
+    .post('https://5gnunfleamarket.shop/auth/logout',
     )
     .then((res) => {
       // 응답처리

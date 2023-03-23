@@ -1,6 +1,6 @@
 function productUpload() {
   axios
-    .get('http://localhost:3000/productss/up')
+    .get('https://5gnunfleamarket.shop/productss/up')
     .then((res) => {
       window.location.href = '/productss/up';
     })

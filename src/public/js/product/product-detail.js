@@ -4,7 +4,7 @@ const linkSplit = link.split('/');
 const num = linkSplit[linkSplit.length - 1];
 
 axios
-  .get(`/products/view/${num}`)
+  .get(`https://5gnunfleamarket.shop/products/view/${num}`)
   .then((res) => {
     let data = res.data.product;
     let img1 = '';
@@ -194,7 +194,7 @@ axios
 // 찜하기
 function like(productId) {
   axios
-    .post(`/products/like/${productId}`)
+    .post(`https://5gnunfleamarket.shop/products/like/${productId}`)
     .then((response) => {
       window.location.reload();
     })
@@ -210,7 +210,7 @@ function like(productId) {
 function deal(productId) {
   const dealPrice = document.getElementById('recipient-name').value;
   axios
-    .post(`/orders/deal/price/${productId}`, {
+    .post(`https://5gnunfleamarket.shop/orders/deal/price/${productId}`, {
       price: dealPrice,
     })
     .then((response) => {
@@ -237,9 +237,9 @@ function deal(productId) {
 //삭제하기
 function remove(productId) {
   axios
-    .delete(`/products/${productId}`)
+    .delete(`https://5gnunfleamarket.shop/products/${productId}`)
     .then((response) => {
-      window.location.href = 'http://localhost:3000/';
+      window.location.href = 'https://5gnunfleamarket.shop/';
     })
     .catch((error) => {
       if (error.response.status === 401) {

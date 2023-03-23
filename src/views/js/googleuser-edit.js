@@ -11,7 +11,7 @@ function editGoogleUserInformation() {
   let newAddress = address1 + ' ' + address2 + ' ' + address3 + ' ' + address4;
 
   axios
-    .put('http://localhost:3000/api/user/google/edit', {
+    .put('https://5gnunfleamarket.shop/api/user/google/edit', {
       nickname: usernickname.toString(),
 
       phone: phonenumber.toString(),
