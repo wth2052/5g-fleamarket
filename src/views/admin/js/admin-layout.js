@@ -498,7 +498,7 @@ if (window.location.href === '/admin/products') {
       console.log(totalProducts);
 
       axios
-        .get(`/api/products?limit=${limit}&offset=${offset}`)
+        .get(`/api/admin/products?limit=${limit}&offset=${offset}`)
         .then((res) => {
           const products = res.data.products;
           console.log(products);
