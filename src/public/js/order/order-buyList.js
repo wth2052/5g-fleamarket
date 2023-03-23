@@ -70,7 +70,6 @@ function sellResult(orderId) {
     .get(`/orders/buy/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
-      console.log(data);
       const addressSplit = data.address.split(' ');
       swal(
         '판매자 정보',
