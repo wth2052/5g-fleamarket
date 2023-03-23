@@ -30,8 +30,7 @@ axios
                                          <a class="dropdown-item" style="font-weight: bold">${orderDeal} 원</a>
                                          <a class="dropdown-item" href="#">----------------------------</a>
                                         <button type="button" id="alertStart"  onclick="sellResult(${data[i].orders[0].id})"  class="btn mb-1 btn-rounded btn-primary">판매자 정보</button>
-
-                                        </div>
+                                  </div>
                                     </div>
                                 <p class="card-text">
                                     <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="6%">
@@ -68,6 +67,7 @@ function sellResult(orderId) {
   axios
     .get(`/orders/buy/result/${orderId}`)
     .then((res) => {
+      console.log(res);
       let data = res.data.data;
       const addressSplit = data.address.split(' ');
       swal(
@@ -78,20 +78,7 @@ function sellResult(orderId) {
         'success',
       );
     })
-    .catch((error) => {
-      if (error.response.status === 401) {
-        alert('로그인 후 이용이 가능합니다.');
-        window.location.href = '/';
-      }
-      if (error.response.status === 404) {
-        temp = `<img src="/images/제목을 입력해주세요_-001 (5).png">`;
-        document.getElementById('product-list').innerHTML = temp;
-      }
-      if (error.response.status === 403) {
-        alert(error.response.data.message);
-        window.location.href = '/';
-      }
-    });
+    .catch((error) => {});
 }
 
 // 헤더로 뺴야됌 ( 임시 테스트용 )
