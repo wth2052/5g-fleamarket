@@ -39,6 +39,7 @@ export class ReportService {
     const notices = await this.noticeRepository.find({
       take: limit,
       skip: offset,
+      order: { createdAt: 'DESC' }
     });
     if (notices.length === 0) {
       throw new NotFoundException('공지사항이 없습니다.');
