@@ -14,9 +14,15 @@ axios
     const timeAgo = getTimeAgo(data.pullUp);
     if (data.images.length === 1) {
       img1 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="Second slide">
+                                            <img class="d-block w-100" style="height: " src="/img/${data.images[0].imagePath}" alt="Second slide">
                                         </div>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleIndicators"
@@ -33,7 +39,13 @@ axios
 
     if (data.images.length === 2) {
       img2 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item">
                                             <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="First slide">
                                         </div>
@@ -54,7 +66,13 @@ axios
 
     if (data.images.length === 3) {
       img3 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item">
                                             <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="First slide">
                                         </div>
