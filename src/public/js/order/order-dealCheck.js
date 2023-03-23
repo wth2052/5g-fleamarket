@@ -2,7 +2,6 @@ axios
   .get('/orders/me/sell/product')
   .then((res) => {
     let data = res.data.data;
-    console.log(res);
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < data.length; i++) {
@@ -39,7 +38,6 @@ axios
     }
   })
   .catch((error) => {
-    console.log(error);
     if (error.response.status === 401) {
       alert('로그인 후 사용이 가능합니다.');
       window.location.href = '/';
@@ -59,7 +57,6 @@ function pullUp(productId) {
       window.location.href = '/order/dealcheck';
     })
     .catch((error) => {
-      console.log(error);
       if (error.response.status === 401) {
         alert('로그인 후 사용이 가능합니다.');
         window.location.href = '/';

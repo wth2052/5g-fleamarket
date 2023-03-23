@@ -70,7 +70,6 @@ export class ReportService {
       .leftJoinAndSelect('product.images', 'images')
       .where({ userId: userId })
       .getMany(); //getRawMany 변경예정
-    console.log(111, products);
     if (!products.length) {
       throw new NotFoundException('찜하신 상품이 없습니다.');
     }

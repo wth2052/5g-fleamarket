@@ -1,7 +1,6 @@
 axios
   .get('http://localhost:3000/products/view')
   .then((res) => {
-    console.log(111, res);
     let data = res.data;
     let products = data.products;
     let totalProducts = data.totalProducts;
@@ -32,8 +31,6 @@ axios
       document.getElementById('bb').innerHTML = temp;
 
       // 상품 페이지네이션//////////////////////////////////
-      console.log('productslenght', products.length)
-      console.log('total', totalProducts)
       function debounce(func, wait = 5, immediate = false) {
         let timeout;
         return function () {
@@ -79,13 +76,10 @@ window.addEventListener('scroll', debouncedPageProduct);
 
           const totalProducts = TotalProducts
           const productsLength = limit
-          console.log(33, productsLength)
-          console.log(44, totalProducts)
 
           axios.get(`http://localhost:3000/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
               const products = res.data.products;
-              console.log(55, products)
               let temp = '';
 
               for (let i = 0; i < products.length; i++) {
@@ -142,7 +136,6 @@ window.addEventListener('scroll', debouncedPageProduct);
     }
   })
   .catch((error) => {
-    console.log(222, error);
     let temp = '';
     temp += `
                     <div class="container-fluid" onclick="alert('상품디테일 연결예정')" style="border-bottom: 3px dotted #5cd7f2; margin-top: 20px; padding-bottom: 10px">

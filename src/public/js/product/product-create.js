@@ -1,9 +1,7 @@
 axios
   .get('/products/category')
   .then((res) => {
-    console.log('result', res);
     let data = res.data.categories;
-    console.log(data);
     let temp = '';
     for (let i = 0; i < data.length; i++) {
       temp += `<option value="${data[i].id}">${data[i].name}</option>`;
@@ -49,14 +47,12 @@ form.addEventListener('submit', (event) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
-      alert('Product uploaded successfully');
+      alert('상품 등록에 성공하였습니다.');
       form.reset();
       window.location.href = '/';
     })
     .catch((error) => {
-      console.error(error);
-      alert('Failed to upload product. Please try again.');
+      alert('상품 등록에 실패하였습니다.');
     });
 });
 
