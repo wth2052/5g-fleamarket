@@ -78,7 +78,7 @@ export class ProductsService {
       relations: ['category', 'seller', 'images', 'likesJoin'],
       order: { pullUp: 'DESC' },
     });
-
+    console.log('12314',product);
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
