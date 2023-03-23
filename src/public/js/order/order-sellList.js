@@ -1,5 +1,5 @@
 axios
-  .get('/orders/me/sell/list')
+  .get('/api/orders/me/sell/list')
   .then((res) => {
     let data = res.data.data.myProduct;
     if (data !== 0) {
@@ -66,7 +66,7 @@ axios
 // 구매자 정보
 function buyResult(orderId) {
   axios
-    .get(`/orders/sell/result/${orderId}`)
+    .get(`/api/orders/sell/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
       const addressSplit = data.address.split(' ');

@@ -4,7 +4,7 @@ import { AdminAuthService } from './admin-auth.service';
 import { Request, Response } from 'express';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 
-@Controller('admin')
+@Controller('/api/admin')
 @Public()
 export class AdminAuthController {
   constructor(private readonly adminAuthService: AdminAuthService) {}

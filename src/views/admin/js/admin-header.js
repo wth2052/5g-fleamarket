@@ -1,102 +1,98 @@
-  
 function logout() {
-    axios
-        .post('https://5gnunfleamarket.shop/admin/logout'
-        )
-        .then((res) => {
-            // 응답처리
-            alert(res.data)
-            window.location.href = '/admin/login'
-        })
-        .catch((error) => {
-            // 예외처리
-            alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-        });
+  axios
+    .post('/api/admin/logout')
+    .then((res) => {
+      // 응답처리
+      alert(res.data);
+      window.location.href = '/admin/login';
+    })
+    .catch((error) => {
+      // 예외처리
+      alert(
+        error.response?.data?.message ||
+          error.response.data.errorMessage.details[0].message,
+      );
+    });
 }
 
-
-
 function checkLogin(service) {
+  if (service === 'product') {
+    axios
+      .get('/admin/products')
+      .then((res) => {
+        window.location.href = '/admin/products';
+      })
+      .catch((error) => {
+        // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        console.log(error);
+        if (error.response.status === 401) {
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/admin/login';
+        }
+      });
+  } else if (service === 'user') {
+    axios
+      .get('/users')
+      .then((res) => {
+        window.location.replace('/users');
+      })
+      .catch((error) => {
+        // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        console.log(error);
+        if (error.response.status === 401) {
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/admin/login';
+        }
+      });
+  } else if (service === 'category') {
+    axios
+      .get('/category')
+      .then((res) => {
+        window.location.href = '/category';
+      })
+      .catch((error) => {
+        // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        console.log(error);
+        if (error.response.status === 401) {
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/admin/login';
+        }
+      });
+  } else if (service === 'notice') {
+    axios
+      .get('/notice')
+      .then((res) => {
+        window.location.href = '/notice';
+      })
+      .catch((error) => {
+        // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        if (error.response.status === 401) {
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/admin/login';
+        }
+      });
+  } else if (service === 'reports') {
+    axios
+      .get('/reports')
+      .then((res) => {
+        window.location.href = '/reports';
+      })
+      .catch((error) => {
+        // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
+        if (error.response.status === 401) {
+          alert('로그인하셔야 합니다.');
+          window.location.href = '/admin/login';
+        }
+      });
+  }
+}
 
-    if(service === "product") {
-        axios
-            .get('https://5gnunfleamarket.shop/admin/products')
-            .then((res) => {
-              window.location.href = '/admin/products'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-              }
-    else if (service === 'user'){
-      axios
-            .get('https://5gnunfleamarket.shop/users')
-            .then((res) => {
-              window.location.replace('https://5gnunfleamarket.shop/users')
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-    else if(service === "category"){
-      axios
-            .get('https://5gnunfleamarket.shop/category')
-            .then((res) => {
-              window.location.href = '/category'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                console.log(error)
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-    else if(service === "notice"){
-      axios
-            .get('https://5gnunfleamarket.shop/notice')
-            .then((res) => {
-              window.location.href = '/notice'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-    else if(service === "reports"){
-      axios
-            .get('https://5gnunfleamarket.shop/reports')
-            .then((res) => {
-              window.location.href = '/reports'
-                })
-            .catch((error) => {
-                // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
-                if (error.response.status === 401) {
-                    alert('로그인하셔야 합니다.');
-                    window.location.href = '/admin/login'
-                }})
-    }
-              }
-
-
-
-              function handleKeyPress(e) {
+function handleKeyPress(e) {
   if (e.keyCode === 13) {
     // 엔터 키를 누르면 검색 함수 호출
     search();
   }
 }
-
 
 // Date 객체를 사용하여 일정 기간 전인지 계산하는 함수
 function getTimeAgo(dateString) {

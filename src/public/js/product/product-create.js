@@ -1,5 +1,5 @@
 axios
-  .get('https://5gnunfleamarket.shop/products/category')
+  .get('/api/products/category')
   .then((res) => {
     let data = res.data.categories;
     let temp = '';
@@ -41,7 +41,7 @@ form.addEventListener('submit', (event) => {
   }
 
   axios
-    .post('/products/up', formData, {
+    .post('/api/products/up', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

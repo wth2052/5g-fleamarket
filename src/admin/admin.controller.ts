@@ -56,7 +56,7 @@ export class AdminController {
       return { errorMessage: error.message };
     }
   }
-  @Get('/api/products')
+  @Get('/api/amdin/products')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   async getProducts2(
@@ -85,7 +85,7 @@ export class AdminController {
     return { product, seller, category, images };
   }
   //상품 삭제 API
-  @Delete('/admin/products/:productId')
+  @Delete('/api/admin/products/:productId')
   deleteProduct(@Param('productId') productId: number) {
     return this.adminService.deleteProduct(productId);
   }
@@ -130,13 +130,13 @@ export class AdminController {
   }
 
   //회원정보 수정(블랙리스트) API
-  @Put('/users/:userId')
+  @Put('/api/users/:userId')
   async banUser(@Param('userId') userId: number, @Body() data: BanUserDto) {
     return await this.adminService.banUser(userId, data.ban);
   }
 
   //회원 삭제 API
-  @Delete('/users/:userId')
+  @Delete('/api/users/:userId')
   async deleteUser(@Param('userId') userId: number) {
     return await this.adminService.deleteUser(userId);
   }
@@ -180,13 +180,13 @@ export class AdminController {
     return { message: '카테고리 작성 페이지' };
   }
 
-  @Post('/category')
+  @Post('/api/category')
   async createCategory(@Body() data: CreateCategoryDto) {
     return await this.adminService.createCategory(data.name);
   }
 
   //카테고리 수정 API
-  @Put('/category/:id')
+  @Put('/api/category/:id')
   async updateCategory(
     @Param('id') categoryId: number,
     @Body() data: UpdateCategoryDto,
@@ -195,7 +195,7 @@ export class AdminController {
   }
 
   //카테고리 삭제 API
-  @Delete('/category/:id')
+  @Delete('/api/category/:id')
   deleteCategory(@Param('id') categoryId: number) {
     return this.adminService.deleteCategory(categoryId);
   }
@@ -216,7 +216,6 @@ export class AdminController {
       return { errorMessage: error.message };
     }
   }
-
 
   @Get('/api/notice')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
@@ -248,7 +247,8 @@ export class AdminController {
   async viewNotice() {
     return { message: '공지작성 페이지' };
   }
-  @Post('/notice')
+
+  @Post('/api/notice')
   async createNotice(
     @Body() data: CreateNoticeDto,
     @AdminCookies('accessToken') jwt: string,
@@ -266,7 +266,7 @@ export class AdminController {
   }
 
   //공지사항 수정
-  @Put('/notice/:noticeId')
+  @Put('/api/notice/:noticeId')
   async updateNotice(
     @Param('noticeId') noticeId: number,
     @Body() data: UpdateNoticeDto,
@@ -279,14 +279,14 @@ export class AdminController {
   }
 
   //공지사항 삭제
-  @Delete('/notice/:noticeId')
+  @Delete('/api/notice/:noticeId')
   deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
 
   // 상품검색
 
-  @Get('/admin/productSearch')
+  @Get('/api/admin/productSearch')
   async productSearch(@Query('search') search: string) {
     const product = await this.adminService.productSearch(search);
     return { data: product };
@@ -294,7 +294,7 @@ export class AdminController {
 
   //회원검색
 
-  @Get('userSearch')
+  @Get('/api/userSearch')
   async userSearch(@Query('search') search: string) {
     const user = await this.adminService.userSearch(search);
     return { data: user };
@@ -302,7 +302,7 @@ export class AdminController {
 
   //카테고리 검색
 
-  @Get('categorySearch')
+  @Get('/api/categorySearch')
   async categorySearch(@Query('search') search: string) {
     const category = await this.adminService.categorySearch(search);
     return { data: category };
@@ -310,21 +310,21 @@ export class AdminController {
 
   //공지 검색
 
-  @Get('noticeSearch')
+  @Get('/api/noticeSearch')
   async noticeSearch(@Query('search') search: string) {
     const notice = await this.adminService.noticeSearch(search);
     return { data: notice };
   }
   //신고 검색
 
-  @Get('reportSearch')
+  @Get('/api/reportSearch')
   async reportSearch(@Query('search') search: string) {
     const report = await this.adminService.reportSearch(search);
     return { data: report };
   }
 
   // 블랙리스트 모아보기
-  @Get('ban/users')
+  @Get('/api/ban/users')
   async getBanUsers() {
     try {
       return { banUsers: await this.adminService.getBanUsers() };
@@ -379,7 +379,7 @@ export class AdminController {
   }
 
   //신고 수정 (확인하기)
-  @Put('/reports/:reportId')
+  @Put('/api/reports/:reportId')
   async checkReport(
     @Param('reportId') reportId: number,
     @Body() data: CheckReportDto,
@@ -392,7 +392,7 @@ export class AdminController {
   }
 
   //확인된 신고 모아보기
-  @Get('checked/reports')
+  @Get('/api/checked/reports')
   async getCheckedreports() {
     try {
       const checkedReports = await this.adminService.getCheckedReports();
@@ -403,7 +403,7 @@ export class AdminController {
   }
 
   //확인이 되지 않은 신고 모아보기
-  @Get('unchecked/reports')
+  @Get('/api/unchecked/reports')
   async getUncheckedreports() {
     try {
       const uncheckedReports = await this.adminService.getUncheckedReports();
@@ -414,7 +414,7 @@ export class AdminController {
   }
 
   //신고 삭제하기
-  @Delete('/reports/:reportId')
+  @Delete('/api/reports/:reportId')
   deleteReport(@Param('reportId') reportId: number) {
     return this.adminService.deleteReport(reportId);
   }

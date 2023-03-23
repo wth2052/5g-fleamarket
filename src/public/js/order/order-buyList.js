@@ -1,5 +1,5 @@
 axios
-  .get('/orders/me/buy/list')
+  .get('/api/orders/me/buy/list')
   .then((res) => {
     let data = res.data.data;
     if (data !== 0) {
@@ -65,7 +65,7 @@ axios
 // 판매자 정보
 function sellResult(orderId) {
   axios
-    .get(`/orders/buy/result/${orderId}`)
+    .get(`/api/orders/buy/result/${orderId}`)
     .then((res) => {
       console.log(res);
       let data = res.data.data;

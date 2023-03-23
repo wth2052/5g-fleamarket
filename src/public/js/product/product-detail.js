@@ -4,7 +4,7 @@ const linkSplit = link.split('/');
 const num = linkSplit[linkSplit.length - 1];
 
 axios
-  .get(`https://5gnunfleamarket.shop/products/view/${num}`)
+  .get(`/api/products/view/${num}`)
   .then((res) => {
     let data = res.data.product;
     let img1 = '';
@@ -14,9 +14,15 @@ axios
     const timeAgo = getTimeAgo(data.pullUp);
     if (data.images.length === 1) {
       img1 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item active">
-                                            <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="Second slide">
+                                            <img class="d-block w-100" style="height: " src="/img/${data.images[0].imagePath}" alt="Second slide">
                                         </div>
                                     </div>
                                     <a class="carousel-control-prev" href="#carouselExampleIndicators"
@@ -33,7 +39,13 @@ axios
 
     if (data.images.length === 2) {
       img2 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item">
                                             <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="First slide">
                                         </div>
@@ -54,7 +66,13 @@ axios
 
     if (data.images.length === 3) {
       img3 += `
-                                    <div class="carousel-inner" style="max-height: 800px">
+                                    <div class="carousel-inner"
+                                    style="max-width:100%; max-height: 80%;
+                                          overflow: hidden;
+                                          display: flex;
+                                          align-items: center;
+                                          justify-content: center;
+                                    ;">
                                         <div class="carousel-item">
                                             <img class="d-block w-100" src="/img/${data.images[0].imagePath}" alt="First slide">
                                         </div>
@@ -194,7 +212,7 @@ axios
 // 찜하기
 function like(productId) {
   axios
-    .post(`https://5gnunfleamarket.shop/products/like/${productId}`)
+    .post(`/api/products/like/${productId}`)
     .then((response) => {
       window.location.reload();
     })
@@ -210,7 +228,7 @@ function like(productId) {
 function deal(productId) {
   const dealPrice = document.getElementById('recipient-name').value;
   axios
-    .post(`https://5gnunfleamarket.shop/orders/deal/price/${productId}`, {
+    .post(`/api/orders/deal/price/${productId}`, {
       price: dealPrice,
     })
     .then((response) => {
@@ -237,9 +255,9 @@ function deal(productId) {
 //삭제하기
 function remove(productId) {
   axios
-    .delete(`https://5gnunfleamarket.shop/products/${productId}`)
+    .delete(`/api/products/${productId}`)
     .then((response) => {
-      window.location.href = 'https://5gnunfleamarket.shop/';
+      window.location.href = '/';
     })
     .catch((error) => {
       if (error.response.status === 401) {

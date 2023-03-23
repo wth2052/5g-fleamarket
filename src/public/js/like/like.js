@@ -1,5 +1,5 @@
 axios
-  .get('/likes')
+  .get('/api/likes')
   .then((res) => {
     let data = res.data;
     let products = data.product;

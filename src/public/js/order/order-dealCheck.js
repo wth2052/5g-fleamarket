@@ -1,5 +1,5 @@
 axios
-  .get('/orders/me/sell/product')
+  .get('/api/orders/me/sell/product')
   .then((res) => {
     let data = res.data.data;
     if (data !== 0) {
@@ -51,7 +51,7 @@ axios
 function pullUp(productId) {
   event.stopPropagation();
   axios
-    .post(`/orders/pullUp/${productId}`)
+    .post(`/api/orders/pullUp/${productId}`)
     .then((res) => {
       alert('게시글을 끌어올렸어요.');
       window.location.href = '/order/dealcheck';

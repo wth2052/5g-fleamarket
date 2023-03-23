@@ -42,7 +42,7 @@ interface IOAuthUser {
 }
 
 //TODO: auth를 없애서 API를 조금 더 RESTFUL하게 만드는게 맞을까?
-@Controller('auth')
+@Controller('/api/auth')
 export class AuthController {
   constructor(
     @InjectRepository(UserEntity)
@@ -63,25 +63,20 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const user = req.user;
-    console.log('유저', user);
-    if(user.ban === 1){
-          
+    if (user.ban === 1) {
       throw new UnauthorizedException(
         '블랙리스트 유저입니다. 로그인 하실 수 없습니다.',
       );
-    } 
-    else{
+    } else {
       const { accessToken, ...accessOption } =
-      this.authService.getCookieWithJwtAccessToken(user);
-    // console.log(accessOption);
-    const { refreshToken, ...refreshOption } =
-      this.authService.getCookieWithJwtRefreshToken(user);
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
-    res.cookie('Authentication', accessToken, accessOption);
-    res.cookie('refreshToken', refreshToken, refreshOption);
-  
-  }
-    
+        this.authService.getCookieWithJwtAccessToken(user);
+      // console.log(accessOption);
+      const { refreshToken, ...refreshOption } =
+        this.authService.getCookieWithJwtRefreshToken(user);
+      await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+      res.cookie('Authentication', accessToken, accessOption);
+      res.cookie('refreshToken', refreshToken, refreshOption);
+    }
   }
 
   // @Public()
@@ -114,7 +109,6 @@ export class AuthController {
     @Cookies('refreshToken') jwt: JwtDecodeDto,
   ): Promise<void> {
     const user = req.user;
-    console.log('유저 있니?', user);
     const { accessToken, ...accessOption } =
       this.authService.getCookieWithJwtAccessToken(user);
     res.cookie('Authentication', accessToken, accessOption);

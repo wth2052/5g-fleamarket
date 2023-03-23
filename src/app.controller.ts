@@ -64,6 +64,10 @@ export class AppController {
   @Render('main.ejs')
   async product() {}
 
+  @Get('products/asdf/:1')
+  @Render('product/products-detail.ejs')
+  asdf() {}
+
   @Get('products/create')
   @Render('product/product-create.ejs')
   async productCreate() {}
@@ -77,7 +81,6 @@ export class AppController {
   @Get('/me/edit')
   @Render('mypage-edit.ejs')
   async renderEditMyPage() {}
-
 
   @Get('/googleuser/edit')
   @Render('mypage-edit-google.ejs')

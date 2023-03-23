@@ -1,5 +1,5 @@
 axios
-  .get('/products/view')
+  .get('/api/products/view')
   .then((res) => {
     let data = res.data;
     let products = data.products;
@@ -42,8 +42,8 @@ axios
       function debounce(func, wait = 5, immediate = false) {
         let timeout;
         return function () {
-          const context = this
-          const args = arguments
+          const context = this;
+          const args = arguments;
 
           const later = function () {
             timeout = null;
@@ -57,9 +57,11 @@ axios
         };
       }
 
-      let limit = Number(document.getElementById('productsLength').value)
-      let offset = Number(document.getElementById('productsLength').value)
-      let TotalProducts = Number(document.getElementById('totalProducts').value)
+      let limit = Number(document.getElementById('productsLength').value);
+      let offset = Number(document.getElementById('productsLength').value);
+      let TotalProducts = Number(
+        document.getElementById('totalProducts').value,
+      );
 
       //   let limit = Number(document.getElementById('productsLength').value)
       // let offset = Number(document.getElementById('productsLength').value)
@@ -67,27 +69,26 @@ axios
       // A delay of 50ms between calls.
       window.debouncedPageProduct = debounce(pageProduct, 50);
 
-
       window.addEventListener('scroll', debouncedPageProduct);
 
       function pageProduct() {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        const { scrollTop, scrollHeight, clientHeight } =
+          document.documentElement;
         if (scrollTop + clientHeight >= scrollHeight - 5) {
+          const totalProducts = TotalProducts;
+          const productsLength = limit;
 
-
-          const totalProducts = TotalProducts
-          const productsLength = limit
-
-          axios.get(`/products/view?limit=${limit}&offset=${offset}`)
-            .then(res => {
+          axios
+            .get(`/api/products/view?limit=${limit}&offset=${offset}`)
+            .then((res) => {
               const products = res.data.products;
-              
+
               let temp = '';
 
               for (let i = 0; i < products.length; i++) {
                 const timeAgo = getTimeAgo(products[i].updatedAt);
                 let productP = products[i].price;
-                const productPrice = productP
+                const productPrice = productP;
                 temp += `
                 <div class="col-md-6 col-lg-3">
                         <div class="card">
@@ -114,31 +115,25 @@ axios
               $('#product-list').append(temp);
 
               if (products.length < res.data.totalProducts) {
-
-                limit += products.length
+                limit += products.length;
 
                 // limit += 10
                 // offset += 10
 
-                offset += products.length
+                offset += products.length;
               }
-
             })
-            .catch(error => {
+            .catch((error) => {
               if (productsLength === totalProducts) {
-                alert('끝 페이지입니다.')
+                alert('끝 페이지입니다.');
                 window.removeEventListener('scroll', debouncedPageProduct);
-              }
-              else {
+              } else {
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');
               }
             });
         }
-      };
+      }
       ///상품 페이지네이션 끝////////
     }
   })
-  .catch((error) => {
-
-  });
-
+  .catch((error) => {});
