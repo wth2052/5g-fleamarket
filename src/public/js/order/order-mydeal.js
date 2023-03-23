@@ -1,5 +1,5 @@
 axios
-  .get('/orders/me/pick')
+  .get('/api/orders/me/pick')
   .then((res) => {
     let data = res.data.data;
     if (data !== 0) {
@@ -72,7 +72,7 @@ function dealUpdate(orderId) {
     window.location.reload();
   }
   axios
-    .put(`/orders/deal/change/${orderId}`, {
+    .put(`/api/orders/deal/change/${orderId}`, {
       price: newDeal,
     })
     .then((res) => {
@@ -99,7 +99,7 @@ function dealUpdate(orderId) {
 function dealDelete(orderId) {
   event.stopPropagation();
   axios
-    .delete(`/orders/deal/cancel/${orderId}`)
+    .delete(`/api/orders/deal/cancel/${orderId}`)
     .then((res) => {
       alert('딜 취소하기 완료!.');
       window.location.reload();

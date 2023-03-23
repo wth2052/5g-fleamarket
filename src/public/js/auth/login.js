@@ -2,11 +2,11 @@ function login() {
   const email = document.getElementById('id').value;
   const password = document.getElementById('password').value;
   axios
-    .post('/auth/login', { email: email, password: password })
+    .post('/api/auth/login', { email: email, password: password })
     .then((res) => {
       // 응답처리
       alert('로그인에 성공하였습니다.');
-      window.location.replace('https://5gnunfleamarket.shop/');
+      window.location.replace('/');
     })
     .catch((error) => {
       if (error.response.status === 401) {

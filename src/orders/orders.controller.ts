@@ -28,7 +28,7 @@ import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { number } from 'joi';
 import { ApiQuery } from '@nestjs/swagger';
 @Catch(HttpException)
-@Controller('orders')
+@Controller('api/orders')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(

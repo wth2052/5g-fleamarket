@@ -1,7 +1,7 @@
 axios
-  .get('/notices')
+  .get('/api/notices')
   .then((res) => {
-    let notices = res.data.notices
+    let notices = res.data.notices;
     let totalNotice = res.data.totalNotice;
     if (notices !== 0) {
       let temp = '';
@@ -75,7 +75,7 @@ axios
           const page = Number(event.target.dataset.page);
           offset = (page - 1) * limit;
           axios
-            .get(`/notices?offset=${offset}&limit=${limit}`)
+            .get(`/api/notices?offset=${offset}&limit=${limit}`)
             .then((res) => {
               let notices = res.data.notices;
               let temp = '';
@@ -127,7 +127,10 @@ axios
         let pagination = `<div class="pagination" id="pagination-box">`;
         // <button class="page prev-btn" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>`;
 
-        const startPage = Math.max(1, currentPage - Math.floor(buttonsToShow / 2));
+        const startPage = Math.max(
+          1,
+          currentPage - Math.floor(buttonsToShow / 2),
+        );
         const endPage = Math.min(totalPages, startPage + buttonsToShow - 1);
 
         if (currentPage > 3) {
@@ -162,7 +165,7 @@ axios
             const page = Number(event.target.dataset.page);
             offset = (page - 1) * limit;
             axios
-              .get(`/notices?offset=${offset}&limit=${limit}`)
+              .get(`/api/notices?offset=${offset}&limit=${limit}`)
               .then((res) => {
                 let notices = res.data.notices;
                 let temp = '';
@@ -227,7 +230,7 @@ axios
 
 function getNoticeById(noticeId) {
   axios
-    .get(`/notices/${noticeId}`)
+    .get(`/api/notices/${noticeId}`)
     .then((res) => {
       let notice = res.data.notice;
       let temp = '';

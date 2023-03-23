@@ -20,7 +20,7 @@ import { CreateReportDto } from './dto/create-report.dto';
 import { ReportService } from './report.service';
 
 @Catch(HttpException)
-@Controller()
+@Controller('/api')
 @UseGuards(JwtAuthGuard)
 export class ReportController {
   constructor(
