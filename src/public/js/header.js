@@ -215,6 +215,5 @@ function logout() {
       else {
         alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
       }
-
     });
 }

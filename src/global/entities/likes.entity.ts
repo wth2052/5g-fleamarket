@@ -14,12 +14,14 @@ import { UserEntity } from './users.entity';
 
 @Entity({ name: 'likes' })
 export class LikesEntity {
-  @ManyToOne(() => UserEntity, (users) => users.likes)
+  @ManyToOne(() => UserEntity, (users) => users.likes, { onDelete: 'CASCADE' })
   user: UserEntity;
   @PrimaryColumn()
   userId: number;
 
-  @ManyToOne(() => ProductsEntity, (product) => product.likes)
+  @ManyToOne(() => ProductsEntity, (product) => product.likes, {
+    onDelete: 'CASCADE',
+  })
   product: ProductsEntity;
   @PrimaryColumn()
   productId: number;
