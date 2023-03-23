@@ -14,7 +14,7 @@ axios
       let temp = '';
       let dealTemp = '';
       temp += `
-                <div class="email-left-box"><a href="/products/asdf/${data.product.id}" class="btn btn-primary btn-block">${data.product.title}</a>
+                <div class="email-left-box"><a href="/products/detail/${data.product.id}" class="btn btn-primary btn-block">${data.product.title}</a>
                     <div class="mail-list mt-4"><a  class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>제시받은 가격수</b> <span class="badge badge-primary badge-sm float-right m-t-5">${data.deal.length}</span> </a>
                         <a href="#" class="list-group-item border-0 p-r-0"><i class="fa fa-paper-plane font-18 align-middle mr-2"></i><b>판매가</b><span class="badge badge-primary badge-sm float-right m-t-5">${productPrice}</span></a>
                         <a href="#" class="list-group-item border-0 p-r-0"><i class="fa fa-star-o font-18 align-middle mr-2"></i>좋아요 <span class="badge badge-danger badge-sm float-right m-t-5">${data.product.likes}</span> </a>

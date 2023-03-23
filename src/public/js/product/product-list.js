@@ -18,7 +18,7 @@ axios
                             <img class="img-fluid" 
                               src="/img/${products[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/products/asdf/${products[i].id}'" alt="">
+                               onclick="window.location='/products/detail/${products[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${products[i].title}</h5>
                                 <h6 class="card-title">${productPrice} 원</h6>
@@ -95,7 +95,7 @@ axios
                             <img class="img-fluid" 
                               src="/img/${products[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/products/asdf/${products[i].id}'" alt="">
+                               onclick="window.location='/products/detail/${products[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${products[i].title}</h5>
                                 <h6 class="card-title">${productPrice} 원</h6>

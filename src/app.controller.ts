@@ -25,7 +25,7 @@ export class AppController {
   ) {}
 
   @Public()
-  @Get()
+  @Get('/')
   @Render('main.ejs')
   async main() {}
 
@@ -64,9 +64,9 @@ export class AppController {
   @Render('main.ejs')
   async product() {}
 
-  @Get('products/asdf/:1')
+  @Get('products/detail/:1')
   @Render('product/products-detail.ejs')
-  asdf() {}
+  async detail() {}
 
   @Get('products/create')
   @Render('product/product-create.ejs')

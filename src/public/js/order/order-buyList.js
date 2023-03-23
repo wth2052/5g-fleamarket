@@ -20,7 +20,7 @@ axios
                             <img class="img-fluid"
                               src="/img/${data[i].images[0].imagePath}"
                               style="min-height: 250px; max-height: 250px"
-                               onclick="window.location='/products/asdf/${data[i].id}'" alt="">
+                               onclick="window.location='/products/detail/${data[i].id}'" alt="">
                             <div class="card-body">
                                 <h5 class="card-title">${data[i].title}</h5>
                                 <div class="btn-group mb-1">

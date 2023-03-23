@@ -41,7 +41,7 @@ function getTimeAgo(dateString) {
     const search = document.getElementById('search').value;
 
     axios
-      .get(`/orders/productSearch?search=${search}`)
+      .get(`/api/orders/productSearch?search=${search}`)
       .then((res) => {
        
         let data = res.data.data;
@@ -61,7 +61,7 @@ function getTimeAgo(dateString) {
                               <img class="img-fluid" 
                                 src="/img/${data[i].images[0].imagePath}"
                                 style="min-height: 250px; max-height: 250px"
-                                 onclick="window.location='/products/asdf/${data[i].id}'" alt="">
+                                 onclick="window.location='/products/detail/${data[i].id}'" alt="">
                               <div class="card-body">
                                   <h5 class="card-title">${title}</h5>
                                   <h6 class="card-title">${data[i].price} 원</h6>
@@ -132,7 +132,7 @@ function getTimeAgo(dateString) {
         const totalProducts = TotalProducts
         const productsLength = limit
 
-        axios.get(`/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
+        axios.get(`/api/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
           .then(res => {
             
             const products = res.data.data;
@@ -154,7 +154,7 @@ function getTimeAgo(dateString) {
                               <img class="img-fluid" 
                                 src="/img/${products[i].images[0].imagePath}"
                                 style="min-height: 250px; max-height: 250px"
-                                 onclick="window.location='/products/asdf/${products[i].id}'" alt="">
+                                 onclick="window.location='/products/detail/${products[i].id}'" alt="">
                               <div class="card-body">
                                   <h5 class="card-title">${title}</h5>
                                   <h6 class="card-title">${productPrice} 원</h6>
@@ -201,7 +201,7 @@ function getTimeAgo(dateString) {
 
   function logout(){
 	axios
-		.post('/auth/logout',
+		.post('/api/auth/logout',
 		)
 		.then((res) => {
 			// 응답처리
