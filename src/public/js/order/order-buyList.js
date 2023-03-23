@@ -2,7 +2,6 @@ axios
   .get('/orders/me/buy/list')
   .then((res) => {
     let data = res.data.data;
-    console.log(res);
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < data.length; i++) {
@@ -74,6 +73,7 @@ function sellResult(orderId) {
       swal(
         '판매자 정보',
         `판매자 : ${data.nickname}
+                E-mail : ${data.email}
                 연락처 : ${data.phone}
                 주소 : ${addressSplit[2]}`,
         'success',
