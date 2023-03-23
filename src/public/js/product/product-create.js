@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/products/category')
+  .get('https://5gnunfleamarket.shop/products/category')
   .then((res) => {
     console.log('result', res);
     let data = res.data.categories;

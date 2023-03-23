@@ -7,7 +7,7 @@ function login() {
     .then((res) => {
       // 응답처리
       alert('로그인에 성공하였습니다.');
-      window.location.replace('http://localhost:3000/');
+      window.location.replace('https://5gnunfleamarket.shop/');
     })
     .catch((error) => {
       // 예외처리

@@ -14,7 +14,7 @@ function sendMail(event) {
     alert('올바른 형식의 이메일이 아닙니다.');
     return;
   }
-  axios.post('http://localhost:3000/email-verify', { email: email });
+  axios.post('https://5gnunfleamarket.shop/email-verify', { email: email });
   alert('메일이 성공적으로 전송되었습니다. 인증번호의 유효기간은 10분입니다.');
 }
 function startTimer() {
@@ -106,7 +106,7 @@ function signUp() {
     return;
   }
   axios
-    .post('http://localhost:3000/auth/signup', {
+    .post('https://5gnunfleamarket.shop/auth/signup', {
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
       },
@@ -142,7 +142,7 @@ function emailNumberVerify() {
   }
 
   axios
-    .post('http://localhost:3000/email-verify/verify-number', {
+    .post('https://5gnunfleamarket.shop/email-verify/verify-number', {
       verifyNumber: parseInt(verifyNumber),
       email,
     })

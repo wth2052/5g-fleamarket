@@ -1,5 +1,5 @@
 axios
-  .get('http://localhost:3000/products/view')
+  .get('https://5gnunfleamarket.shop/products/view')
   .then((res) => {
     console.log(111, res);
     let data = res.data;
@@ -82,7 +82,7 @@ window.addEventListener('scroll', debouncedPageProduct);
           console.log(33, productsLength)
           console.log(44, totalProducts)
 
-          axios.get(`http://localhost:3000/products/view?limit=${limit}&offset=${offset}`)
+          axios.get(`https://5gnunfleamarket.shop/products/view?limit=${limit}&offset=${offset}`)
             .then(res => {
               const products = res.data.products;
               console.log(55, products)
