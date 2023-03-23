@@ -163,7 +163,7 @@ export class OrdersController {
   @Get('productSearch')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
-  // http://localhost:3000/orders/productSearch?search=피카츄
+  // https://5gnunfleamarket.shop/orders/productSearch?search=피카츄
   async productSearch(
     @Query('search') search: string,
     @Query('limit') limit: number = 10,

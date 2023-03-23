@@ -10,7 +10,7 @@ function productSearch() {
   const search = document.getElementById('search').value;
 
   axios
-    .get(`http://localhost:3000/orders/productSearch?search=${search}`)
+    .get(`https://5gnunfleamarket.shop/orders/productSearch?search=${search}`)
     .then((res) => {
       let data = res.data.data;
       let totalProducts = res.data.totalProducts;
@@ -85,7 +85,7 @@ function productSearch() {
 
           axios
             .get(
-              `http://localhost:3000/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`,
+              `https://5gnunfleamarket.shop/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`,
             )
             .then((res) => {
               const products = res.data.data;

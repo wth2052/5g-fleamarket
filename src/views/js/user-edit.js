@@ -30,7 +30,7 @@ function editUserInformation() {
     return false;
   }
   axios
-    .put('http://localhost:3000/api/user/me/edit', {
+    .put('https://5gnunfleamarket.shop/api/user/me/edit', {
       nickname: usernickname.toString(),
       password: password.toString(),
       phone: phonenumber.toString(),
