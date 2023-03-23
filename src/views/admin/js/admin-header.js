@@ -1,7 +1,7 @@
   
 function logout() {
     axios
-        .post('http://localhost:3000/admin/logout'
+        .post('https://5gnunfleamarket.shop/admin/logout'
         )
         .then((res) => {
             // 응답처리
@@ -20,7 +20,7 @@ function checkLogin(service) {
 
     if(service === "product") {
         axios
-            .get('http://localhost:3000/admin/products')
+            .get('https://5gnunfleamarket.shop/admin/products')
             .then((res) => {
               window.location.href = '/admin/products'
                 })
@@ -34,9 +34,9 @@ function checkLogin(service) {
               }
     else if (service === 'user'){
       axios
-            .get('http://localhost:3000/users')
+            .get('https://5gnunfleamarket.shop/users')
             .then((res) => {
-              window.location.replace('http://localhost:3000/users')
+              window.location.replace('https://5gnunfleamarket.shop/users')
                 })
             .catch((error) => {
                 // 예외처리 - 로그인안하고 들어올때 or 로그인 쿠키가 없을 때
@@ -48,7 +48,7 @@ function checkLogin(service) {
     }
     else if(service === "category"){
       axios
-            .get('http://localhost:3000/category')
+            .get('https://5gnunfleamarket.shop/category')
             .then((res) => {
               window.location.href = '/category'
                 })
@@ -62,7 +62,7 @@ function checkLogin(service) {
     }
     else if(service === "notice"){
       axios
-            .get('http://localhost:3000/notice')
+            .get('https://5gnunfleamarket.shop/notice')
             .then((res) => {
               window.location.href = '/notice'
                 })
@@ -75,7 +75,7 @@ function checkLogin(service) {
     }
     else if(service === "reports"){
       axios
-            .get('http://localhost:3000/reports')
+            .get('https://5gnunfleamarket.shop/reports')
             .then((res) => {
               window.location.href = '/reports'
                 })
