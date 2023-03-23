@@ -69,6 +69,7 @@ function buyResult(orderId) {
     .get(`/orders/sell/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
+      console.log(data);
       const addressSplit = data.address.split(' ');
       swal(
         '구매자 정보',

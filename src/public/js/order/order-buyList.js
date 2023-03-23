@@ -2,6 +2,7 @@ axios
   .get('/orders/me/buy/list')
   .then((res) => {
     let data = res.data.data;
+    console.log(res);
     if (data !== 0) {
       let temp = '';
       for (let i = 0; i < data.length; i++) {
@@ -69,6 +70,7 @@ function sellResult(orderId) {
     .get(`/orders/buy/result/${orderId}`)
     .then((res) => {
       let data = res.data.data;
+      console.log(data);
       const addressSplit = data.address.split(' ');
       swal(
         '판매자 정보',
