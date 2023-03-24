@@ -16,8 +16,10 @@ import { Cookies } from './global/common/decorator/find-cookie.decorator';
 import { JwtDecodeDto, UpdateUserDto } from './user/dto';
 import { UserService } from './user/user.service';
 import { ProductsService } from './products/products.service';
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller()
+@ApiTags('Render')
 export class AppController {
   constructor(
     private readonly appService: AppService,
