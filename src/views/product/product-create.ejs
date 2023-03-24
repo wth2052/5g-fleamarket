@@ -34,7 +34,8 @@
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-3 control-label" style="font-size: 20px;" ><b>내용</b></label>
-                            <textarea id="description" id="description" name="description" class="form-control" rows="15" required></textarea>
+                        <textarea id="description" id="description" name="description" class="form-control" rows="15" required></textarea>
+                        <span>최대 글자수는 500자 입니다.</span>
                     </div>
                     <div class="form-group">
                         <label for="price" class="col-sm-3 control-label" style="font-size: 20px;"><b>가격</b></label>
@@ -46,8 +47,8 @@
                             <select class="form-select form-select-lg mb-3" id="categorySelect" name="categoryId" required>
                               <option class="setting-option" aria-label=".form-select-lg example" value="">-- 분류 선택 --</option>
                             </select>
-                            <div class="form-group">
-                                <label for="images" style="font-size: 20px"><b>상품 사진 업로드</b></label>
+                            <div class="form-group" style='align-items: center;'>
+                                <label for="images" style="font-size: 20px; align-items: center;"><b>상품 사진 업로드</b><span style='margin-left: 15px; font-size: 15px; opacity: 85%;'>가능 확장자 - JPG JPEG PNG GIF </span></label>
                                 <input type="file" class="form-control-file" id="images" name="images" multiple accept="image/*">
                             </div>
                             <div id="image-preview"></div>
