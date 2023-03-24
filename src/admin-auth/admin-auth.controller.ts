@@ -6,6 +6,7 @@ import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { ApiBody, ApiCreatedResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('/api/admin')
+@ApiTags('관리자 로그인 API')
 @Public()
 export class AdminAuthController {
   constructor(private readonly adminAuthService: AdminAuthService) {}

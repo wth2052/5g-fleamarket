@@ -85,7 +85,6 @@ export class ProductsService {
 
     product.viewCount += 1;
     await this.productRepository.save(product);
-    console.log('####################', product, '###########');
     return { product };
   }
 

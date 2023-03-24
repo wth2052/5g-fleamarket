@@ -33,6 +33,7 @@ import { CheckReportDto } from './dto/check-report.dto';
 
 @Catch(HttpException)
 @Controller()
+@ApiTags('관리자 API')
 @Public()
 @UseGuards(AdminAuthGuard)
 export class AdminController {
@@ -43,6 +44,10 @@ export class AdminController {
 
   // 상품정보 가져오기 API
   @Get('/admin/products')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-products.ejs')
   @ApiOperation({summary: '상품목록 보여주기 페이지 ',
 description: '상품목록 보여주기 페이지 랜더링'})
@@ -87,6 +92,10 @@ description: '등록된 모든 상품목록 보여주기'})
 
   //상품정보 상세보기 API
   @Get('/admin/products/:productId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-productById.ejs')
   @ApiOperation({summary: '상품상세 보여주기',
   description: '상품의 상세정보 보여주기'})
@@ -114,6 +123,10 @@ description: '등록된 모든 상품목록 보여주기'})
 
   //회원정보 가져오기 API
   @Get('/users')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-users.ejs')
   @ApiOperation({summary: '회원목록 보여주기 페이지 ',
   description: '회원목록 보여주기 페이지 랜더링'})
@@ -158,6 +171,10 @@ description: '등록된 모든 상품목록 보여주기'})
 
   //회원정보 상세보기 API
   @Get('/users/:userId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-userById.ejs')
   @ApiOperation({summary: '회원상세 보여주기',
   description: '회원의 상세정보 보여주기'})
@@ -195,6 +212,10 @@ description: '등록된 모든 상품목록 보여주기'})
 
   //카테고리 조회 API
   @Get('/category')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-category.ejs')
   @ApiOperation({summary: '카테고리 목록 보여주기 페이지 ',
   description: '카테고리 목록 보여주기 페이지 랜더링'})
@@ -241,6 +262,10 @@ description: '등록된 모든 상품목록 보여주기'})
 
   //카테고리 생성 API
   @Get('/post/category')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-categoryPost.ejs')
   @ApiOperation({summary: '카테고리 생성 페이지',
 description: '카테고리 생성 페이지 랜더링'})
@@ -287,6 +312,10 @@ description: '카테고리 생성 페이지 랜더링'})
   //공지사항 모두 조회
 
   @Get('/notice')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-notices.ejs')
   @ApiOperation({summary: '공지목록 보여주기 페이지 ',
 description: '공지목록 보여주기 페이지 랜더링'})
@@ -332,6 +361,10 @@ description: '등록된 모든 공지목록 보여주기'})
   //공지사항 상세조회
 
   @Get('/notice/:noticeId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-noticeById.ejs')
   @ApiOperation({summary: '공지사항 상세 조회하기',
   description: '공지의 상세정보 보여줌'})
@@ -344,6 +377,10 @@ description: '등록된 모든 공지목록 보여주기'})
 
   //공지사항 작성
   @Get('/post/notice')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-noticePost.ejs')
   @ApiOperation({summary: '공지사항 생성 페이지',
 description: '공지사항 생성 페이지 랜더링'})
@@ -506,6 +543,10 @@ description: '블랙리스트 처리된 회원 목록 보여주기'})
   }
   //신고 목록 보기
   @Get('/reports')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-reports.ejs')
   @ApiOperation({summary: '신고목록 보여주기 페이지 ',
 description: '신고목록 보여주기 페이지 랜더링'})
@@ -554,6 +595,10 @@ description: '등록된 모든 신고목록 보여주기'})
 
   //신고 상세보기 API
   @Get('/reports/:reportId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-reportById.ejs')
   @ApiOperation({summary: '신고 상세 조회하기',
   description: '신고의 상세정보 보여줌'})

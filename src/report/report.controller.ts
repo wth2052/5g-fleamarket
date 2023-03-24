@@ -23,6 +23,7 @@ import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOpe
 @Catch(HttpException)
 @Controller('/api')
 @UseGuards(JwtAuthGuard)
+@ApiTags('신고하기 API')
 export class ReportController {
   constructor(
     private readonly reportService: ReportService,
@@ -54,7 +55,6 @@ export class ReportController {
     @Body() data: CreateReportDto,
   ) {
     const userId = jwt.id;
-    console.log(userId);
     return this.reportService.createReport(
       userId,
       data.reported,
@@ -109,10 +109,8 @@ description: '등록된 모든 공지목록 보여주기'})
     })
   async findMyLike(@Cookies('Authentication') jwt: JwtDecodeDto,) {
     const userId = jwt.id;
-    const product = await this.reportService.findMyLike(userId)
+    const product = await this.reportService.findMyLike(userId);
 
     return { product };
   }
-
-
 }
