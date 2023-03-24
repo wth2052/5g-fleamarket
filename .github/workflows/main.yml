@@ -1,6 +1,4 @@
 # AWS S3/CodeDeploy를 통한 CI/CD
-# 현재 방식은 프로젝트 그대로 올리는 방식임
-# zip 압축 후 올리는 방법으로 변경중
 name: Deploy to Production
 on:
   push:
