@@ -1,3 +1,6 @@
+# AWS S3/CodeDeploy를 통한 CI/CD
+# 현재 방식은 프로젝트 그대로 올리는 방식임
+# zip 압축 후 올리는 방법으로 변경중
 name: Deploy to Production
  
 on:
@@ -8,6 +11,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-18.04
+    env:
+        IMAGE_TAG: ${{ github.sha }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@master
@@ -20,9 +25,6 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
-      - name: Make a Zip File
-        run: zip -r ./$GITHUB_SHA.zip . -x "node_modules/*" "test/*" "README.md" "*.git*"
-        shell: bash
  
       - name: Install Dependencies
         run: npm install
@@ -34,13 +36,13 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
-        run: |
-          aws s3 cp \
-            --recursive \
-            --region ap-northeast-2 \
-            /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
-            
-      - name: Request AWSCodeDeploy
-      - name: Request Deployment
-        run: aws deploy create-deployment --application-name $AWS_CODEDEPLOY_APPLICATION_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $AWS_CODEDEPLOY_DEPLOYMENT_GROUP_NAME --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-      
+       # run: |
+       #   aws s3 cp \
+       #     --recursive \
+       #     --region ap-northeast-2 \
+       #     /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
+      - name: S3 Upload
+        run: aws deploy push --application-name mymap-deploy --description "5gnunFleaMarket S3 Deploy" --s3-location s3://5gnunfleamarket-bucket/main/deploy_$IMAGE_TAG.zip --source .
+
+      - name: code deploy
+        run: aws deploy create-deployment --application-name 5gnunFleaMarket CodeDeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name server --s3-location bucket=blabla,bundleType=zip,key=deploy_$IMAGE_TAG.zip
