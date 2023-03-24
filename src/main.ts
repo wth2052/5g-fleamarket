@@ -4,13 +4,9 @@ import { setupSwagger } from './global/util/swagger/swagger-mainpage';
 import * as cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import * as winston from 'winston';
-import {
-  utilities as nestWinstonModuleUtilities,
-  WinstonModule,
-} from 'nest-winston';
-import { HttpExceptionFilter } from './global/filter/http-exception-filter';
+
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
