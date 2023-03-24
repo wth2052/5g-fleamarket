@@ -10,9 +10,19 @@ import {
   WinstonModule,
 } from 'nest-winston';
 import { HttpExceptionFilter } from './global/filter/http-exception-filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
+
+    const config = new DocumentBuilder()
+    .setTitle('5g Swagger')
+    .setDescription('5조의 스웨거입니다.')
+    .setVersion('1.0.0')
+    .addTag('swagger')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.use(cookieParser());
   app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
