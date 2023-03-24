@@ -49,7 +49,7 @@ jobs:
          --application-name 5gnun-fleamarket
          --description "5gnunFleaMarket S3 Deploy" 
          --region ap-northeast-2
-         --s3-location bucket=$S3_BUCKET_NAME　s3://5gnunfleamarket-bucket/main --source .
+         --s3-location bucket=$S3_BUCKET_NAM, s3://5gnunfleamarket-bucket/main --source .
             # /home/runner/work/5g-fleamarket/5g-fleamarket/deploy_$IMAGE_TAG.zip 
           
 
