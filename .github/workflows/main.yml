@@ -8,33 +8,29 @@ on:
 jobs:
 
   build:
-
+    #runner.os 빌드할 OS의 버전을 지정
     name: Build Image
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_ID }}
-        aws-region: ap-northeast-2
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-      
-    - name: Login AWS-cli after build, tag, and push image to Amazon ECR
-      run: |
-       aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.us-east-2.amazonaws.com
-       docker pull redis
-       docker run redis
-       docker build -t 5gnunfleamarketdeploy .
-       docker network create redis-network
-       docker run --name redis -p 6379:6379 --network redis-network -v 
-       docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
-       docker push 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
+      #코드 checkout
+      - name: Check out code
+        uses: actions/checkout@v2
+      #AWS Configure 확인
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_ID }}
+          aws-region: ap-northeast-2
+      #ECR에 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      #ECR로 이미지를 push
+      - name: Login AWS-cli after build, tag, and push image to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.us-east-2.amazonaws.com
+          docker build -t 5gnunfleamarketdeploy .
+          docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
+          docker push 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
