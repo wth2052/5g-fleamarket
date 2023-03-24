@@ -42,7 +42,7 @@ jobs:
        #     --region ap-northeast-2 \
        #     /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
       - name: S3 Upload
-        run: aws deploy push --application-name mymap-deploy --description "5gnunFleaMarket S3 Deploy" --s3-location s3://5gnunfleamarket-bucket/main/deploy_$IMAGE_TAG.zip --source .
+        run: aws deploy push --application-name 5gnun-fleamarketDeploy --description "5gnunFleaMarket S3 Deploy" --s3-location s3://5gnunfleamarket-bucket/main/deploy_$IMAGE_TAG.zip --source .
 
       - name: code deploy
-        run: aws deploy create-deployment --application-name 5gnunFleaMarket CodeDeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name server --s3-location bucket=blabla,bundleType=zip,key=deploy_$IMAGE_TAG.zip
+        run: aws deploy create-deployment --application-name 5gnun-fleamarketDeploy --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name server --s3-location bucket=blabla,bundleType=zip,key=deploy_$IMAGE_TAG.zip
