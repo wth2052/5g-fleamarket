@@ -27,14 +27,23 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConsumes, ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags
+} from "@nestjs/swagger";
 import * as fs from 'fs';
 import axios from 'axios';
 import { Response } from 'express';
 import { Redirect, Res } from '@nestjs/common/decorators';
 
-
-@ApiTags("products")
+@ApiTags('상품 API')
 @Controller('/api/products')
 export class ProductsController {
   categoriesRepository: any;
@@ -43,7 +52,12 @@ export class ProductsController {
     private readonly ProductImagesService: ProductImagesService,
   ) {}
   //상품목록조회
-  @ApiOperation({ summary: "상품 전체 목록보기"})
+  @ApiOperation({
+    summary: '상품 전체 목록보기',
+    description: '유저가 상품 전체 목록을 요청합니다.',
+  })
+  @ApiOkResponse({ description: '상품 전체 목록 확인.' })
+  @ApiNotFoundResponse({ description: '상품이 없습니다.' })
   @Public()
   @Get('view')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
@@ -65,9 +79,13 @@ export class ProductsController {
     }
   }
 
-
   //상품 상세 보기
-  @ApiOperation({ summary: "상품 상세보기"})
+  @ApiOperation({
+    summary: '상품 상세보기',
+    description: '유저가 상품 상세 정보를 요청합니다.',
+  })
+  @ApiOkResponse({ description: '상품 상세 정보 확인.' })
+  @ApiNotFoundResponse({ description: '해당 상품이 없습니다.' })
   @ApiParam({
     name: 'productId',
     type: 'number',
@@ -79,7 +97,9 @@ export class ProductsController {
     return this.productsService.getProductById(productId);
   }
 
-  @ApiOperation({ summary: "상품 등록 페이지: 카테고리 가져오기, 로그인 필"})
+  @ApiOperation({ summary: '상품 등록' })
+  @ApiOkResponse({ description: '카테고리 확인' })
+  @ApiNotFoundResponse({ description: '카테고리가 없습니다.' })
   @UseGuards(JwtAuthGuard)
   @Get('category')
   // @Render('product/product-create.ejs')
@@ -126,8 +146,13 @@ export class ProductsController {
       },
     }),
   )
-
-  @ApiOperation({ summary: "상품 등록하기, 로그인 필"})
+  @ApiOperation({
+    summary: '상품 등록하기',
+    description: '유저가 상품 등록 요청합니다',
+  })
+  @ApiOkResponse({ description: '상품 등록 성공' })
+  @ApiNotFoundResponse({ description: '상품 등록 실패' })
+  @ApiBadRequestResponse({ description: '사진을 다시 등록해주세요' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: '상품 등록 요청',
@@ -182,7 +207,13 @@ export class ProductsController {
   }
 
   //상품삭제
-  @ApiOperation({ summary: "상품 삭제하기, 로그인 필, 자작 글만 가능"})
+  @ApiOperation({
+    summary: '상품 삭제하기',
+    description: '해당상품을 작성한 유저가 상품 삭제 요청합니다',
+  })
+  @ApiOkResponse({ description: '상품 삭제 성공' })
+  @ApiNotFoundResponse({ description: '상품 삭제 실패' })
+  @ApiBadRequestResponse({ description: '본인이 작성한 상품이 아닙니다.' })
   @UseGuards(JwtAuthGuard)
   @Delete(':productId')
   async deleteProduct(
@@ -201,7 +232,13 @@ export class ProductsController {
     return { success: true };
   }
   //상품 좋아요
-  @ApiOperation({ summary: "상품 '좋아요'하기"})
+  @ApiOperation({
+    summary: '상품 좋아요',
+    description: '유저가 해당 상품을 찜하기 요청',
+  })
+  @ApiOkResponse({ description: '상품 찜하기 성공' })
+  @ApiNotFoundResponse({ description: '상품 찜하기 실패' })
+  @ApiForbiddenResponse({ description: '해당유저님의 판매글이 아닙니다.' })
   @UseGuards(JwtAuthGuard)
   @Post('like/:productId')
   likeProduct(
