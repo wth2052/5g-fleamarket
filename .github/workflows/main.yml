@@ -1,7 +1,7 @@
 name: Deploy to ECR
 
 on:
- 
+  #푸시할 브랜치 지정
   push:
     branches: [ main ]
 
@@ -28,8 +28,8 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       
-    - name: Build, tag, and push image to Amazon ECR
-      run: |
+    - name: Login AWS-cli after build, tag, and push image to Amazon ECR
+      run:
        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.us-east-2.amazonaws.com
        docker build -t 5gnunfleamarketdeploy .
        docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
