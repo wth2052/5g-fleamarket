@@ -56,7 +56,7 @@ export class AdminController {
       return { errorMessage: error.message };
     }
   }
-  @Get('/api/amdin/products')
+  @Get('/api/admin/products')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   async getProducts2(
