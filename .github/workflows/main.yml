@@ -37,4 +37,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket
+            /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
