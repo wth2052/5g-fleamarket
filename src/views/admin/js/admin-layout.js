@@ -478,7 +478,7 @@ function debounce(func, wait = 5, immediate = false) {
   };
 }
 
-if (window.location.href === '/admin/products') {
+if (document.location.href.split('/')[3] === 'admin') {
   //상품 무한 스크롤
 
   let limit = Number(document.getElementById('productsLength').value);
@@ -600,7 +600,7 @@ if (window.location.href === '/admin/products') {
         }
       });
   }
-} else if (window.location.href === '/users') {
+} else if (document.location.href.split('/')[3] === 'users') {
   let limit = Number(document.getElementById('usersLength').value);
   let offset = Number(document.getElementById('usersLength').value);
   let TotalUsers = Number(document.getElementById('totalUsers').value);
@@ -802,7 +802,7 @@ if (window.location.href === '/admin/products') {
         }
       });
   }
-} else if (window.location.href === '/category') {
+} else if (document.location.href.split('/')[3] === 'category') {
   //카테고리 페이지네이션
   let limit = Number(document.getElementById('categoryLength').value);
   let offset = Number(document.getElementById('categoryLength').value);
@@ -911,7 +911,7 @@ if (window.location.href === '/admin/products') {
         }
       });
   }
-} else if (window.location.href === '/notice') {
+} else if (document.location.href.split('/')[3] === 'notice') {
   //공지 페이지네이션
   let limit = Number(document.getElementById('noticeLength').value);
   let offset = Number(document.getElementById('noticeLength').value);
@@ -1013,7 +1013,7 @@ if (window.location.href === '/admin/products') {
         }
       });
   }
-} else if (window.location.href === '/reports') {
+} else if (document.location.href.split('/')[3] === 'reports') {
   //신고 페이지네이션
   let limit = Number(document.getElementById('reportsLength').value);
   let offset = Number(document.getElementById('reportsLength').value);
