@@ -1,60 +1,60 @@
 function getTimeAgo(dateString) {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diff = now - date;
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-    const weeks = Math.floor(diff / 604800000);
-    const months = Math.floor(diff / 2592000000);
-    const years = Math.floor(diff / 31536000000);
-  
-    switch (true) {
-      case minutes < 5:
-        return `방금 전`;
-      case hours < 1:
-        return `${minutes}분 전`;
-      case days < 1:
-        return `${hours}시간 전`;
-      case weeks < 1:
-        return `${days}일 전`;
-      case months < 1:
-        return `${weeks}주 전`;
-      case years < 1:
-        return `${months}달 전`;
-      default:
-        return `${years}년 전`;
-    }
-  }
-  
-  
-  function handleKeyPress(e) {
-    if (e.keyCode === 13) {
-      // 엔터 키를 누르면 검색 함수 호출
-      productSearch();
-    }
-  }
-  
-  // 상품 검색
-  function productSearch() {
-    const search = document.getElementById('search').value;
+  const now = new Date();
+  const date = new Date(dateString);
+  const diff = now - date;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  const weeks = Math.floor(diff / 604800000);
+  const months = Math.floor(diff / 2592000000);
+  const years = Math.floor(diff / 31536000000);
 
-    axios
-      .get(`/orders/productSearch?search=${search}`)
-      .then((res) => {
-       
-        let data = res.data.data;
-        let totalProducts = res.data.totalProducts
-        let temp = '';
-        for (let i = 0; i < data.length; i++) {
-          const timeAgo = getTimeAgo(data[i].createdAt);
-  
-          // 검색어 배경색 적용
-          const title = data[i].title.replace(
-            new RegExp(`(${search})`, 'gi'),
-            '<span style="background-color: yellow">$1</span>',
-          );
-          temp += `
+  switch (true) {
+    case minutes < 5:
+      return `방금 전`;
+    case hours < 1:
+      return `${minutes}분 전`;
+    case days < 1:
+      return `${hours}시간 전`;
+    case weeks < 1:
+      return `${days}일 전`;
+    case months < 1:
+      return `${weeks}주 전`;
+    case years < 1:
+      return `${months}달 전`;
+    default:
+      return `${years}년 전`;
+  }
+}
+
+
+function handleKeyPress(e) {
+  if (e.keyCode === 13) {
+    // 엔터 키를 누르면 검색 함수 호출
+    productSearch();
+  }
+}
+
+// 상품 검색
+function productSearch() {
+  const search = document.getElementById('search').value;
+
+  axios
+    .get(`api/orders/productSearch?search=${search}`)
+    .then((res) => {
+
+      let data = res.data.data;
+      let totalProducts = res.data.totalProducts
+      let temp = '';
+      for (let i = 0; i < data.length; i++) {
+        const timeAgo = getTimeAgo(data[i].createdAt);
+
+        // 검색어 배경색 적용
+        const title = data[i].title.replace(
+          new RegExp(`(${search})`, 'gi'),
+          '<span style="background-color: yellow">$1</span>',
+        );
+        temp += `
             <div class="col-md-6 col-lg-3">
                           <div class="card">
                               <img class="img-fluid" 
@@ -120,34 +120,34 @@ function getTimeAgo(dateString) {
         const debouncedPageSearchProduct = debounce(pageSearchProduct, 50)
         window.addEventListener('scroll', debouncedPageSearchProduct);
       }
-            
-        
-       
-  
-    function pageSearchProduct() {
-      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
-  
-        const totalProducts = TotalProducts
-        const productsLength = limit
 
-        axios.get(`/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
-          .then(res => {
-            
-            const products = res.data.data;
-            let temp = '';
-  
-            for (let i = 0; i < products.length; i++) {
-              const timeAgo = getTimeAgo(products[i].updatedAt);
-              let productP = products[i].price;
-          const productPrice = productP
-  
-              const title = products[i].title.replace(
-                new RegExp(`(${search})`, 'gi'),
-                '<span style="background-color: yellow">$1</span>',
-              );
-  
-              temp += `
+
+
+
+      function pageSearchProduct() {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 5) {
+
+          const totalProducts = TotalProducts
+          const productsLength = limit
+
+          axios.get(`api/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
+            .then(res => {
+
+              const products = res.data.data;
+              let temp = '';
+
+              for (let i = 0; i < products.length; i++) {
+                const timeAgo = getTimeAgo(products[i].updatedAt);
+                let productP = products[i].price;
+                const productPrice = productP
+
+                const title = products[i].title.replace(
+                  new RegExp(`(${search})`, 'gi'),
+                  '<span style="background-color: yellow">$1</span>',
+                );
+
+                temp += `
               <div class="col-md-6 col-lg-3">
                           <div class="card">
                               <img class="img-fluid" 
@@ -169,54 +169,55 @@ function getTimeAgo(dateString) {
                           </div>
                       </div>
               `;
-            }
-            $('#product-list').append(temp);
-  
-            if (products.length < res.data.totalProducts) {
-  
-              limit += products.length
-  
-              offset += products.length
-            }
-          })
-          .catch(error => {
-            if (productsLength === totalProducts) {
-              alert('끝 페이지입니다.')
-              window.removeEventListener('scroll', debouncedPageSearchProduct);
-            }
-            else {
-              alert('데이터를 불러오는 중 오류가 발생했습니다.');
-            }
-          });
+              }
+              $('#product-list').append(temp);
+
+              if (products.length < res.data.totalProducts) {
+
+                limit += products.length
+
+                offset += products.length
+              }
+            })
+            .catch(error => {
+              if (productsLength === totalProducts) {
+                alert('끝 페이지입니다.')
+                window.removeEventListener('scroll', debouncedPageSearchProduct);
+              }
+              else {
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
+              }
+            });
+        }
+      };
+
+    })
+    .catch((error) => {
+      // window.location.reload();
+    });
+}
+
+
+function logout() {
+  axios
+    .post('/auth/logout',
+    )
+    .then((res) => {
+      // 응답처리
+      alert("정상적으로 로그아웃 처리 되었습니다.")
+      window.location.href = "/"
+
+
+    })
+    .catch((error) => {
+      // 예외처리
+      if (error.response.status === 401) {
+        alert('로그인하셔야 합니다.');
+        window.location.href = '/login';
       }
-    };
-  
-      })
-      .catch((error) => {
-        // window.location.reload();
-      });
-  }
+      else {
+        alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+      }
 
-
-  function logout(){
-	axios
-		.post('/auth/logout',
-		)
-		.then((res) => {
-			// 응답처리
-			alert("정상적으로 로그아웃 처리 되었습니다.")
-			window.location.href = "/"
-			
-
-		})
-		.catch((error) => {
-			// 예외처리
-            if (error.response.status === 401) {
-                alert('로그인하셔야 합니다.');
-                window.location.href = '/login';}
-            else{
-                alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
-            }
-			
-		});
+    });
 }
