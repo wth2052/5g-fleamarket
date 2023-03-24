@@ -2,12 +2,10 @@
 # 현재 방식은 프로젝트 그대로 올리는 방식임
 # zip 압축 후 올리는 방법으로 변경중
 name: Deploy to Production
- 
 on:
   push:
     branches:
       - main
- 
 jobs:
   deploy:
     runs-on: ubuntu-18.04
@@ -41,13 +39,12 @@ jobs:
        #     --recursive \
        #     --region ap-northeast-2 \
        #     /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
-      - name: S3 Upload
         run: aws deploy push 
          --application-name 5gnun-fleamarketDeploy 
          --description "5gnunFleaMarket S3 Deploy" 
          --s3-location s3://5gnunfleamarket-bucket/main/deploy_$IMAGE_TAG.zip --source .
 
-      - name: code deploy
+      - name: AWS CodeDeploy
         run: aws deploy create-deployment 
          --application-name 5gnun-fleamarket 
          --deployment-config-name CodeDeployDefault.OneAtATime 
