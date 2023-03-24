@@ -50,6 +50,10 @@ export class AdminController {
 
   // 상품정보 가져오기 API
   @Get('/admin/products')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-products.ejs')
   async getProducts(
     @Query('limit') limit: number = 10,
@@ -86,6 +90,10 @@ export class AdminController {
 
   //상품정보 상세보기 API
   @Get('/admin/products/:productId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-productById.ejs')
   async getProductById(@Param('productId') productId: number) {
     // 원래: return await this.adminService.getProductById(productId)
@@ -109,6 +117,10 @@ export class AdminController {
 
   //회원정보 가져오기 API
   @Get('/users')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-users.ejs')
   async getUsers(
     @Query('limit') limit: number = 10,
@@ -146,6 +158,10 @@ export class AdminController {
 
   //회원정보 상세보기 API
   @Get('/users/:userId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-userById.ejs')
   async getUserById(@Param('userId') userId: number) {
     return { user: await this.adminService.getUserById(userId) };
@@ -178,6 +194,10 @@ export class AdminController {
 
   //카테고리 조회 API
   @Get('/category')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-category.ejs')
   async getCategory(
     @Query('limit') limit: number = 10,
@@ -214,6 +234,10 @@ export class AdminController {
 
   //카테고리 생성 API
   @Get('/post/category')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-categoryPost.ejs')
   async viewCategory() {
     return { message: '카테고리 작성 페이지' };
@@ -256,6 +280,10 @@ export class AdminController {
   //공지사항 모두 조회
 
   @Get('/notice')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-notices.ejs')
   async getNotices(
     @Query('limit') limit: number = 10,
@@ -294,6 +322,10 @@ export class AdminController {
   //공지사항 상세조회
 
   @Get('/notice/:noticeId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-noticeById.ejs')
   async getNoticeById(@Param('noticeId') noticeId: number) {
     return { notice: await this.adminService.getNoticeById(noticeId) };
@@ -301,6 +333,10 @@ export class AdminController {
 
   //공지사항 작성
   @Get('/post/notice')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-noticePost.ejs')
   async viewNotice() {
     return { message: '공지작성 페이지' };
@@ -385,6 +421,11 @@ export class AdminController {
   //카테고리 검색
 
   @Get('/api/categorySearch')
+  @ApiOperation({
+    summary: '카테고리 검색',
+    description: '관리자가 카테고리를 검색합니다.',
+  })
+  @ApiNotFoundResponse({ description: '검색한 카테고리가 없습니다.' })
   async categorySearch(@Query('search') search: string) {
     const category = await this.adminService.categorySearch(search);
     return { data: category };
@@ -431,6 +472,10 @@ export class AdminController {
   }
   //신고 목록 보기
   @Get('/reports')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-reports.ejs')
   async getReports(
     @Query('limit') limit: number = 10,
@@ -472,6 +517,10 @@ export class AdminController {
 
   //신고 상세보기 API
   @Get('/reports/:reportId')
+  @ApiOperation({
+    summary: 'Render',
+    description: 'Render',
+  })
   @Render('admin/admin-reportById.ejs')
   async getReportById(@Param('reportId') reportId: number) {
     const result = await this.adminService.getReportById(reportId);
