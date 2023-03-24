@@ -32,6 +32,9 @@ jobs:
       run: |
        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.us-east-2.amazonaws.com
        docker pull redis
+       docker run redis
        docker build -t 5gnunfleamarketdeploy .
+       docker network create redis-network
+       docker run --name redis -p 6379:6379 --network redis-network -v 
        docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
        docker push 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
