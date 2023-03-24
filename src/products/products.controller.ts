@@ -181,38 +181,6 @@ export class ProductsController {
     }
   }
 
-  //상품수정 렌더 및 수정하기 폼에서 기존 정보를 불러옴
-  @ApiOperation({ summary: "상품 수정하기(렌더get) 미완성"})
-  @Get('edit/:productId')
-  @Render('product/product-update.ejs')
-  async getEditProductPage(@Param('id') id: number) {
-    const product = await this.productsService.getProductById(id);
-    return { product };
-  }
-
-  //상품수정
-  @ApiOperation({ summary: "상품 수정하기 미완성"})
-  @UseGuards(JwtAuthGuard)
-  @Put('edit/:productId')
-  updateProduct(
-    @Cookies('Authentication') jwt: JwtDecodeDto,
-    @Param('productId') productId: number,
-    @Body() data: UpdateProductDto,
-  ) {
-    if (!jwt || !jwt.id) {
-      throw new BadRequestException('Invalid JWT');
-    }
-    const userId = jwt.id;
-    return this.productsService.updateProduct(
-      productId,
-      data.title,
-      data.description,
-      data.price,
-      data.categoryId,
-      userId,
-    );
-  }
-
   //상품삭제
   @ApiOperation({ summary: "상품 삭제하기, 로그인 필, 자작 글만 가능"})
   @UseGuards(JwtAuthGuard)
