@@ -14,9 +14,11 @@ import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
 
 export const cacheModule = CacheModule.registerAsync({
-  useFactory: async () => ({
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: async (configService: ConfigService) => ({
     store: redisStore,
-    host: '127.0.0.1',
+    host: configService.get('REDIS_HOST'),
     port: '6379',
   }),
 });
