@@ -16,24 +16,31 @@ import { UserEntity } from './users.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductImagesEntity } from './productimages.entity';
 import { LikesEntity } from "./likes.entity";
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
+  @ApiProperty()
   @OneToMany(() => ProductImagesEntity, (images) => images.product)
   images: ProductImagesEntity;
 
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   title: string;
 
+  @ApiProperty()
   @Column()
   description: string;
 
+  @ApiProperty()
   @Column()
   price: number;
 
+  @ApiProperty()
   @ManyToOne(() => UserEntity, (seller) => seller.products, {
     onDelete: 'CASCADE',
   })
@@ -41,6 +48,7 @@ export class ProductsEntity {
   @Column()
   sellerId: number;
 
+  @ApiProperty()
   @ManyToOne(() => CategoriesEntity, (category) => category.products, {
     onDelete: 'CASCADE',
   })
@@ -48,30 +56,39 @@ export class ProductsEntity {
   @Column()
   categoryId: number;
 
+  @ApiProperty()
   @Column({ default: 0 })
   viewCount: number;
 
+  @ApiProperty()
   @OneToMany(() => LikesEntity, (like) => like.product)
   likesJoin: LikesEntity[];
 
+  @ApiProperty()
   @Column({ default: 0 })
   likes: number;
 
+  @ApiProperty()
   @Column({ default: 'sale' })
   status: string;
   // 여기 임시수정
+  @ApiProperty()
   @Column({ default: 0 })
   dealCount: number;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn({ default: null })
   updatedAt?: Date;
 
+  @ApiProperty()
   @Column({ default: null })
   pullUp: Date;
 
+  @ApiProperty()
   @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
     cascade: true,
   })
