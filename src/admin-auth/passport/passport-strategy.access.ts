@@ -13,7 +13,7 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'admin') {
     private configService: ConfigService,
   ) {
     super({
-      //jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
           return request?.cookies?.accessToken;
