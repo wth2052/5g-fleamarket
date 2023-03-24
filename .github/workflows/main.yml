@@ -1,5 +1,5 @@
 name: Deploy to ECR
-
+#CI/CD 구현완료, 테스트 커밋 
 on:
   #푸시할 브랜치 지정
   push:
