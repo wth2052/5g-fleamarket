@@ -1,3 +1,27 @@
+axios
+		.get('/api/me/login',
+		)
+		.then((res) => {
+			
+      const nickname = res.data
+      let temp = ''
+      temp += `${nickname}님 환영합니다!&nbsp&nbsp&nbsp&nbsp&nbsp`
+      document.getElementById('headerInfo').innerHTML = temp;
+		})
+		.catch((error) => {
+			// 예외처리
+      if(error.response.status === 401){
+        let temp = ''
+        temp += `로그인 해주세요&nbsp&nbsp&nbsp&nbsp&nbsp`
+        document.getElementById('headerInfo').innerHTML = temp;
+      }
+      else{
+       console.log(error.response?.data?.message || error.response.data.errorMessage.details[0].message)
+      } 
+			
+		});
+
+
 
 function getTimeAgo(dateString) {
     const now = new Date();

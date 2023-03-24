@@ -170,12 +170,13 @@ axios
                                 <h4 class="card-title">카테고리: ${data.category.name}</h4>
 
                                 <p class="card-text">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
-                                    <small class="text-muted">${data.likes}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="2%">
-                                    <small class="text-muted">${data.viewCount}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="2%">
-                                    <small class="text-muted">${timeAgo} </small>
+                                <h4 style="display: inline-block;"></h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="2%">
+                                    <h4 class="text-muted">${data.likes}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="3%">
+                                    <h4 class="text-muted">${data.viewCount}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="3%">
+                                    <h4 class="text-muted">${timeAgo} </h4>
                                 </p>
                                     <!-- 모달 버튼 -->
                                     <small class="text-muted">
@@ -183,7 +184,7 @@ axios
                                                 data-target="#exampleModal" data-whatever="@mdo">판매완료
                                         </button>
                                     <br><br><br>
-                               <h6 class="card-text">${data.description}</h6>
+                               <h4 class="card-text">${data.description}</h4>
                             </div>
                         </div>
                     </div>

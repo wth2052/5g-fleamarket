@@ -29,7 +29,13 @@ export class ReportController {
     private jwtService: JwtService,
   ) {}
 
-  
+ @Get('/me/login')
+ getInfo(
+  @Cookies('Authentication') jwt: JwtDecodeDto,
+) {
+  const userId = jwt.id;
+  return this.reportService.getInfo(userId)
+}
 
   @Post('/report')
   @ApiOperation({summary: '신고 접수',
