@@ -32,6 +32,7 @@ import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -43,6 +44,7 @@ interface IOAuthUser {
 
 //TODO: auth를 없애서 API를 조금 더 RESTFUL하게 만드는게 맞을까?
 @Controller('/api/auth')
+@ApiTags('유저 로그인 API')
 export class AuthController {
   constructor(
     @InjectRepository(UserEntity)
@@ -56,6 +58,11 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @UsePipes(ValidationPipe)
   @Post('login')
+  @ApiOperation({
+    summary: '로그인',
+    description: '유저가 로그인을 요청합니다.',
+  })
+  @ApiOkResponse({ description: '유저 로그인 확인' })
   //이제 Nest 기본 응답 개체와 상호 작용할 수 있지만 (예: 특정 조건에 따라 쿠키 또는 헤더 설정) 나머지는 프레임워크에 맡김
   //리프레시 토큰 재발급 잘됨
   async login(

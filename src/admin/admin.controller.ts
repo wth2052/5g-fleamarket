@@ -29,12 +29,12 @@ import { JwtService } from '@nestjs/jwt';
 import { AdminCookies } from './decorator/find-cookie.decorator';
 import { catchError } from 'rxjs';
 import {
-  ApiNotFoundResponse,
+  ApiNotFoundResponse, ApiOkResponse,
   ApiOperation,
   ApiQuery,
   ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+  ApiUnauthorizedResponse
+} from "@nestjs/swagger";
 import { CheckReportDto } from './dto/check-report.dto';
 
 @Catch(HttpException)
@@ -72,6 +72,7 @@ export class AdminController {
     summary: '상품정보 가져오기',
     description: '유저가 등록한 상품정보를 가져옵니다.',
   })
+  @ApiOkResponse({ description: '상품정보 가져오기 확인' })
   @ApiNotFoundResponse({ description: '상품이 존재하지 않습니다.' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
@@ -110,6 +111,7 @@ export class AdminController {
     summary: '상품 삭제',
     description: '해당 상품을 삭제합니다.',
   })
+  @ApiOkResponse({ description: '상품 삭제 확인' })
   @ApiNotFoundResponse({ description: '상품이 삭제되었습니다.' })
   deleteProduct(@Param('productId') productId: number) {
     return this.adminService.deleteProduct(productId);
@@ -140,6 +142,7 @@ export class AdminController {
     summary: '회원정보 가져오기',
     description: '유저회원정보를 가져옵니다.',
   })
+  @ApiOkResponse({ description: '회원정보 가져오기 확인' })
   @ApiNotFoundResponse({ description: '회원정보가 존재하지 않습니다.' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
@@ -173,6 +176,7 @@ export class AdminController {
     summary: '회원정보 수정',
     description: '유저회원정보를 수정합니다.',
   })
+  @ApiOkResponse({ description: '회원정보 수정 확인' })
   @ApiNotFoundResponse({ description: '존재하지 않는 유저입니다.' })
   @ApiUnauthorizedResponse({
     description: '이미 블랙리스트 처리된 유저입니다.',
@@ -187,6 +191,7 @@ export class AdminController {
     summary: '회원 삭제',
     description: '유저회원정보를 삭제합니다.',
   })
+  @ApiOkResponse({ description: '회원 삭제 확인' })
   @ApiNotFoundResponse({ description: '존재하지 않는 유저입니다.' })
   async deleteUser(@Param('userId') userId: number) {
     return await this.adminService.deleteUser(userId);
@@ -217,6 +222,7 @@ export class AdminController {
     summary: '카테고리 조회',
     description: '상품카테고리를 조회합니다.',
   })
+  @ApiOkResponse({ description: '카테고리 조회 확인' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   async getCategory2(
@@ -248,6 +254,7 @@ export class AdminController {
     summary: '카테고리 생성',
     description: '상품카테고리를 생성합니다.',
   })
+  @ApiOkResponse({ description: '카테고리 생성 확인' })
   @ApiNotFoundResponse({ description: '카테고리가 생성되었습니다.' })
   async createCategory(@Body() data: CreateCategoryDto) {
     return await this.adminService.createCategory(data.name);
@@ -259,6 +266,7 @@ export class AdminController {
     summary: '카테고리 수정',
     description: '상품카테고리를 수정합니다.',
   })
+  @ApiOkResponse({ description: '카테고리 수정 확인' })
   @ApiNotFoundResponse({ description: '내용이 비어있습니다.' })
   async updateCategory(
     @Param('id') categoryId: number,
@@ -273,6 +281,7 @@ export class AdminController {
     summary: '카테고리 삭제',
     description: '상품카테고리를 삭제합니다.',
   })
+  @ApiOkResponse({ description: '카테고리 삭제 확인' })
   deleteCategory(@Param('id') categoryId: number) {
     return this.adminService.deleteCategory(categoryId);
   }
@@ -303,6 +312,7 @@ export class AdminController {
     summary: '공지사항 조회',
     description: '관리자가 작성한 공지사항을 조회합니다.',
   })
+  @ApiOkResponse({ description: '공지사항 조회 확인' })
   @ApiNotFoundResponse({ description: '공지사항이 없습니다.' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
@@ -347,6 +357,7 @@ export class AdminController {
     summary: '공지사항 생성',
     description: '관리자가 공지사항을 생성합니다.',
   })
+  @ApiOkResponse({ description: '공지사항 생성 확인' })
   @ApiNotFoundResponse({ description: '작성한 내용이 없습니다.' })
   async createNotice(
     @Body() data: CreateNoticeDto,
@@ -370,6 +381,7 @@ export class AdminController {
     summary: '공지사항 수정',
     description: '관리자가 작성한 공지사항을 수정합니다.',
   })
+  @ApiOkResponse({ description: '공지사항 수정 확인' })
   @ApiNotFoundResponse({ description: '작성한 내용이 없습니다.' })
   async updateNotice(
     @Param('noticeId') noticeId: number,
@@ -388,6 +400,7 @@ export class AdminController {
     summary: '공지사항 삭제',
     description: '관리자가 작성한 공지사항을 삭제합니다.',
   })
+  @ApiOkResponse({ description: '공지사항 삭제 확인' })
   deleteNotice(@Param('noticeId') noticeId: number) {
     return this.adminService.deleteNotice(noticeId);
   }
@@ -399,6 +412,7 @@ export class AdminController {
     summary: '상품 검색',
     description: '유저가 등록한 상품을 검색합니다.',
   })
+  @ApiOkResponse({ description: '상품 검색 확인' })
   @ApiNotFoundResponse({ description: '검색한 상품이 없습니다.' })
   async productSearch(@Query('search') search: string) {
     const product = await this.adminService.productSearch(search);
@@ -412,6 +426,7 @@ export class AdminController {
     summary: '회원 검색',
     description: '관리자가 회원을 검색합니다.',
   })
+  @ApiOkResponse({ description: '회원 검색 확인' })
   @ApiNotFoundResponse({ description: '검색한 회원이 없습니다.' })
   async userSearch(@Query('search') search: string) {
     const user = await this.adminService.userSearch(search);
@@ -425,6 +440,7 @@ export class AdminController {
     summary: '카테고리 검색',
     description: '관리자가 카테고리를 검색합니다.',
   })
+  @ApiOkResponse({ description: '카테고리 검색 확인' })
   @ApiNotFoundResponse({ description: '검색한 카테고리가 없습니다.' })
   async categorySearch(@Query('search') search: string) {
     const category = await this.adminService.categorySearch(search);
@@ -438,6 +454,7 @@ export class AdminController {
     summary: '공지 검색',
     description: '관리자가 공지를 검색합니다.',
   })
+  @ApiOkResponse({ description: '공지 검색 확인' })
   @ApiNotFoundResponse({ description: '검색한 공지가 없습니다.' })
   async noticeSearch(@Query('search') search: string) {
     const notice = await this.adminService.noticeSearch(search);
@@ -450,6 +467,7 @@ export class AdminController {
     summary: '신고 검색',
     description: '관리자가 유저가 신고한 내역을 검색합니다.',
   })
+  @ApiOkResponse({ description: '신고 검색 확인' })
   @ApiNotFoundResponse({ description: '검색한 신고 내역이 없습니다.' })
   async reportSearch(@Query('search') search: string) {
     const report = await this.adminService.reportSearch(search);
@@ -462,6 +480,7 @@ export class AdminController {
     summary: '블랙리스트 모아보기',
     description: '블랙리스트 명단을 출력합니다.',
   })
+  @ApiOkResponse({ description: '블랙리스트 명단 확인' })
   @ApiNotFoundResponse({ description: '블랙리스트 회원이 없습니다.' })
   async getBanUsers() {
     try {
@@ -497,6 +516,7 @@ export class AdminController {
     summary: '신고 목록 보기',
     description: '유저가 신고한 목록을 보여줍니다.',
   })
+  @ApiOkResponse({ description: '신고 목록 확인' })
   @ApiNotFoundResponse({ description: '접수된 신고 내역이 없습니다.' })
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
   @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
@@ -535,6 +555,7 @@ export class AdminController {
     summary: '신고 확인하기',
     description: '관리자가 신고내용을 확인합니다.',
   })
+  @ApiOkResponse({ description: '신고 확인' })
   @ApiNotFoundResponse({ description: '존재하지 않는 신고입니다.' })
   @ApiUnauthorizedResponse({ description: '이미 확인된 신고입니다.' })
   async checkReport(
@@ -554,6 +575,7 @@ export class AdminController {
     summary: '확인된 신고 모아보기',
     description: '관리자가 확인한 신고 목록을 보여줍니다.',
   })
+  @ApiOkResponse({ description: '확인된 신고 목록 확인' })
   @ApiNotFoundResponse({ description: '확인된 신고 내역이 없습니다.' })
   async getCheckedreports() {
     try {
@@ -570,6 +592,7 @@ export class AdminController {
     summary: '확인이 되지 않은 신고 모아보기',
     description: '관리자가 확인하지 않은 신고 목록을 보여줍니다.',
   })
+  @ApiOkResponse({ description: '확인이 되지 않은 신고 목록 확인' })
   @ApiNotFoundResponse({ description: '모든 신고가 확인되었습니다.' })
   async getUncheckedreports() {
     try {
@@ -586,6 +609,7 @@ export class AdminController {
     summary: '신고 삭제하기',
     description: '괸리자가 신고를 삭제합니다.',
   })
+  @ApiOkResponse({ description: '신고 삭제' })
   deleteReport(@Param('reportId') reportId: number) {
     return this.adminService.deleteReport(reportId);
   }

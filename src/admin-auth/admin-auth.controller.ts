@@ -4,10 +4,11 @@ import { AdminAuthService } from './admin-auth.service';
 import { Request, Response } from 'express';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import {
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+  ApiUnauthorizedResponse
+} from "@nestjs/swagger";
 
 @Controller('/api/admin')
 @ApiTags('관리자 로그인 API')
@@ -21,6 +22,7 @@ export class AdminAuthController {
     summary: '관리자 로그인',
     description: '관리자 로그인을 요청합니다.',
   })
+  @ApiOkResponse({ description: '관리자 로그인 확인' })
   @ApiUnauthorizedResponse({
     description: '아이디 혹은 패스워드가 올바르지 않습니다.',
   })
@@ -41,6 +43,7 @@ export class AdminAuthController {
     summary: '관리자 로그아웃',
     description: '관리자 로그아웃을 요청합니다.',
   })
+  @ApiOkResponse({ description: '관리자 로그아웃 확인' })
   async logOut(@Req() req, @Res({ passthrough: true }) res: Response) {
     const { accessOption, message } = await this.adminAuthService.logOut();
     res.cookie('accessToken', '', accessOption);
