@@ -8,7 +8,14 @@ import { Repository } from 'typeorm';
 import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OAuthAddInformationDto } from './dto/create-user.dto';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 @Controller('/api/user')
+@ApiTags('마이페이지 API')
 export class UserController {
   constructor(
     @InjectRepository(UserEntity)
@@ -17,11 +24,16 @@ export class UserController {
   ) {}
 
   @Get('me')
+  @ApiOperation({
+    summary: '마이페이지 정보 가져오기',
+    description: '유저가 마이페이지 정보를 가져옵니다.',
+  })
+  @ApiOkResponse({ description: '마이페이지 정보 가져오기 성공.' })
+  @ApiNotFoundResponse({ description: '마이페이지 정보 가져오기 실패.' })
   @UseGuards(JwtAuthGuard)
   async getInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const User = await this.userService.getUserInformation(userId);
-    console.log('유저 정보', User);
     const data = {
       nickname: User.nickname,
       email: User.email,
@@ -32,6 +44,12 @@ export class UserController {
   }
   @UseGuards(JwtAuthGuard)
   @Get('me/edit')
+  @ApiOperation({
+    summary: '마이페이지 정보 수정하기',
+    description: '유저가 마이페이지 정보를 수정합니다.',
+  })
+  @ApiOkResponse({ description: '마이페이지 정보 수정하기 성공.' })
+  @ApiNotFoundResponse({ description: '마이페이지 정보 수정하기 실패.' })
   async geteditInformation(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const user = await this.userService.getUserInformation(userId);
@@ -44,6 +62,10 @@ export class UserController {
     return { data: data };
   }
   @Put('me/edit')
+  @ApiOperation({
+    summary: '마이페이지 정보 수정하기',
+    description: '유저가 마이페이지 정보를 수정합니다.',
+  })
   @UseGuards(JwtAuthGuard)
   async editInformation(
     @Cookies('Authentication') jwt: JwtDecodeDto,
