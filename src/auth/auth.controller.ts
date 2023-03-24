@@ -32,6 +32,7 @@ import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ApiCookieAuth } from '@nestjs/swagger';
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -42,6 +43,7 @@ interface IOAuthUser {
 }
 
 //TODO: auth를 없애서 API를 조금 더 RESTFUL하게 만드는게 맞을까?
+@ApiCookieAuth()
 @Controller('/api/auth')
 export class AuthController {
   constructor(
@@ -76,6 +78,7 @@ export class AuthController {
       await this.userService.setCurrentRefreshToken(refreshToken, user.id);
       res.cookie('Authentication', accessToken, accessOption);
       res.cookie('refreshToken', refreshToken, refreshOption);
+      res.setHeader('Authentication', accessToken);
     }
   }
 

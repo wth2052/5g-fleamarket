@@ -162,11 +162,10 @@ export class OrdersService {
     if (order.buyerId !== Number(userId)) {
       throw new BadRequestException('내가 구매한 상품이 아닙니다.');
     }
-    if (order.status === 'sale') {
-      throw new ForbiddenException('아직 선택되지 않았습니다.');
-    }
-    if (order.status === 'sold') {
-      throw new ForbiddenException('판매자가 다른 제안을 수락했습니다.');
+    if (order.status === 'sale' || order.status === 'sold') {
+      throw new ForbiddenException(
+        '선택되지 않았거나 다른제안이 수락됐습니다.',
+      );
     }
     const sellerInfo = await this.productRepository.findOne({
       where: { id: order.productId },
@@ -315,9 +314,9 @@ export class OrdersService {
     if (!order) {
       throw new NotFoundException('해당 요청을 찾을수 없습니당');
     }
-    if (order.buyerId !== Number(userId)) {
-      throw new ForbiddenException('해당 상품이 없습니다.');
-    }
+    // if (order.buyerId !== Number(userId)) {
+    //   throw new ForbiddenException('해당 상품이 없습니다.');
+    // }
     if (data > 1000000000) {
       throw new BadRequestException('너무 큰 가격입니다. 다시 확인해주세요');
     }

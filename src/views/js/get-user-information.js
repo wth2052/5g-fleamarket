@@ -46,7 +46,7 @@ axios
   });
 function logout(){
   axios
-    .post('https://5gnunfleamarket.shop/auth/logout',
+    .post('https://5gnunfleamarket.shop/api/auth/logout',
     )
     .then((res) => {
       // 응답처리

@@ -26,9 +26,20 @@ import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { json } from 'stream/consumers';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { number } from 'joi';
-import { ApiQuery } from '@nestjs/swagger';
+import {
+  ApiCookieAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 @Catch(HttpException)
+// @ApiCookieAuth()
 @Controller('api/orders')
+@ApiTags('주문 API')
 @UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(
@@ -41,6 +52,15 @@ export class OrdersController {
 
   // 내가 파는 상품 목록보기
   @Get('me/sell/product')
+  @ApiOperation({
+    summary: '유저가 파는 상품 목록 보기',
+    description: '접속한 유저가 판매하는 상품 목록을 가져온다.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: '내가 판매하고 있는 상품이 없습니다.',
+  })
+  @ApiOkResponse({ description: '상품목록 불러오기' })
   async findMySell(@Cookies('Authentication') jwt: JwtDecodeDto) {
     const userId = jwt.id;
     const data = await this.ordersService.findMySell(userId);
@@ -51,8 +71,26 @@ export class OrdersController {
   }
   // 제시된 가격목록 보기
   @Get('products/:productId')
+  @ApiOperation({
+    summary: '유저가 파는 상품에 제시된 가격보기',
+    description: '해당 상품에 제시된 가격의 목록을 보여준다.',
+  })
+  @ApiParam({
+    name: 'productId',
+    type: 'number',
+  })
+  @ApiResponse({
+    status: 404,
+    description: '상품에 제시된 딜이 없거나 이미 판매됬습니다.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: '당신의 물건이 아닙니다.',
+  })
+  @ApiOkResponse({ description: '상품 불러오기' })
   async findMyProductsDealCheck(
-    @Param('productId') productId: number,
+    @Param('productId')
+    productId: number,
     @Cookies('Authentication') jwt: JwtDecodeDto,
   ) {
     const userId = jwt.id;

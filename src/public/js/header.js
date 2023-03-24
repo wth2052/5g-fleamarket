@@ -39,22 +39,22 @@ function handleKeyPress(e) {
 function productSearch() {
   const search = document.getElementById('search').value;
 
-    axios
-      .get(`/api/orders/productSearch?search=${search}`)
-      .then((res) => {
-       
-        let data = res.data.data;
-        let totalProducts = res.data.totalProducts
-        let temp = '';
-        for (let i = 0; i < data.length; i++) {
-          const timeAgo = getTimeAgo(data[i].createdAt);
-  
-          // 검색어 배경색 적용
-          const title = data[i].title.replace(
-            new RegExp(`(${search})`, 'gi'),
-            '<span style="background-color: yellow">$1</span>',
-          );
-          temp += `
+  axios
+    .get(`/api/orders/productSearch?search=${search}`)
+    .then((res) => {
+
+      let data = res.data.data;
+      let totalProducts = res.data.totalProducts
+      let temp = '';
+      for (let i = 0; i < data.length; i++) {
+        const timeAgo = getTimeAgo(data[i].createdAt);
+
+        // 검색어 배경색 적용
+        const title = data[i].title.replace(
+          new RegExp(`(${search})`, 'gi'),
+          '<span style="background-color: yellow">$1</span>',
+        );
+        temp += `
             <div class="col-md-6 col-lg-3">
                           <div class="card">
                               <img class="img-fluid" 
@@ -131,23 +131,22 @@ function productSearch() {
           const totalProducts = TotalProducts
           const productsLength = limit
 
-        axios.get(`/api/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
-          .then(res => {
-            
-            const products = res.data.data;
-            let temp = '';
-  
-            for (let i = 0; i < products.length; i++) {
-              const timeAgo = getTimeAgo(products[i].updatedAt);
-              let productP = products[i].price;
-          const productPrice = productP
-  
-              const title = products[i].title.replace(
-                new RegExp(`(${search})`, 'gi'),
-                '<span style="background-color: yellow">$1</span>',
-              );
-  
-              temp += `
+          axios.get(`/api/orders/productSearch?search=${search}&limit=${limit}&offset=${offset}`)
+            .then(res => {
+
+              const products = res.data.data;
+              let temp = '';
+
+              for (let i = 0; i < products.length; i++) {
+                const timeAgo = getTimeAgo(products[i].updatedAt);
+                let productP = products[i].price;
+                const productPrice = productP;
+                const title = products[i].title.replace(
+                  new RegExp(`(${search})`, 'gi'),
+                  '<span style="background-color: yellow">$1</span>',
+                );
+
+                temp += `
               <div class="col-md-6 col-lg-3">
                           <div class="card">
                               <img class="img-fluid" 
@@ -198,15 +197,15 @@ function productSearch() {
 }
 
 
-  function logout(){
-	axios
-		.post('/api/auth/logout',
-		)
-		.then((res) => {
-			// 응답처리
-			alert("정상적으로 로그아웃 처리 되었습니다.")
-			window.location.href = "/"
-			
+function logout() {
+  axios
+    .post('/api/auth/logout',
+    )
+    .then((res) => {
+      // 응답처리
+      alert("정상적으로 로그아웃 처리 되었습니다.")
+      window.location.href = "/"
+
 
     })
     .catch((error) => {
