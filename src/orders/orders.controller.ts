@@ -37,6 +37,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 @Catch(HttpException)
+// @ApiCookieAuth()
 @Controller('api/orders')
 @ApiTags('주문 API')
 @UseGuards(JwtAuthGuard)

@@ -177,6 +177,7 @@ export class OrdersService {
       where: { id: sellerInfo.sellerId },
       select: ['id', 'email', 'nickname', 'phone', 'address'],
     });
+    console.log(sellerUser);
     return sellerUser;
   }
 
