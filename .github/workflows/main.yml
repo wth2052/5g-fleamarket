@@ -38,7 +38,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-          S3_BUCKET_NAME: my-nest-app-deploy-bucket # S3 버킷 이름입니다.
+          S3_BUCKET_NAME: my-nest-app-deploy-bucket # S3 버킷 이름
           PROJECT_NAME: main # S3 버킷 내 폴더 이름 임의로 정하면 알아서 만들어줌
           AWS_CODEDEPLOY_APPLICATION_NAME: 5gnun-fleamarket # CodeDeploy 애플리케이션 이름
           AWS_CODEDEPLOY_DEPLOYMENT_GROUP_NAME: 5gnun-fleamarketDeploy # CodeDeploy 배포 그룹 이름
