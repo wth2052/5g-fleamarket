@@ -164,9 +164,12 @@ export class OrdersService {
     }
     if (order.status === 'sale' || order.status === 'sold') {
       throw new ForbiddenException(
-        '선택되지 않았거나 다른제안이 수락됐습니다.',
+        '선택되지 않았거나 다른 제안이 수락되었습니다.',
       );
     }
+    // if (order.status === 'sold') {
+    //   throw new ForbiddenException('판매자가 다른 제안을 수락했습니다.');
+    // }
     const sellerInfo = await this.productRepository.findOne({
       where: { id: order.productId },
     });
@@ -222,7 +225,7 @@ export class OrdersService {
       .getMany();
 
     if (!myProduct.length) {
-      throw new NotFoundException('판매하기 위해서 등록한 상품이 없습니다.');
+      throw new NotFoundException('판매한 상품 내역이 없습니다.');
     }
     return { myProduct };
   }
@@ -311,8 +314,8 @@ export class OrdersService {
       where: { id: orderId },
       relations: ['product'],
     });
-    if (!order) {
-      throw new NotFoundException('해당 요청을 찾을수 없습니당');
+    if (!order || order.buyerId !== Number(userId)) {
+      throw new NotFoundException('해당 주문이 없습니다.');
     }
     // if (order.buyerId !== Number(userId)) {
     //   throw new ForbiddenException('해당 상품이 없습니다.');
@@ -320,7 +323,6 @@ export class OrdersService {
     if (data > 1000000000) {
       throw new BadRequestException('너무 큰 가격입니다. 다시 확인해주세요');
     }
-    console.log('@@@@@@@@@@@@@@', order.product.price);
     if (order.product.price > data) {
       throw new ForbiddenException('판매자가 제시한 가격보다 낮습니다.');
     }

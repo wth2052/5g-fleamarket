@@ -16,6 +16,7 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductImagesService } from './product-images.service';
+import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { DeleteProductDto } from './dto/delete-product.dto';
 import { Public } from 'src/global/common/decorator/skip-auth.decorator';
@@ -26,12 +27,14 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express/multer';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import * as fs from 'fs';
 import axios from 'axios';
 import { Response } from 'express';
 import { Redirect, Res } from '@nestjs/common/decorators';
 
+
+@ApiTags("products")
 @Controller('/api/products')
 export class ProductsController {
   categoriesRepository: any;
@@ -40,6 +43,7 @@ export class ProductsController {
     private readonly ProductImagesService: ProductImagesService,
   ) {}
   //상품목록조회
+  @ApiOperation({ summary: "상품 전체 목록보기"})
   @Public()
   @Get('view')
   @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
@@ -63,6 +67,11 @@ export class ProductsController {
 
 
   //상품 상세 보기
+  @ApiOperation({ summary: "상품 상세보기"})
+  @ApiParam({
+    name: 'productId',
+    type: 'number',
+  })
   @Public()
   @Get('view/:productId')
   // @Render('product/products-detail.ejs')
@@ -70,6 +79,7 @@ export class ProductsController {
     return this.productsService.getProductById(productId);
   }
 
+  @ApiOperation({ summary: "상품 등록 페이지: 카테고리 가져오기, 로그인 필"})
   @UseGuards(JwtAuthGuard)
   @Get('category')
   // @Render('product/product-create.ejs')
@@ -116,6 +126,14 @@ export class ProductsController {
       },
     }),
   )
+
+  @ApiOperation({ summary: "상품 등록하기, 로그인 필"})
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: '상품 등록 요청',
+    type: CreateProductDto,
+    required: true,
+  })
   @UseGuards(JwtAuthGuard)
   @Post('up')
   async createProduct(
@@ -163,37 +181,8 @@ export class ProductsController {
     }
   }
 
-  //상품수정 렌더 및 수정하기 폼에서 기존 정보를 불러옴
-  @Get('edit/:id')
-  @Render('product/product-update.ejs')
-  async getEditProductPage(@Param('id') id: number) {
-    const product = await this.productsService.getProductById(id);
-    return { product };
-  }
-
-  //상품수정
-  @UseGuards(JwtAuthGuard)
-  @Put('edit/:productId')
-  updateProduct(
-    @Cookies('Authentication') jwt: JwtDecodeDto,
-    @Param('productId') productId: number,
-    @Body() data: UpdateProductDto,
-  ) {
-    if (!jwt || !jwt.id) {
-      throw new BadRequestException('Invalid JWT');
-    }
-    const userId = jwt.id;
-    return this.productsService.updateProduct(
-      productId,
-      data.title,
-      data.description,
-      data.price,
-      data.categoryId,
-      userId,
-    );
-  }
-
   //상품삭제
+  @ApiOperation({ summary: "상품 삭제하기, 로그인 필, 자작 글만 가능"})
   @UseGuards(JwtAuthGuard)
   @Delete(':productId')
   async deleteProduct(
@@ -212,6 +201,7 @@ export class ProductsController {
     return { success: true };
   }
   //상품 좋아요
+  @ApiOperation({ summary: "상품 '좋아요'하기"})
   @UseGuards(JwtAuthGuard)
   @Post('like/:productId')
   likeProduct(

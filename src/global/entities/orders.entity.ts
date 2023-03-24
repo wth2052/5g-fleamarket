@@ -11,9 +11,11 @@ import {
 } from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({ name: 'orders' })
 export class OrdersEntity {
+  @ApiProperty({ example: 1, description: 'order ID' })
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,6 +32,7 @@ export class OrdersEntity {
   @Column()
   deal: number;
 
+  @ApiProperty({ example: 'sale', description: 'order status' })
   @Column({ default: 'sale' })
   status: string;
 
