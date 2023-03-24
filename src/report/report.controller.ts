@@ -18,12 +18,7 @@ import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportService } from './report.service';
-import {
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Catch(HttpException)
 @Controller('/api')
@@ -35,12 +30,26 @@ export class ReportController {
     private jwtService: JwtService,
   ) {}
 
+ @Get('/me/login')
+ getInfo(
+  @Cookies('Authentication') jwt: JwtDecodeDto,
+) {
+  const userId = jwt.id;
+  return this.reportService.getInfo(userId)
+}
+
   @Post('/report')
-  @ApiOperation({
-    summary: '신고하기',
-    description: '유저가 불법유저를 신고합니다.',
+  @ApiOperation({summary: '신고 접수',
+  description: '신고하기 '})
+  @ApiCreatedResponse({description: '새로운 신고가 접수됨'})
+  @ApiBody({type: CreateReportDto})
+  @ApiQuery({ 
+    name: 'Authentication', 
+    description: '관리자로 로그인하면 받는 액세스토큰',
+    // schema: { .... },
+    // type: JwtDecodeDto,
+    required: true
   })
-  @ApiOkResponse({ description: '신고하기 성공.' })
   createReport(
     @Cookies('Authentication') jwt: JwtDecodeDto,
     @Body() data: CreateReportDto,
@@ -55,12 +64,13 @@ export class ReportController {
   }
 
   @Get('/notices')
-  @ApiOperation({
-    summary: '공지사항 목록보기',
-    description: '유저가 공지사항 목록을 요청합니다.',
-  })
-  @ApiOkResponse({ description: '공지사항 목록 확인.' })
-  @ApiNotFoundResponse({ description: '공지사항이 없습니다.' })
+  @ApiOperation({summary: '공지목록 보여주기',
+description: '등록된 모든 공지목록 보여주기'})
+  @ApiOkResponse({
+    description: '공지목록 불러오기'})
+  @ApiNotFoundResponse({description: '공지가 존재하지 않음'})
+  @ApiQuery({ name: 'limit', type: Number, example: 10, required: false })
+  @ApiQuery({ name: 'offset', type: Number, example: 0, required: false })
   async getNotices(
     @Query('limit') limit: number = 10,
     @Query('offset') offset: number = 0,
@@ -75,24 +85,29 @@ export class ReportController {
   }
 
   @Get('/notices/:noticeId')
-  @ApiOperation({
-    summary: '공지사항 상세보기',
-    description: '유저가 공지사항 상세보기를 요청합니다.',
-  })
-  @ApiOkResponse({ description: '공지사항 상세보기 확인.' })
-  @ApiNotFoundResponse({ description: '존재하지 않는 공지사항입니다.' })
+  @ApiOperation({summary: '공지사항 상세 조회하기',
+  description: '공지의 상세정보 보여줌'})
+  @ApiOkResponse({description: '공지사항 상세정보를 불러옴'})
+  @ApiNotFoundResponse({description: '공지가 존재하지 않음'})
+  @ApiParam({name: 'noticeId', type: Number ,description: '공지 Id'})
   async getNoticeById(@Param('noticeId') noticeId: number) {
     return { notice: await this.reportService.getNoticeById(noticeId) };
   }
 
   @Get('/likes')
-  @ApiOperation({
-    summary: '좋아요 목록보기',
-    description: '유저가 "좋아요" 목록을 요청합니다.',
-  })
-  @ApiOkResponse({ description: '좋아요 목록 확인.' })
-  @ApiNotFoundResponse({ description: '찜하신 상품이 없습니다.' })
-  async findMyLike(@Cookies('Authentication') jwt: JwtDecodeDto) {
+  @ApiOperation({summary: '관심목록 보여주기',
+  description: '찜한 상품목록 보여주기'})
+    @ApiOkResponse({
+      description: '찜한 상품목록 불러오기'})
+    @ApiNotFoundResponse({description: '찜한 상품이 존재하지 않음'})
+    @ApiQuery({ 
+      name: 'Authentication', 
+      description: '관리자로 로그인하면 받는 액세스토큰',
+      // schema: { .... },
+      // type: JwtDecodeDto,
+      required: true
+    })
+  async findMyLike(@Cookies('Authentication') jwt: JwtDecodeDto,) {
     const userId = jwt.id;
     const product = await this.reportService.findMyLike(userId);
 

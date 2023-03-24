@@ -100,13 +100,14 @@ axios
                                 <h2 class="card-title">${data.title}</h2>
                                 <h6 class="card-title">${data.price} 원</h6>
                                 <h4 class="card-title">카테고리: ${data.category.name}</h4>
-                                <p class="card-text">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
-                                    <small class="text-muted">${data.likes}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="2%">
-                                    <small class="text-muted">${data.viewCount}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="2%">
-                                    <small class="text-muted">${timeAgo} </small>
+                                <p class="card-text" >
+                                <h4 style="display: inline-block;"></h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="2%">
+                                    <h4 class="text-muted" style="display: inline-block;">${data.likes}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="3%">
+                                    <h4 class="text-muted" style="display: inline-block;">${data.viewCount}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="3%">
+                                    <h4 style="display: inline-block;" class="text-muted">${timeAgo} </h4>
                                 </p>
                                 <p class="card-text">
                                     <small class="text-muted">
@@ -156,7 +157,7 @@ axios
                                     </div>
                                     
                                     
-                               <h6 class="card-text">${data.description}</h6>
+                               <h4 class="card-text">${data.description}</h4>
                             </div>
                         </div>
                     </div>
@@ -169,20 +170,21 @@ axios
                                 <h4 class="card-title">카테고리: ${data.category.name}</h4>
 
                                 <p class="card-text">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="1%">
-                                    <small class="text-muted">${data.likes}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="2%">
-                                    <small class="text-muted">${data.viewCount}　</small>
-                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="2%">
-                                    <small class="text-muted">${timeAgo} </small>
+                                <h4 style="display: inline-block;"></h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" width="2%">
+                                    <h4 class="text-muted">${data.likes}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/535/535193.png" width="3%">
+                                    <h4 class="text-muted">${data.viewCount}　</h4>
+                                    <img src="https://cdn-icons-png.flaticon.com/512/4024/4024449.png" width="3%">
+                                    <h4 class="text-muted">${timeAgo} </h4>
                                 </p>
                                     <!-- 모달 버튼 -->
                                     <small class="text-muted">
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#exampleModal" data-whatever="@mdo">판매완료
                                         </button>
-                                    <br><br>
-                               <h6 class="card-text">${data.description}</h6>
+                                    <br><br><br>
+                               <h4 class="card-text">${data.description}</h4>
                             </div>
                         </div>
                     </div>

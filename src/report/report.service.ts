@@ -15,7 +15,14 @@ export class ReportService {
     private reportRepository: Repository<ReportsEntity>,
     @InjectRepository(LikesEntity)
     private likeRepository: Repository<LikesEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>
   ) {}
+
+  async getInfo(userId){
+    const user = await this.userRepository.findOne({ where: {id: userId}})
+    return user.nickname
+  }
 
   async createReport(
     userId: number,

@@ -60,11 +60,11 @@ export class UserEntity {
   })
   products: ProductsEntity[];
 
-
-  @OneToMany(() => LikesEntity, (like) => like.user)
+  @OneToMany(() => LikesEntity, (like) => like.user, { cascade: true })
   likes: LikesEntity[];
 
-  @OneToMany(() => ReportsEntity, (reports) => reports.reporter)
+  @OneToMany(() => ReportsEntity, (reports) => reports.reporter, {
+    cascade: true,
+  })
   reports: ReportsEntity[];
 }
-
