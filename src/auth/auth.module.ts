@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserService } from '../user/user.service';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
-import { UserModule } from '../user/user.module';
+import { cacheModule, UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
@@ -27,6 +27,7 @@ import { OrdersEntity } from '../global/entities/orders.entity';
       ProductImagesEntity,
       OrdersEntity,
     ]),
+    cacheModule,
     PassportModule,
     ConfigModule,
     UserModule,
