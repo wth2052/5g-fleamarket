@@ -37,6 +37,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
+          AWS_REGION: ap-northeast-2
        # run: |
        #   aws s3 cp \
        #     --recursive \
@@ -46,9 +47,9 @@ jobs:
          --application-name 5gnun-fleamarket
          --description "5gnunFleaMarket S3 Deploy" 
          --region ap-northeast-2
-         --s3-location 
-            /home/runner/work/5g-fleamarket/5g-fleamarket/deploy_$IMAGE_TAG.zip 
-            s3://5gnunfleamarket-bucket/main --source .
+         --s3-location s3://5gnunfleamarket-bucket/main --source .
+            # /home/runner/work/5g-fleamarket/5g-fleamarket/deploy_$IMAGE_TAG.zip 
+          
 
       - name: AWS CodeDeploy
         run: aws deploy create-deployment 
