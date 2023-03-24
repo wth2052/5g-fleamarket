@@ -168,33 +168,36 @@ function productSearch() {
                           </div>
                       </div>
               `;
-              }
-              $('#product-list').append(temp);
-
-              if (products.length < res.data.totalProducts) {
-
-                limit += products.length
-
-                offset += products.length
-              }
-            })
-            .catch(error => {
-              if (productsLength === totalProducts) {
-                alert('끝 페이지입니다.')
-                window.removeEventListener('scroll', debouncedPageSearchProduct);
-              }
-              else {
-                alert('데이터를 불러오는 중 오류가 발생했습니다.');
-              }
-            });
-        }
-      };
-
-    })
-    .catch((error) => {
-      // window.location.reload();
-    });
-}
+            }
+            $('#product-list').append(temp);
+  
+            if (products.length < res.data.totalProducts) {
+  
+              limit += products.length
+  
+              offset += products.length
+            }
+          })
+          .catch(error => {
+            if (productsLength === totalProducts) {
+              alert('끝 페이지입니다.')
+              window.removeEventListener('scroll', debouncedPageSearchProduct);
+            }
+            else {
+              alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            }
+          });
+      }
+    };
+  
+      })
+      .catch((error) => {
+        
+          alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+      
+        // window.location.reload();
+      });
+  }
 
 
 function logout() {
