@@ -48,7 +48,7 @@ jobs:
          --region ap-northeast-2
          --s3-location 
             /home/runner/work/5g-fleamarket/5g-fleamarket/deploy_$IMAGE_TAG.zip 
-            s3://5gnunfleamarket-bucket/main/deploy_$IMAGE_TAG.zip
+            s3://5gnunfleamarket-bucket/main
 
       - name: AWS CodeDeploy
         run: aws deploy create-deployment 
