@@ -29,5 +29,6 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
       
     - name: Build, tag, and push image to Amazon ECR
-      run: |
-      #작성중
+      run: docker build -t 5gnunfleamarketdeploy .
+           docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
+           docker push 183426660321.dkr.ecr.us-east-2.amazonaws.com/5gnunfleamarketdeploy:latest
