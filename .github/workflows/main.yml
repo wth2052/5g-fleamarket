@@ -29,7 +29,7 @@ jobs:
         run: npm run build
       - name: configure AWS
         uses: aws-actions/configure-aws-credential@v1
-        with:
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -41,7 +41,7 @@ jobs:
         run: zip -r ./deploy_$IMAGE_TAG.zip .
         shell: bash
       - name: S3 Upload
-        run: aws s3 cp --region ${{ secrets.AWS_REGION }} ./$GITHUB_SHA.zip s3://${{ serects.S3_BUCKET_NAME }}/main/$GITHUB_SHA.zip
+        run: aws s3 cp --region ${{ AWS_REGION }} ./$GITHUB_SHA.zip s3://${{ S3_BUCKET_NAME }}/main/$GITHUB_SHA.zip
        # run: |
        #   aws s3 cp \
        #     --recursive \
@@ -49,7 +49,7 @@ jobs:
        #     /home/runner/work/5g-fleamarket/5g-fleamarket s3://5gnunfleamarket-bucket/main
 
       - name: S3 Upload
-        run: aws deploy push --application-name ${{ serects.AWS_CODEDEPLOY_APPLICATION_NAME }} --description "5gnunfleamarket-deploy" --s3-location s3://${{ serects.S3_BUCKET_NAME }}/deploy_$IMAGE_TAG.zip --source .
+        run: aws deploy push --application-name ${{ AWS_CODEDEPLOY_APPLICATION_NAME }} --description "5gnunfleamarket-deploy" --s3-location s3://${{ S3_BUCKET_NAME }}/deploy_$IMAGE_TAG.zip --source .
 
       - name: code deploy
-        run: aws deploy create-deployment --application-name ${{ serects.AWS_CODEDEPLOY_APPLICATION_NAME }} --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name server --s3-location bucket=${{ secrets.S3_BUCKET_NAME }},bundleType=zip,key=deploy_$IMAGE_TAG.zip
+        run: aws deploy create-deployment --application-name ${{ AWS_CODEDEPLOY_APPLICATION_NAME }} --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name server --s3-location bucket=${{ S3_BUCKET_NAME }},bundleType=zip,key=deploy_$IMAGE_TAG.zip
