@@ -194,6 +194,9 @@ function getTimeAgo(dateString) {
   
       })
       .catch((error) => {
+        
+          alert(error.response?.data?.message || error.response.data.errorMessage.details[0].message);
+      
         // window.location.reload();
       });
   }
