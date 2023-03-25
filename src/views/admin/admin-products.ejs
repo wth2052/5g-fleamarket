@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>상품</title>
+
+  <!--    BootStrap Library-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Dongle:wght@700&family=Jua&family=Noto+Serif+KR:wght@200&display=Gowun+Dodum&display=swap"
+      rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+          <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  
+
+</head>
+<style>
+
+  #image-container{
+     padding: 0;
+     height: 166px;  
+  }
+
+  #image{
+    width: 250px; height: 165px; 
+    margin: 0;  
+ 
+    border: 3px dotted #5cd7f2; border-radius: 3px;
+  }
+
+  #product-btn{
+    background-color: #05AFF2;
+  }
+
+.col-md-8 > h3 {
+  border: 1px solid #05AFF2; 
+  margin-top: 10px;
+  width: 300px;
+  border-radius: 4px;
+}
+
+#products-column {
+  height: 166px;
+  width: 50%;
+ 
+  border: 3px dotted #5cd7f2; border-radius: 3px;
+}
+
+
+</style>
+<script>
+
+</script>
+<body>
+
+  <%- include('admin-header.ejs')%>
+
+<div class="container-fluid" style="background:#eee; margin-top: 40px; margin-bottom: 40px;">
+  <div class="container" style="background: #fff; margin-top: 20px;padding: 0;" id="bb">
+    
+    <% if (typeof errorMessage !== 'undefined') { %>
+            <%= errorMessage %>
+          <% } else if (products) { %>
+
+
+            <% for (var i = 0; i < products.length; i++) { %>
+              <div class="container-fluid" style=" margin-top: 20px;" onclick="getProduct('<%= products[i].id %>')">
+                <div class="row" style="cursor: pointer; "  >
+                  <div class="col-md-3" style="margin-left: 13%;" id="image-container">
+
+                    <img src="/img/<%= products[i].images[0].imagePath %>" alt="image" id="image"/>
+
+                  </div>
+                  <div class="col-md-8" id="products-column" >
+                      <h3 > <%= products[i].title %></h3>
+                      <h3><%= products[i].price %> 원</h3>
+                      <br>
+                      <span>작성자: <%= products[i].seller.nickname %></span>
+                      <span style="float: right;">❤ <%= products[i].likes %></span>
+                      <span style="float: right;">🎯<%= products[i].dealCount %>  &nbsp </span>
+                      <span style="float: right;">👀:<%= products[i].viewCount %>회 &nbsp</span>
+                      
+                    </div>
+                </div>
+              </div>
+            <% } %>
+            <input type="hidden" value="<%= products.length %>" id="productsLength">
+            <input type="hidden" value="<%= totalProducts%>" id="totalProducts">
+
+            
+          <% } %>
+  </div>
+
+
+
+</div>
+
+<!--하단 메뉴바-->
+
+<%- include('admin-footer.ejs')%>
+
+</body>
+<script>
+<%- include('js/admin-layout.js') %>
+</script>
+
+
+</html>

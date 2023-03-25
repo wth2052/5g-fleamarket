@@ -4,6 +4,10 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
@@ -13,10 +17,14 @@ export class OrdersEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => ProductsEntity)
+  @ManyToOne(() => ProductsEntity, { onDelete: 'CASCADE' })
+  product: ProductsEntity;
+  @Column()
   productId: number;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (buyer) => buyer.orders, { onDelete: 'CASCADE' })
+  buyer: UserEntity;
+  @Column()
   buyerId: number;
 
   @Column()
@@ -25,12 +33,12 @@ export class OrdersEntity {
   @Column({ default: 'sale' })
   status: string;
 
-  @Column()
-  createAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column()
-  updateAt: Date;
+  @UpdateDateColumn({ default: null })
+  updatedAt?: Date;
 
-  @Column()
-  deleteAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
 }

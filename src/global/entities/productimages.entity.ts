@@ -1,20 +1,35 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { ProductsEntity } from './products.entity';
 
 @Entity({ name: 'productimages' })
 export class ProductImagesEntity {
+  length: number;
+  map(arg0: (image: any) => { imagePath: any }) {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => ProductsEntity)
-  productsId: number;
+  @ManyToOne(() => ProductsEntity, (product) => product.images, {
+    onDelete: 'CASCADE',
+  })
+  product: ProductImagesEntity[];
+  @Column()
+  productId: number;
 
   @Column()
   imagePath: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
-  deletedAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
 }

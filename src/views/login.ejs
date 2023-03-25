@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>냐옹 상회</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
+    <link href="/css/style.css" rel="stylesheet">
+    <!--    Axios-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body class="h-100">
+    
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+
+
+
+    <div class="login-form-bg h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-xl-6">
+                    <div class="form-input-content">
+                        <div class="card login-form mb-0">
+                            <div class="card-body pt-5" >
+                                <a class="text-center" href="/"> <h4><b id="nyan"  style="color: #0597F2" >냐옹 상회</b></h4></a>
+                                <a class="text-center"> <h4>스트레스 없는 중고 거래 플랫폼 <br><b id="nyan" style="color: #0597F2">냐옹 상회</b>에 오신것을 환영합니다.</h4></a>
+                                <form class="mt-5 mb-5 login-input">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="아이디" id="id">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="비밀번호" id="password">
+                                    </div>
+                                </form>
+                                    <button class="btn login-form__btn submit w-100" style="background-color: #05AFF2" onclick="login()">로그인</button>
+                                <p class="mt-5 login-form__footer">아직 <b style="color: #0597F2">냐옹 상회</b> 의 회원이 아니신가요? <a href="/view/signup" class="text-black-50" style="font-size: large"><b>가입하러 가기</b></a></p>
+                                <div class="col-md-3" style="float: none; margin: 0 auto;"></div>
+                                <div class="btn w-100" ><a href="/google"><img class="btn" src="/images/btn_login_google.png" alt="GoogleLogin" style="width: 65%; position: center"></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="/plugins/common/common.min.js"></script>
+    <script src="/js/custom.min.js"></script>
+    <script src="/js/settings.js"></script>
+    <script src="/js/gleek.js"></script>
+    <script src="/js/styleSwitcher.js"></script>
+    <script src="/js/auth/login.js"></script>
+</body>
+</html>
+
+
+
+
+

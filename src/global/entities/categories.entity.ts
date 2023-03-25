@@ -1,16 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProductsEntity } from './products.entity';
 
 @Entity({ name: 'categories' })
 export class CategoriesEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column()
   name: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
-  deletedAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
+
+  @OneToMany((type) => ProductsEntity, (products) => products.category, {cascade: true})
+  products: ProductsEntity[];
 }

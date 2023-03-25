@@ -6,12 +6,22 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
+  DeleteDateColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
+import { OrdersEntity } from './orders.entity';
+import { ProductImagesEntity } from './productimages.entity';
+import { LikesEntity } from "./likes.entity";
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
+  @OneToMany(() => ProductImagesEntity, (images) => images.product)
+  images: ProductImagesEntity;
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -24,21 +34,46 @@ export class ProductsEntity {
   @Column()
   price: number;
 
-  @OneToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (seller) => seller.products, {
+    onDelete: 'CASCADE',
+  })
+  seller: UserEntity;
+  @Column()
   sellerId: number;
 
-  @OneToOne(() => CategoriesEntity)
+  @ManyToOne(() => CategoriesEntity, (category) => category.products, {
+    onDelete: 'CASCADE',
+  })
+  category: CategoriesEntity;
+  @Column()
   categoryId: number;
 
-  @Column()
+  @Column({ default: 0 })
   viewCount: number;
 
-  @Column()
+  @OneToMany(() => LikesEntity, (like) => like.product)
+  likesJoin: LikesEntity[];
+
+  @Column({ default: 0 })
   likes: number;
 
-  @Column()
+  @Column({ default: 'sale' })
+  status: string;
+  // 여기 임시수정
+  @Column({ default: 0 })
+  dealCount: number;
+
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
-  deletedAt: Date;
+  @UpdateDateColumn({ default: null })
+  updatedAt?: Date;
+
+  @Column({ default: null })
+  pullUp: Date;
+
+  @OneToMany((type) => OrdersEntity, (orders) => orders.product, {
+    cascade: true,
+  })
+  orders: OrdersEntity[];
 }

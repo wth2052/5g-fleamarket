@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+
+  .footer-btn{
+    margin-left:20%;
+    margin-top: 2%;
+    width:150px;
+    background-color: #F2F2F2;
+    border-radius: 6px;
+    border: 1px #F2F2F2;
+  }
+
+  .footer-btn:hover{
+    background-color: #f2f2f2d6;
+    border: 1px black;
+    box-shadow: 0 10px 12px -3px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+</style>
+<body>
+    <div class="container-fluid" style="height: 40px;position: fixed; bottom:0; background: #fff; padding: 0">
+        <div class="container" style="height: 40px; padding: 0">
+          <div class="row" style="width: 100%; background-color: #79D0F2;margin: 0">
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <div class="col" style="height: 40px; width: 20%"></div>
+            <% if (typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getCheckedReport()" value="신고확인✅"></div>  <%} 
+            else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
+            %>
+            <% if (typeof notices !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createNoticePage()" value="작성➕"></div>  <%} 
+            else if(typeof category !== 'undefined' || typeof errorMessage !== 'undefined' ) {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="createCategoryPage()" value="작성➕"></div> <%} 
+            else if( typeof users !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getBan()" value=" 😡블랙리스트"></div> <%}
+            else if( typeof reports !== 'undefined' || typeof errorMessage !== 'undefined') {%> <div class="col" style="height: 40px; width: 20%" ><input type="button" class="footer-btn" onclick="getUncheckedReport()" value="신고확인❌"></div> <%}
+            else {%> <div class="col" style="height: 40px; width: 20%"></div> <%} 
+            %>
+          </div>
+        </div>
+      
+      </div>
+   
+    
+</body>
+
+<script>
+
+
+</script>
+</html>

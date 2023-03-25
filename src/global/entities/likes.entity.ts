@@ -1,20 +1,32 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { ProductsEntity } from './products.entity';
 import { UserEntity } from './users.entity';
 
 @Entity({ name: 'likes' })
 export class LikesEntity {
+  @ManyToOne(() => UserEntity, (users) => users.likes)
+  user: UserEntity;
   @PrimaryColumn()
-  @OneToOne(() => UserEntity)
   userId: number;
 
-  @OneToOne(() => ProductsEntity)
+  @ManyToOne(() => ProductsEntity, (product) => product.likes)
+  product: ProductsEntity;
   @PrimaryColumn()
   productId: number;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
-  deletedAt: Date;
+  @DeleteDateColumn({ default: null })
+  deletedAt?: Date;
 }
