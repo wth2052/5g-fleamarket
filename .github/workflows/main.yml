@@ -32,6 +32,6 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com
           docker build -t 5gnunfleamarketdeploy .
-          docker run -it -d --name 5gnunfleamarketdeploy -p 3000:3000 .
+          docker run -it -d -p 3000:3000 --name 5gnunfleamarketdeploy  .
           docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com/5gnunfleamarketdeploy:latest
           docker push 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com/5gnunfleamarketdeploy:latest
