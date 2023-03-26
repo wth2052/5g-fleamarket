@@ -22,7 +22,7 @@ COPY --from=build /usr/src/app/dist ./dist
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm install
 
 RUN rm package*.json
 
