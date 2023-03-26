@@ -1,4 +1,4 @@
-#Github Actions AWS ECR CI/CD
+#Github Actions AWS ECR CI/CD 
 name: Deploy to ECR
 on:
   #푸시할 브랜치 지정
