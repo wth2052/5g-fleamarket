@@ -18,7 +18,6 @@ import { LikesEntity } from '../global/entities/likes.entity';
       ProductsEntity,
       ProductImagesEntity,
       LikesEntity,
-
     ]),
   ],
   controllers: [ProductsController],

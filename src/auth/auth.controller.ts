@@ -32,6 +32,7 @@ import { ProductsEntity } from '../global/entities/products.entity';
 import { ProductImagesEntity } from '../global/entities/productimages.entity';
 import { OrdersEntity } from '../global/entities/orders.entity';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ApiCookieAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 interface IOAuthUser {
   //interface 설정
   user: {
@@ -42,7 +43,9 @@ interface IOAuthUser {
 }
 
 //TODO: auth를 없애서 API를 조금 더 RESTFUL하게 만드는게 맞을까?
+@ApiCookieAuth()
 @Controller('/api/auth')
+@ApiTags('유저 로그인 API')
 export class AuthController {
   constructor(
     @InjectRepository(UserEntity)
@@ -56,6 +59,15 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @UsePipes(ValidationPipe)
   @Post('login')
+  @ApiOperation({
+    summary: '로그인',
+    description: '유저가 로그인을 요청합니다.',
+  })
+  @ApiOkResponse({ description: '유저 로그인 확인' })
+  @ApiUnauthorizedResponse({
+    description: '블랙리스트 유저입니다. 로그인 하실 수 없습니다',
+  })
+
   //이제 Nest 기본 응답 개체와 상호 작용할 수 있지만 (예: 특정 조건에 따라 쿠키 또는 헤더 설정) 나머지는 프레임워크에 맡김
   //리프레시 토큰 재발급 잘됨
   async login(
@@ -76,6 +88,7 @@ export class AuthController {
       await this.userService.setCurrentRefreshToken(refreshToken, user.id);
       res.cookie('Authentication', accessToken, accessOption);
       res.cookie('refreshToken', refreshToken, refreshOption);
+      res.setHeader('Authentication', accessToken);
     }
   }
 
@@ -83,6 +96,11 @@ export class AuthController {
   // @Public()
   @UseGuards(JwtAuthGuard)
   @Post('logout')
+  @ApiOperation({
+    summary: '로그아웃',
+    description: '유저가 로그아웃을 요청합니다.',
+  })
+  @ApiOkResponse({ description: '유저 로그아웃 확인' })
   async logOut(
     @Req() req,
     @Res({ passthrough: true }) res: Response,
@@ -97,12 +115,23 @@ export class AuthController {
   @Public()
   @UsePipes(ValidationPipe)
   @Post('signup')
+  @ApiOperation({
+    summary: '회원가입',
+    description: '유저가 회원가입을 요청합니다.',
+  })
+  @ApiOkResponse({ description: '유저 회원가입 확인' })
+  @ApiNotFoundResponse({ description: '양식에 맞게 입력해주세요.' })
   async register(@Body() user: AuthUserDto): Promise<void> {
     await this.authService.register(user);
   }
 
   @UseGuards(JwtRefreshGuard)
   @Get('refresh')
+  @ApiOperation({
+    summary: '리프레시 토큰 발급',
+    description: '가입한 유저에게 리프레시 토큰 발급',
+  })
+  @ApiOkResponse({ description: '리프레시 토큰 발급 확인' })
   refresh(
     @Req() req,
     @Res({ passthrough: true }) res: Response,
@@ -121,6 +150,11 @@ export class AuthController {
   //TODO: 괜찮은지 고민해보기
   @UseGuards(JwtAuthGuard)
   @Post('delete')
+  @ApiOperation({
+    summary: '회원 탈퇴',
+    description: '유저가 회원 탈퇴를 요청합니다.',
+  })
+  @ApiOkResponse({ description: '유저 회원 탈퇴 확인' })
   async userSoftDelete(
     @Req() req,
     @Res({ passthrough: true }) res: Response,

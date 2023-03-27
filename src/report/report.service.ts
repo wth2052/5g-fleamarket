@@ -15,7 +15,14 @@ export class ReportService {
     private reportRepository: Repository<ReportsEntity>,
     @InjectRepository(LikesEntity)
     private likeRepository: Repository<LikesEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>
   ) {}
+
+  async getInfo(userId){
+    const user = await this.userRepository.findOne({ where: {id: userId}})
+    return user.nickname
+  }
 
   async createReport(
     userId: number,
@@ -39,7 +46,7 @@ export class ReportService {
     const notices = await this.noticeRepository.find({
       take: limit,
       skip: offset,
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'DESC' },
     });
     if (notices.length === 0) {
       throw new NotFoundException('공지사항이 없습니다.');

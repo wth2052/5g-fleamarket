@@ -32,6 +32,7 @@ export class UserService {
 
   async setCurrentRefreshToken(refreshToken: string, id: number) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    
     await this.cacheManager.set(`${id}`, currentHashedRefreshToken, {
       ttl: this.configService.get('REDIS_REFRESH_EXPIRE'),
     });

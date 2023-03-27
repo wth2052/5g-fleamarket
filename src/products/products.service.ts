@@ -78,14 +78,13 @@ export class ProductsService {
       relations: ['category', 'seller', 'images', 'likesJoin'],
       order: { pullUp: 'DESC' },
     });
-
+    console.log('12314', product);
     if (!product) {
       throw new NotFoundException(`Product with ID ${id} not found`);
     }
 
     product.viewCount += 1;
     await this.productRepository.save(product);
-    console.log('####################', product, '###########');
     return { product };
   }
 
@@ -274,7 +273,7 @@ export class ProductsService {
   }
 
   //등록창 카테고리 불러오기용
-  async getCategories(): Promise<CategoriesEntity[]> {
+  async getCategories() {
     return await this.categoriesRepository.find();
   }
 }

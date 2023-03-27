@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -7,12 +7,14 @@ import { SocialService } from '../../social/social.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../global/entities/users.entity';
 import { Repository } from 'typeorm';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly configService: ConfigService,
     private readonly userService: UserService,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
   ) {
@@ -32,10 +34,18 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate(payload: any) {
     console.log('페이로드', payload);
-    return {
+    const verify = await this.cacheManager.get(`${payload.id}`);
+    
+    if(!verify){
+      console.log("리프레시 토큰이 없음")
+      } 
+    else{
+        return {
       id: payload.id,
       email: payload.email,
       nickname: payload.nickname,
     };
+    }
+  
   }
 }
