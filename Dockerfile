@@ -2,7 +2,7 @@
 
 FROM node:18 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 COPY package*.json ./
 
@@ -16,11 +16,17 @@ RUN npm run build
 # PROD stage
 FROM node:18
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/app/dist ./dist
 
 COPY package*.json ./
+
+COPY /src/views ./src/views
+
+COPY /src/public ./src/public
+
+COPY production.env ./.env
 
 RUN npm install
 
