@@ -16,7 +16,7 @@ RUN npm run build
 # PROD stage
 FROM node:18
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 COPY --from=build /usr/src/dist ./dist
 
