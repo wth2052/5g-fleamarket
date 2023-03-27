@@ -26,7 +26,7 @@ COPY /src/views ./src/views
 
 COPY /src/public ./src/public
 
-COPY production.env ./.env
+#COPY production.env ./.env
 
 RUN npm install
 
