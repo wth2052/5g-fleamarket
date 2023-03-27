@@ -2,7 +2,7 @@
 
 FROM node:18 AS build
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app
 
 COPY package*.json ./
 
@@ -18,7 +18,7 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/dist ./dist
 
 COPY package*.json ./
 
@@ -28,4 +28,4 @@ RUN rm package*.json
 
 EXPOSE 3000
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "npm", "run", "start:prod" ]
