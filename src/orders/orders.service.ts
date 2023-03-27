@@ -21,7 +21,6 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import * as CryptoJS from 'crypto-js';
-import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class OrdersService {
@@ -43,94 +42,66 @@ export class OrdersService {
     const buyer = await this.userRepository.findOne({
       where: { id: buyerId },
     });
-    const client = new AWS.Lambda({
-      region: this.config.get('AWS_SMS_REGION'),
-    });
-    try {
-      // const phonenumber = "010-8968-2052";
-      // newphonenumber = phonenumber.replaceAll('-', '')
-      // console.log(newphonenumber.replace(/0/, "+82"))
-      const newphonenumber = buyer.phone.replace(/-/g, '');
-      const event = {
-        phone: newphonenumber.replace(/0/, '+82'),
-        productTitle: productTitle,
-      };
-      client.invoke(
-        {
-          FunctionName: '5gnunfleamarketlambdaSNS',
-          InvocationType: 'Event',
-          Payload: JSON.stringify(event, null, 2),
-        },
-        function (error, data) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(data);
-          }
-        },
-      );
-    } catch (error) {
-      console.log(error);
-    }
-    // // 모듈들을 불러오기. 오류 코드는 맨 마지막에 삽입 예정
-    // const finErrCode = 404;
-    // const date = Date.now().toString();
-    //
-    // // 환경변수로 저장했던 중요한 정보들
-    // const serviceId = this.config.get('SENS_SERVICE_ID');
-    // const secretKey = this.config.get('SENS_SECRET_KEY');
-    // const accessKey = this.config.get('SENS_ACCESS_KEY');
-    // const my_number = this.config.get('PHONEMYNUM');
-    //
-    // // 그 외 url 관련
-    // const method = 'POST';
-    // const space = ' ';
-    // const newLine = '\n';
-    // const url = `https://sens.apigw.ntruss.com/sms/v2/services/${serviceId}/messages`;
-    // const url2 = `/sms/v2/services/${serviceId}/messages`;
+
+    // 모듈들을 불러오기. 오류 코드는 맨 마지막에 삽입 예정
+    const finErrCode = 404;
+    const date = Date.now().toString();
+
+    // 환경변수로 저장했던 중요한 정보들
+    const serviceId = this.config.get('SENS_SERVICE_ID');
+    const secretKey = this.config.get('SENS_SECRET_KEY');
+    const accessKey = this.config.get('SENS_ACCESS_KEY');
+    const my_number = this.config.get('PHONEMYNUM');
+
+    // 그 외 url 관련
+    const method = 'POST';
+    const space = ' ';
+    const newLine = '\n';
+    const url = `https://sens.apigw.ntruss.com/sms/v2/services/${serviceId}/messages`;
+    const url2 = `/sms/v2/services/${serviceId}/messages`;
 
     // 중요한 key들을 한번 더 crypto-js 모듈을 이용하여 암호화 하는 과정.
 
-    //   const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
-    //   hmac.update(method);
-    //   hmac.update(space);
-    //   hmac.update(url2);
-    //   hmac.update(newLine);
-    //   hmac.update(date);
-    //   hmac.update(newLine);
-    //   hmac.update(accessKey);
-    //   const hash = hmac.finalize();
-    //   const signature = hash.toString(CryptoJS.enc.Base64);
-    //
-    //   axios({
-    //     method: method,
-    //     url: url,
-    //     headers: {
-    //       'Contenc-type': 'application/json; charset=utf-8',
-    //       'x-ncp-iam-access-key': accessKey,
-    //       'x-ncp-apigw-timestamp': date,
-    //       'x-ncp-apigw-signature-v2': signature,
-    //     },
-    //     data: {
-    //       type: 'SMS',
-    //       countryCode: '82',
-    //       from: my_number,
-    //       content: ` [냐옹상회]  거래성사 알림!!
-    // 상품명 : ${productTitle.substring(0, 10)} ...
-    // 거래가 성사되었습니다.`,
-    //       messages: [
-    //         // 구매자 전화번호
-    //         { to: this.config.get('TESTPHONENUM') || buyer.phone },
-    //       ],
-    //     },
-    //   })
-    //     .then((res) => {
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    //   return finErrCode;
+    const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+    hmac.update(method);
+    hmac.update(space);
+    hmac.update(url2);
+    hmac.update(newLine);
+    hmac.update(date);
+    hmac.update(newLine);
+    hmac.update(accessKey);
+    const hash = hmac.finalize();
+    const signature = hash.toString(CryptoJS.enc.Base64);
+
+    axios({
+      method: method,
+      url: url,
+      headers: {
+        'Contenc-type': 'application/json; charset=utf-8',
+        'x-ncp-iam-access-key': accessKey,
+        'x-ncp-apigw-timestamp': date,
+        'x-ncp-apigw-signature-v2': signature,
+      },
+      data: {
+        type: 'SMS',
+        countryCode: '82',
+        from: my_number,
+        content: ` [냐옹상회]  거래성사 알림!!
+  상품명 : ${productTitle.substring(0, 10)} ...
+  거래가 성사되었습니다.`,
+        messages: [
+          // 구매자 전화번호
+          { to: this.config.get('TESTPHONENUM') || buyer.phone },
+        ],
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return finErrCode;
   }
 
   async findMyPick(id: number) {
