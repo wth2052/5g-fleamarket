@@ -2,7 +2,7 @@
 
 FROM node:18 AS build
 
-WORKDIR /usr/app
+WORKDIR /usr/app/
 
 COPY package*.json ./
 
@@ -16,20 +16,18 @@ RUN npm run build
 # PROD stage
 FROM node:18
 
-WORKDIR /usr/app
+WORKDIR /usr/app/
 
 COPY --from=build /usr/app/dist ./dist
-
-COPY package*.json ./
 
 COPY /src/views ./src/views
 
 COPY /src/public ./src/public
 
-RUN npm install
+COPY package*.json ./
 
-RUN rm package*.json
+RUN npm install
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "node", "dist/main.js" ]
