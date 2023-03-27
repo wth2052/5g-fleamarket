@@ -18,7 +18,7 @@ FROM node:18
 
 WORKDIR /usr/app
 
-COPY --from=build /usr/src/dist ./dist
+COPY --from=build /usr/app/dist ./dist
 
 COPY package*.json ./
 
