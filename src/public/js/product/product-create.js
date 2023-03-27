@@ -4,15 +4,12 @@ axios
     let data = res.data.categories;
     let temp = '';
     for (let i = 0; i < data.length; i++) {
-      // const option = document.createElement('option');
-      // option.value = category.id;
-      // option.textContent = category.name;
-      // categorySelect.appendChild(option);
       temp += `<option value="${data[i].id}">${data[i].name}</option>`;
     }
     document.getElementById('categorySelect').innerHTML = temp;
   })
   .catch((error) => {
+    console.log(error);
     if (error.response.status === 401) {
       alert('로그인해야 주문이 가능합니다.');
       window.location.href = '/login';
