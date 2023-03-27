@@ -73,23 +73,23 @@
                                 <img src="/images/user.png" height="40" width="40" alt="">
                             </div>
                             <div class="drop-down dropdown-profile   dropdown-menu">
-                                <div class="dropdown-content-body">
-                                    <ul>
-                                        <li>
+                                <div class="dropdown-content-body" id="loginInfo">
+                                    <!-- <ul>
+                                        <li id="mypageInfo">
                                             <a href='/me'><i class="icon-user"></i> <span>마이 페이지</span></a>
                                         </li>
-                                        <!-- <li>
-                                            <a href="email-inbox.html"><i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill badge-primary">3</div></a>
-                                        </li> -->
-
-                                        <hr class="my-2">
                                         <li>
+                                            <a href="email-inbox.html"><i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill badge-primary">3</div></a>
+                                        </li>
+
+                                        <hr class="my-2" id="loginInfo">
+                                        <li >
                                             <a href="/login"><i class="icon-lock"></i> <span>로그인</span></a>
                                         </li>
                                         <li>
                                             <a href="javascript:void(0);" onclick="logout()"><i class="icon-key"></i> <span>로그아웃</span></a>
                                         </li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                         </li>
@@ -108,19 +108,19 @@
             Sidebar start
         ***********************************-->
         <div class="nk-sidebar">
-            <div class="nk-nav-scroll">
+            <div class="nk-nav-scroll" >
                 <ul class="metismenu" id="menu">
                     <li class="nav-label">냐옹상회 메뉴</li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">상품</span>
                         </a>
-                        <ul aria-expanded="false">
-                            <li><a href="/">상품목록</a></li>
-                            <li><a href="/products/create">판매하기</a></li>
+                        <ul aria-expanded="false" id="topInfo">
+                            <!-- <li><a href="/">상품목록</a></li>
+                            <li><a href="/products/create">판매하기</a></li> -->
                         </ul>
                     </li>
-                    <li class="mega-menu mega-menu-sm">
+                    <li class="mega-menu mega-menu-sm" id="orderInfo">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-globe-alt menu-icon"></i><span class="nav-text">구매/판매</span>
                         </a>
@@ -129,7 +129,7 @@
                             <li><a href="/order/dealcheck">판매 진행</a></li>
                         </ul>
                     </li>
-                    <li>
+                    <li id="bottomInfo">
                         <a class="has-arrow" href="javascript:void();" aria-expanded="false">
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">마이페이지</span>
                         </a>
@@ -138,8 +138,6 @@
                             <li><a href="/order/me/sell/list">판매내역</a></li>
                             <li><a href="/me/notices">공지목록</a></li>
                             <li><a href="/me/likes">관심목록</a></li>
-
-                            </li>
 
                         </ul>
                     </li>

@@ -451,7 +451,8 @@ mark,
 
 .img-fluid {
   max-width: 100%;
-  height: auto; }
+  height: auto;
+  cursor: pointer; }
 
 .img-thumbnail {
   padding: 0.25rem;

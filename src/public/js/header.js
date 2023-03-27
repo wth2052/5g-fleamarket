@@ -8,6 +8,30 @@ axios
       let temp = ''
       temp += `${nickname}님 환영합니다!&nbsp&nbsp&nbsp&nbsp&nbsp`
       document.getElementById('headerInfo').innerHTML = temp;
+      let login = ''
+        login += `
+        <ul>
+        <li >
+            <a href='/me'><i class="icon-user"></i> <span>마이 페이지</span></a> 
+        </li>
+
+        <hr class="my-2" >
+        <li >
+        <a href="javascript:void(0);" onclick="logout()"><i class="icon-key"></i> <span>로그아웃</span></a>
+        </li>
+       
+    </ul>
+        `
+        document.getElementById('loginInfo').innerHTML = login;
+     let bar = ''
+     bar += `
+    
+             <li><a href="/">상품목록</a></li>
+             <li><a href="/products/create">판매하기</a></li>
+        
+ `
+     document.getElementById('topInfo').innerHTML = bar;
+
 		})
 		.catch((error) => {
 			// 예외처리
@@ -15,6 +39,32 @@ axios
         let temp = ''
         temp += `로그인 해주세요&nbsp&nbsp&nbsp&nbsp&nbsp`
         document.getElementById('headerInfo').innerHTML = temp;
+        let login = ''
+        login += `
+        
+        <ul>
+
+        <hr class="my-2" >
+        
+         <li>
+         <a href="/login"><i class="icon-lock"></i> <span>로그인</span></a> 
+            
+        </li> 
+    </ul>
+        
+        `
+        document.getElementById('loginInfo').innerHTML = login;
+        let bar = ''
+        bar += `
+                            <li><a href="/">상품목록</a></li>
+ `
+        document.getElementById('topInfo').innerHTML = bar;
+
+        let order = ''
+        document.getElementById('orderInfo').innerHTML = order;
+
+        let result = ''
+        document.getElementById('bottomInfo').innerHTML = result;
       }
       else{
        console.log(error.response?.data?.message || error.response.data.errorMessage.details[0].message)
