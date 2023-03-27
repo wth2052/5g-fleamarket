@@ -18,7 +18,7 @@ import { Cookies } from '../global/common/decorator/find-cookie.decorator';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportService } from './report.service';
-import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Catch(HttpException)
 @Controller('/api')
@@ -31,6 +31,16 @@ export class ReportController {
   ) {}
 
  @Get('/me/login')
+ @ApiOperation({summary: '유저 닉네임',
+ description: '로그인한 유저 닉네임 가져오기'})
+ @ApiCreatedResponse({description: '유저의 닉네임 정보 가져오기'})
+ @ApiQuery({ 
+   name: 'Authentication', 
+   description: '유저로 로그인하면 받는 토큰',
+   // schema: { .... },
+   // type: JwtDecodeDto,
+   required: true
+ })
  getInfo(
   @Cookies('Authentication') jwt: JwtDecodeDto,
 ) {
@@ -45,7 +55,7 @@ export class ReportController {
   @ApiBody({type: CreateReportDto})
   @ApiQuery({ 
     name: 'Authentication', 
-    description: '관리자로 로그인하면 받는 액세스토큰',
+    description: '유저로 로그인하면 받는 토큰',
     // schema: { .... },
     // type: JwtDecodeDto,
     required: true
@@ -102,7 +112,7 @@ description: '등록된 모든 공지목록 보여주기'})
     @ApiNotFoundResponse({description: '찜한 상품이 존재하지 않음'})
     @ApiQuery({ 
       name: 'Authentication', 
-      description: '관리자로 로그인하면 받는 액세스토큰',
+      description: '유저로 로그인하면 받는 토큰',
       // schema: { .... },
       // type: JwtDecodeDto,
       required: true

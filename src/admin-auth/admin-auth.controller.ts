@@ -3,7 +3,7 @@ import { LoginAdminDto } from '../admin/dto/login-admin.dto';
 import { AdminAuthService } from './admin-auth.service';
 import { Request, Response } from 'express';
 import { Public } from '../global/common/decorator/skip-auth.decorator';
-import { ApiBody, ApiCreatedResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('/api/admin')
 @ApiTags('관리자 로그인 API')
