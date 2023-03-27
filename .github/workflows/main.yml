@@ -30,7 +30,7 @@ jobs:
       #ECR로 이미지를 push
       - name: Login AWS-cli after build, tag, and push image to Amazon ECR
         run: |
-          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/h0n5u3c8
           docker build -t 5gnunfleamarketdeploy .
-          docker tag 5gnunfleamarketdeploy:latest 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com/5gnunfleamarketdeploy:latest
-          docker push 183426660321.dkr.ecr.ap-northeast-2.amazonaws.com/5gnunfleamarketdeploy:latest
+          docker tag 5gnunfleamarketdeploy:latest public.ecr.aws/h0n5u3c8/5gnunfleamarketdeploy:latest
+          docker push public.ecr.aws/h0n5u3c8/5gnunfleamarketdeploy:latest
