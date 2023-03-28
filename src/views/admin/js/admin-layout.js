@@ -509,7 +509,7 @@ if (document.location.href.split('/')[3] === 'admin') {
                 <div class="row" style="cursor: pointer;">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
 
-                    <img src="/img/${products[i].images[0].imagePath}" alt="image" id="image"/>
+                   
                   </div>
                   <div class="col-md-8" id="products-column">
                     <h3>${products[i].title}</h3>
@@ -572,7 +572,7 @@ if (document.location.href.split('/')[3] === 'admin') {
                 <div class="row" style="cursor: pointer; ">
                   <div class="col-md-3" style="margin-left: 13%;" id="image-container">
 
-                    <img src="/img/${data[i].images[0].imagePath}" alt="image" id="image"/>
+                   
 
                   </div>
                   <div class="col-md-8" id="products-column" >
