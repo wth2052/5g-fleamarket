@@ -15,13 +15,15 @@ import { CategoriesEntity } from './categories.entity';
 import { UserEntity } from './users.entity';
 import { OrdersEntity } from './orders.entity';
 import { ProductImagesEntity } from './productimages.entity';
-import { LikesEntity } from "./likes.entity";
+import { LikesEntity } from './likes.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'products' })
 export class ProductsEntity {
   @ApiProperty()
-  @OneToMany(() => ProductImagesEntity, (images) => images.product)
+  @OneToMany(() => ProductImagesEntity, (images) => images.product, {
+    cascade: true,
+  })
   images: ProductImagesEntity;
 
   @ApiProperty()
@@ -61,7 +63,7 @@ export class ProductsEntity {
   viewCount: number;
 
   @ApiProperty()
-  @OneToMany(() => LikesEntity, (like) => like.product)
+  @OneToMany(() => LikesEntity, (like) => like.product, { cascade: true })
   likesJoin: LikesEntity[];
 
   @ApiProperty()
