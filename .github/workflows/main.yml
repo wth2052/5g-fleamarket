@@ -34,3 +34,19 @@ jobs:
           docker build -t 5gnunfleamarketdeploy .
           docker tag 5gnunfleamarketdeploy:latest public.ecr.aws/h0n5u3c8/5gnunfleamarketdeploy:latest
           docker push public.ecr.aws/h0n5u3c8/5gnunfleamarketdeploy:latest
+      # 태스크 정의
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: 5gnunfleamarket
+          image: $
+      # 자동 배포 명령
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: $
+          service: ecsfinal
+          cluster: test_cluster
+          wait-for-service-stability: true
