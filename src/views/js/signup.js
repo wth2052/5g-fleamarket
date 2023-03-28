@@ -106,7 +106,7 @@ function signUp() {
     return;
   }
   axios
-    .post('https://5gnunfleamarket.shop/auth/signup', {
+    .post('https://5gnunfleamarket.shop/api/auth/signup', {
       headers: {
         'Content-type': 'application/x-www-form-urlencoded',
       },

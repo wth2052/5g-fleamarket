@@ -47,6 +47,7 @@ export class SocialController {
       this.authService.getCookieWithJwtAccessToken(user);
     const { refreshToken, ...refreshOption } =
       this.authService.getCookieWithJwtRefreshToken(user);
+      await this.userService.setCurrentRefreshToken(refreshToken, user.id)
     res.cookie('Authentication', accessToken, accessOption);
     res.cookie('refreshToken', refreshToken, refreshOption);
     res.setHeader('Authentication', accessToken);
