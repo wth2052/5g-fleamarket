@@ -135,24 +135,7 @@
             <div class="product-wrapper" style="border: 3px dotted #5cd7f2; margin-top: 20px; border-radius: 4px; display: flex;" >
                 <div class="col-md-3-img" id="image-box" style="width: 100%; height: 100%; margin: 0;">
                     <div class="image-container">
-                    <% if (images && images.length > 0) { %>
-                        <% if (images.length == 1) { %>
-                          <div><img src="/img/<%= images[0].imagePath %>" /></div>
-                        <% } else { %>
-                          <div class="slider">
-                            <% for (var i = 0; i < Math.min(images.length, 3); i++) { %>
-                              <div><img src="/img/<%= images[i].imagePath %>" /></div>
-                            <% } %>
-                          </div>
-                          <div class="image-nav">
-                            <% for (var i = 0; i < Math.min(images.length, 3); i++) { %>
-                              <div><img src="/img/<%= images[i].imagePath %>%>" style="height: 100px"/></div>
-                            <% } %>
-                          </div>
-                        <% } %>
-                      <% } else { %>
-                        <div><img src="/img/image-not-available.png" /></div>
-                      <% } %>
+                  
                     </div>
                   </div><br>
                 <div class="row"> 
