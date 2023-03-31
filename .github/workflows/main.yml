@@ -50,3 +50,5 @@ jobs:
           service: ecsfinal
           cluster: test_cluster
           wait-for-service-stability: true
+          
+      #완료시 ECR latest update
